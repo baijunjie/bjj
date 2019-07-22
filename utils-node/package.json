@@ -1,0 +1,9 @@
+{
+  "name": "@bjj/utils-node",
+  "version": "0.1.0",
+  "main": "index.js",
+  "files": [
+    "/*",
+    "!.DS_Store"
+  ]
+}
