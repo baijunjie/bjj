@@ -5,7 +5,8 @@
  * - setRoutes      为路由实例设置 routes 配置对象
  * - findRoute      根据 key、value 获取对应的配置对象
  * - filterRoutes   遍历传入的 routes，将会剔除返回值为 false 的路由（用于权限控制，只有在调用 setRoutes 之前删除才有效）
- * - getMetaMatched 传入 vue-router 的路由对象，返回一个数组，表示从根路由开始到该路由结束，所经过的所有路由的 meta 对象组成的数组（用于生成面包屑）
+ * - getMatched     传入 vue-router 的路由对象，返回一个数组，表示从根路由开始到该路由结束，所经过的所有路由对象组成的数组（用于生成面包屑）
+ * - replaceRouter  传入一个新的 router 实例，用于重置当前的 router 实例
  *
  * 扩展属性：
  * - routes      指向路由的配置对象 routes
@@ -38,12 +39,7 @@ export default class Router extends VueRouter {
 
   initRoutes (routes, parentPath) {
     return routes.map(route => {
-      // 如果 parent 是对象，就存在循环引用，在SSR中将不能被序列化而报错
-      route.meta = Object.assign({}, route.meta, { parentPath })
-
-      if (!route.component) {
-        route.meta.empty = true
-      }
+      route.meta = clone(route.meta, { parentPath })
 
       if (route.path === undefined) {
         route.path = route.name || ''
@@ -67,12 +63,14 @@ export default class Router extends VueRouter {
 
   toVueRoutes (routes) {
     return routes.map(route => {
-      const vueRoute = Object.assign({}, route)
+      const vueRoute = clone(route)
+      const isLayout = vueRoute.meta && vueRoute.meta.layout
+      const hasChildren = vueRoute.children && vueRoute.children.length
 
-      if (vueRoute.children && vueRoute.children.length) {
-        const children = vueRoute.children.concat()
+      if (vueRoute.layout || hasChildren) {
+        const children = hasChildren ? vueRoute.children.concat() : []
 
-        if (vueRoute.component) {
+        if (vueRoute.component && !isLayout) {
           children.unshift({
             path: '',
             name: vueRoute.name,
@@ -81,14 +79,24 @@ export default class Router extends VueRouter {
           })
 
           delete vueRoute.name
+          delete vueRoute.meta
           delete vueRoute.component
         }
 
-        if (!vueRoute.component) {
-          vueRoute.component = vueRoute.layout || RouterView
+        if (!vueRoute.component && !vueRoute.layout) {
+          vueRoute.layout = RouterView
         }
 
         vueRoute.children = this.toVueRoutes(children)
+      }
+
+      if (!vueRoute.component) {
+        if (vueRoute.layout) {
+          vueRoute.meta = clone(vueRoute.meta, { layout: true })
+          vueRoute.component = vueRoute.layout
+        } else {
+          vueRoute.meta = clone(vueRoute.meta, { empty: true })
+        }
       }
 
       return vueRoute
@@ -128,7 +136,7 @@ export default class Router extends VueRouter {
     return newRoutes
   }
 
-  getMetaMatched (route = null) {
+  getMatched (route = null) {
     route = route || this.currentRoute
     const fullPath = route.fullPath
 
@@ -142,24 +150,31 @@ export default class Router extends VueRouter {
       })
     }
 
-    let meta = Object.assign({}, route.meta, {
-      path: fullPath
-    })
-    if (route.name) meta.name = route.name
-    if (route.redirect) meta.redirect = route.redirect
-    const matched = [meta]
+    route = clone(route)
+    const matched = [ route ]
+    let parentPath = route.meta.parentPath
 
-    while (meta.parentPath) {
-      const route = this.findRoute('path', meta.parentPath)
+    while (parentPath) {
+      route = this.findRoute('path', parentPath)
       if (!route) break
-      meta = Object.assign({}, route.meta, {
+      parentPath = route.meta.parentPath
+      route = clone(route, {
         path: pathToRegexp.compile(route.path)(params)
       })
-      if (route.name) meta.name = route.name
-      if (route.redirect) meta.redirect = route.redirect
-      matched.push(meta)
+      matched.push(route)
     }
 
     return matched.reverse()
   }
+
+  replaceRouter (router) {
+    // reset router
+    this.matcher = router.matcher
+    this.routes = []
+  }
 }
+
+function clone (...args) {
+  return Object.assign({}, ...args)
+}
+

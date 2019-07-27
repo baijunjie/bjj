@@ -5,19 +5,16 @@
  * - checkSimilarLocale
  * - getMessages
  * - setMessages
- * - setLanguage
- * - getLanguage
- * - setLocale        设置当前语言。
- * - getT             获取语言转换器。
- * - config           设置配置对象。
- * - on               注册事件监听。
- * - off              移除事件监听。
+ * - setLanguage       设置当前语言。
+ * - getT              获取语言转换器。
+ * - on                注册事件监听。
+ * - off               移除事件监听。
  *
  * 扩展事件：
- * - requireLangDone  新语言包加载完成时触发该事件，并将该语言类型作为参数传入。
- * - requireLangFail  新语言包加载失败时触发该事件，并将该语言类型作为参数传入。
- * - change           语言变更后触发该事件，并将当前语言类型作为参数传入。
- * - ready            第一种语言准备好时触发该事件，并将当前语言类型作为参数传入。
+ * - loadLanguageDone  新语言包加载完成时触发该事件，并将该语言类型作为参数传入。
+ * - loadLanguageFail  新语言包加载失败时触发该事件，并将该语言类型作为参数传入。
+ * - change            语言变更后触发该事件，并将当前语言类型作为参数传入。
+ * - ready             第一种语言准备好时触发该事件，并将当前语言类型作为参数传入。
  */
 import VueI18n from 'vue-i18n'
 import axios from 'axios'
@@ -27,8 +24,8 @@ import merge from 'lodash/merge'
 
 const eventObject = new BaseEventObject({
   events: [
-    'requireLangDone', // 请求一种语言完成时的回调
-    'requireLangFail', // 请求一种语言失败时的回调
+    'loadLanguageDone', // 请求一种语言完成时的回调
+    'loadLanguageFail', // 请求一种语言失败时的回调
     'change' // 语言变更时的回调
   ],
   onceEvents: [
@@ -40,31 +37,32 @@ Object.assign(VueI18n.prototype, eventObject)
 
 export default class I18n extends VueI18n {
   constructor (options) {
-    super(options)
-
-    this._isReady = false
-    this._promises = {}
-    this.config({
-      fallbackLocale: '',
-
-      // paths 语言包路径配置对象
+    const {
+      // 语言包路径配置对象
       // {
       //     'zh-CN': 'language/zh-CN.json'
       // }
-      paths: {},
-
-      // 设置 http 请求的默认配置选项。
-      http: {
-        method: 'get',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      },
+      localePaths = {},
 
       // 语言类型是否大小写敏感
-      caseSensitive: false
-    })
+      caseSensitive = false,
+
+      ...otherOptions
+    } = options
+
+    super(otherOptions)
+
+    this._config = {
+      localePaths,
+      caseSensitive
+    }
+
+    this._isReady = false
+    this._promises = {}
+
+    if (this.fallbackLocale && !this.messages[this.fallbackLocale]) {
+      this.getLanguage(this.fallbackLocale)
+    }
   }
 
   /**
@@ -149,36 +147,23 @@ export default class I18n extends VueI18n {
         return resolve()
       }
 
-      this.loadLanguage(locale)
+      this.getLanguage(locale)
         .then(message => {
           this.setLocale(locale)
           resolve(message)
         })
         .catch(reject)
-    }).then(() => {
-      this.emit('change', locale)
     })
   }
 
-  getLanguage (path) {
-    return axios(merge({}, this._config.http, { url: path }))
-      .then(res => {
-        if (res.status === 200) {
-          return res.data
-        } else {
-          return Promise.reject(res)
-        }
-      })
-  }
-
-  loadLanguage (locale) {
+  getLanguage (locale) {
     if (this._promises[locale]) return this._promises[locale]
 
-    const existedLocale = this.checkSimilarLocale(this._config.paths, locale)
-    this._promises[locale] = this.getLanguage(this._config.paths[existedLocale])
+    const existedLocale = this.checkSimilarLocale(this._config.localePaths, locale)
+    this._promises[locale] = this.loadLanguage(this._config.localePaths[existedLocale])
       .then(message => {
         this.setMessages(locale, message)
-        this.emit('requireLangDone', locale)
+        this.emit('loadLanguageDone', locale)
 
         if (!this._isReady) {
           this._isReady = true
@@ -188,7 +173,7 @@ export default class I18n extends VueI18n {
         return message
       })
       .catch(err => {
-        this.emit('requireLangFail', locale)
+        this.emit('loadLanguageFail', locale)
         return Promise.reject(err)
       })
       .finally(() => {
@@ -200,9 +185,39 @@ export default class I18n extends VueI18n {
 
   setLocale (locale) {
     this.locale = locale
+    this.emit('change', locale)
+    this.localeChange()
+    return this
+  }
+
+  /**
+   * Override
+   * 方法可被重写，更换语言后需要执行的操作
+   */
+  localeChange (locale) {
     if (typeof axios !== 'undefined') axios.defaults.headers.common['Accept-Language'] = locale
     if (typeof document !== 'undefined') document.querySelector('html').setAttribute('lang', locale)
-    return this
+  }
+
+  /**
+   * Override
+   * 方法可被重写，更换语言包加载方式
+   */
+  loadLanguage (path) {
+    return axios({
+      url: path,
+      method: 'get',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      if (res.status === 200) {
+        return res.data
+      } else {
+        return Promise.reject(res)
+      }
+    })
   }
 
   /**
@@ -216,18 +231,5 @@ export default class I18n extends VueI18n {
       args.unshift(path + '.' + key)
       return this.t(...args)
     }
-  }
-
-  /**
-   * 设置配置对象
-   * @param {Object} config 配置对象
-   */
-  config (config) {
-    this._config = merge(this._config, config)
-    this.fallbackLocale = this._config.fallbackLocale
-    if (this.fallbackLocale && !this.messages[this.fallbackLocale]) {
-      this.loadLanguage(this.fallbackLocale)
-    }
-    return this
   }
 }
