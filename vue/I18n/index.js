@@ -140,17 +140,20 @@ export default class I18n extends VueI18n {
     }
 
     return new Promise((resolve, reject) => {
-      if (this._isReady && locale === this.locale) return resolve()
-
       if (existedLocale) {
-        this.setLocale(locale)
-        return resolve()
+        this.locale = locale
+        return resolve(locale)
       }
 
       this.getLanguage(locale)
-        .then(message => {
-          this.setLocale(locale)
-          resolve(message)
+        .then(() => {
+          this.locale = locale
+          resolve(locale)
+
+          if (!this._isReady) {
+            this._isReady = true
+            this.emit('ready', locale)
+          }
         })
         .catch(reject)
     })
@@ -164,13 +167,6 @@ export default class I18n extends VueI18n {
       .then(message => {
         this.setMessages(locale, message)
         this.emit('loadLanguageDone', locale)
-
-        if (!this._isReady) {
-          this._isReady = true
-          this.emit('ready', locale)
-        }
-
-        return message
       })
       .catch(err => {
         this.emit('loadLanguageFail', locale)
@@ -181,13 +177,6 @@ export default class I18n extends VueI18n {
       })
 
     return this._promises[locale]
-  }
-
-  setLocale (locale) {
-    this.locale = locale
-    this.emit('change', locale)
-    this.localeChange()
-    return this
   }
 
   /**
@@ -233,3 +222,17 @@ export default class I18n extends VueI18n {
     }
   }
 }
+
+Object.defineProperty(I18n.prototype, '_locale', Object.getOwnPropertyDescriptor(VueI18n.prototype, 'locale'))
+
+Object.defineProperty(I18n.prototype, 'locale', {
+  set: function (locale) {
+    if (this._isReady && this._locale === locale) return
+    this._locale = locale
+    this.emit('change', locale)
+    this.localeChange(locale)
+  },
+  get: function () {
+    return this._locale
+  }
+})
