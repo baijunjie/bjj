@@ -16,6 +16,7 @@
 import VueRouter from 'vue-router'
 import pathToRegexp from 'path-to-regexp'
 import _get from 'lodash/get'
+import _isArray from 'lodash/isArray'
 import RouterView from './RouterView'
 
 const slashStartReg = new RegExp('^/+')
@@ -39,6 +40,7 @@ export default class Router extends VueRouter {
 
   initRoutes (routes, parentPath) {
     return routes.map(route => {
+      route = clone(route)
       route.meta = clone(route.meta, { parentPath })
 
       if (route.path === undefined) {
@@ -125,7 +127,8 @@ export default class Router extends VueRouter {
   filterRoutes (routes, callback) {
     routes = routes || []
     const newRoutes = []
-    for (const route of routes) {
+    for (let route of routes) {
+      route = clone(route)
       const returnValue = callback(route)
       if (!returnValue) continue
       if (route.children && route.children.length) {
@@ -167,10 +170,31 @@ export default class Router extends VueRouter {
     return matched.reverse()
   }
 
-  replaceRouter (router) {
+  reset (...args) {
+    const router = Router.create(...args)
     // reset router
     this.matcher = router.matcher
-    this.routes = []
+    this.routes = router.routes || []
+    return this
+  }
+
+  /**
+   * Override
+   * 方法可被重写
+   */
+  static create (routes = null, options = null) {
+    if (!options && routes && !_isArray(routes)) {
+      options = routes
+      routes = null
+    }
+
+    const router = new Router(options || {})
+
+    if (routes) {
+      router.setRoutes(routes)
+    }
+
+    return router
   }
 }
 
