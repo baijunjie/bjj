@@ -107,18 +107,35 @@ export default class Router extends VueRouter {
 
   findRoute (key, value, routes = null) {
     routes = routes || this.routes || []
-    let targetRoute
+    let targetRoute = null
 
     routes.some(route => {
       if (_get(route, key) === value ||
         (key === 'path' &&
         pathToRegexp(route[key]).exec(value))) {
         targetRoute = route
-        return targetRoute
       } else if (route.children && route.children.length) {
         targetRoute = this.findRoute(key, value, route.children)
-        return targetRoute
       }
+      return !!targetRoute
+    })
+
+    return targetRoute
+  }
+
+  findFirstAvailableRoute (routes = null) {
+    routes = routes || this.routes || []
+    let targetRoute = null
+
+    routes.some(route => {
+      if (route.redirect && !this.findRoute('path', route.redirect)) { // 路由不可用
+        if (route.children && route.children.length) {
+          targetRoute = this.findFirstAvailableRoute(route.children)
+        }
+      } else { // 路由可用
+        targetRoute = route
+      }
+      return !!targetRoute
     })
 
     return targetRoute
