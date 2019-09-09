@@ -105,7 +105,7 @@ export default class Router extends VueRouter {
       })
     }
 
-    route = this.findRoute('path', route.path) || {}
+    route = this.findRoute('path', route.path) || { meta: {} }
     route.fullPath = fullPath
     const matched = [ route ]
     let parentPath = route.meta.parentPath
