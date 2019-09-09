@@ -122,7 +122,7 @@ export default class I18n extends VueI18n {
         locale = existedLocale
       }
 
-      this.setLocaleMessage(locale, Object.assign({}, existedLocaleMsg, localeMsg))
+      this.setLocaleMessage(locale, merge({}, existedLocaleMsg, localeMsg))
     }
 
     return this

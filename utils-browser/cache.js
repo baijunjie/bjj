@@ -7,10 +7,10 @@ const PRO_PREFIX = 'PRO_'
 const DEV_PREFIX = 'DEV_'
 const PREFIX = IS_PRO ? PRO_PREFIX : DEV_PREFIX
 
-function get (key) {
+function get (key, defaultValue = null) {
   if (!key) {
     console.error(`The parameter key cannot be empty.`)
-    return null
+    return defaultValue
   }
 
   let data = localStorage.getItem(PREFIX + key)
@@ -18,7 +18,7 @@ function get (key) {
   try {
     data = JSON.parse(data)
   } catch (err) {
-    return null
+    return defaultValue
   }
 
   data = overdueValidate(data)
@@ -27,7 +27,7 @@ function get (key) {
     return data.value
   } else {
     del(key)
-    return null
+    return defaultValue
   }
 }
 
