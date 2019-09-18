@@ -1,9 +1,12 @@
 {
   "name": "@bjj/utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "index.js",
   "files": [
     "/*",
     "!.DS_Store"
-  ]
+  ],
+  "dependencies": {
+    "lodash": "^4.17.15"
+  }
 }

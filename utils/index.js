@@ -1,3 +1,10 @@
+import {
+  toPairs,
+  fromPairs,
+  isEmpty,
+  orderBy
+} from 'lodash'
+
 /**
  * 等待指定毫秒
  * @param ms
@@ -14,11 +21,11 @@ export function sleep (ms) {
  * @returns {Object}
  */
 export function sortKey (src, order = null) {
-  let arr = _.toPairs(src)
-  arr = _.orderBy(arr, [0]).sort((a, b) => {
+  let arr = toPairs(src)
+  arr = orderBy(arr, [0]).sort((a, b) => {
     const ak = a[0]
     const bk = b[0]
-    if (_.isEmpty(order)) return ak.localeCompare(bk)
+    if (isEmpty(order)) return ak.localeCompare(bk)
 
     const ai = order.indexOf(ak)
     const bi = order.indexOf(bk)
@@ -26,5 +33,5 @@ export function sortKey (src, order = null) {
     else if (ai === bi) return 0
     else return ai < bi ? -1 : 1
   })
-  return _.fromPairs(arr)
+  return fromPairs(arr)
 }

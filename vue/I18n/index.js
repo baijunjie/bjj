@@ -6,6 +6,7 @@
  * - getMessages
  * - setMessages
  * - setLanguage       设置当前语言。
+ * - isDefine          判断语言 key 是否被定义。
  * - getT              获取语言转换器。
  * - on                注册事件监听。
  * - off               移除事件监听。
@@ -210,9 +211,19 @@ export default class I18n extends VueI18n {
   }
 
   /**
+   * 判断语言 key 是否被定义
+   * @param key {String} 语言 key
+   * @return {Boolean}
+   */
+  isDefine (key) {
+    if (this.fallbackLocale) return this.te(key, this.fallbackLocale)
+    return this.te(key)
+  }
+
+  /**
    * 获取语言转换器
-   * @param  {String}   path  传入语言 key 的父级路径
-   * @return {Function}       返回一个转换函数，功能和 i18n.t 相同，但不需要再输入父级路径
+   * @param path {String} 传入语言 key 的父级路径
+   * @return {Function}   返回一个转换函数，功能和 i18n.t 相同，但不需要再输入父级路径
    */
   getT (path) {
     return (...args) => {
