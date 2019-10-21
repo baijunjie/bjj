@@ -12,6 +12,7 @@
  * - off               移除事件监听。
  *
  * 扩展事件：
+ * - loadLanguage      新语言包开始加载时触发该事件，并将该语言类型作为参数传入。
  * - loadLanguageDone  新语言包加载完成时触发该事件，并将该语言类型作为参数传入。
  * - loadLanguageFail  新语言包加载失败时触发该事件，并将该语言类型作为参数传入。
  * - change            语言变更后触发该事件，并将当前语言类型作为参数传入。
@@ -25,6 +26,7 @@ import merge from 'lodash/merge'
 
 const eventObject = new BaseEventObject({
   events: [
+    'loadLanguage', // 请求一种语言开始时的回调
     'loadLanguageDone', // 请求一种语言完成时的回调
     'loadLanguageFail', // 请求一种语言失败时的回调
     'change' // 语言变更时的回调
@@ -163,6 +165,7 @@ export default class I18n extends VueI18n {
   getLanguage (locale) {
     if (this._promises[locale]) return this._promises[locale]
 
+    this.emit('loadLanguage', locale)
     const existedLocale = this.checkSimilarLocale(this._config.localePaths, locale)
     this._promises[locale] = this.loadLanguage(this._config.localePaths[existedLocale])
       .then(message => {
