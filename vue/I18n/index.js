@@ -152,11 +152,6 @@ export default class I18n extends VueI18n {
         .then(() => {
           this.locale = locale
           resolve(locale)
-
-          if (!this._isReady) {
-            this._isReady = true
-            this.emit('ready', locale)
-          }
         })
         .catch(reject)
     })
@@ -165,7 +160,8 @@ export default class I18n extends VueI18n {
   getLanguage (locale) {
     if (this._promises[locale]) return this._promises[locale]
 
-    this.emit('loadLanguage', locale)
+    // 需要在当前帧的最后触发事件，否则会导致在这之后同步注册的监听无法接收到该事件
+    setTimeout(() => this.emit('loadLanguage', locale))
     const existedLocale = this.checkSimilarLocale(this._config.localePaths, locale)
     this._promises[locale] = this.loadLanguage(this._config.localePaths[existedLocale])
       .then(message => {
@@ -242,9 +238,15 @@ Object.defineProperty(I18n.prototype, '_locale', Object.getOwnPropertyDescriptor
 Object.defineProperty(I18n.prototype, 'locale', {
   set: function (locale) {
     if (this._isReady && this._locale === locale) return
+
     this._locale = locale
     this.emit('change', locale)
     this.localeChange(locale)
+
+    if (!this._isReady) {
+      this._isReady = true
+      this.emit('ready', locale)
+    }
   },
   get: function () {
     return this._locale
