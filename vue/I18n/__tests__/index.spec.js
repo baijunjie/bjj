@@ -58,9 +58,24 @@ describe('vue/I18n', () => {
       expect(event.type).toBe('change')
       expect(locale).toBe('en')
       expect(i18n.locale).toBe(locale)
+      expect(i18n.t('hello')).not.toBe(`Hello ${i18n.locale}`)
       done()
     })
-    i18n.locale = 'en'
+    i18n.setLanguage('en')
+  })
+
+  it('Test I18n event :: changed', done => {
+    const i18n = new I18n(defaultOptions)
+    expect(i18n.locale).toBe(undefined)
+
+    i18n.on('changed', (event, locale) => {
+      expect(event.type).toBe('changed')
+      expect(locale).toBe('en')
+      expect(i18n.locale).toBe(locale)
+      expect(i18n.t('hello')).toBe(`Hello ${i18n.locale}`)
+      done()
+    })
+    i18n.setLanguage('en')
   })
 
   it('Test I18n event :: loadLanguage', done => {
@@ -102,9 +117,10 @@ describe('vue/I18n', () => {
   it('Test I18n event :: loadLanguageFail', done => {
     const i18n = new I18n(defaultOptions)
 
-    i18n.on('loadLanguageFail', (event, locale) => {
+    i18n.on('loadLanguageFail', (event, locale, err) => {
       expect(event.type).toBe('loadLanguageFail')
       expect(locale).toBe('zh-CN')
+      expect(err).toEqual(new Error(`Locale<${locale}> path does not exist.`))
       done()
     })
 
@@ -113,11 +129,18 @@ describe('vue/I18n', () => {
 
   it('Test I18n event :: trigger order', async () => {
     const i18n = new I18n(Object.assign({}, defaultOptions, { locale: 'en' }))
-    const triggerOrderExpected = ['change', 'loadLanguage', 'loadLanguageDone', 'ready']
+    const triggerOrderExpected = ['change', 'loadLanguage', 'loadLanguageDone', 'ready', 'changed']
     const triggerOrder = []
     await Promise.all([
       new Promise(resolve => {
         i18n.on('ready', (event, locale) => {
+          if (locale !== 'en') return
+          triggerOrder.push(event.type)
+          resolve()
+        })
+      }),
+      new Promise(resolve => {
+        i18n.on('changed', (event, locale) => {
           if (locale !== 'en') return
           triggerOrder.push(event.type)
           resolve()

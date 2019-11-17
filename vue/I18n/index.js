@@ -15,7 +15,8 @@
  * - loadLanguage      新语言包开始加载时触发该事件，并将该语言类型作为参数传入。
  * - loadLanguageDone  新语言包加载完成时触发该事件，并将该语言类型作为参数传入。
  * - loadLanguageFail  新语言包加载失败时触发该事件，并将该语言类型与错误信息作为参数传入。
- * - change            语言变更后触发该事件，并将当前语言类型作为参数传入。
+ * - change            语言变更时触发该事件，并将当前语言类型作为参数传入。
+ * - changed           语言变更时且语言包加载完成后触发该事件，并将当前语言类型作为参数传入。
  * - ready             第一种语言准备好时触发该事件，并将当前语言类型作为参数传入。
  */
 import VueI18n from 'vue-i18n'
@@ -48,7 +49,8 @@ export default class I18n extends VueI18n {
         'loadLanguage', // 请求一种语言开始时的回调
         'loadLanguageDone', // 请求一种语言完成时的回调
         'loadLanguageFail', // 请求一种语言失败时的回调
-        'change' // 语言变更时的回调
+        'change', // 语言变更时的回调
+        'changed' // 语言变更时且语言包加载完成后的回调
       ],
       onceEvents: [
         'ready' // 第一种语言准备好时的回调
@@ -64,7 +66,7 @@ export default class I18n extends VueI18n {
     this._promises = {}
 
     // 如果不强行设置，vue-i18n 的默认 locale 与 fallbackLocale 将会是 en-US
-    this._locale = undefined
+    this.locale = undefined
     this.fallbackLocale = fallbackLocale
 
     if (locale) {
@@ -144,7 +146,7 @@ export default class I18n extends VueI18n {
 
     try {
       // 需要在当前帧的最后触发事件，否则会导致在这之后同步注册的监听无法接收到该事件
-      setTimeout(() => this.emit('loadLanguage', locale))
+      this._trigger('loadLanguage', locale)
 
       const existedLocale = this.checkSimilarLocale(this._config.localePaths, locale)
       const localePath = this._config.localePaths[existedLocale]
@@ -153,17 +155,17 @@ export default class I18n extends VueI18n {
       this._promises[locale] = this.loadLanguage(localePath)
       const messages = await this._promises[locale]
       this.setMessages(locale, messages)
-      setTimeout(() => this.emit('loadLanguageDone', locale))
+      this._trigger('loadLanguageDone', locale)
 
       // 第一个语言包加载完成时，判定为 ready
       if (!this._isReady) {
         this._isReady = true
-        setTimeout(() => this.emit('ready', locale))
+        this._trigger('ready', locale)
       }
 
       return messages
     } catch (err) {
-      setTimeout(() => this.emit('loadLanguageFail', locale, err))
+      this._trigger('loadLanguageFail', locale, err)
       return Promise.reject(err)
     }
   }
@@ -179,8 +181,15 @@ export default class I18n extends VueI18n {
       locale = existedLocale
     }
 
+    if (!locale || this.locale === locale) return
+
     this.locale = locale
-    return this.getLanguage(locale).then(() => locale)
+    this._trigger('change', locale)
+    return this.getLanguage(locale).then(() => {
+      this._trigger('changed', locale)
+      this.localeChanged(locale)
+      return locale
+    })
   }
 
   /**
@@ -236,20 +245,8 @@ export default class I18n extends VueI18n {
     if (typeof axios !== 'undefined') axios.defaults.headers.common['Accept-Language'] = locale
     if (typeof document !== 'undefined') document.querySelector('html').setAttribute('lang', locale)
   }
-}
 
-Object.defineProperty(I18n.prototype, '_locale', Object.getOwnPropertyDescriptor(VueI18n.prototype, 'locale'))
-
-Object.defineProperty(I18n.prototype, 'locale', {
-  set: function (locale) {
-    if (!locale || this._locale === locale) return
-    this._locale = locale
-    setTimeout(() => {
-      this.emit('change', locale)
-      this.localeChanged(locale)
-    })
-  },
-  get: function () {
-    return this._locale
+  _trigger (name, ...args) {
+    setTimeout(() => this.emit(name, ...args))
   }
-})
+}
