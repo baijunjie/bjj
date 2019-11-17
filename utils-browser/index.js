@@ -8,7 +8,7 @@ export function parseQuery (search = null) {
   const query = {}
   const url = search || location.search
   if (url.indexOf('?') !== -1) {
-    const array = url.substr(1).split('&')
+    const array = url.split('?')[1].split('&')
     array.forEach(element => {
       const parts = element.split('=')
       query[parts[0]] = decodeURIComponent(parts[1])
@@ -21,7 +21,7 @@ export function parseQuery (search = null) {
  * 判断 node 是否包含 subNode
  * @param node    {HTMLElement|String}
  * @param subNode {HTMLElement|String}
- * @param contain {Boolean} 如果为 true，当 node === subNode 时会返回 false
+ * @param contain {Boolean} 严格包含，默认为 false。如果为 true，当 node === subNode 时会返回 false
  * @returns {Boolean}
  */
 export function containElement (node, subNode, contain = false) {
@@ -29,18 +29,13 @@ export function containElement (node, subNode, contain = false) {
   subNode = typeof subNode === 'string' ? document.querySelector(subNode) : subNode
 
   if (!node || !subNode) return false
+  if (subNode === node) return !contain
 
-  while (subNode) {
-    if (subNode === node) {
-      return true
-    }
-
-    if (subNode.nodeName === 'HTML') {
-      break
-    }
-
+  do {
+    if (subNode.nodeName === 'HTML') break
     subNode = subNode.parentNode
-  }
+    if (subNode === node) return true
+  } while (subNode)
 
   return false
 }

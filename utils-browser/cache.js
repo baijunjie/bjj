@@ -7,7 +7,7 @@ const PRO_PREFIX = 'PRO_'
 const DEV_PREFIX = 'DEV_'
 const PREFIX = IS_PRO ? PRO_PREFIX : DEV_PREFIX
 
-function get (key, defaultValue = null) {
+function get (key, defaultValue = undefined) {
   if (!key) {
     console.error(`The parameter key cannot be empty.`)
     return defaultValue
@@ -51,7 +51,7 @@ function set (key, value, validTime) {
     return localStorage.setItem(PREFIX + key, data)
   } catch (err) {
     // 如果写入失败，可能是因为文件超出可写入的大小
-    // 那么现将该缓存清除后，再重新写入
+    // 那么先将该缓存清除后，再重新写入
     del(key)
     return localStorage.setItem(PREFIX + key, data)
   }
