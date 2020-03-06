@@ -18,7 +18,7 @@
  * 注意，每一个路由配置对象都会挂载到对应的 vue-router 路由信息对象的 meta 属性下
  */
 import VueRouter from 'vue-router'
-import pathToRegexp from 'path-to-regexp'
+import { pathToRegexp } from 'path-to-regexp'
 import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
 import RouterView from './RouterView'
