@@ -18,7 +18,7 @@
  * 注意，每一个路由配置对象都会挂载到对应的 vue-router 路由信息对象的 meta 属性下
  */
 import VueRouter from 'vue-router'
-import { pathToRegexp } from 'path-to-regexp'
+import { pathToRegexp, compile } from 'path-to-regexp'
 import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
 import RouterView from './RouterView'
@@ -114,7 +114,7 @@ export default class Router extends VueRouter {
       route = this.findRoute('path', parentPath)
       if (!route) break
       parentPath = route.meta.parentPath
-      route.fullPath = pathToRegexp.compile(route.path)(params)
+      route.fullPath = compile(route.path)(params)
       matched.unshift(route)
     }
 
