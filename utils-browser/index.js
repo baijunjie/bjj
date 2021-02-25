@@ -1,23 +1,6 @@
 export { default as cache } from './cache'
 
 /**
- * 解析 query
- * @param search
- */
-export function parseQuery (search = null) {
-  const query = {}
-  const url = search || location.search
-  if (url.indexOf('?') !== -1) {
-    const array = url.split('?')[1].split('&')
-    array.forEach(element => {
-      const parts = element.split('=')
-      query[parts[0]] = decodeURIComponent(parts[1])
-    })
-  }
-  return query
-}
-
-/**
  * 判断 node 是否包含 subNode
  * @param node    {HTMLElement|String}
  * @param subNode {HTMLElement|String}
@@ -38,4 +21,37 @@ export function containElement (node, subNode, contain = false) {
   } while (subNode)
 
   return false
+}
+
+export function loadJs (src) {
+  const script = document.createElement('script')
+  script.setAttribute('src', src)
+  script.setAttribute('async', '')
+  script.setAttribute('defer', '')
+
+  const promise = new Promise((resolve, reject) => {
+    script.onload = resolve
+    script.onerror = reject
+  })
+
+  document.head.appendChild(script)
+
+  return promise
+}
+
+/**
+ * 解析 query
+ * @param search
+ */
+export function parseQuery (search = null) {
+  const query = {}
+  const url = search || location.search
+  if (url.indexOf('?') !== -1) {
+    const array = url.split('?')[1].split('&')
+    array.forEach(element => {
+      const parts = element.split('=')
+      query[parts[0]] = decodeURIComponent(parts[1])
+    })
+  }
+  return query
 }

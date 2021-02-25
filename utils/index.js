@@ -6,6 +6,48 @@ import {
 } from 'lodash'
 
 /**
+ * 将参数对象拼装进 url
+ * @param  {String} url    需要拼装的 url
+ * @param  {Object} params 参数对象
+ * @return {String}        返回拼装好的新 url
+ */
+export function composeUrl (url, params) {
+  if (typeof params !== 'object') return url
+
+  const paramArr = []
+  for (const key in params) {
+    paramArr.push({
+      key: key,
+      value:
+        typeof params[key] === 'object'
+          ? JSON.stringify(params[key])
+          : params[key]
+    })
+  }
+
+  // 根据 key 进行排序
+  paramArr.sort(function (a, b) {
+    const av = a.key
+    const bv = b.key
+    return av.localeCompare(bv)
+  })
+
+  let paramStr = ''
+  for (const p of paramArr) {
+    paramStr += '&' + p.key + '=' + p.value
+  }
+
+  if (url.indexOf('?') >= 0) {
+    const lastChar = url.charAt(url.length - 1)
+    if (lastChar === '&' || lastChar === '?') paramStr = paramStr.substr(1)
+  } else {
+    paramStr = '?' + paramStr.substr(1)
+  }
+
+  return url + paramStr
+}
+
+/**
  * 等待指定毫秒
  * @param ms
  * @returns {Promise<any>}
@@ -30,6 +72,8 @@ export function sortKey (src, order = null) {
     const ai = order.indexOf(ak)
     const bi = order.indexOf(bk)
     if (ai < 0 && bi < 0) return ak.localeCompare(bk)
+    else if (ai < 0) return 1
+    else if (bi < 0) return -1
     else if (ai === bi) return 0
     else return ai < bi ? -1 : 1
   })
