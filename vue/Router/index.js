@@ -49,6 +49,10 @@ export default class Router extends VueRouter {
     routes.some(route => {
       if (_get(route, key) === value ||
         (key === 'path' &&
+        // pathToRegexp 传入的 path 中不可以直接使用 *，否则会报错
+        // 如果需要使用 *，可以使用正则的方式
+        // /route/(.*) 包含父级 path
+        // /route/(.+) 不包含父级 path
         pathToRegexp(route[key]).exec(value))) {
         targetRoute = route
       } else if (route.children && route.children.length) {
