@@ -17,7 +17,7 @@ export default function (scopes: Options['scopes']) {
   }
   return defineConfig([
     {
-      files: [`**/*.{${extensions.join(',')}}`],
+      files: [ `**/*.{${extensions.join(',')}}` ],
       extends: [
         ...typescript.configs.recommended as ExtendsElement[],
       ],
@@ -31,7 +31,7 @@ export default function (scopes: Options['scopes']) {
             vars: 'all',
             ignoreRestSiblings: true,
             destructuredArrayIgnorePattern: '^_',
-          }
+          },
         ],
         '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/no-explicit-any': 'off',

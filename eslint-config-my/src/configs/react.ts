@@ -12,15 +12,15 @@ export default function (scopes: Options['scopes']) {
   let languageOptions
   if (scopes?.ts) {
     languageOptions = {
-      parserOptions: { parser: typescript.parser }
+      parserOptions: { parser: typescript.parser },
     }
   }
   return defineConfig([
     {
-      files: [`**/*.{${extensions.join(',')}}`],
+      files: [ `**/*.{${extensions.join(',')}}` ],
       languageOptions: {
         ...languageOptions,
-        React: 'readonly'
+        React: 'readonly',
       },
       extends: [
         reactHooks.configs['recommended-latest'],
@@ -29,7 +29,7 @@ export default function (scopes: Options['scopes']) {
       rules: {
         'react-hooks/rules-of-hooks': 'error',
         'react-hooks/exhaustive-deps': 'warn',
-        'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+        'react-refresh/only-export-components': [ 'warn', { allowConstantExport: true }],
       },
     },
   ])

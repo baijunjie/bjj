@@ -19,10 +19,10 @@ export default function (scopes: Options['scopes']) {
   }
   return defineConfig([
     {
-      files: [`**/*.{${extensions.join(',')}}`],
+      files: [ `**/*.{${extensions.join(',')}}` ],
       settings: {
-        'better-tailwindcss': {}
-      }
+        'better-tailwindcss': {},
+      },
     },
   ])
 }

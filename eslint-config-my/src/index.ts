@@ -11,13 +11,13 @@ import { defaultsDeep } from 'lodash-es'
 
 export type Options = {
   scopes?: {
-    js?: boolean,
-    ts?: boolean,
-    stylistic?: boolean,
-    tailwindcss?: boolean,
-    react?: boolean,
-    vue?: boolean,
-  },
+    js?: boolean
+    ts?: boolean
+    stylistic?: boolean
+    tailwindcss?: boolean
+    react?: boolean
+    vue?: boolean
+  }
   ignores?: string[]
 }
 
@@ -45,8 +45,8 @@ export default function (options: Options = defaultOptions) {
         globals: {
           ...globals.browser,
           ...globals.node,
-        }
-      }
+        },
+      },
     },
     ignores.length && globalIgnores(ignores),
     scopes.js && javascript(scopes),
