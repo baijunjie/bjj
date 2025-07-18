@@ -45,7 +45,7 @@ export default function (scopes: Options['scopes']) {
           before: false,
           after: true
         }], // Good: foo, bar | Bad: foo , bar // 逗号前后空格规则
-        '@stylistic/func-call-spacing': ['error', 'never'], // Good: foo() | Bad: foo () // 函数调用时，函数名和括号之间不允许空格
+        '@stylistic/function-call-spacing': ['error', 'never'], // Good: foo() | Bad: foo () // 函数调用时，函数名和括号之间不允许空格
         '@stylistic/template-curly-spacing': ['error', 'never'], // Good: `${foo}` | Bad: `${ foo }` // 模板字符串中的空格规则
         '@stylistic/array-bracket-spacing': ['error', 'always', {
           arraysInArrays: false,
