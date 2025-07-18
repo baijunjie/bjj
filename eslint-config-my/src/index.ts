@@ -48,7 +48,7 @@ export default function (options: Options = defaultOptions) {
         }
       }
     },
-    ignores && globalIgnores(ignores),
+    ignores.length && globalIgnores(ignores),
     scopes.js && javascript(scopes),
     scopes.ts && typescript(scopes),
     scopes.stylistic && stylistic(scopes),
