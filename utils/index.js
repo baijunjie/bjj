@@ -15,33 +15,29 @@ export function composeUrl (url, params) {
   if (typeof params !== 'object') return url
 
   const paramArr = []
-  for (const key in params) {
+  for (const key of Object.keys(params)) {
     paramArr.push({
       key: key,
-      value:
-        typeof params[key] === 'object'
+      value: typeof params[key] === 'object'
           ? JSON.stringify(params[key])
           : params[key]
     })
   }
 
-  // 根据 key 进行排序
-  paramArr.sort(function (a, b) {
-    const av = a.key
-    const bv = b.key
-    return av.localeCompare(bv)
-  })
-
-  let paramStr = ''
-  for (const p of paramArr) {
-    paramStr += '&' + p.key + '=' + p.value
-  }
+  let paramStr = paramArr
+    // 根据 key 进行排序
+    .sort((a, b) => {
+      const av = a.key
+      const bv = b.key
+      return av.localeCompare(bv)
+    })
+    .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(options[key]))
+    .join('&')
 
   if (url.indexOf('?') >= 0) {
-    const lastChar = url.charAt(url.length - 1)
-    if (lastChar === '&' || lastChar === '?') paramStr = paramStr.substr(1)
+    if (!url.endsWith('&') && !url.endsWith('?')) paramStr = '&' + paramStr
   } else {
-    paramStr = '?' + paramStr.substr(1)
+    paramStr = '?' + paramStr
   }
 
   return url + paramStr
