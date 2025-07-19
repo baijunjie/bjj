@@ -15,7 +15,7 @@ export type Options = {
     ts?: boolean
     stylistic?: boolean
     tailwindcss?: boolean | object
-    react?: boolean
+    react?: boolean | object
     vue?: boolean
   }
   ignores?: string[]

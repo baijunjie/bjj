@@ -30,6 +30,9 @@ export default function (scopes: Options['scopes']) {
         reactHooks.configs['recommended-latest'],
         reactRefresh.configs.recommended,
       ],
+      settings: {
+        react: typeof scopes?.react === 'object' ? scopes.react : {},
+      },
     },
   ])
 }
