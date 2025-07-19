@@ -29,9 +29,11 @@ export default function (scopes: Options['scopes']) {
         ...tailwindcss.configs["recommended-warn"].rules,
         // enable all recommended rules to report an error
         ...tailwindcss.configs["recommended-error"].rules,
+        // disable specific rules
+        'better-tailwindcss/no-unregistered-classes': 'off', // 关闭未注册类的检查
       },
       settings: {
-        'better-tailwindcss': typeof scopes?.tailwindcss4 === 'object' ? scopes.tailwindcss4 : {},
+        'better-tailwindcss': typeof scopes?.tailwindcss === 'object' ? scopes.tailwindcss : {},
       },
     },
   ])
