@@ -1,5 +1,4 @@
 import type { Options } from '../index'
-import type { ExtendsElement } from '@eslint/config-helpers'
 import { defineConfig } from 'eslint/config'
 import vue from 'eslint-plugin-vue'
 import typescript from 'typescript-eslint'
@@ -19,7 +18,7 @@ export default function (scopes: Options['scopes']) {
       files: [ `**/*.{${extensions.join(',')}}` ],
       languageOptions,
       extends: [
-        ...vue.configs['flat/strongly-recommended'] as ExtendsElement[],
+        ...vue.configs['flat/strongly-recommended'],
       ],
       rules: {
         'vue/comma-dangle': [ 'error', 'always-multiline' ], // 尾行逗号检查

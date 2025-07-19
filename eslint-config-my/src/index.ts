@@ -14,7 +14,7 @@ export type Options = {
     js?: boolean
     ts?: boolean
     stylistic?: boolean
-    tailwindcss?: boolean
+    tailwindcss?: boolean | object
     react?: boolean
     vue?: boolean
   }
@@ -27,7 +27,7 @@ const defaultOptions: Options = {
     js: true,
     ts: true,
     stylistic: true,
-    tailwindcss: true,
+    tailwindcss: false,
     react: false,
     vue: false,
   },

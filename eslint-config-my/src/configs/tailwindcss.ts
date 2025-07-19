@@ -1,5 +1,6 @@
 import type { Options } from '../index'
 import { defineConfig } from 'eslint/config'
+import tailwindcss from 'eslint-plugin-better-tailwindcss'
 
 export default function (scopes: Options['scopes']) {
   const extensions = [
@@ -20,8 +21,17 @@ export default function (scopes: Options['scopes']) {
   return defineConfig([
     {
       files: [ `**/*.{${extensions.join(',')}}` ],
+      plugins: {
+        'better-tailwindcss': tailwindcss
+      },
+      rules: {
+        // enable all recommended rules to report a warning
+        ...tailwindcss.configs["recommended-warn"].rules,
+        // enable all recommended rules to report an error
+        ...tailwindcss.configs["recommended-error"].rules,
+      },
       settings: {
-        'better-tailwindcss': {},
+        'better-tailwindcss': typeof scopes?.tailwindcss4 === 'object' ? scopes.tailwindcss4 : {},
       },
     },
   ])

@@ -1,7 +1,7 @@
 import type { Options } from '../index'
-import type { ExtendsElement } from '@eslint/config-helpers'
 import { defineConfig } from 'eslint/config'
 import stylistic from '@stylistic/eslint-plugin'
+import typescript from 'typescript-eslint'
 
 export default function (scopes: Options['scopes']) {
   const extensions = [
@@ -19,11 +19,18 @@ export default function (scopes: Options['scopes']) {
   if (scopes?.vue) {
     extensions.push('vue', 'jsx', 'tsx')
   }
+  let languageOptions
+  if (scopes?.ts) {
+    languageOptions = {
+      parserOptions: { parser: typescript.parser },
+    }
+  }
   return defineConfig([
     {
       files: [ `**/*.{${extensions.join(',')}}` ],
+      languageOptions,
       extends: [
-        stylistic.configs['recommended'] as ExtendsElement,
+        stylistic.configs['recommended'],
       ],
       rules: {
         '@stylistic/template-tag-spacing': 'error', // Good: foo`bar` | Bad: foo `bar` // 模板字符串标签函数调用时，标签和模板字符串之间不允许空格

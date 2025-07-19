@@ -1,23 +1,34 @@
 import type { Options } from '../index'
 import { defineConfig } from 'eslint/config'
 import js from '@eslint/js'
+import typescript from 'typescript-eslint'
 
 export default function (scopes: Options['scopes']) {
   const extensions = [
     'js',
     'cjs',
     'mjs',
+    'ts',
+    'cts',
+    'mts',
     'html',
   ]
   if (scopes?.react) {
-    extensions.push('jsx')
+    extensions.push('jsx', 'tsx')
   }
   if (scopes?.vue) {
-    extensions.push('vue', 'jsx')
+    extensions.push('vue', 'jsx', 'tsx')
+  }
+  let languageOptions
+  if (scopes?.ts) {
+    languageOptions = {
+      parserOptions: { parser: typescript.parser },
+    }
   }
   return defineConfig([
     {
       files: [ `**/*.{${extensions.join(',')}}` ],
+      languageOptions,
       extends: [
         js.configs.recommended,
       ],

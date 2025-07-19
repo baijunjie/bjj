@@ -1,5 +1,6 @@
 import type { Options } from '../index'
 import { defineConfig } from 'eslint/config'
+import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import typescript from 'typescript-eslint'
@@ -20,17 +21,15 @@ export default function (scopes: Options['scopes']) {
       files: [ `**/*.{${extensions.join(',')}}` ],
       languageOptions: {
         ...languageOptions,
-        React: 'readonly',
+        globals: {
+          React: 'readonly',
+        },
       },
       extends: [
+        react.configs.flat.recommended,
         reactHooks.configs['recommended-latest'],
-        reactRefresh,
+        reactRefresh.configs.recommended,
       ],
-      rules: {
-        'react-hooks/rules-of-hooks': 'error',
-        'react-hooks/exhaustive-deps': 'warn',
-        'react-refresh/only-export-components': [ 'warn', { allowConstantExport: true }],
-      },
     },
   ])
 }
