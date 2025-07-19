@@ -1,5 +1,4 @@
 import type { Options } from '../index'
-import { defineConfig } from 'eslint/config'
 import vue from 'eslint-plugin-vue'
 import typescript from 'typescript-eslint'
 
@@ -13,7 +12,7 @@ export default function (scopes: Options['scopes']) {
   if (scopes?.ts) {
     languageOptions = { parserOptions: { parser: typescript.parser }}
   }
-  return defineConfig([
+  return [
     {
       files: [ `**/*.{${extensions.join(',')}}` ],
       languageOptions,
@@ -150,5 +149,5 @@ export default function (scopes: Options['scopes']) {
         'vue/no-deprecated-slot-scope-attribute': 'error', // Disallow deprecated slot-scope attribute (in Vue.js 2.6.0+)
       },
     },
-  ])
+  ]
 }

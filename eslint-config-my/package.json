@@ -1,6 +1,6 @@
 {
   "name": "@bjj/eslint-config-my",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Eslint@9 shared config",
   "type": "module",
   "main": "./dist/index.js",
@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "@eslint/js": "^9.27.0",
+    "@eslint/json": "^0.13.0",
+    "@eslint/markdown": "^7.0.0",
     "@stylistic/eslint-plugin": "^5.2.0",
     "eslint-plugin-better-tailwindcss": "^3.6.3",
     "eslint-plugin-react": "^7.37.5",

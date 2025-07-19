@@ -1,5 +1,4 @@
 import type { Options } from '../index'
-import { defineConfig } from 'eslint/config'
 import tailwindcss from 'eslint-plugin-better-tailwindcss'
 
 export default function (scopes: Options['scopes']) {
@@ -18,7 +17,7 @@ export default function (scopes: Options['scopes']) {
   if (scopes?.vue) {
     extensions.push('vue', 'jsx', 'tsx')
   }
-  return defineConfig([
+  return [
     {
       files: [ `**/*.{${extensions.join(',')}}` ],
       plugins: {
@@ -36,5 +35,5 @@ export default function (scopes: Options['scopes']) {
         'better-tailwindcss': typeof scopes?.tailwindcss === 'object' ? scopes.tailwindcss : {},
       },
     },
-  ])
+  ]
 }

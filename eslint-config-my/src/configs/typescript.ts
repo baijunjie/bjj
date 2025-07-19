@@ -1,6 +1,5 @@
 import type { Options } from '../index'
 import type { ExtendsElement } from '@eslint/config-helpers'
-import { defineConfig } from 'eslint/config'
 import typescript from 'typescript-eslint'
 
 export default function (scopes: Options['scopes']) {
@@ -15,7 +14,7 @@ export default function (scopes: Options['scopes']) {
   if (scopes?.vue) {
     extensions.push('vue', 'tsx')
   }
-  return defineConfig([
+  return [
     {
       files: [ `**/*.{${extensions.join(',')}}` ],
       extends: [
@@ -38,5 +37,5 @@ export default function (scopes: Options['scopes']) {
         '@typescript-eslint/no-unused-expressions': 'off',
       },
     },
-  ])
+  ]
 }

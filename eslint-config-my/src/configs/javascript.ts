@@ -1,5 +1,4 @@
 import type { Options } from '../index'
-import { defineConfig } from 'eslint/config'
 import js from '@eslint/js'
 import typescript from 'typescript-eslint'
 
@@ -25,7 +24,7 @@ export default function (scopes: Options['scopes']) {
       parserOptions: { parser: typescript.parser },
     }
   }
-  return defineConfig([
+  return [
     {
       files: [ `**/*.{${extensions.join(',')}}` ],
       languageOptions,
@@ -48,5 +47,5 @@ export default function (scopes: Options['scopes']) {
         }],
       },
     },
-  ])
+  ]
 }

@@ -1,5 +1,4 @@
 import type { Options } from '../index'
-import { defineConfig } from 'eslint/config'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
@@ -16,7 +15,7 @@ export default function (scopes: Options['scopes']) {
       parserOptions: { parser: typescript.parser },
     }
   }
-  return defineConfig([
+  return [
     {
       files: [ `**/*.{${extensions.join(',')}}` ],
       languageOptions: {
@@ -34,5 +33,5 @@ export default function (scopes: Options['scopes']) {
         react: typeof scopes?.react === 'object' ? scopes.react : {},
       },
     },
-  ])
+  ]
 }
