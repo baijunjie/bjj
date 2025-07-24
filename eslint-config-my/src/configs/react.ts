@@ -29,6 +29,9 @@ export default function (scopes: Options['scopes']) {
         reactHooks.configs['recommended-latest'],
         reactRefresh.configs.recommended,
       ],
+      rules: {
+        'react-refresh/only-export-components': 'off', // 关闭仅导出组件的检查
+      },
       settings: {
         react: typeof scopes?.react === 'object' ? scopes.react : {},
       },
