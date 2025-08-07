@@ -102,6 +102,7 @@ export default function (scopes: Options['scopes']) {
         'vue/prop-name-casing': [ 'error', 'camelCase' ], // 组件 prop 强制小驼峰命名
         'vue/require-default-prop': 'error', // 组件 prop 必须设置默认值，不包括 Boolean 值属性
         'vue/require-prop-types': 'error', // 组件 prop 必须指定类型
+        'vue/require-explicit-emits': 'error', // 组件必须显式声明 emits
         'vue/no-spaces-around-equal-signs-in-attribute': 'error', // 标签中属性的等号两侧不允许空格
         'vue/no-template-shadow': 'error', // 子 v-for 中不允许覆盖父 v-for 中的变量
         'vue/block-order': [ 'error', { // 强制组件中的顺序
