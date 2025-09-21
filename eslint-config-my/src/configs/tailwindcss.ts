@@ -21,18 +21,19 @@ export default function (scopes: Options['scopes']) {
     {
       files: [ `**/*.{${extensions.join(',')}}` ],
       plugins: {
-        'better-tailwindcss': tailwindcss
+        'better-tailwindcss': tailwindcss,
       },
       rules: {
         // enable all recommended rules to report a warning
-        ...tailwindcss.configs["recommended-warn"].rules,
+        ...tailwindcss.configs['recommended-warn'].rules,
         // enable all recommended rules to report an error
-        ...tailwindcss.configs["recommended-error"].rules,
+        ...tailwindcss.configs['recommended-error'].rules,
         // disable specific rules
         'better-tailwindcss/no-unregistered-classes': 'off', // 关闭未注册类的检查
+        ...(typeof scopes?.tailwindcss === 'object' ? (scopes.tailwindcss as { rules: Record<string, unknown> }).rules : {}),
       },
       settings: {
-        'better-tailwindcss': typeof scopes?.tailwindcss === 'object' ? scopes.tailwindcss : {},
+        'better-tailwindcss': typeof scopes?.tailwindcss === 'object' && 'settings' in scopes.tailwindcss ? scopes.tailwindcss.settings : {},
       },
     },
   ]

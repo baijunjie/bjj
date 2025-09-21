@@ -1,6 +1,6 @@
 {
   "name": "@bjj/eslint-config-my",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Eslint@9 shared config",
   "type": "module",
   "main": "./dist/index.js",
@@ -38,6 +38,8 @@
     "@eslint/config-helpers": "^0.3.0",
     "@types/lodash-es": "^4.17.12",
     "eslint": "^9.27.0",
+    "react": "^19.1.1",
+    "tailwindcss": "^4.1.13",
     "tsup": "^8.4.0",
     "typescript": "^5.8.3"
   }

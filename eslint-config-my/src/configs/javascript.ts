@@ -45,6 +45,7 @@ export default function (scopes: Options['scopes']) {
           allowShortCircuit: true,
           allowTernary: true,
         }],
+        ...(typeof scopes?.js === 'object' ? (scopes.js as { rules: Record<string, unknown> }).rules : {}),
       },
     },
   ]

@@ -149,6 +149,7 @@ export default function (scopes: Options['scopes']) {
         'vue/no-deprecated-slot-attribute': 'error', // Disallow deprecated slot attribute (in Vue.js 2.6.0+)
         'vue/no-deprecated-slot-scope-attribute': 'error', // Disallow deprecated slot-scope attribute (in Vue.js 2.6.0+)
       },
+      ...(typeof scopes?.vue === 'object' ? (scopes.vue as { rules: Record<string, unknown> }).rules : {}),
     },
   ]
 }

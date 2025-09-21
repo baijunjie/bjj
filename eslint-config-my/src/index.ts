@@ -13,14 +13,14 @@ import { defaultsDeep } from 'lodash-es'
 
 export type Options = {
   scopes?: {
-    js?: boolean
-    ts?: boolean
-    stylistic?: boolean
-    json?: boolean
-    markdown?: boolean
+    js?: boolean | object
+    ts?: boolean | object
+    stylistic?: boolean | object
+    json?: boolean | object
+    markdown?: boolean | object
     tailwindcss?: boolean | object
     react?: boolean | object
-    vue?: boolean
+    vue?: boolean | object
   }
   ignores?: string[]
 }
@@ -58,8 +58,8 @@ export default function (options: Options = defaultOptions) {
     scopes.js && javascript(scopes),
     scopes.ts && typescript(scopes),
     scopes.stylistic && stylistic(scopes),
-    scopes.json && json(),
-    scopes.markdown && markdown(),
+    scopes.json && json(scopes),
+    scopes.markdown && markdown(scopes),
     scopes.tailwindcss && tailwindcss(scopes),
     scopes.react && react(scopes),
     scopes.vue && vue(scopes),

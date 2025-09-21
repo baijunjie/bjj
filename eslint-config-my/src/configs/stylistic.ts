@@ -73,6 +73,7 @@ export default function (scopes: Options['scopes']) {
           SwitchCase: 1,
           ignoredNodes: [ 'TemplateLiteral' ], // see https://github.com/babel/babel-eslint/issues/681#issuecomment-451336031
         }], // 缩进规则
+        ...(typeof scopes?.stylistic === 'object' ? (scopes.stylistic as { rules: Record<string, unknown> }).rules : {}),
       },
     },
   ]

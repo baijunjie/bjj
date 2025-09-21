@@ -35,6 +35,7 @@ export default function (scopes: Options['scopes']) {
         '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-unused-expressions': 'off',
+        ...(typeof scopes?.ts === 'object' ? (scopes.ts as { rules: Record<string, unknown> }).rules : {}),
       },
     },
   ]

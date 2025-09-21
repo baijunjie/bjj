@@ -30,10 +30,10 @@ export default function (scopes: Options['scopes']) {
         reactRefresh.configs.recommended,
       ],
       rules: {
-        'react-refresh/only-export-components': 'off', // 关闭仅导出组件的检查
+        ...(typeof scopes?.react === 'object' ? (scopes.react as { rules: Record<string, unknown> }).rules : {}),
       },
       settings: {
-        react: typeof scopes?.react === 'object' ? scopes.react : {},
+        react: typeof scopes?.react === 'object' && 'settings' in scopes.react ? scopes.react.settings : {},
       },
     },
   ]
