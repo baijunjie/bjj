@@ -32,7 +32,7 @@ export default function (scopes: Options['scopes']) {
         js.configs.recommended,
       ],
       plugins: {
-        ...(typeof scopes?.js === 'object' ? (scopes.vue as { plugins: Record<string, unknown> }).plugins : {}),
+        ...(typeof scopes?.js === 'object' ? (scopes.js as { plugins: Record<string, unknown> }).plugins : {}),
       },
       rules: {
         'no-console': [ 'error', {

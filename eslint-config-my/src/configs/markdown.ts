@@ -7,7 +7,7 @@ export default function (scopes: Options['scopes']) {
       files: [ '**/*.md' ],
       plugins: {
         markdown,
-        ...(typeof scopes?.markdown === 'object' ? (scopes.vue as { plugins: Record<string, unknown> }).plugins : {}),
+        ...(typeof scopes?.markdown === 'object' ? (scopes.markdown as { plugins: Record<string, unknown> }).plugins : {}),
       },
       language: 'markdown/commonmark',
       rules: {

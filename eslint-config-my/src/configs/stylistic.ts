@@ -32,7 +32,7 @@ export default function (scopes: Options['scopes']) {
         stylistic.configs['recommended'],
       ],
       plugins: {
-        ...(typeof scopes?.stylistic === 'object' ? (scopes.vue as { plugins: Record<string, unknown> }).plugins : {}),
+        ...(typeof scopes?.stylistic === 'object' ? (scopes.stylistic as { plugins: Record<string, unknown> }).plugins : {}),
       },
       rules: {
         '@stylistic/template-tag-spacing': 'error', // Good: foo`bar` | Bad: foo `bar` // 模板字符串标签函数调用时，标签和模板字符串之间不允许空格

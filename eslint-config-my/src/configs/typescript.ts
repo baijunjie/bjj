@@ -21,7 +21,7 @@ export default function (scopes: Options['scopes']) {
         ...typescript.configs.recommended as ExtendsElement[],
       ],
       plugins: {
-        ...(typeof scopes?.ts === 'object' ? (scopes.vue as { plugins: Record<string, unknown> }).plugins : {}),
+        ...(typeof scopes?.ts === 'object' ? (scopes.ts as { plugins: Record<string, unknown> }).plugins : {}),
       },
       rules: {
         '@typescript-eslint/no-unused-vars': [

@@ -30,7 +30,7 @@ export default function (scopes: Options['scopes']) {
         reactRefresh.configs.recommended,
       ],
       plugins: {
-        ...(typeof scopes?.react === 'object' ? (scopes.vue as { plugins: Record<string, unknown> }).plugins : {}),
+        ...(typeof scopes?.react === 'object' ? (scopes.react as { plugins: Record<string, unknown> }).plugins : {}),
       },
       rules: {
         ...(typeof scopes?.react === 'object' ? (scopes.react as { rules: Record<string, unknown> }).rules : {}),

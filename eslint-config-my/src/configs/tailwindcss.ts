@@ -22,7 +22,7 @@ export default function (scopes: Options['scopes']) {
       files: [ `**/*.{${extensions.join(',')}}` ],
       plugins: {
         'better-tailwindcss': tailwindcss,
-        ...(typeof scopes?.tailwindcss === 'object' ? (scopes.vue as { plugins: Record<string, unknown> }).plugins : {}),
+        ...(typeof scopes?.tailwindcss === 'object' ? (scopes.tailwindcss as { plugins: Record<string, unknown> }).plugins : {}),
       },
       rules: {
         // enable all recommended rules to report a warning

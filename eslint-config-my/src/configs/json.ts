@@ -7,7 +7,7 @@ export default function (scopes: Options['scopes']) {
       files: [ '**/*.json' ],
       plugins: {
         json,
-        ...(typeof scopes?.json === 'object' ? (scopes.vue as { plugins: Record<string, unknown> }).plugins : {}),
+        ...(typeof scopes?.json === 'object' ? (scopes.json as { plugins: Record<string, unknown> }).plugins : {}),
       },
       language: 'json/json',
       rules: {
