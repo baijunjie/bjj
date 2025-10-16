@@ -20,6 +20,9 @@ export default function (scopes: Options['scopes']) {
       extends: [
         ...typescript.configs.recommended as ExtendsElement[],
       ],
+      plugins: {
+        ...(typeof scopes?.ts === 'object' ? (scopes.vue as { plugins: Record<string, unknown> }).plugins : {}),
+      },
       rules: {
         '@typescript-eslint/no-unused-vars': [
           'error',

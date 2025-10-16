@@ -29,6 +29,9 @@ export default function (scopes: Options['scopes']) {
         reactHooks.configs['recommended-latest'],
         reactRefresh.configs.recommended,
       ],
+      plugins: {
+        ...(typeof scopes?.react === 'object' ? (scopes.vue as { plugins: Record<string, unknown> }).plugins : {}),
+      },
       rules: {
         ...(typeof scopes?.react === 'object' ? (scopes.react as { rules: Record<string, unknown> }).rules : {}),
       },

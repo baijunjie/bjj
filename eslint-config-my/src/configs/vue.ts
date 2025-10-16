@@ -19,6 +19,9 @@ export default function (scopes: Options['scopes']) {
       extends: [
         ...vue.configs['flat/strongly-recommended'],
       ],
+      plugins: {
+        ...(typeof scopes?.vue === 'object' ? (scopes.vue as { plugins: Record<string, unknown> }).plugins : {}),
+      },
       rules: {
         'vue/comma-dangle': [ 'error', 'always-multiline' ], // 尾行逗号检查
         'vue/quote-props': [ 'error', 'consistent-as-needed' ], // 在同一对象中，所有属性使用一致的引号
@@ -148,8 +151,8 @@ export default function (scopes: Options['scopes']) {
         'vue/no-deprecated-scope-attribute': 'error', // Disallow deprecated scope attribute (in Vue.js 2.5.0+)
         'vue/no-deprecated-slot-attribute': 'error', // Disallow deprecated slot attribute (in Vue.js 2.6.0+)
         'vue/no-deprecated-slot-scope-attribute': 'error', // Disallow deprecated slot-scope attribute (in Vue.js 2.6.0+)
+        ...(typeof scopes?.vue === 'object' ? (scopes.vue as { rules: Record<string, unknown> }).rules : {}),
       },
-      ...(typeof scopes?.vue === 'object' ? (scopes.vue as { rules: Record<string, unknown> }).rules : {}),
     },
   ]
 }
