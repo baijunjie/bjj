@@ -10,6 +10,7 @@ import tailwindcss from './configs/tailwindcss'
 import react from './configs/react'
 import vue from './configs/vue'
 import { defaultsDeep } from 'lodash-es'
+import type { Linter } from 'eslint'
 
 export type Options = {
   scopes?: {
@@ -39,7 +40,7 @@ const defaultOptions: Options = {
   },
 }
 
-export default function (options: Options = defaultOptions) {
+export default function (options: Options = defaultOptions): Linter.Config[] {
   const {
     ignores,
     scopes,
