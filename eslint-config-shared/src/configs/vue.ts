@@ -25,7 +25,18 @@ export default function (scopes: Options['scopes']) {
       rules: {
         'vue/comma-dangle': [ 'error', 'always-multiline' ], // 尾行逗号检查
         'vue/quote-props': [ 'error', 'consistent-as-needed' ], // 在同一对象中，所有属性使用一致的引号
-        'vue/no-unused-vars': 'error', // 未使用的变量是否有效的规则
+        'vue/no-unused-vars': [ // 未使用的变量是否有效的规则
+          'error',
+          {
+            argsIgnorePattern: '^_',
+            varsIgnorePattern: '^_',
+            destructuredArrayIgnorePattern: '^_',
+            args: 'all',
+            vars: 'all',
+            ignoreRestSiblings: true,
+            ignoreClassWithStaticInitBlock: true,
+          },
+        ],
         'vue/space-infix-ops': 'error', // Good: foo + bar | Bad: foo+bar // 单位与单位间需要空格
         'vue/block-spacing': 'error', // Good: { foo } | Bad: {foo} // 大括号间需要空格
         'vue/key-spacing': [ 'error', {

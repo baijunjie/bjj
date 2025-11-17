@@ -29,10 +29,11 @@ export default function (scopes: Options['scopes']) {
           {
             argsIgnorePattern: '^_',
             varsIgnorePattern: '^_',
-            args: 'none',
+            destructuredArrayIgnorePattern: '^_',
+            args: 'all',
             vars: 'all',
             ignoreRestSiblings: true,
-            destructuredArrayIgnorePattern: '^_',
+            ignoreClassWithStaticInitBlock: true,
           },
         ],
         '@typescript-eslint/ban-ts-comment': 'off',

@@ -43,8 +43,19 @@ export default function (scopes: Options['scopes']) {
             'warn',
           ],
         }],
-        'no-undef': 'off', // 未定义变量是否有效的规则
-        'no-unused-vars': 'error', // 未使用的变量是否有效的规则
+        'no-undef': 'error', // 未定义变量是否有效的规则
+        'no-unused-vars': [ // 未使用的变量是否有效的规则
+          'error',
+          {
+            argsIgnorePattern: '^_',
+            varsIgnorePattern: '^_',
+            destructuredArrayIgnorePattern: '^_',
+            args: 'all',
+            vars: 'all',
+            ignoreRestSiblings: true,
+            ignoreClassWithStaticInitBlock: true,
+          },
+        ],
         'no-unused-expressions': [ 'error', { // 未使用表达式是否有效的规则
           allowShortCircuit: true,
           allowTernary: true,
