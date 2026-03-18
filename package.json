@@ -1,7 +1,6 @@
 {
-  "private": true,
   "name": "bjj",
-  "description": "Personal common code",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/baijunjie/bjj.git"
@@ -16,8 +15,8 @@
   "devDependencies": {
     "@bjj/eslint-config-shared": "workspace:*",
     "@types/node": "^25.5.0",
-    "eslint": "^10.0.0",
-    "tsx": "^4.19.0"
+    "eslint": "^10.0.3",
+    "tsx": "^4.21.0"
   },
   "packageManager": "pnpm@10.32.1"
 }
