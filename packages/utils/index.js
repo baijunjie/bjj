@@ -2,7 +2,7 @@ import {
   toPairs,
   fromPairs,
   isEmpty,
-  orderBy
+  orderBy,
 } from 'lodash'
 
 /**
@@ -19,8 +19,8 @@ export function composeUrl (url, params) {
     paramArr.push({
       key: key,
       value: typeof params[key] === 'object'
-          ? JSON.stringify(params[key])
-          : params[key]
+        ? JSON.stringify(params[key])
+        : params[key],
     })
   }
 
@@ -31,7 +31,7 @@ export function composeUrl (url, params) {
       const bv = b.key
       return av.localeCompare(bv)
     })
-    .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(options[key]))
+    .map(({ key, value }) => encodeURIComponent(key) + '=' + encodeURIComponent(value))
     .join('&')
 
   if (url.indexOf('?') >= 0) {
@@ -60,7 +60,7 @@ export function sleep (ms) {
  */
 export function sortKey (src, order = null) {
   let arr = toPairs(src)
-  arr = orderBy(arr, [0]).sort((a, b) => {
+  arr = orderBy(arr, [ 0 ]).sort((a, b) => {
     const ak = a[0]
     const bk = b[0]
     if (isEmpty(order)) return ak.localeCompare(bk)

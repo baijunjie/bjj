@@ -17,7 +17,7 @@ export default function (scopes: Options['scopes']) {
       ...preset,
       languageOptions: {
         ...preset.languageOptions,
-        ...(scopes?.ts ? { parserOptions: { parser: typescript.parser } } : {}),
+        ...(scopes?.ts ? { parserOptions: { parser: typescript.parser }} : {}),
         globals: {
           React: 'readonly',
         },

@@ -20,14 +20,14 @@ I18n.prototype.loadLanguage = function (locale) {
 const defaultOptions = {
   fallbackLocale: 'ja',
   localePaths: {
-    'ja': 'ja',
-    'en': 'en'
-  }
+    ja: 'ja',
+    en: 'en',
+  },
 }
 
-function generateMessages(locale) {
+function generateMessages (locale) {
   return {
-    hello: `Hello ${locale}`
+    hello: `Hello ${locale}`,
   }
 }
 
@@ -94,7 +94,7 @@ describe('vue/I18n', () => {
     const i18n = new I18n(Object.assign({}, defaultOptions, { locale: 'en' }))
     expect(i18n.locale).toBe('en')
 
-    const triggerLocalesExpected = ['ja', 'en']
+    const triggerLocalesExpected = [ 'ja', 'en' ]
     const triggerCountExpected = 2
     let triggerLocales = []
     let triggerCount = 0
@@ -124,12 +124,12 @@ describe('vue/I18n', () => {
       done()
     })
 
-    i18n.setLanguage('zh-CN').catch(err => {})
+    i18n.setLanguage('zh-CN').catch(() => {})
   })
 
   it('Test I18n event :: trigger order', async () => {
     const i18n = new I18n(Object.assign({}, defaultOptions, { locale: 'en' }))
-    const triggerOrderExpected = ['change', 'loadLanguage', 'loadLanguageDone', 'ready', 'changed']
+    const triggerOrderExpected = [ 'change', 'loadLanguage', 'loadLanguageDone', 'ready', 'changed' ]
     const triggerOrder = []
     await Promise.all([
       new Promise(resolve => {
@@ -181,7 +181,7 @@ describe('vue/I18n', () => {
   it('Test I18n function :: getMessages', done => {
     const i18n = new I18n(defaultOptions)
 
-    i18n.on('ready', (event, locale) => {
+    i18n.on('ready', (_event, locale) => {
       expect(i18n.getMessages(locale)).toEqual(generateMessages(locale))
       expect(i18n.getMessages()).toEqual(i18n.messages)
       done()
@@ -200,14 +200,14 @@ describe('vue/I18n', () => {
   it('Test I18n function :: getLanguage', async () => {
     const i18n = new I18n(defaultOptions)
     await expect(i18n.getLanguage('en')).resolves.toEqual(generateMessages('en'))
-    await expect(i18n.getLanguage('zh-CN')).rejects.toEqual(new Error(`Locale<zh-CN> path does not exist.`))
+    await expect(i18n.getLanguage('zh-CN')).rejects.toEqual(new Error('Locale<zh-CN> path does not exist.'))
   })
 
   it('Test I18n function :: setLanguage', async () => {
     const i18n = new I18n(defaultOptions)
     expect(i18n.locale).toBe(undefined)
     await expect(i18n.setLanguage('en')).resolves.toBe('en')
-    await expect(i18n.setLanguage('zh-CN')).rejects.toEqual(new Error(`Locale<zh-CN> path does not exist.`))
+    await expect(i18n.setLanguage('zh-CN')).rejects.toEqual(new Error('Locale<zh-CN> path does not exist.'))
     // 无论语言包最终是否能够成功加载，locale 都会被切换
     expect(i18n.locale).toBe('zh-CN')
   })
@@ -216,10 +216,10 @@ describe('vue/I18n', () => {
     const i18n = new I18n(Object.assign({}, defaultOptions, {
       locale: 'en',
       messages: {
-        'en': {
-          'test': 'Test'
-        }
-      }
+        en: {
+          test: 'Test',
+        },
+      },
     }))
     expect(i18n.isDefine('test')).toBe(true) // defined in en
     expect(i18n.isDefine('hello')).toBe(false) // defined in localePaths.ja
@@ -236,14 +236,14 @@ describe('vue/I18n', () => {
     const i18n = new I18n(Object.assign({}, defaultOptions, {
       locale: 'en',
       messages: {
-        'en': {
-          'level1': {
-            'level2': {
-              'test': 'Test'
-            }
-          }
-        }
-      }
+        en: {
+          level1: {
+            level2: {
+              test: 'Test',
+            },
+          },
+        },
+      },
     }))
     expect(i18n.getT('level1.level2')('test')).toBe('Test')
   })

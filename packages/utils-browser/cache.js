@@ -9,7 +9,7 @@ const PREFIX = IS_PRO ? PRO_PREFIX : DEV_PREFIX
 
 function get (key, defaultValue = undefined) {
   if (!key) {
-    console.error(`The parameter key cannot be empty.`)
+    console.error('The parameter key cannot be empty.')
     return defaultValue
   }
 
@@ -17,7 +17,7 @@ function get (key, defaultValue = undefined) {
 
   try {
     data = JSON.parse(data)
-  } catch (err) {
+  } catch {
     return defaultValue
   }
 
@@ -33,7 +33,7 @@ function get (key, defaultValue = undefined) {
 
 function set (key, value, validTime) {
   if (!key) {
-    console.error(`The parameter key cannot be empty.`)
+    console.error('The parameter key cannot be empty.')
     return
   }
 
@@ -44,12 +44,12 @@ function set (key, value, validTime) {
 
   const data = JSON.stringify({
     value,
-    expire: validTime ? Date.now() + validTime : null
+    expire: validTime ? Date.now() + validTime : null,
   })
 
   try {
     return localStorage.setItem(PREFIX + key, data)
-  } catch (err) {
+  } catch {
     // 如果写入失败，可能是因为文件超出可写入的大小
     // 那么先将该缓存清除后，再重新写入
     del(key)
@@ -75,8 +75,8 @@ function keys () {
 // overdue validate
 function overdueValidate (data) {
   if (data && (
-    !data.expire ||
-    data.expire > Date.now())) {
+    !data.expire
+    || data.expire > Date.now())) {
     return data
   } else {
     return null
@@ -88,5 +88,5 @@ export default {
   set,
   del,
   has,
-  keys
+  keys,
 }

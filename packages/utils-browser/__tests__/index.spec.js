@@ -28,7 +28,7 @@ describe('utils-browser', () => {
     cache.set('test2', '123')
     expect(cache.get('test2')).toBe('123')
     expect(cache.get('test2')).not.toBe(123)
-    expect(cache.keys()).toEqual(['test', 'test2'])
+    expect(cache.keys()).toEqual([ 'test', 'test2' ])
     cache.del('test2')
     expect(cache.get('test2')).toBe(undefined)
     expect(cache.has('test')).toBe(true)

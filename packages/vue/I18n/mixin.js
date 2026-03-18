@@ -4,5 +4,5 @@ export default {
     if (namespace) {
       this.T = this.$i18n.getT(namespace)
     }
-  }
+  },
 }

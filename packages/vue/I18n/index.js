@@ -50,16 +50,16 @@ export default class I18n extends VueI18n {
         'loadLanguageDone', // 请求一种语言完成时的回调
         'loadLanguageFail', // 请求一种语言失败时的回调
         'change', // 语言变更时的回调
-        'changed' // 语言变更时且语言包加载完成后的回调
+        'changed', // 语言变更时且语言包加载完成后的回调
       ],
       onceEvents: [
-        'ready' // 第一种语言准备好时的回调
-      ]
+        'ready', // 第一种语言准备好时的回调
+      ],
     }))
 
     this._config = {
       localePaths,
-      caseSensitive
+      caseSensitive,
     }
 
     this._isReady = false
@@ -70,11 +70,11 @@ export default class I18n extends VueI18n {
     this.fallbackLocale = fallbackLocale
 
     if (locale) {
-      this.setLanguage(locale).catch(err => {})
+      this.setLanguage(locale).catch(() => {})
     }
 
     if (this.fallbackLocale && !this.messages[this.fallbackLocale]) {
-      this.getLanguage(this.fallbackLocale).catch(err => {})
+      this.getLanguage(this.fallbackLocale).catch(() => {})
     }
   }
 
@@ -226,8 +226,8 @@ export default class I18n extends VueI18n {
       method: 'get',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }).then(res => {
       if (res.status === 200) {
         return res.data
