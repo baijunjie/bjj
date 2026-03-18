@@ -37,9 +37,10 @@ export default function (scopes: Options['scopes']) {
       rules: {
         'no-console': [ 'error', {
           allow: [
-            'info',
             'debug',
             'error',
+            'info',
+            'table',
             'warn',
           ],
         }],

@@ -1,6 +1,5 @@
 import type { Options } from '../index'
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
+import eslintReact from '@eslint-react/eslint-plugin'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import typescript from 'typescript-eslint'
 
@@ -9,35 +8,34 @@ export default function (scopes: Options['scopes']) {
     'jsx',
     'tsx',
   ]
-  let languageOptions
-  if (scopes?.ts) {
-    languageOptions = {
-      parserOptions: { parser: typescript.parser },
-    }
-  }
+  const preset = scopes?.ts
+    ? eslintReact.configs['recommended-typescript']
+    : eslintReact.configs.recommended
   return [
     {
       files: [ `**/*.{${extensions.join(',')}}` ],
+      ...preset,
       languageOptions: {
-        ...languageOptions,
+        ...preset.languageOptions,
+        ...(scopes?.ts ? { parserOptions: { parser: typescript.parser } } : {}),
         globals: {
           React: 'readonly',
         },
       },
-      extends: [
-        react.configs.flat.recommended,
-        reactHooks.configs['recommended-latest'],
-        reactRefresh.configs.recommended,
-      ],
       plugins: {
+        ...preset.plugins,
         ...(typeof scopes?.react === 'object' ? (scopes.react as { plugins: Record<string, unknown> }).plugins : {}),
       },
       rules: {
+        ...preset.rules,
         ...(typeof scopes?.react === 'object' ? (scopes.react as { rules: Record<string, unknown> }).rules : {}),
       },
-      settings: {
-        react: typeof scopes?.react === 'object' && 'settings' in scopes.react ? scopes.react.settings : {},
-      },
+    },
+    {
+      files: [ `**/*.{${extensions.join(',')}}` ],
+      extends: [
+        reactRefresh.configs.recommended,
+      ],
     },
   ]
 }
