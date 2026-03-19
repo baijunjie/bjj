@@ -30,7 +30,7 @@ export default function (scopes: Options['scopes']) {
         // enable all recommended rules to report an error
         ...tailwindcss.configs['recommended-error'].rules,
         // disable specific rules
-        'better-tailwindcss/no-unregistered-classes': 'off', // 关闭未注册类的检查
+        'better-tailwindcss/no-unknown-classes': 'off', // 关闭未知类的检查
         ...(typeof scopes?.tailwindcss === 'object' ? (scopes.tailwindcss as { rules: Record<string, unknown> }).rules : {}),
       },
       settings: {

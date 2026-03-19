@@ -1,6 +1,6 @@
 {
   "name": "@bjj/eslint-config-shared",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Eslint@10 shared config",
   "type": "module",
   "main": "./dist/index.js",
