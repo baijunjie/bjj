@@ -8,7 +8,7 @@ import { pathToNamespace } from './utils'
 /**
  * Plugin options interface
  */
-interface I18nMergePluginOptions {
+export interface I18nMergePluginOptions {
   srcDir: string | string[]
   outputDir: string
   languages?: string[]

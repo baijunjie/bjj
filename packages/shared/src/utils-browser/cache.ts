@@ -7,7 +7,7 @@ interface CacheData<T = unknown> {
   expire: number | null
 }
 
-interface Cache {
+interface CacheInterface {
   get: <T = unknown>(key: string, defaultValue?: T) => T | undefined
   set: <T = unknown>(key: string, value: T, validTime?: number | null) => void
   del: (key: string) => void
@@ -102,4 +102,4 @@ function clear(): void {
   }
 }
 
-export const cache: Cache = { get, set, del, has, keys, clear }
+export const Cache: CacheInterface = { get, set, del, has, keys, clear }
