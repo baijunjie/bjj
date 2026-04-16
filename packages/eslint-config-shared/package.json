@@ -13,7 +13,8 @@
     "lint": "eslint --fix",
     "release": "npm run release:bjj && npm run release:polymarbot",
     "release:bjj": "tsx ../../scripts/publish.ts --name @bjj/eslint-config-shared --token BJJ_NPM_TOKEN",
-    "release:polymarbot": "tsx ../../scripts/publish.ts --name @polymarbot/eslint-config-shared --token POLYMARBOT_NPM_TOKEN"
+    "release:polymarbot": "tsx ../../scripts/publish.ts --name @polymarbot/eslint-config-shared --token POLYMARBOT_NPM_TOKEN",
+    "release:elepay": "tsx ../../scripts/publish.ts --name @elepay-io/eslint-config-shared --token ELEPAY_IO_NPM_TOKEN --registry https://npm.pkg.github.com/"
   },
   "publishConfig": {
     "access": "public"

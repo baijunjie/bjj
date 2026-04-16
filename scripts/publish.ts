@@ -22,6 +22,7 @@ interface Args {
   name?: string
   version?: string
   token?: string
+  registry?: string
   dryRun: boolean
 }
 
@@ -30,6 +31,7 @@ function parseArgs (): Args {
   let name: string | undefined
   let version: string | undefined
   let token: string | undefined
+  let registry: string | undefined
   let dryRun = false
 
   for (let i = 0; i < args.length; i++) {
@@ -39,12 +41,14 @@ function parseArgs (): Args {
       version = args[++i]
     } else if (args[i] === '--token' || args[i] === '-t') {
       token = args[++i]
+    } else if (args[i] === '--registry' || args[i] === '-r') {
+      registry = args[++i]
     } else if (args[i] === '--dry-run') {
       dryRun = true
     }
   }
 
-  return { name, version, token, dryRun }
+  return { name, version, token, registry, dryRun }
 }
 
 function copyDistFiles (src: string, dest: string) {
@@ -63,7 +67,7 @@ function copyDistFiles (src: string, dest: string) {
 }
 
 function main () {
-  const { name, version, token, dryRun } = parseArgs()
+  const { name, version, token, registry, dryRun } = parseArgs()
 
   const pkgJsonPath = path.join(CWD, 'package.json')
   if (!fs.existsSync(pkgJsonPath)) {
@@ -114,15 +118,17 @@ function main () {
 
   // 指定了 token 参数时生成 .npmrc，否则使用全局配置
   if (token) {
+    const registryUrl = registry || 'https://registry.npmjs.org/'
+    const registryHost = new URL(registryUrl).host
     const scope = publishName.startsWith('@') ? publishName.split('/')[0] : null
-    const registry = scope ? `${scope}:registry` : 'registry'
+    const registryKey = scope ? `${scope}:registry` : 'registry'
     const npmrc = [
-      `${registry}=https://registry.npmjs.org/`,
-      `//registry.npmjs.org/:_authToken=\${${token}}`,
+      `${registryKey}=${registryUrl}`,
+      `//${registryHost}/:_authToken=\${${token}}`,
       '',
     ].join('\n')
     fs.writeFileSync(path.join(PUBLISH_DIR, '.npmrc'), npmrc)
-    console.info(`已生成 dist/npm/.npmrc (token: ${token})`)
+    console.info(`已生成 dist/npm/.npmrc (token: ${token}, registry: ${registryUrl})`)
   }
 
   try {
