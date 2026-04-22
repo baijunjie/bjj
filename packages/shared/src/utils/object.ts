@@ -3,7 +3,7 @@
  * @param src 源对象
  * @param order 一个 key 数组，对象将会按照数组中 key 的顺序排序
  */
-export function sortKey<T extends Record<string, unknown>>(
+export function sortKey<T extends Record<string, unknown>> (
   src: T,
   order?: string[] | null,
 ): T {

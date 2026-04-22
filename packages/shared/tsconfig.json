@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "noEmit": true,
+    "ignoreDeprecations": "6.0",
     "lib": ["ESNext", "DOM"]
   },
-  "include": ["src"]
+  "exclude": ["node_modules", "dist"]
 }

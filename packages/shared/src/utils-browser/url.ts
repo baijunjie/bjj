@@ -2,7 +2,7 @@
  * 解析 URL query 参数
  * @param search URL search 字符串
  */
-export function parseQuery(search?: string | null): Record<string, string> {
+export function parseQuery (search?: string | null): Record<string, string> {
   const url = search || location.search
   const queryIndex = url.indexOf('?')
   if (queryIndex < 0) return {}

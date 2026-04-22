@@ -23,7 +23,7 @@ describe('composeUrl', () => {
   })
 
   it('should stringify object values', () => {
-    expect(composeUrl('/api', { data: { a: 1 } })).toBe('/api?data=%7B%22a%22%3A1%7D')
+    expect(composeUrl('/api', { data: { a: 1 }})).toBe('/api?data=%7B%22a%22%3A1%7D')
   })
 
   it('should return url when params is not an object', () => {

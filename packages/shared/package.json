@@ -1,6 +1,6 @@
 {
   "name": "@bjj/shared",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Shared utilities",
   "type": "module",
   "exports": {
@@ -19,6 +19,14 @@
     "./plugins": {
       "types": "./dist/plugins/index.d.ts",
       "import": "./dist/plugins/index.js"
+    },
+    "./vue/utils": {
+      "types": "./dist/vue/utils/index.d.ts",
+      "import": "./dist/vue/utils/index.js"
+    },
+    "./vue/composables": {
+      "types": "./dist/vue/composables/index.d.ts",
+      "import": "./dist/vue/composables/index.js"
     }
   },
   "main": "./dist/index.js",
@@ -29,8 +37,10 @@
   "scripts": {
     "build": "tsup --clean --dts",
     "test": "vitest run",
-    "lint": "eslint --fix",
-    "release": "npm run release:bjj && npm run release:polymarbot",
+    "typecheck": "vue-tsc --noEmit",
+    "lint": "git add . && lint-staged --config ../../.lintstagedrc.lint-only.json",
+    "format": "git add . && lint-staged --config ../../.lintstagedrc.json",
+    "release": "npm run release:bjj && npm run release:polymarbot && npm run release:elepay",
     "release:bjj": "tsx ../../scripts/publish.ts --name @bjj/shared --token BJJ_NPM_TOKEN",
     "release:polymarbot": "tsx ../../scripts/publish.ts --name @polymarbot/uitls-shared --token POLYMARBOT_NPM_TOKEN",
     "release:elepay": "tsx ../../scripts/publish.ts --name @elepay-io/frontend-shared --token ELEPAY_IO_NPM_TOKEN --registry https://npm.pkg.github.com/"
@@ -39,15 +49,33 @@
     "access": "public"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "dompurify": "^3.4.0",
     "glob": "^11.0.2",
     "lodash-es": "^4.17.21",
+    "tailwind-merge": "^3.5.0",
     "unplugin": "^2.3.4"
+  },
+  "peerDependencies": {
+    "@vueuse/core": "*",
+    "dayjs": "^1",
+    "vue": "^3",
+    "vue-i18n": "^11",
+    "vue-router": "^4",
+    "zod": "^4"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.12",
+    "@vueuse/core": "^14.2.0",
+    "dayjs": "^1.11.20",
     "jsdom": "^26.1.0",
     "tsup": "^8.5.1",
-    "typescript": "^5.9.3",
-    "vitest": "^3.2.1"
+    "typescript": "^6.0.3",
+    "vitest": "^3.2.1",
+    "vue": "^3.5.0",
+    "vue-i18n": "^11.3.0",
+    "vue-router": "^4.5.0",
+    "vue-tsc": "^3.2.7",
+    "zod": "^4.3.6"
   }
 }

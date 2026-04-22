@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { sleep } from '../../src/utils/sleep'
+import { sleep } from '../../src/utils/timing'
 
 describe('sleep', () => {
   it('should wait for specified milliseconds', async () => {

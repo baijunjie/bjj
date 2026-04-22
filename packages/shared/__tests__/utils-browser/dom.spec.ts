@@ -87,7 +87,7 @@ describe('loadJs', () => {
 
   it('should set custom attrs on script element', () => {
     const src = 'https://example.com/custom.js'
-    loadJs(src, { crossorigin: 'anonymous', 'data-id': '123' })
+    loadJs(src, { 'crossorigin': 'anonymous', 'data-id': '123' })
 
     const script = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement
     expect(script).not.toBeNull()

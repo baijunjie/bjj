@@ -1,3 +1,5 @@
-export { parseQuery } from './url'
-export { containElement, loadJs } from './dom'
-export { Cache } from './cache'
+export * from './cache'
+export * from './dom'
+export * from './page-switch-animate'
+export * from './safe-html'
+export * from './url'

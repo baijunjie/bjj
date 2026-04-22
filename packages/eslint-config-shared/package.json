@@ -10,8 +10,10 @@
   ],
   "scripts": {
     "build": "tsup --clean --dts",
-    "lint": "eslint --fix",
-    "release": "npm run release:bjj && npm run release:polymarbot",
+    "typecheck": "tsc --noEmit",
+    "lint": "git add . && lint-staged --config ../../.lintstagedrc.lint-only.json",
+    "format": "git add . && lint-staged --config ../../.lintstagedrc.json",
+    "release": "npm run release:bjj && npm run release:polymarbot && npm run release:elepay",
     "release:bjj": "tsx ../../scripts/publish.ts --name @bjj/eslint-config-shared --token BJJ_NPM_TOKEN",
     "release:polymarbot": "tsx ../../scripts/publish.ts --name @polymarbot/eslint-config-shared --token POLYMARBOT_NPM_TOKEN",
     "release:elepay": "tsx ../../scripts/publish.ts --name @elepay-io/eslint-config-shared --token ELEPAY_IO_NPM_TOKEN --registry https://npm.pkg.github.com/"
@@ -33,7 +35,7 @@
     "eslint-plugin-vue": "^10.8.0",
     "globals": "^17.4.0",
     "lodash-es": "^4.17.23",
-    "typescript-eslint": "^8.57.1"
+    "typescript-eslint": "^8.59.0"
   },
   "devDependencies": {
     "@eslint/config-helpers": "^0.5.3",
@@ -42,6 +44,6 @@
     "react": "^19.2.4",
     "tailwindcss": "^4.2.1",
     "tsup": "^8.5.1",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }

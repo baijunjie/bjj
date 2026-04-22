@@ -2,6 +2,10 @@
   "name": "@bjj/eslint-config-node",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "lint": "git add . && lint-staged --config ../../.lintstagedrc.lint-only.json",
+    "format": "git add . && lint-staged --config ../../.lintstagedrc.json"
+  },
   "dependencies": {
     "eslint": "^10.0.3",
     "eslint-plugin-import": "^2.32.0",

@@ -10,13 +10,21 @@
   },
   "homepage": "https://github.com/baijunjie/bjj#readme",
   "scripts": {
-    "lint": "eslint --fix"
+    "prepare": "husky",
+    "typecheck:all": "tsc --noEmit && pnpm -r --if-present typecheck",
+    "typecheck:changed": "pnpm -r --if-present --filter '...[HEAD]' typecheck",
+    "lint:all": "git add . && lint-staged --config .lintstagedrc.root.lint-only.json && pnpm -r --if-present --workspace-concurrency=1 lint",
+    "format:all": "git add . && lint-staged --config .lintstagedrc.root.json && pnpm -r --if-present --workspace-concurrency=1 format"
   },
   "devDependencies": {
     "@bjj/eslint-config-shared": "workspace:*",
     "@types/node": "^25.5.0",
     "eslint": "^10.0.3",
-    "tsx": "^4.21.0"
+    "globals": "^17.4.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
   },
   "packageManager": "pnpm@10.32.1"
 }
