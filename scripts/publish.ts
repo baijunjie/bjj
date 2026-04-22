@@ -2,12 +2,13 @@
  * 发布当前包到 npm，支持自定义包名和版本
  * 将构建产物复制到 dist/npm 目录，生成临时 package.json 和 .npmrc 进行发布，发布后清理
  *
- * 用法: tsx scripts/publish.ts [--name <包名>] [--version <版本号>] [--token <环境变量名>] [--dry-run]
+ * 用法: tsx scripts/publish.ts [--name <包名>] [--version <版本号>] [--token <环境变量名>] [--no-build] [--dry-run]
  * 示例:
  *   tsx scripts/publish.ts
  *   tsx scripts/publish.ts --name @bjj/eslint-config-shared
  *   tsx scripts/publish.ts --name @bjj/eslint-config-shared --version 1.0.0
  *   tsx scripts/publish.ts --name @bjj/eslint-config-shared --token BJJ_NPM_TOKEN
+ *   tsx scripts/publish.ts --no-build   # 跳过构建，直接使用已有 dist 发布
  *   tsx scripts/publish.ts --dry-run
  */
 import fs from 'node:fs'
@@ -23,6 +24,7 @@ interface Args {
   version?: string
   token?: string
   registry?: string
+  noBuild: boolean
   dryRun: boolean
 }
 
@@ -32,6 +34,7 @@ function parseArgs (): Args {
   let version: string | undefined
   let token: string | undefined
   let registry: string | undefined
+  let noBuild = false
   let dryRun = false
 
   for (let i = 0; i < args.length; i++) {
@@ -43,12 +46,14 @@ function parseArgs (): Args {
       token = args[++i]
     } else if (args[i] === '--registry' || args[i] === '-r') {
       registry = args[++i]
+    } else if (args[i] === '--no-build') {
+      noBuild = true
     } else if (args[i] === '--dry-run') {
       dryRun = true
     }
   }
 
-  return { name, version, token, registry, dryRun }
+  return { name, version, token, registry, noBuild, dryRun }
 }
 
 function copyDistFiles (src: string, dest: string) {
@@ -67,7 +72,7 @@ function copyDistFiles (src: string, dest: string) {
 }
 
 function main () {
-  const { name, version, token, registry, dryRun } = parseArgs()
+  const { name, version, token, registry, noBuild, dryRun } = parseArgs()
 
   const pkgJsonPath = path.join(CWD, 'package.json')
   if (!fs.existsSync(pkgJsonPath)) {
@@ -81,7 +86,7 @@ function main () {
   const publishVersion = version || pkg.version
 
   // 构建
-  if (pkg.scripts?.build) {
+  if (!noBuild && pkg.scripts?.build) {
     console.info('构建中...')
     execSync('npm run build', { cwd: CWD, stdio: 'inherit' })
   }
