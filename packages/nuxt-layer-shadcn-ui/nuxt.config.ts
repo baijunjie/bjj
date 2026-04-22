@@ -13,8 +13,14 @@ export default defineNuxtConfig({
   },
 
   // Package is declared as peerDependency so consumers own the version.
-  // `i18n.config.ts` at this layer's root is auto-discovered by @nuxtjs/i18n.
   modules: [ '@nuxtjs/i18n' ],
+
+  // Explicit absolute path so the layer's messages load regardless of the
+  // consumer's vueI18n setting (each layer's vueI18n is resolved per-layer
+  // and merged by @nuxtjs/i18n).
+  i18n: {
+    vueI18n: join(currentDir, 'i18n.config.ts'),
+  },
 
   // Register the layer's global stylesheet. Consumers extending this layer
   // automatically inherit it via Nuxt's css array merging.

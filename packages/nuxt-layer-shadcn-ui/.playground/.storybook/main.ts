@@ -13,6 +13,10 @@ const config: StorybookConfig = {
     },
   },
   viteFinal: async config => {
+    if (process.env.STORYBOOK_BASE_PATH) {
+      config.base = process.env.STORYBOOK_BASE_PATH
+    }
+
     config.optimizeDeps = config.optimizeDeps || {}
     config.optimizeDeps.noDiscovery = true
     config.optimizeDeps.entries = []
