@@ -1,0 +1,65 @@
+{
+  "common": {
+    "actions": {
+      "cancel": "Annuleren",
+      "close": "Sluiten",
+      "confirm": "Bevestigen"
+    },
+    "formats": {
+      "date": "YYYY-MM-DD",
+      "dateRange": {
+        "date": "MMM D",
+        "dateTime": "MMM D HH:mm"
+      },
+      "dateTime": "YYYY-MM-DD HH:mm:ss",
+      "duration": {
+        "days": "d",
+        "hours": "h",
+        "minutes": "m",
+        "seconds": "s"
+      }
+    }
+  },
+  "components": {
+    "ui": {
+      "AsyncDataTable": {
+        "actions": "Acties"
+      },
+      "CopyButton": {
+        "copied": "Gekopieerd",
+        "copyToClipboard": "Kopiëren"
+      },
+      "DataTable": {
+        "empty": "Geen gegevens"
+      },
+      "DatePicker": {
+        "format": {
+          "date": "yyyy-MM-dd",
+          "dateTime": "yyyy-MM-dd HH:mm",
+          "month": "MMM yyyy",
+          "year": "yyyy"
+        },
+        "placeholder": "Selecteer een datum"
+      },
+      "DateRangePicker": {
+        "endPlaceholder": "Einddatum",
+        "startPlaceholder": "Startdatum",
+        "to": "–"
+      },
+      "Pagination": {
+        "pageReport": "{first}–{last} van {total}"
+      },
+      "SearchSelect": {
+        "createNew": "Nieuw maken",
+        "noItems": "Geen opties",
+        "noSearchItems": "Geen resultaten"
+      },
+      "Select": {
+        "itemsSelected": "{count} geselecteerd",
+        "noItems": "Geen opties",
+        "placeholder": "Selecteer alstublieft",
+        "searchPlaceholder": "Zoeken..."
+      }
+    }
+  }
+}

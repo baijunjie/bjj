@@ -1,0 +1,15 @@
+node_modules
+.nuxt
+.output
+.nitro
+.cache
+.publish-tmp
+dist
+storybook-static
+components.d.ts
+.DS_Store
+*.log
+
+# i18n merged messages are build artifacts, not source (see user memory)
+i18n/merged-messages
+.playground/i18n/merged-messages

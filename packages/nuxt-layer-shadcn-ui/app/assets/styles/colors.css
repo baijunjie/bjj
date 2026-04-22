@@ -1,0 +1,116 @@
+/* shadcn-vue color tokens (Zinc base, oklch format) */
+/* Reference: https://www.shadcn-vue.com/themes */
+
+:root {
+  /* Background scale — base / surface / muted / accent */
+  --background: oklch(1 0 0);
+  --background-surface: oklch(0.98 0 0);
+  --background-muted: oklch(0.95 0 0);
+  --background-accent: oklch(0.93 0 0);
+
+  /* Foreground scale — base / muted / accent */
+  --foreground: oklch(0.145 0 0);
+  --foreground-muted: oklch(0.556 0 0);
+  --foreground-accent: oklch(0.35 0 0);
+
+  /* Brand */
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+
+  /* Border */
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
+  /* Semantic status */
+  --status-foreground: oklch(0.985 0 0);
+  --success: oklch(0.58 0.17 163.225);
+  --info: oklch(0.58 0.15 221.723);
+  --help: oklch(0.53 0.21 293.541);
+  --warn: oklch(0.55 0.18 62.823);
+  --danger: oklch(0.56 0.25 27.325);
+}
+
+.dark {
+  /* Background scale */
+  --background: oklch(0.12 0 0);
+  --background-surface: oklch(0.18 0 0);
+  --background-muted: oklch(0.25 0 0);
+  --background-accent: oklch(0.3 0 0);
+
+  /* Foreground scale */
+  --foreground: oklch(0.985 0 0);
+  --foreground-muted: oklch(0.708 0 0);
+  --foreground-accent: oklch(0.85 0 0);
+
+  /* Brand */
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+
+  /* Border */
+  --border: oklch(0.269 0 0);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.439 0 0);
+
+  /* Semantic status */
+  --status-foreground: oklch(0.145 0 0);
+  --success: oklch(0.696 0.17 162.48);
+  --info: oklch(0.685 0.121 220.7);
+  --help: oklch(0.627 0.22 293.541);
+  --warn: oklch(0.762 0.148 62.823);
+  --danger: oklch(0.637 0.237 25.331);
+}
+
+/* Register colors in Tailwind v4 theme (supports opacity modifier) */
+@theme inline {
+  /* Base */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Components — surface elevation */
+  --color-card: var(--background);
+  --color-card-foreground: var(--foreground);
+  --color-popover: var(--background);
+  --color-popover-foreground: var(--foreground);
+
+  /* Brand */
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--background-muted);
+  --color-secondary-foreground: var(--foreground);
+
+  /* State */
+  --color-muted: var(--background-muted);
+  --color-muted-foreground: var(--foreground-muted);
+  --color-accent: var(--background-accent);
+  --color-accent-foreground: var(--foreground-accent);
+  --color-destructive: var(--danger);
+  --color-destructive-foreground: var(--status-foreground);
+
+  /* Form & Border */
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Sidebar — inherits from main theme */
+  --color-sidebar: var(--background-surface);
+  --color-sidebar-foreground: var(--foreground);
+  --color-sidebar-primary: var(--primary);
+  --color-sidebar-primary-foreground: var(--primary-foreground);
+  --color-sidebar-accent: var(--background-accent);
+  --color-sidebar-accent-foreground: var(--foreground-accent);
+  --color-sidebar-border: var(--border);
+  --color-sidebar-ring: var(--ring);
+
+  /* Semantic status */
+  --color-success: var(--success);
+  --color-success-foreground: var(--status-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--status-foreground);
+  --color-help: var(--help);
+  --color-help-foreground: var(--status-foreground);
+  --color-warn: var(--warn);
+  --color-warn-foreground: var(--status-foreground);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--status-foreground);
+}

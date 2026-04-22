@@ -1,0 +1,65 @@
+{
+  "common": {
+    "actions": {
+      "cancel": "Отменить",
+      "close": "Закрыть",
+      "confirm": "Подтвердить"
+    },
+    "formats": {
+      "date": "ГГГГ-ММ-ДД",
+      "dateRange": {
+        "date": "ММ Д",
+        "dateTime": "ММ Д ЧЧ:мм"
+      },
+      "dateTime": "ГГГГ-ММ-ДД ЧЧ:мм:сс",
+      "duration": {
+        "days": "д",
+        "hours": "ч",
+        "minutes": "м",
+        "seconds": "с"
+      }
+    }
+  },
+  "components": {
+    "ui": {
+      "AsyncDataTable": {
+        "actions": "Действия"
+      },
+      "CopyButton": {
+        "copied": "Скопировано",
+        "copyToClipboard": "Копировать"
+      },
+      "DataTable": {
+        "empty": "Нет данных"
+      },
+      "DatePicker": {
+        "format": {
+          "date": "гггг-ММ-дд",
+          "dateTime": "гггг-ММ-дд ЧЧ:мм",
+          "month": "ММ гггг",
+          "year": "гггг"
+        },
+        "placeholder": "Выберите дату"
+      },
+      "DateRangePicker": {
+        "endPlaceholder": "Дата окончания",
+        "startPlaceholder": "Дата начала",
+        "to": "–"
+      },
+      "Pagination": {
+        "pageReport": "{first}–{last} из {total}"
+      },
+      "SearchSelect": {
+        "createNew": "Создать новое",
+        "noItems": "Нет опций",
+        "noSearchItems": "Нет результатов"
+      },
+      "Select": {
+        "itemsSelected": "{count} выбрано",
+        "noItems": "Нет опций",
+        "placeholder": "Пожалуйста, выберите",
+        "searchPlaceholder": "Поиск..."
+      }
+    }
+  }
+}

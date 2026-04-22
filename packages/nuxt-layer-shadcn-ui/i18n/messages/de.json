@@ -1,0 +1,65 @@
+{
+  "common": {
+    "actions": {
+      "cancel": "Abbrechen",
+      "close": "Schließen",
+      "confirm": "Bestätigen"
+    },
+    "formats": {
+      "date": "YYYY-MM-DD",
+      "dateRange": {
+        "date": "MMM D",
+        "dateTime": "MMM D HH:mm"
+      },
+      "dateTime": "YYYY-MM-DD HH:mm:ss",
+      "duration": {
+        "days": "T",
+        "hours": "h",
+        "minutes": "m",
+        "seconds": "s"
+      }
+    }
+  },
+  "components": {
+    "ui": {
+      "AsyncDataTable": {
+        "actions": "Aktionen"
+      },
+      "CopyButton": {
+        "copied": "Kopiert",
+        "copyToClipboard": "Kopieren"
+      },
+      "DataTable": {
+        "empty": "Keine Daten"
+      },
+      "DatePicker": {
+        "format": {
+          "date": "yyyy-MM-dd",
+          "dateTime": "yyyy-MM-dd HH:mm",
+          "month": "MMM yyyy",
+          "year": "yyyy"
+        },
+        "placeholder": "Wählen Sie ein Datum"
+      },
+      "DateRangePicker": {
+        "endPlaceholder": "Enddatum",
+        "startPlaceholder": "Startdatum",
+        "to": "–"
+      },
+      "Pagination": {
+        "pageReport": "{first}–{last} von {total}"
+      },
+      "SearchSelect": {
+        "createNew": "Neu erstellen",
+        "noItems": "Keine Optionen",
+        "noSearchItems": "Keine Ergebnisse"
+      },
+      "Select": {
+        "itemsSelected": "{count} ausgewählt",
+        "noItems": "Keine Optionen",
+        "placeholder": "Bitte wählen",
+        "searchPlaceholder": "Suchen..."
+      }
+    }
+  }
+}

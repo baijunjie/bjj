@@ -1,0 +1,65 @@
+{
+  "common": {
+    "actions": {
+      "cancel": "İptal",
+      "close": "Kapat",
+      "confirm": "Onayla"
+    },
+    "formats": {
+      "date": "YYYY-MM-DD",
+      "dateRange": {
+        "date": "MMM D",
+        "dateTime": "MMM D HH:mm"
+      },
+      "dateTime": "YYYY-MM-DD HH:mm:ss",
+      "duration": {
+        "days": "g",
+        "hours": "s",
+        "minutes": "d",
+        "seconds": "sn"
+      }
+    }
+  },
+  "components": {
+    "ui": {
+      "AsyncDataTable": {
+        "actions": "İşlemler"
+      },
+      "CopyButton": {
+        "copied": "Kopyalandı",
+        "copyToClipboard": "Kopyala"
+      },
+      "DataTable": {
+        "empty": "Veri yok"
+      },
+      "DatePicker": {
+        "format": {
+          "date": "yyyy-MM-dd",
+          "dateTime": "yyyy-MM-dd HH:mm",
+          "month": "MMM yyyy",
+          "year": "yyyy"
+        },
+        "placeholder": "Bir tarih seçin"
+      },
+      "DateRangePicker": {
+        "endPlaceholder": "Bitiş tarihi",
+        "startPlaceholder": "Başlangıç tarihi",
+        "to": "–"
+      },
+      "Pagination": {
+        "pageReport": "{first}–{last} / {total}"
+      },
+      "SearchSelect": {
+        "createNew": "Yeni oluştur",
+        "noItems": "Seçenek yok",
+        "noSearchItems": "Sonuç bulunamadı"
+      },
+      "Select": {
+        "itemsSelected": "{count} seçildi",
+        "noItems": "Seçenek yok",
+        "placeholder": "Lütfen seçin",
+        "searchPlaceholder": "Ara..."
+      }
+    }
+  }
+}

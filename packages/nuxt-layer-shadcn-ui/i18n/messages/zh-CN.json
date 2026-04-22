@@ -1,0 +1,65 @@
+{
+  "common": {
+    "actions": {
+      "cancel": "取消",
+      "close": "关闭",
+      "confirm": "确认"
+    },
+    "formats": {
+      "date": "YYYY-MM-DD",
+      "dateRange": {
+        "date": "MMM D",
+        "dateTime": "MMM D HH:mm"
+      },
+      "dateTime": "YYYY-MM-DD HH:mm:ss",
+      "duration": {
+        "days": "天",
+        "hours": "小时",
+        "minutes": "分钟",
+        "seconds": "秒"
+      }
+    }
+  },
+  "components": {
+    "ui": {
+      "AsyncDataTable": {
+        "actions": "操作"
+      },
+      "CopyButton": {
+        "copied": "已复制",
+        "copyToClipboard": "复制"
+      },
+      "DataTable": {
+        "empty": "暂无数据"
+      },
+      "DatePicker": {
+        "format": {
+          "date": "yyyy-MM-dd",
+          "dateTime": "yyyy-MM-dd HH:mm",
+          "month": "MMM yyyy",
+          "year": "yyyy"
+        },
+        "placeholder": "选择日期"
+      },
+      "DateRangePicker": {
+        "endPlaceholder": "结束日期",
+        "startPlaceholder": "开始日期",
+        "to": "–"
+      },
+      "Pagination": {
+        "pageReport": "{first}–{last} 共 {total}"
+      },
+      "SearchSelect": {
+        "createNew": "新建",
+        "noItems": "无选项",
+        "noSearchItems": "无结果"
+      },
+      "Select": {
+        "itemsSelected": "已选择 {count} 项",
+        "noItems": "无选项",
+        "placeholder": "请选择",
+        "searchPlaceholder": "搜索..."
+      }
+    }
+  }
+}

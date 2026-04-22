@@ -1,0 +1,17 @@
+{
+  "$schema": "https://shadcn-vue.com/schema.json",
+  "style": "new-york-v4",
+  "typescript": true,
+  "tailwind": {
+    "config": "",
+    "css": "app/assets/styles/globals.css",
+    "baseColor": "zinc",
+    "cssVariables": true
+  },
+  "aliases": {
+    "components": "@bjj/nuxt-layer-shadcn-ui/app/components/shadcn",
+    "utils": "@bjj/nuxt-layer-shadcn-ui/app/utils",
+    "ui": "@bjj/nuxt-layer-shadcn-ui/app/components/shadcn"
+  },
+  "iconLibrary": "lucide"
+}

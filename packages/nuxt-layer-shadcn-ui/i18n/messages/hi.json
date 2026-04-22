@@ -1,0 +1,65 @@
+{
+  "common": {
+    "actions": {
+      "cancel": "रद्द करें",
+      "close": "बंद करें",
+      "confirm": "पुष्टि करें"
+    },
+    "formats": {
+      "date": "YYYY-MM-DD",
+      "dateRange": {
+        "date": "MMM D",
+        "dateTime": "MMM D HH:mm"
+      },
+      "dateTime": "YYYY-MM-DD HH:mm:ss",
+      "duration": {
+        "days": "d",
+        "hours": "h",
+        "minutes": "m",
+        "seconds": "s"
+      }
+    }
+  },
+  "components": {
+    "ui": {
+      "AsyncDataTable": {
+        "actions": "क्रियाएं"
+      },
+      "CopyButton": {
+        "copied": "कॉपी किया गया",
+        "copyToClipboard": "कॉपी करें"
+      },
+      "DataTable": {
+        "empty": "कोई डेटा नहीं"
+      },
+      "DatePicker": {
+        "format": {
+          "date": "yyyy-MM-dd",
+          "dateTime": "yyyy-MM-dd HH:mm",
+          "month": "MMM yyyy",
+          "year": "yyyy"
+        },
+        "placeholder": "एक तारीख चुनें"
+      },
+      "DateRangePicker": {
+        "endPlaceholder": "समाप्ति तारीख",
+        "startPlaceholder": "प्रारंभ तारीख",
+        "to": "–"
+      },
+      "Pagination": {
+        "pageReport": "{first}–{last} में से {total}"
+      },
+      "SearchSelect": {
+        "createNew": "नया बनाएं",
+        "noItems": "कोई विकल्प नहीं",
+        "noSearchItems": "कोई परिणाम नहीं"
+      },
+      "Select": {
+        "itemsSelected": "{count} चुना गया",
+        "noItems": "कोई विकल्प नहीं",
+        "placeholder": "कृपया चुनें",
+        "searchPlaceholder": "खोजें..."
+      }
+    }
+  }
+}

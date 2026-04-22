@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { parseArgs } from 'node:util'
 import { glob } from 'glob'
 
 // ===== CONSTANTS =====
@@ -85,20 +86,15 @@ export interface I18nScannerConfig {
  * Supports:
  *   --packages layer-basic --packages layer-auth
  *   --packages layer-basic,layer-auth
+ *   --packages=layer-basic
  */
 export function parsePackagesArg (): string[] {
-  const args = process.argv.slice(2)
-  const packages: string[] = []
-
-  for (let i = 0; i < args.length; i++) {
-    if (args[i] === '--packages' && i + 1 < args.length) {
-      const value = args[i + 1]!
-      packages.push(...value.split(',').map(s => s.trim()).filter(Boolean))
-      i++
-    }
-  }
-
-  return packages
+  const { values } = parseArgs({
+    options: { packages: { type: 'string', multiple: true, default: []}},
+    strict: false,
+  })
+  return (values.packages as string[])
+    .flatMap(v => v.split(',').map(s => s.trim()).filter(Boolean))
 }
 
 // ===== PUBLIC API =====

@@ -1,0 +1,65 @@
+{
+  "common": {
+    "actions": {
+      "cancel": "Hủy",
+      "close": "Đóng",
+      "confirm": "Xác nhận"
+    },
+    "formats": {
+      "date": "YYYY-MM-DD",
+      "dateRange": {
+        "date": "MMM D",
+        "dateTime": "MMM D HH:mm"
+      },
+      "dateTime": "YYYY-MM-DD HH:mm:ss",
+      "duration": {
+        "days": "d",
+        "hours": "h",
+        "minutes": "m",
+        "seconds": "s"
+      }
+    }
+  },
+  "components": {
+    "ui": {
+      "AsyncDataTable": {
+        "actions": "Hành động"
+      },
+      "CopyButton": {
+        "copied": "Đã sao chép",
+        "copyToClipboard": "Sao chép"
+      },
+      "DataTable": {
+        "empty": "Không có dữ liệu"
+      },
+      "DatePicker": {
+        "format": {
+          "date": "yyyy-MM-dd",
+          "dateTime": "yyyy-MM-dd HH:mm",
+          "month": "MMM yyyy",
+          "year": "yyyy"
+        },
+        "placeholder": "Chọn một ngày"
+      },
+      "DateRangePicker": {
+        "endPlaceholder": "Ngày kết thúc",
+        "startPlaceholder": "Ngày bắt đầu",
+        "to": "–"
+      },
+      "Pagination": {
+        "pageReport": "{first}–{last} của {total}"
+      },
+      "SearchSelect": {
+        "createNew": "Tạo mới",
+        "noItems": "Không có tùy chọn",
+        "noSearchItems": "Không có kết quả"
+      },
+      "Select": {
+        "itemsSelected": "{count} được chọn",
+        "noItems": "Không có tùy chọn",
+        "placeholder": "Vui lòng chọn",
+        "searchPlaceholder": "Tìm kiếm..."
+      }
+    }
+  }
+}

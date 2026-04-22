@@ -1,0 +1,65 @@
+{
+  "common": {
+    "actions": {
+      "cancel": "ยกเลิก",
+      "close": "ปิด",
+      "confirm": "ยืนยัน"
+    },
+    "formats": {
+      "date": "YYYY-MM-DD",
+      "dateRange": {
+        "date": "MMM D",
+        "dateTime": "MMM D HH:mm"
+      },
+      "dateTime": "YYYY-MM-DD HH:mm:ss",
+      "duration": {
+        "days": "d",
+        "hours": "h",
+        "minutes": "m",
+        "seconds": "s"
+      }
+    }
+  },
+  "components": {
+    "ui": {
+      "AsyncDataTable": {
+        "actions": "การกระทำ"
+      },
+      "CopyButton": {
+        "copied": "คัดลอกแล้ว",
+        "copyToClipboard": "คัดลอก"
+      },
+      "DataTable": {
+        "empty": "ไม่มีข้อมูล"
+      },
+      "DatePicker": {
+        "format": {
+          "date": "yyyy-MM-dd",
+          "dateTime": "yyyy-MM-dd HH:mm",
+          "month": "MMM yyyy",
+          "year": "yyyy"
+        },
+        "placeholder": "เลือกวันที่"
+      },
+      "DateRangePicker": {
+        "endPlaceholder": "วันที่สิ้นสุด",
+        "startPlaceholder": "วันที่เริ่มต้น",
+        "to": "–"
+      },
+      "Pagination": {
+        "pageReport": "รายการที่ {first}–{last} จากทั้งหมด {total}"
+      },
+      "SearchSelect": {
+        "createNew": "สร้างใหม่",
+        "noItems": "ไม่มีตัวเลือก",
+        "noSearchItems": "ไม่มีผลลัพธ์"
+      },
+      "Select": {
+        "itemsSelected": "เลือกแล้ว {count} รายการ",
+        "noItems": "ไม่มีตัวเลือก",
+        "placeholder": "กรุณาเลือก",
+        "searchPlaceholder": "ค้นหา..."
+      }
+    }
+  }
+}

@@ -1,0 +1,88 @@
+/*
+ * @vuepic/vue-datepicker theme override
+ * Maps dp__* CSS variables to shadcn color tokens (oklch)
+ */
+
+/* ==========================================
+ * CSS Variable Overrides
+ * ========================================== */
+
+/* Color variables (shared light & dark) */
+.dp__theme_light,
+.dp__theme_dark {
+  --dp-background-color: var(--color-popover);
+  --dp-text-color: var(--color-popover-foreground);
+  --dp-icon-color: var(--color-muted-foreground);
+  --dp-tooltip-color: var(--color-popover);
+  --dp-primary-color: var(--color-primary);
+  --dp-primary-text-color: var(--color-primary-foreground);
+  --dp-primary-disabled-color: var(--color-muted-foreground);
+  --dp-hover-color: var(--color-accent);
+  --dp-hover-text-color: var(--color-accent-foreground);
+  --dp-hover-icon-color: var(--color-foreground);
+  --dp-border-color: var(--color-border);
+  --dp-menu-border-color: var(--color-border);
+  --dp-border-color-hover: var(--color-ring);
+  --dp-border-color-focus: var(--color-ring);
+  --dp-secondary-color: var(--color-muted-foreground);
+  --dp-disabled-color: var(--color-muted);
+  --dp-disabled-color-text: var(--color-muted-foreground);
+  --dp-scroll-bar-background: var(--color-muted);
+  --dp-scroll-bar-color: var(--color-muted-foreground);
+  --dp-success-color: var(--color-success);
+  --dp-success-color-disabled: var(--color-muted-foreground);
+  --dp-danger-color: var(--color-danger);
+  --dp-marker-color: var(--color-danger);
+}
+
+/* Theme-specific color overrides */
+.dp__theme_light {
+  --dp-highlight-color: oklch(from var(--color-primary) l c h / 10%);
+}
+
+.dp__theme_dark {
+  --dp-highlight-color: oklch(from var(--color-primary) l c h / 20%);
+}
+
+/* Shape, sizing, spacing, font */
+.dp__main {
+  --dp-border-radius: var(--radius-md);
+  --dp-cell-border-radius: var(--radius-md);
+  --dp-cell-size: 28px;
+  --dp-button-height: 28px;
+  --dp-month-year-row-height: 28px;
+  --dp-common-padding: 4px;
+  --dp-overlay-col-padding: 4px;
+  --dp-font-family: inherit;
+  --dp-font-size: 0.875rem;
+}
+
+/* ==========================================
+ * Style Overrides (align with shadcn)
+ * ========================================== */
+
+/* Overlay bottom button (back to calendar / toggle time) */
+.dp__button,
+.dp__action_row,
+.dp__arrow_bottom {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* Calendar cell: center within grid item */
+.dp__cell_inner {
+  margin: 0 auto;
+}
+
+/* Calendar grid: uniform gap between cells */
+.dp__calendar_row {
+  gap: 4px;
+  margin: 4px 0;
+}
+
+/* Menu: shadow-md */
+.dp__menu {
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+}

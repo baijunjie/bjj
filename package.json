@@ -13,16 +13,17 @@
     "prepare": "husky",
     "typecheck:all": "tsc --noEmit && pnpm -r --if-present typecheck",
     "typecheck:changed": "pnpm -r --if-present --filter '...[HEAD]' typecheck",
-    "lint:all": "git add . && lint-staged --config .lintstagedrc.root.lint-only.json && pnpm -r --if-present --workspace-concurrency=1 lint",
-    "format:all": "git add . && lint-staged --config .lintstagedrc.root.json && pnpm -r --if-present --workspace-concurrency=1 format"
+    "lint:all": "git add . && lint-staged --config .lintstagedrc.root.lint-only.mjs && pnpm -r --if-present --workspace-concurrency=1 lint",
+    "format:all": "git add . && lint-staged --config .lintstagedrc.root.mjs && pnpm -r --if-present --workspace-concurrency=1 format"
   },
   "devDependencies": {
     "@bjj/eslint-config-shared": "workspace:*",
     "@types/node": "^25.5.0",
-    "eslint": "^10.0.3",
+    "eslint": "^10.2.1",
     "globals": "^17.4.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
+    "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"
   },

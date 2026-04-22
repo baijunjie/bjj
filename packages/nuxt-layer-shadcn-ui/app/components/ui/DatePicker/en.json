@@ -1,0 +1,9 @@
+{
+  "format": {
+    "date": "yyyy-MM-dd",
+    "dateTime": "yyyy-MM-dd HH:mm",
+    "month": "MMM yyyy",
+    "year": "yyyy"
+  },
+  "placeholder": "Select a date"
+}

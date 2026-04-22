@@ -1,0 +1,43 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import './colors.css';
+@import './utilities.css';
+@import './animate.css';
+@import './transition.css';
+
+/* Ensure Tailwind scans all source files in this app */
+@source '../../../..';
+
+/* Dark mode configuration for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+  html {
+    font-size: 16px;
+  }
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+  }
+}
+
+/* Prevent accidental text selection on touch devices */
+@media (pointer: coarse) {
+  body {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  input,
+  textarea,
+  [contenteditable='true'],
+  pre,
+  code,
+  .selectable {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}

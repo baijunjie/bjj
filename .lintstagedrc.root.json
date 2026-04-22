@@ -1,5 +1,0 @@
-{
-  "*.{js,jsx,ts,tsx,mjs,md,json,vue,html}": [
-    "eslint --fix --max-warnings=0 --no-warn-ignored --ignore-pattern packages/"
-  ]
-}

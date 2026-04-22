@@ -1,0 +1,65 @@
+{
+  "common": {
+    "actions": {
+      "cancel": "إلغاء",
+      "close": "إغلاق",
+      "confirm": "تأكيد"
+    },
+    "formats": {
+      "date": "YYYY-MM-DD",
+      "dateRange": {
+        "date": "MMM D",
+        "dateTime": "MMM D HH:mm"
+      },
+      "dateTime": "YYYY-MM-DD HH:mm:ss",
+      "duration": {
+        "days": "د",
+        "hours": "س",
+        "minutes": "د",
+        "seconds": "ث"
+      }
+    }
+  },
+  "components": {
+    "ui": {
+      "AsyncDataTable": {
+        "actions": "الإجراءات"
+      },
+      "CopyButton": {
+        "copied": "تم النسخ",
+        "copyToClipboard": "نسخ"
+      },
+      "DataTable": {
+        "empty": "لا توجد بيانات"
+      },
+      "DatePicker": {
+        "format": {
+          "date": "yyyy-MM-dd",
+          "dateTime": "yyyy-MM-dd HH:mm",
+          "month": "MMM yyyy",
+          "year": "yyyy"
+        },
+        "placeholder": "اختر تاريخا"
+      },
+      "DateRangePicker": {
+        "endPlaceholder": "تاريخ الانتهاء",
+        "startPlaceholder": "تاريخ البداية",
+        "to": "–"
+      },
+      "Pagination": {
+        "pageReport": "{first}–{last} من {total}"
+      },
+      "SearchSelect": {
+        "createNew": "إنشاء جديد",
+        "noItems": "لا توجد خيارات",
+        "noSearchItems": "لا توجد نتائج"
+      },
+      "Select": {
+        "itemsSelected": "{count} مختار",
+        "noItems": "لا توجد خيارات",
+        "placeholder": "يرجى اختيار",
+        "searchPlaceholder": "البحث..."
+      }
+    }
+  }
+}

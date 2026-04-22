@@ -1,0 +1,65 @@
+{
+  "common": {
+    "actions": {
+      "cancel": "キャンセル",
+      "close": "閉じる",
+      "confirm": "確認"
+    },
+    "formats": {
+      "date": "YYYY年MM月DD日",
+      "dateRange": {
+        "date": "M月D日",
+        "dateTime": "M月D日 HH:mm"
+      },
+      "dateTime": "YYYY年MM月DD日 HH:mm:ss",
+      "duration": {
+        "days": "日",
+        "hours": "時間",
+        "minutes": "分",
+        "seconds": "秒"
+      }
+    }
+  },
+  "components": {
+    "ui": {
+      "AsyncDataTable": {
+        "actions": "アクション"
+      },
+      "CopyButton": {
+        "copied": "コピーしました",
+        "copyToClipboard": "コピー"
+      },
+      "DataTable": {
+        "empty": "データなし"
+      },
+      "DatePicker": {
+        "format": {
+          "date": "yyyy年MM月dd日",
+          "dateTime": "yyyy年MM月dd日 HH:mm",
+          "month": "yyyy年M月",
+          "year": "yyyy年"
+        },
+        "placeholder": "日付を選択"
+      },
+      "DateRangePicker": {
+        "endPlaceholder": "終了日",
+        "startPlaceholder": "開始日",
+        "to": "〜"
+      },
+      "Pagination": {
+        "pageReport": "{first}〜{last}件 / 全{total}件"
+      },
+      "SearchSelect": {
+        "createNew": "新規作成",
+        "noItems": "オプションがありません",
+        "noSearchItems": "結果がありません"
+      },
+      "Select": {
+        "itemsSelected": "{count}件選択",
+        "noItems": "オプションがありません",
+        "placeholder": "選択してください",
+        "searchPlaceholder": "検索..."
+      }
+    }
+  }
+}

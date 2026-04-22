@@ -1,0 +1,65 @@
+{
+  "common": {
+    "actions": {
+      "cancel": "Batal",
+      "close": "Tutup",
+      "confirm": "Konfirmasi"
+    },
+    "formats": {
+      "date": "YYYY-MM-DD",
+      "dateRange": {
+        "date": "MMM D",
+        "dateTime": "MMM D HH:mm"
+      },
+      "dateTime": "YYYY-MM-DD HH:mm:ss",
+      "duration": {
+        "days": "h",
+        "hours": "h",
+        "minutes": "m",
+        "seconds": "d"
+      }
+    }
+  },
+  "components": {
+    "ui": {
+      "AsyncDataTable": {
+        "actions": "Tindakan"
+      },
+      "CopyButton": {
+        "copied": "Disalin",
+        "copyToClipboard": "Salin"
+      },
+      "DataTable": {
+        "empty": "Tidak ada data"
+      },
+      "DatePicker": {
+        "format": {
+          "date": "yyyy-MM-dd",
+          "dateTime": "yyyy-MM-dd HH:mm",
+          "month": "MMM yyyy",
+          "year": "yyyy"
+        },
+        "placeholder": "Pilih tanggal"
+      },
+      "DateRangePicker": {
+        "endPlaceholder": "Tanggal akhir",
+        "startPlaceholder": "Tanggal awal",
+        "to": "–"
+      },
+      "Pagination": {
+        "pageReport": "{first}–{last} dari {total}"
+      },
+      "SearchSelect": {
+        "createNew": "Buat baru",
+        "noItems": "Tidak ada opsi",
+        "noSearchItems": "Tidak ada hasil"
+      },
+      "Select": {
+        "itemsSelected": "{count} dipilih",
+        "noItems": "Tidak ada opsi",
+        "placeholder": "Silakan pilih",
+        "searchPlaceholder": "Cari..."
+      }
+    }
+  }
+}
