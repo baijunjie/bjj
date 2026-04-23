@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { parseArgs } from 'node:util'
 import { glob } from 'glob'
+import { merge } from 'lodash-es'
 
 // ===== CONSTANTS =====
 
@@ -113,6 +114,44 @@ export function parsePackagesArg (): string[] {
 export function loadMessages (filePath: string): Record<string, any> {
   const content = fs.readFileSync(filePath, 'utf-8')
   return JSON.parse(content)
+}
+
+/**
+ * Load `<referenceLocale>.json` from one or more message directories and deep-merge them.
+ *
+ * Dirs are merged in order — later directories override earlier ones on key conflicts.
+ * Directories missing the reference file are skipped silently; an error is thrown only
+ * when none of the dirs contain it.
+ *
+ * @param messagesDirs - One or more directories containing locale JSON files
+ * @param referenceLocale - Locale key (file is resolved as `<dir>/<referenceLocale>.json`)
+ * @returns Merged messages object
+ *
+ * @example
+ * ```ts
+ * const messages = loadMergedMessages(['i18n/base', 'i18n/overrides'], 'en')
+ * ```
+ */
+export function loadMergedMessages (
+  messagesDirs: string[],
+  referenceLocale: string,
+): Record<string, any> {
+  let merged: Record<string, any> | null = null
+
+  for (const dir of messagesDirs) {
+    const filePath = path.join(dir, `${referenceLocale}.json`)
+    if (!fs.existsSync(filePath)) continue
+    const messages = loadMessages(filePath)
+    merged = merged === null ? messages : merge({}, merged, messages)
+  }
+
+  if (merged === null) {
+    throw new Error(
+      `Translation file not found: ${referenceLocale}.json in any of [${messagesDirs.join(', ')}]`,
+    )
+  }
+
+  return merged
 }
 
 /**

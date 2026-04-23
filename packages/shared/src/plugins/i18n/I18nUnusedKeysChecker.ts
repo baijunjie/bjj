@@ -33,7 +33,7 @@ import {
   I18N_LIBRARIES,
   extractMessageKeys,
   findI18nUsage,
-  loadMessages,
+  loadMergedMessages,
   pathToNamespace,
   type I18nScannerConfig,
   type KeyUsageEntry,
@@ -117,6 +117,12 @@ export interface FileGroup {
  *   '/path/to/i18n/messages'
  * )
  *
+ * // With multiple message directories (deep-merged, later overrides earlier)
+ * const checker = new I18nUnusedKeysChecker(
+ *   ['/path/to/app', '/path/to/layer'],
+ *   ['/path/to/i18n/base', '/path/to/i18n/overrides']
+ * )
+ *
  * // With custom options
  * const checker = new I18nUnusedKeysChecker(
  *   '/path/to/app',
@@ -137,7 +143,7 @@ export interface FileGroup {
  */
 export class I18nUnusedKeysChecker {
   private readonly srcDirs: string[]
-  private readonly localesDir: string
+  private readonly messagesDirs: string[]
   private readonly whitelistPrefixes: string[]
   private readonly scannerConfig: I18nScannerConfig
   private readonly referenceLocale: string
@@ -145,11 +151,11 @@ export class I18nUnusedKeysChecker {
 
   constructor (
     srcDir: string | string[],
-    localesDir: string,
+    messagesDir: string | string[],
     options: I18nUnusedKeysCheckerOptions = {},
   ) {
     this.srcDirs = Array.isArray(srcDir) ? srcDir : [ srcDir ]
-    this.localesDir = localesDir
+    this.messagesDirs = Array.isArray(messagesDir) ? messagesDir : [ messagesDir ]
     this.whitelistPrefixes = options.whitelistPrefixes ?? []
     this.referenceLocale = options.referenceLocale ?? 'en'
     this.srcDirNamespaces = options.srcDirNamespaces ?? {}
@@ -439,7 +445,7 @@ export class I18nUnusedKeysChecker {
    * Check for unused keys by comparing defined keys against usage
    *
    * @returns Object containing unused keys, file groups, and statistics
-   * @throws Error if reference locale file is not found in localesDir
+   * @throws Error if the reference locale file is not found in any of the messagesDirs
    */
   async check (): Promise<{
     unusedKeys: string[]
@@ -453,13 +459,9 @@ export class I18nUnusedKeysChecker {
     // Step 1: Build namespace mapping table by pre-scanning all locale files
     const namespaceMap = await this.buildNamespaceMap()
 
-    // Step 2: Load all defined keys from reference locale file
-    const localeFilePath = path.join(this.localesDir, `${this.referenceLocale}.json`)
-    if (!fs.existsSync(localeFilePath)) {
-      throw new Error(`Translation file not found: ${localeFilePath}`)
-    }
-
-    const messages = loadMessages(localeFilePath)
+    // Step 2: Load defined keys from reference locale file, deep-merging across all
+    // messagesDirs (later overrides earlier)
+    const messages = loadMergedMessages(this.messagesDirs, this.referenceLocale)
     const definedKeys = extractMessageKeys(messages)
     console.debug(`📖 Loaded ${definedKeys.length} defined translation keys from ${this.referenceLocale}.json`)
 

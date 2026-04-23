@@ -24,14 +24,12 @@
  *    - Report undefined keys
  */
 
-import fs from 'node:fs'
-import path from 'node:path'
 import {
   DEFAULT_TRANSLATION_FACTORIES,
   I18N_LIBRARIES,
   extractMessageKeys,
   findI18nUsage,
-  loadMessages,
+  loadMergedMessages,
   type I18nScannerConfig,
   type KeyUsageEntry,
 } from './utils'
@@ -79,6 +77,12 @@ export interface I18nUndefinedKeysCheckerOptions {
  *   '/path/to/i18n/messages'
  * )
  *
+ * // With multiple message directories (deep-merged, later overrides earlier)
+ * const checker = new I18nUndefinedKeysChecker(
+ *   ['/path/to/app', '/path/to/layer'],
+ *   ['/path/to/i18n/base', '/path/to/i18n/overrides']
+ * )
+ *
  * // With custom translation factories
  * const checker = new I18nUndefinedKeysChecker(
  *   '/path/to/app',
@@ -95,17 +99,17 @@ export interface I18nUndefinedKeysCheckerOptions {
  */
 export class I18nUndefinedKeysChecker {
   private readonly srcDirs: string[]
-  private readonly localesDir: string
+  private readonly messagesDirs: string[]
   private readonly scannerConfig: I18nScannerConfig
   private readonly referenceLocale: string
 
   constructor (
     srcDir: string | string[],
-    localesDir: string,
+    messagesDir: string | string[],
     options: I18nUndefinedKeysCheckerOptions = {},
   ) {
     this.srcDirs = Array.isArray(srcDir) ? srcDir : [ srcDir ]
-    this.localesDir = localesDir
+    this.messagesDirs = Array.isArray(messagesDir) ? messagesDir : [ messagesDir ]
     this.referenceLocale = options.referenceLocale ?? 'en'
 
     // Set custom translation factories
@@ -212,7 +216,7 @@ export class I18nUndefinedKeysChecker {
    * Run the check and return undefined keys with statistics
    *
    * @returns Object containing undefined keys and statistics
-   * @throws Error if reference locale file is not found in localesDir
+   * @throws Error if the reference locale file is not found in any of the messagesDirs
    */
   async check (): Promise<{
     undefinedKeys: KeyUsageEntry[]
@@ -221,13 +225,8 @@ export class I18nUndefinedKeysChecker {
       usageCount: number
     }
   }> {
-    // Load messages from reference locale file
-    const localeFilePath = path.join(this.localesDir, `${this.referenceLocale}.json`)
-    if (!fs.existsSync(localeFilePath)) {
-      throw new Error(`Translation file not found: ${localeFilePath}`)
-    }
-
-    const messages = loadMessages(localeFilePath)
+    // Load and deep-merge reference messages across all messagesDirs (later overrides earlier)
+    const messages = loadMergedMessages(this.messagesDirs, this.referenceLocale)
     const definedKeys = new Set(extractMessageKeys(messages))
 
     // Find all i18n usage in source files from all source directories

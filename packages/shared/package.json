@@ -1,6 +1,6 @@
 {
   "name": "@bjj/shared",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Shared utilities",
   "type": "module",
   "exports": {
@@ -40,7 +40,7 @@
     "typecheck": "vue-tsc --noEmit",
     "lint": "git add . && lint-staged --config ../../.lintstagedrc.lint-only.json",
     "format": "git add . && lint-staged --config ../../.lintstagedrc.json",
-    "release": "npm run build && npm run release:bjj -- --no-build && npm run release:polymarbot -- --no-build && npm run release:elepay -- --no-build",
+    "release": "npm run build && npm run release:bjj && npm run release:polymarbot && npm run release:elepay",
     "release:bjj": "tsx ../../scripts/publish.ts --name @bjj/shared --token BJJ_NPM_TOKEN",
     "release:polymarbot": "tsx ../../scripts/publish.ts --name @polymarbot/uitls-shared --token POLYMARBOT_NPM_TOKEN",
     "release:elepay": "tsx ../../scripts/publish.ts --name @elepay-io/frontend-shared --token ELEPAY_IO_NPM_TOKEN --registry https://npm.pkg.github.com/"
