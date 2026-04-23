@@ -6,20 +6,23 @@ type Swatch = {
   bg: string
   fg?: string
   border?: boolean
+  span?: string
 }
 
 type Group = {
   title: string
   description?: string
   swatches: Swatch[]
+  cols?: string
 }
 
 const groups: Group[] = [
   {
     title: 'Surface',
-    description: 'Page, card and popover backgrounds — pair each with its matching foreground.',
+    description: 'Two independent axes — elevation (background / card / popover) and interaction (muted / accent).',
+    cols: 'grid-cols-1 sm:grid-cols-2',
     swatches: [
-      { name: 'background', token: '--color-background', bg: 'bg-background', fg: 'text-foreground', border: true },
+      { name: 'background', token: '--color-background', bg: 'bg-background', fg: 'text-foreground', border: true, span: 'col-span-2' },
       { name: 'card', token: '--color-card', bg: 'bg-card', fg: 'text-card-foreground', border: true },
       { name: 'popover', token: '--color-popover', bg: 'bg-popover', fg: 'text-popover-foreground', border: true },
       { name: 'muted', token: '--color-muted', bg: 'bg-muted', fg: 'text-muted-foreground' },
@@ -43,7 +46,6 @@ const groups: Group[] = [
       { name: 'help', token: '--color-help', bg: 'bg-help', fg: 'text-help-foreground' },
       { name: 'warn', token: '--color-warn', bg: 'bg-warn', fg: 'text-warn-foreground' },
       { name: 'danger', token: '--color-danger', bg: 'bg-danger', fg: 'text-danger-foreground' },
-      { name: 'destructive', token: '--color-destructive', bg: 'bg-destructive', fg: 'text-destructive-foreground' },
     ],
   },
   {
@@ -94,7 +96,7 @@ export const Palette: Story = {
             <h3 class="text-lg font-medium">{{ group.title }}</h3>
             <p v-if="group.description" class="mt-1 text-sm text-muted-foreground">{{ group.description }}</p>
           </header>
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div :class="['grid gap-3', group.cols || 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4']">
             <div
               v-for="swatch in group.swatches"
               :key="swatch.name"
@@ -103,6 +105,7 @@ export const Palette: Story = {
                 swatch.bg,
                 swatch.fg,
                 swatch.border ? 'border border-border' : '',
+                swatch.span,
               ]"
             >
               <span class="font-mono text-xs font-medium">{{ swatch.name }}</span>
@@ -157,7 +160,7 @@ export const LightVsDark: Story = {
     },
   },
   render: () => ({
-    setup: () => ({ groups }),
+    setup: () => ({ groups: groups.filter(g => g.title !== 'Sidebar') }),
     template: `
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div class="rounded-lg border border-border bg-background p-6">
@@ -174,6 +177,7 @@ export const LightVsDark: Story = {
                     swatch.bg,
                     swatch.fg || 'text-foreground',
                     swatch.border ? 'border-border' : 'border-transparent',
+                    swatch.span,
                   ]"
                 >
                   <span class="font-mono text-xs">{{ swatch.name }}</span>
@@ -197,6 +201,7 @@ export const LightVsDark: Story = {
                     swatch.bg,
                     swatch.fg || 'text-foreground',
                     swatch.border ? 'border-border' : 'border-transparent',
+                    swatch.span,
                   ]"
                 >
                   <span class="font-mono text-xs">{{ swatch.name }}</span>

@@ -60,12 +60,16 @@ background: var(--color-muted);
 
 ### Background — 4 级色阶
 
-| 变量 | 语义 | 映射的语义类 |
-|------|------|---|
-| `--background` | 页面底色 / 侧边栏 | `bg-background` / `bg-sidebar` |
-| `--background-surface` | 卡片、panel、modal、popover、dropdown | `bg-card` / `bg-popover` |
-| `--background-muted` | 去强调区域 / secondary | `bg-muted` / `bg-secondary` |
-| `--background-accent` | hover / 交互高亮 | `bg-accent` / `bg-sidebar-accent` |
+分两条轴：**抬升轴**（底面 → 抬升面）负责元素的层级/高度，**交互轴**（muted / accent）负责去强调或 hover/active 等交互态。两者独立，不共享前后关系。
+
+| 轴 | 变量 | 语义 | 映射的语义类 |
+|---|------|------|---|
+| 抬升轴 | `--background` | 底面：页面底色 / 侧边栏 | `bg-background` / `bg-sidebar` |
+| 抬升轴 | `--background-surface` | 抬升面：卡片、panel、modal、popover、dropdown | `bg-card` / `bg-popover` |
+| 交互轴 | `--background-muted` | 去强调区域 / secondary | `bg-muted` / `bg-secondary` |
+| 交互轴 | `--background-accent` | hover / 交互高亮 | `bg-accent` / `bg-sidebar-accent` |
+
+> **注意**：dark 模式下 `--background-muted` 与 `--background-accent` 的亮度可能**高于** `--background-surface`（底色偏黑，交互色只能往亮处叠）。这是预期 —— 不要把它们当作"更抬升的一层"使用。`bg-muted` 直接套在 card 内可能视觉错乱，需要时用 `bg-muted/50` 或 `border` 替代。
 
 ### Foreground — 3 级色阶
 
