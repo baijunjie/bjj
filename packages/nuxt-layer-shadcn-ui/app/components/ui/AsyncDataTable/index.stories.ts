@@ -93,6 +93,7 @@ export const BatchActions: Story = {
         {
           label: 'Delete',
           icon: 'trash-2',
+          color: 'danger',
           action: items => console.debug(`Delete ${items.length} items`),
         },
         {

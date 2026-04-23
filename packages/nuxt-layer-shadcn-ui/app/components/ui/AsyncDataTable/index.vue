@@ -78,13 +78,17 @@ const shouldShowTopToolbar = computed(() => {
 const shouldShowBottomToolbar = computed(() => props.showBottomToolbar)
 
 const batchMenuItems = computed<DropdownItem[]>(() =>
-  props.batchActions.map(action => ({
-    label: action.label,
-    icon: action.icon,
-    class: action.class,
-    disabled: action.disabled || batchActionsDisabled.value,
-    command: () => action.action(props.selection ?? []),
-  })),
+  props.batchActions.map(item => {
+    if (item.type === 'separator' || item.type === 'label') {
+      return item
+    }
+    const { action, disabled, ...rest } = item
+    return {
+      ...rest,
+      disabled: disabled || batchActionsDisabled.value,
+      command: () => action?.(props.selection ?? []),
+    }
+  }),
 )
 
 // -- Data fetching --

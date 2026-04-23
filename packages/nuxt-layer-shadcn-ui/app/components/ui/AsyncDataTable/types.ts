@@ -1,18 +1,10 @@
-import type { Component } from 'vue'
 import type { DataTableColumn } from '../DataTable/types'
+import type { DropdownActionItem, DropdownLabelItem, DropdownSeparatorItem } from '../Dropdown/types'
 
-export interface AsyncDataTableBatchAction<T = Record<string, any>> {
-  /** Button/menu item label */
-  label: string
-  /** Icon name or component */
-  icon?: string | Component
-  /** Custom CSS class */
-  class?: ClassValue
-  /** Whether the action is disabled */
-  disabled?: boolean
-  /** Callback with selected items */
-  action: (selectedItems: T[]) => void
-}
+export type AsyncDataTableBatchAction<T = Record<string, any>>
+  = | (Omit<DropdownActionItem, 'command'> & { action?: (selectedItems: T[]) => void })
+    | DropdownSeparatorItem
+    | DropdownLabelItem
 
 export interface AsyncDataTableFetchParams {
   offset: number
