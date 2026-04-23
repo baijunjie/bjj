@@ -5,5 +5,10 @@ export default defineNuxtConfig({
 
   // The layer intentionally leaves `defaultLocale` to consumers; the
   // playground supplies one itself to silence @nuxtjs/i18n's warning.
-  i18n: { defaultLocale: 'en' },
+  // Disable browser detection so Storybook always starts in English —
+  // otherwise Accept-Language overrides `defaultLocale`.
+  i18n: {
+    defaultLocale: 'en',
+    detectBrowserLanguage: false,
+  },
 })
