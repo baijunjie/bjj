@@ -1,6 +1,6 @@
 {
   "name": "@bjj/nuxt-layer-shadcn-ui",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Nuxt layer providing shadcn-vue based UI components",
   "type": "module",
   "main": "./nuxt.config.ts",
