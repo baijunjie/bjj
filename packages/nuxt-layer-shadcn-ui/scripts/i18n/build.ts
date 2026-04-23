@@ -4,8 +4,8 @@
  * Standalone i18n build script (single-package version).
  *
  * Scans `app/` for co-located `{locale}.json` files and merges them into
- * `i18n/messages/<locale>.json`. The merged output is consumed at runtime by
- * `i18n.config.ts` through `import.meta.glob`.
+ * `i18n/messages/<locale>.json`. The merged output is lazy-loaded at runtime
+ * by `@nuxtjs/i18n` via the `i18n.locales[].file` entries in `nuxt.config.ts`.
  *
  * Usage:
  *   tsx scripts/i18n/build

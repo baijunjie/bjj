@@ -15,11 +15,35 @@ export default defineNuxtConfig({
   // Package is declared as peerDependency so consumers own the version.
   modules: [ '@nuxtjs/i18n' ],
 
-  // Explicit absolute path so the layer's messages load regardless of the
-  // consumer's vueI18n setting (each layer's vueI18n is resolved per-layer
-  // and merged by @nuxtjs/i18n).
+  // Lazy-loaded messages. @nuxtjs/i18n v9+ lazy-loads every locale file by
+  // default; each layer's `langDir` resolves per-layer, so the files under
+  // this layer's directory stay scoped to this layer and are merged with
+  // the consumer's own locale files per matching `code`. `langDir` must be
+  // relative (absolute paths do not survive the build) — v10's default
+  // `restructureDir: 'i18n'` roots resolution at `<layer>/i18n/`.
   i18n: {
-    vueI18n: join(currentDir, 'i18n.config.ts'),
+    langDir: 'messages',
+    locales: [
+      { code: 'ar', file: 'ar.json' },
+      { code: 'de', file: 'de.json' },
+      { code: 'en', file: 'en.json' },
+      { code: 'es', file: 'es.json' },
+      { code: 'fr', file: 'fr.json' },
+      { code: 'hi', file: 'hi.json' },
+      { code: 'id', file: 'id.json' },
+      { code: 'it', file: 'it.json' },
+      { code: 'ja', file: 'ja.json' },
+      { code: 'ko', file: 'ko.json' },
+      { code: 'nl', file: 'nl.json' },
+      { code: 'pl', file: 'pl.json' },
+      { code: 'pt', file: 'pt.json' },
+      { code: 'ru', file: 'ru.json' },
+      { code: 'th', file: 'th.json' },
+      { code: 'tr', file: 'tr.json' },
+      { code: 'vi', file: 'vi.json' },
+      { code: 'zh-CN', file: 'zh-CN.json' },
+      { code: 'zh-TW', file: 'zh-TW.json' },
+    ],
   },
 
   // Register the layer's global stylesheet. Consumers extending this layer

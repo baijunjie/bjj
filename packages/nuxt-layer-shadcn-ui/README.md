@@ -34,7 +34,7 @@ The layer automatically registers:
 - Business components under `app/components/**` (with directory-based prefix)
 - Auto-imports from `app/composables`, `app/utils`, and `app/types`
 - The global stylesheet `app/assets/styles/globals.css` (Tailwind v4)
-- `@nuxtjs/i18n` module along with this layer's `i18n.config.ts`
+- `@nuxtjs/i18n` module with the layer's locale files under `i18n/messages/`, declared as lazy-loaded locales (merged with the consumer's own locales per matching `code`)
 
 ## Local Development
 
