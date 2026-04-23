@@ -19,7 +19,7 @@ const cwd = process.cwd()
 async function main () {
   console.debug('🔧 Running i18n build...')
   const plugin = new I18n.MergePluginCore({
-    srcDir: [ path.resolve(cwd, 'app') ],
+    srcDir: path.resolve(cwd, 'app'),
     outputDir: path.resolve(cwd, 'i18n/messages'),
     languages: [ 'en' ],
     sortOriginalFiles: true,

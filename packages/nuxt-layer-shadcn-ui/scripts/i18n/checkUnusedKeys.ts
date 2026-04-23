@@ -22,11 +22,11 @@ const WHITELIST_PREFIXES = [
 async function main () {
   console.debug('🔍 Checking for unused i18n keys...\n')
 
-  const srcDirs = [ path.resolve(cwd, 'app') ]
+  const srcDir = path.resolve(cwd, 'app')
   const messagesDir = path.resolve(cwd, 'i18n/messages')
 
   const checker = new I18n.UnusedKeysChecker(
-    srcDirs,
+    srcDir,
     messagesDir,
     {
       whitelistPrefixes: WHITELIST_PREFIXES,

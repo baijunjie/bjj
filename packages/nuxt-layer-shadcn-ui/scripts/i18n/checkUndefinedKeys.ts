@@ -17,11 +17,11 @@ async function main () {
   console.debug('🔍 Checking for undefined i18n keys...\n')
 
   try {
-    const srcDirs = [ path.resolve(cwd, 'app') ]
+    const srcDir = path.resolve(cwd, 'app')
     const messagesDir = path.resolve(cwd, 'i18n/messages')
 
     const checker = new I18n.UndefinedKeysChecker(
-      srcDirs,
+      srcDir,
       messagesDir,
       { referenceLocale: 'en' },
     )
