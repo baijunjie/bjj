@@ -187,16 +187,11 @@ const contentClass = computed(() =>
 /* Translucent blur backdrop. DialogOverlay is rendered inside DialogPortal
    (outside component scope), so use a non-scoped style. */
 [data-slot='dialog-overlay'] {
-  z-index: 200;
   background-color: rgba(252, 252, 252, 0.3);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
 }
 .dark [data-slot='dialog-overlay'] {
   background-color: rgba(25, 25, 25, 0.3);
-}
-/* Raise above layout header (z-100) so the dialog covers it. */
-[data-slot='dialog-content'] {
-  z-index: 200;
 }
 </style>

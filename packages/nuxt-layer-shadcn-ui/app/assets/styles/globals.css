@@ -2,6 +2,7 @@
 @import 'tw-animate-css';
 @import './colors.css';
 @import './utilities.css';
+@import './z-index.css';
 
 /* Ensure Tailwind scans the layer's own source files */
 @source '../../..';

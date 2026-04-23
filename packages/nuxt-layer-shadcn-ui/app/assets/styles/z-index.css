@@ -1,0 +1,27 @@
+/* =========================================================================
+ * Portal-rendered overlays — z-index
+ * -------------------------------------------------------------------------
+ * Reka UI portals (Dialog, Sheet, Tooltip, etc.) render OUTSIDE each
+ * component's DOM scope, so z-index must be applied via non-scoped
+ * selectors. Centralized here so the stacking order stays consistent.
+ *
+ * Stacking order (low → high):
+ *   layout header                         z-100  (project convention)
+ *   dialog / sheet (Modal / Drawer)       z-200  (cover the header)
+ *   tooltip / popover / dropdown / select z-300  (above modal when nested)
+ * ========================================================================= */
+
+[data-slot='dialog-overlay'],
+[data-slot='dialog-content'],
+[data-slot='sheet-overlay'],
+[data-slot='sheet-content'] {
+  z-index: 200;
+}
+
+[data-slot='tooltip-content'],
+[data-slot='popover-content'],
+[data-slot='dropdown-menu-content'],
+[data-slot='dropdown-menu-sub-content'],
+[data-slot='select-content'] {
+  z-index: 300;
+}
