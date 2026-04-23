@@ -159,6 +159,9 @@ function main () {
     // 2. 生成 staging 的 package.json（保留原 main/types/exports 等不变，
     //    只覆盖 name/version 并应用 rewrites）
     const distPkg: Record<string, any> = { ...pkg, name: publishName, version: publishVersion }
+    // 记录源码 commit；npm 仅在 git 目录里发布时会自动注入 gitHead，这里从
+    // .publish-tmp/ 发布所以要手动写入，供消费方回溯构建（如 Storybook 部署）。
+    distPkg.gitHead = execSync('git rev-parse HEAD', { encoding: 'utf-8' }).trim()
     // 清除 scripts 和 devDependencies 等运行时不需要的字段
     delete distPkg.scripts
     delete distPkg.devDependencies
