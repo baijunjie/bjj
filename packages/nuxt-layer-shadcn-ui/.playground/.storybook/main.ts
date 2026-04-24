@@ -30,6 +30,8 @@ const config: StorybookConfig = {
       'dayjs/plugin/duration',
       'dayjs/plugin/utc',
       'dayjs/plugin/timezone',
+      // CJS module — pre-bundle so `import QRCode from 'qrcode'` gets a default export.
+      'qrcode',
       // @storybook/addon-docs is React-based — pre-bundle React so named
       // exports like `Component` work under Vite's `noDiscovery: true`.
       'react',
