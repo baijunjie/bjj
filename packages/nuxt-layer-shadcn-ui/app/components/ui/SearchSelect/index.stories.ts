@@ -31,95 +31,133 @@ function mockLoadValueOptionMethod (value: string) {
   })
 }
 
+const defaultOptions = [
+  { label: 'All Items', value: 'all' },
+  { label: 'Featured', value: 'featured' },
+]
+
 const meta = {
   title: 'UI/SearchSelect',
   component: SearchSelect as any,
   argTypes: {
+    placeholder: { control: 'text' },
+    searchPlaceholder: { control: 'text' },
+    emptyText: { control: 'text' },
+    searchEmptyText: { control: 'text' },
+    createNewTo: { control: 'text' },
+    createNewText: { control: 'text' },
+    loadLimit: { control: 'number' },
     autoLoad: { control: 'boolean' },
     disabled: { control: 'boolean' },
   },
   args: {
+    placeholder: '',
+    searchPlaceholder: '',
+    emptyText: '',
+    searchEmptyText: '',
+    createNewTo: '',
+    createNewText: '',
+    loadLimit: 20,
     autoLoad: false,
     disabled: false,
   },
+  render: args => ({
+    components: { SearchSelect },
+    setup () {
+      const value = ref<string>()
+      return { args, value, mockLoadMethod }
+    },
+    template: `
+      <div class="max-w-sm">
+        <SearchSelect
+          v-model="value"
+          :loadMethod="mockLoadMethod"
+          v-bind="args"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">Selected: {{ value ?? 'none' }}</div>
+      </div>
+    `,
+  }),
 } satisfies Meta
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  render: args => ({
+export const Default: Story = {}
+
+export const Preselected: Story = {
+  render: () => ({
     components: { SearchSelect },
     setup () {
-      const selected = ref<string>()
-      const withPreselect = ref<string>('item-42')
-      const withDefaults = ref<string>()
-      const withCreateNew = ref<string>()
-
-      const defaultOptions = [
-        { label: 'All Items', value: 'all' },
-        { label: 'Featured', value: 'featured' },
-      ]
-
-      return {
-        args,
-        selected,
-        withPreselect,
-        withDefaults,
-        withCreateNew,
-        defaultOptions,
-        mockLoadMethod,
-        mockLoadValueOptionMethod,
-      }
+      const value = ref<string>('item-42')
+      return { value, mockLoadMethod, mockLoadValueOptionMethod }
     },
     template: `
-      <div class="space-y-10 max-w-sm">
-        <!-- Controlled -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Controlled</h3>
-          <SearchSelect
-            v-model="selected"
-            :loadMethod="mockLoadMethod"
-            v-bind="args"
-          />
-          <div class="mt-2 text-sm text-muted-foreground">Selected: {{ selected ?? 'none' }}</div>
-        </section>
+      <div class="max-w-sm">
+        <SearchSelect
+          v-model="value"
+          :loadMethod="mockLoadMethod"
+          :loadValueOptionMethod="mockLoadValueOptionMethod"
+          autoLoad
+        />
+        <div class="mt-2 text-sm text-muted-foreground">Selected: {{ value ?? 'none' }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- Pre-selected Value -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Pre-selected Value (item-42)</h3>
-          <SearchSelect
-            v-model="withPreselect"
-            :loadMethod="mockLoadMethod"
-            :loadValueOptionMethod="mockLoadValueOptionMethod"
-            autoLoad
-          />
-          <div class="mt-2 text-sm text-muted-foreground">Selected: {{ withPreselect ?? 'none' }}</div>
-        </section>
+export const WithDefaultOptions: Story = {
+  render: () => ({
+    components: { SearchSelect },
+    setup () {
+      const value = ref<string>()
+      return { value, mockLoadMethod, defaultOptions }
+    },
+    template: `
+      <div class="max-w-sm">
+        <SearchSelect
+          v-model="value"
+          :loadMethod="mockLoadMethod"
+          :defaultOptions="defaultOptions"
+          autoLoad
+        />
+        <div class="mt-2 text-sm text-muted-foreground">Selected: {{ value ?? 'none' }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- With Default Options -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">With Default Options</h3>
-          <SearchSelect
-            v-model="withDefaults"
-            :loadMethod="mockLoadMethod"
-            :defaultOptions="defaultOptions"
-            autoLoad
-          />
-          <div class="mt-2 text-sm text-muted-foreground">Selected: {{ withDefaults ?? 'none' }}</div>
-        </section>
+export const WithCreateNew: Story = {
+  render: () => ({
+    components: { SearchSelect },
+    setup () {
+      const value = ref<string>()
+      return { value, mockLoadMethod }
+    },
+    template: `
+      <div class="max-w-sm">
+        <SearchSelect
+          v-model="value"
+          :loadMethod="mockLoadMethod"
+          createNewTo="/create"
+          autoLoad
+        />
+        <div class="mt-2 text-sm text-muted-foreground">Selected: {{ value ?? 'none' }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- With Create New -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">With Create New</h3>
-          <SearchSelect
-            v-model="withCreateNew"
-            :loadMethod="mockLoadMethod"
-            createNewTo="/create"
-            autoLoad
-          />
-          <div class="mt-2 text-sm text-muted-foreground">Selected: {{ withCreateNew ?? 'none' }}</div>
-        </section>
+export const Disabled: Story = {
+  render: () => ({
+    components: { SearchSelect },
+    setup () {
+      const value = ref<string>()
+      return { value, mockLoadMethod }
+    },
+    template: `
+      <div class="max-w-sm">
+        <SearchSelect v-model="value" :loadMethod="mockLoadMethod" disabled />
       </div>
     `,
   }),

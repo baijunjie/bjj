@@ -1,8 +1,11 @@
+export type AvatarSize = 'small' | 'normal' | 'large' | 'xlarge'
+export type AvatarShape = 'circle' | 'square'
+
 export interface AvatarProps {
   image?: string
   label?: string
   fallbackLabel?: string
-  size?: 'small' | 'normal' | 'large' | 'xlarge'
-  shape?: 'circle' | 'square'
+  size?: AvatarSize
+  shape?: AvatarShape
   class?: ClassValue
 }

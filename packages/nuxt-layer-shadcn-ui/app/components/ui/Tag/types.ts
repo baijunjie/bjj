@@ -1,8 +1,8 @@
-export type TagType = 'default' | 'success' | 'info' | 'help' | 'warn' | 'danger'
+export type TagColor = 'default' | 'primary' | 'success' | 'info' | 'help' | 'warn' | 'danger'
 export type TagVariant = 'solid' | 'soft' | 'bordered' | 'flat'
 
 export interface TagProps {
-  type?: TagType
+  color?: TagColor
   variant?: TagVariant
   class?: ClassValue
 }

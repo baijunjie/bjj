@@ -1,10 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import type { AsyncDataTableBatchAction, AsyncDataTableFetchParams, AsyncDataTableFetchResult } from './types'
 import type { DataTableColumn } from '../DataTable/types'
-import AsyncDataTableRaw from './index.vue'
-
-// Cast generic component for Storybook compatibility
-const AsyncDataTable = AsyncDataTableRaw as any
+import AsyncDataTable from './index.vue'
 
 interface User {
   id: number
@@ -59,50 +56,70 @@ function mockFetch (params: AsyncDataTableFetchParams): Promise<AsyncDataTableFe
   })
 }
 
+const batchActions: AsyncDataTableBatchAction<User>[] = [
+  {
+    label: 'Delete',
+    icon: 'trash-2',
+    color: 'danger',
+    action: items => console.debug(`Delete ${items.length} items`),
+  },
+  {
+    label: 'Export',
+    icon: 'download',
+    action: items => console.debug(`Export ${items.length} items`),
+  },
+]
+
 const meta = {
   title: 'UI/AsyncDataTable',
-  component: AsyncDataTable,
-} satisfies Meta
+  component: AsyncDataTable as any,
+  argTypes: {
+    columns: { control: 'object' },
+    fetchMethod: { control: false },
+    autoFetch: { control: 'boolean' },
+    data: { control: 'object' },
+    filters: { control: 'object' },
+    showTopToolbar: { control: 'boolean' },
+    showBottomToolbar: { control: 'boolean' },
+    pageSizeOptions: { control: 'object' },
+    showPagination: { control: 'boolean' },
+    selectable: { control: 'boolean' },
+    batchActions: { control: 'object' },
+    selection: { control: 'object' },
+  },
+  args: {
+    columns,
+    fetchMethod: mockFetch,
+    autoFetch: true,
+    data: [],
+    filters: undefined,
+    showTopToolbar: undefined,
+    showBottomToolbar: true,
+    pageSizeOptions: [ 10, 20, 50 ],
+    showPagination: true,
+    selectable: false,
+    batchActions: [],
+    selection: [],
+  },
+  render: args => ({
+    components: { AsyncDataTable },
+    setup: () => ({ args }),
+    template: '<AsyncDataTable v-bind="args" />',
+  }),
+} satisfies Meta<typeof AsyncDataTable>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 /** Async fetch with pagination, sorting, page size selector */
-export const Default: Story = {
-  render: () => ({
-    components: { AsyncDataTable },
-    setup: () => ({ columns, mockFetch }),
-    template: `
-      <AsyncDataTable
-        :columns="columns"
-        :fetchMethod="mockFetch"
-        :pageSizeOptions="[10, 20, 50]"
-      />
-    `,
-  }),
-}
+export const Default: Story = {}
 
 /** Batch actions with row selection and dual toolbars */
-export const BatchActions: Story = {
+export const WithBatchActions: Story = {
   render: () => ({
     components: { AsyncDataTable },
     setup () {
       const selection = ref<User[]>([])
-
-      const batchActions: AsyncDataTableBatchAction<User>[] = [
-        {
-          label: 'Delete',
-          icon: 'trash-2',
-          color: 'danger',
-          action: items => console.debug(`Delete ${items.length} items`),
-        },
-        {
-          label: 'Export',
-          icon: 'download',
-          action: items => console.debug(`Export ${items.length} items`),
-        },
-      ]
-
       return { columns, mockFetch, selection, batchActions }
     },
     template: `
@@ -121,7 +138,7 @@ export const BatchActions: Story = {
 }
 
 /** Custom toolbar slot with action button */
-export const CustomToolbar: Story = {
+export const WithCustomToolbar: Story = {
   render: () => ({
     components: { AsyncDataTable },
     setup: () => ({ columns, mockFetch }),

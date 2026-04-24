@@ -1,6 +1,6 @@
 import type { Component } from 'vue'
 
-export type DropdownItemColor = 'default' | 'success' | 'info' | 'help' | 'warn' | 'danger'
+export type DropdownItemColor = 'default' | 'primary' | 'success' | 'info' | 'help' | 'warn' | 'danger'
 
 export interface DropdownActionItem {
   /** Defaults to 'action' when omitted. */

@@ -5,51 +5,115 @@ const meta = {
   title: 'UI/InputNumber',
   component: InputNumber,
   argTypes: {
+    min: { control: 'number' },
+    max: { control: 'number' },
+    step: { control: 'number' },
+    placeholder: { control: 'text' },
+    showButtons: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
-    showButtons: { control: 'boolean' },
   },
   args: {
+    min: undefined,
+    max: undefined,
+    step: 1,
+    placeholder: '',
+    showButtons: true,
     disabled: false,
     invalid: false,
-    showButtons: true,
   },
+  render: args => ({
+    components: { InputNumber },
+    setup () {
+      const value = ref(0)
+      return { args, value }
+    },
+    template: `
+      <div class="max-w-xs">
+        <InputNumber v-model="value" v-bind="args" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
 } satisfies Meta<typeof InputNumber>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  render: args => ({
+export const Default: Story = {}
+
+export const WithMinMax: Story = {
+  render: () => ({
     components: { InputNumber },
     setup () {
-      const basic = ref(0)
-      const minMax = ref(5)
-      const stepped = ref(0)
-      return { args, basic, minMax, stepped }
+      const value = ref(5)
+      return { value }
     },
     template: `
-      <div class="space-y-10 max-w-xs">
-        <!-- Controlled -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Controlled</h3>
-          <InputNumber v-model="basic" v-bind="args" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ basic }}</div>
-        </section>
+      <div class="max-w-xs">
+        <InputNumber v-model="value" :min="0" :max="10" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- With Min / Max -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">With Min / Max (0 - 10)</h3>
-          <InputNumber v-model="minMax" :min="0" :max="10" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ minMax }}</div>
-        </section>
+export const CustomStep: Story = {
+  render: () => ({
+    components: { InputNumber },
+    setup () {
+      const value = ref(0)
+      return { value }
+    },
+    template: `
+      <div class="max-w-xs">
+        <InputNumber v-model="value" :step="5" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- Custom Step -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Custom Step (5)</h3>
-          <InputNumber v-model="stepped" :step="5" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ stepped }}</div>
-        </section>
+export const WithoutButtons: Story = {
+  render: () => ({
+    components: { InputNumber },
+    setup () {
+      const value = ref(0)
+      return { value }
+    },
+    template: `
+      <div class="max-w-xs">
+        <InputNumber v-model="value" :showButtons="false" />
+      </div>
+    `,
+  }),
+}
+
+export const Disabled: Story = {
+  render: () => ({
+    components: { InputNumber },
+    setup () {
+      const value = ref(0)
+      return { value }
+    },
+    template: `
+      <div class="max-w-xs">
+        <InputNumber v-model="value" disabled />
+      </div>
+    `,
+  }),
+}
+
+export const Invalid: Story = {
+  render: () => ({
+    components: { InputNumber },
+    setup () {
+      const value = ref(0)
+      return { value }
+    },
+    template: `
+      <div class="max-w-xs">
+        <InputNumber v-model="value" invalid />
       </div>
     `,
   }),

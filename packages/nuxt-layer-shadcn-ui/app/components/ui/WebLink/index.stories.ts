@@ -1,59 +1,94 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import WebLink from './index.vue'
 
+const targets = [ '_self', '_blank', '_parent', '_top' ] as const
+
 const meta = {
   title: 'UI/WebLink',
   component: WebLink,
+  argTypes: {
+    href: { control: 'text' },
+    to: { control: 'object' },
+    target: { control: 'select', options: targets },
+    unstyled: { control: 'boolean' },
+    externalIcon: { control: 'boolean' },
+    class: { control: 'text' },
+  },
+  args: {
+    href: 'https://example.com',
+    to: undefined,
+    target: undefined,
+    unstyled: false,
+    externalIcon: true,
+    class: '',
+  },
+  render: args => ({
+    components: { WebLink },
+    setup: () => ({ args }),
+    template: `
+      <WebLink v-bind="args">Visit Example.com</WebLink>
+    `,
+  }),
 } satisfies Meta<typeof WebLink>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
+export const Default: Story = {}
+
+export const ExternalLink: Story = {
   render: () => ({
     components: { WebLink },
     template: `
-      <div class="space-y-10">
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Internal Link</h3>
-          <WebLink href="/dashboard">Go to Dashboard</WebLink>
-        </section>
-
-        <section>
-          <h3 class="mb-4 text-lg font-medium">External Link</h3>
-          <WebLink href="https://example.com">Visit Example.com</WebLink>
-          <p class="mt-1 text-sm text-muted-foreground">External links automatically open in a new tab and show a trailing icon.</p>
-        </section>
-
-        <section>
-          <h3 class="mb-4 text-lg font-medium">External Link without Icon</h3>
-          <WebLink href="https://example.com" :externalIcon="false">No trailing icon</WebLink>
-        </section>
-
-        <section>
-          <h3 class="mb-4 text-lg font-medium">With Explicit Target</h3>
-          <WebLink href="https://example.com" target="_self">Same Tab External Link</WebLink>
-        </section>
-
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Unstyled</h3>
-          <div class="flex flex-col gap-2">
-            <WebLink href="/settings" unstyled>Unstyled internal link (no color or underline)</WebLink>
-            <WebLink href="https://example.com" unstyled>Unstyled external link (icon still shows)</WebLink>
-          </div>
-        </section>
-
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Inline Usage</h3>
-          <p class="text-sm">
-            Please read our
-            <WebLink href="https://example.com/terms">Terms of Service</WebLink>
-            and
-            <WebLink href="https://example.com/privacy">Privacy Policy</WebLink>
-            before continuing.
-          </p>
-        </section>
+      <div>
+        <WebLink href="https://example.com">Visit Example.com</WebLink>
+        <p class="mt-1 text-sm text-muted-foreground">External links automatically open in a new tab and show a trailing icon.</p>
       </div>
+    `,
+  }),
+}
+
+export const ExternalWithoutIcon: Story = {
+  render: () => ({
+    components: { WebLink },
+    template: `
+      <WebLink href="https://example.com" :externalIcon="false">No trailing icon</WebLink>
+    `,
+  }),
+}
+
+export const WithExplicitTarget: Story = {
+  render: () => ({
+    components: { WebLink },
+    template: `
+      <WebLink href="https://example.com" target="_self">Same Tab External Link</WebLink>
+    `,
+  }),
+}
+
+export const Unstyled: Story = {
+  render: () => ({
+    components: { WebLink },
+    template: `
+      <div class="flex flex-col gap-2">
+        <WebLink href="/settings" unstyled>Unstyled internal link (no color or underline)</WebLink>
+        <WebLink href="https://example.com" unstyled>Unstyled external link (icon still shows)</WebLink>
+      </div>
+    `,
+  }),
+}
+
+export const InlineUsage: Story = {
+  render: () => ({
+    components: { WebLink },
+    template: `
+      <p class="text-sm">
+        Please read our
+        <WebLink href="https://example.com/terms">Terms of Service</WebLink>
+        and
+        <WebLink href="https://example.com/privacy">Privacy Policy</WebLink>
+        before continuing.
+      </p>
     `,
   }),
 }

@@ -14,12 +14,6 @@ const meta = {
     min: 0,
     max: 100,
   },
-} satisfies Meta<typeof InputRange>
-
-export default meta
-type Story = StoryObj<typeof meta>
-
-export const Default: Story = {
   render: args => ({
     components: { InputRange },
     setup () {
@@ -34,4 +28,9 @@ export const Default: Story = {
       </div>
     `,
   }),
-}
+} satisfies Meta<typeof InputRange>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {}

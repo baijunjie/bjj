@@ -5,55 +5,97 @@ const meta = {
   title: 'UI/Slider',
   component: Slider,
   argTypes: {
+    min: { control: 'number' },
+    max: { control: 'number' },
+    step: { control: 'number' },
     disabled: { control: 'boolean' },
+    orientation: { control: 'select', options: [ 'horizontal', 'vertical' ]},
   },
   args: {
+    min: 0,
+    max: 100,
+    step: 1,
     disabled: false,
+    orientation: 'horizontal',
   },
+  render: args => ({
+    components: { Slider },
+    setup () {
+      const value = ref(50)
+      return { args, value }
+    },
+    template: `
+      <div class="max-w-sm">
+        <Slider v-model="value" v-bind="args" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
 } satisfies Meta<typeof Slider>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  render: args => ({
+export const Default: Story = {}
+
+export const Range: Story = {
+  render: () => ({
     components: { Slider },
     setup () {
-      const single = ref(50)
       const range = ref([ 20, 80 ])
-      const stepped = ref(50)
-      const custom = ref(500)
-      return { args, single, range, stepped, custom }
+      return { range }
     },
     template: `
-      <div class="space-y-10 max-w-sm">
-        <!-- Controlled -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Controlled</h3>
-          <Slider v-model="single" v-bind="args" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ single }}</div>
-        </section>
+      <div class="max-w-sm">
+        <Slider v-model="range" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ range }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- Range (Two Thumbs) -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Range (Two Thumbs)</h3>
-          <Slider v-model="range" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ range }}</div>
-        </section>
+export const WithStep: Story = {
+  render: () => ({
+    components: { Slider },
+    setup () {
+      const stepped = ref(50)
+      return { stepped }
+    },
+    template: `
+      <div class="max-w-sm">
+        <Slider v-model="stepped" :step="25" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ stepped }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- With Step -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">With Step (25)</h3>
-          <Slider v-model="stepped" :step="25" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ stepped }}</div>
-        </section>
+export const CustomMinMax: Story = {
+  render: () => ({
+    components: { Slider },
+    setup () {
+      const custom = ref(500)
+      return { custom }
+    },
+    template: `
+      <div class="max-w-sm">
+        <Slider v-model="custom" :min="0" :max="1000" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ custom }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- Custom Min / Max -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Custom Min / Max (0 - 1000)</h3>
-          <Slider v-model="custom" :min="0" :max="1000" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ custom }}</div>
-        </section>
+export const Disabled: Story = {
+  render: () => ({
+    components: { Slider },
+    setup () {
+      const value = ref(50)
+      return { value }
+    },
+    template: `
+      <div class="max-w-sm">
+        <Slider v-model="value" disabled />
       </div>
     `,
   }),

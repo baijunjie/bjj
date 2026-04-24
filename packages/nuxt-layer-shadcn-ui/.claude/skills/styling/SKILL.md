@@ -159,24 +159,30 @@ background: var(--color-muted);
 
 ## 组件语义配色约定
 
-封装组件的语义配色属性（`color` / `type`，命名规则见 `component` skill）取值固定为 `default | success | info | help | warn | danger`。映射配色方案时，**`default` 必须使用语义化的 `secondary` 色，禁止使用 `primary`**。`primary` 仅保留给主题主色按钮和高亮场景。
+封装组件的语义配色属性（`color` / `type`，命名规则见 `component` skill）取值规则：
 
-### 默认 `default` 映射
+- **`color`** — 取值必须从固定枚举中选：`default | primary | success | info | help | warn | danger`。组件可按需取子集（例如不暴露 `primary`），但不得自创列表外的值
+- **`type`** — 因为同时承载颜色以外的差异（icon、排版等），取值**按组件语义自由决定**：可以沿用上述列表，也可以增减值、省略 `default`、或改用其它名称（例如 ModalContent 额外引入 `error` 区分不同 icon）
 
-| variant | 推荐类 |
-|---------|--------|
-| `flat`（仅填充） | `bg-secondary text-secondary-foreground` |
-| `soft`（填充 + 边框） | `bg-secondary text-secondary-foreground border-border` |
-| `bordered`（仅边框） | `border-border text-foreground` |
-| `solid`（高对比填充） | `bg-accent text-accent-foreground` |
+映射配色方案时，`default` 必须使用 `secondary`（保持低强调的中性语义），只有明确的品牌强调态才用 `primary`。
+
+### `default` / `primary` 映射
+
+| variant | default | primary |
+|---------|---------|---------|
+| `flat`（仅填充） | `bg-secondary text-secondary-foreground` | `bg-primary/10 text-primary` |
+| `soft`（填充 + 边框） | `bg-secondary text-secondary-foreground border-border` | `bg-primary/10 text-primary border-primary/50` |
+| `bordered`（仅边框） | `border-border text-foreground` | `border-primary/50 text-primary` |
+| `solid`（高对比填充） | `bg-accent text-accent-foreground` | `bg-primary text-primary-foreground` |
 
 ### 与语义状态色对照
 
 以 `soft` variant 为例，带色 type 统一使用 `/10` 背景 + 实色文字 + `/50` 边框：
 
-| type | 示例类 |
+| color / type | 示例类 |
 |------|--------|
 | default | `bg-secondary text-secondary-foreground border-border` |
+| primary | `bg-primary/10 text-primary border-primary/50` |
 | success | `bg-success/10 text-success border-success/50` |
 | info | `bg-info/10 text-info border-info/50` |
 | help | `bg-help/10 text-help border-help/50` |

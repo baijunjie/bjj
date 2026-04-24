@@ -15,7 +15,7 @@ const options: RadioCardGroupOption[] = [
   },
 ]
 
-const manyOptions: RadioCardGroupOption[] = [
+const planOptions: RadioCardGroupOption[] = [
   {
     value: 'free',
     title: 'Free',
@@ -38,53 +38,44 @@ const meta = {
   title: 'UI/RadioCardGroup',
   component: RadioCardGroup,
   argTypes: {
+    modelValue: { control: 'text' },
+    options: { control: 'object' },
     disabled: { control: 'boolean' },
   },
   args: {
+    modelValue: 'current',
     options,
     disabled: false,
   },
+  render: args => ({
+    components: { RadioCardGroup },
+    setup () {
+      const selected = ref(args.modelValue ?? '')
+      return { args, selected }
+    },
+    template: `
+      <div class="max-w-md space-y-4">
+        <RadioCardGroup v-bind="args" v-model="selected" />
+        <div class="text-sm text-muted-foreground">Selected: {{ selected }}</div>
+      </div>
+    `,
+  }),
 } satisfies Meta<typeof RadioCardGroup>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  render: args => ({
-    components: { RadioCardGroup },
-    setup () {
-      const selected = ref('current')
-      return { args, selected, options }
-    },
-    template: `
-      <div class="max-w-md space-y-4">
-        <RadioCardGroup
-          v-model="selected"
-          :options="options"
-          :disabled="args.disabled"
-        />
-        <div class="text-sm text-muted-foreground">Selected: {{ selected }}</div>
-      </div>
-    `,
-  }),
-}
+export const Default: Story = {}
 
 export const WithDisabledOption: Story = {
-  render: args => ({
-    components: { RadioCardGroup },
-    setup () {
-      const selected = ref('pro')
-      return { args, selected, manyOptions }
-    },
-    template: `
-      <div class="max-w-md space-y-4">
-        <RadioCardGroup
-          v-model="selected"
-          :options="manyOptions"
-          :disabled="args.disabled"
-        />
-        <div class="text-sm text-muted-foreground">Selected: {{ selected }}</div>
-      </div>
-    `,
-  }),
+  args: {
+    modelValue: 'pro',
+    options: planOptions,
+  },
+}
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+  },
 }

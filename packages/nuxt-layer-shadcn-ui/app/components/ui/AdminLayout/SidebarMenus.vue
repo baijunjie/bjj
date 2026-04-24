@@ -140,7 +140,6 @@ function hasActiveChild (item: AdminLayoutSidebarMenuItem): boolean {
             <WebLink
               v-if="isLink(item)"
               :href="item.href"
-              :externalIcon="false"
               unstyled
             >
               <Icon
@@ -215,7 +214,6 @@ function hasActiveChild (item: AdminLayoutSidebarMenuItem): boolean {
             <WebLink
               v-if="isLink(item)"
               :href="item.href"
-              :externalIcon="false"
               unstyled
             >
               <Icon

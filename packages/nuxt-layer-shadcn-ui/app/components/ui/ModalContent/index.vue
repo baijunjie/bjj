@@ -12,12 +12,12 @@ const typeIconNameMap: Partial<Record<ModalContentType, string>> = {
 }
 
 const typeIconClasses: Record<ModalContentType, string> = {
-  default: 'text-primary',
+  default: 'text-secondary-foreground',
   success: 'text-success',
   info: 'text-info',
   help: 'text-help',
   warn: 'text-warn',
-  danger: 'text-destructive',
+  danger: 'text-danger',
   error: 'text-destructive',
 }
 

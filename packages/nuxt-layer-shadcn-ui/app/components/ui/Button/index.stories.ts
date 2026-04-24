@@ -1,32 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import type { ButtonSize, ButtonVariant } from './types'
 import Icon from '../Icon/index.vue'
 import Button from './index.vue'
 
-type ButtonVariant
-  = | 'default'
-    | 'destructive'
-    | 'outline'
-    | 'secondary'
-    | 'ghost'
-    | 'link'
-type ButtonSize = 'default' | 'sm' | 'lg' | 'icon' | 'icon-sm' | 'icon-lg'
-
-const variants: ButtonVariant[] = [
+const variants = [
   'default',
   'destructive',
   'outline',
   'secondary',
   'ghost',
   'link',
-]
-const sizes: ButtonSize[] = [
+] as const satisfies readonly ButtonVariant[]
+
+const sizes = [
   'sm',
   'default',
   'lg',
   'icon-sm',
   'icon',
   'icon-lg',
-]
+] as const satisfies readonly ButtonSize[]
 
 const meta = {
   title: 'UI/Button',
@@ -49,96 +42,107 @@ const meta = {
     loading: false,
     disabled: false,
   },
+  render: args => ({
+    components: { Button },
+    setup: () => ({ args }),
+    template: '<Button v-bind="args">Button</Button>',
+  }),
 } satisfies Meta<typeof Button>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  args: {
-    loading: false,
-  },
+export const Default: Story = {}
 
-  render: args => ({
-    components: { Button, Icon },
-    setup: () => ({ args, variants, sizes }),
+export const Variants: Story = {
+  render: () => ({
+    components: { Button },
+    setup: () => ({ variants }),
     template: `
-      <div class="space-y-10">
-        <!-- Controlled -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Controlled</h3>
-          <Button v-bind="args">Button</Button>
-        </section>
+      <div class="flex flex-wrap items-center gap-3">
+        <Button v-for="v in variants" :key="v" :variant="v">{{ v }}</Button>
+      </div>
+    `,
+  }),
+}
 
-        <!-- Variants -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Variants</h3>
-          <div class="flex flex-wrap items-center gap-3">
-            <Button v-for="v in variants" :key="v" :variant="v">{{ v }}</Button>
-          </div>
-        </section>
+export const Sizes: Story = {
+  render: () => ({
+    components: { Button, Icon },
+    setup: () => ({ sizes }),
+    template: `
+      <div class="flex flex-wrap items-center gap-3">
+        <Button v-for="s in sizes" :key="s" :size="s">
+          <Icon v-if="s.startsWith('icon')" name="plus" />
+          <template v-else>{{ s }}</template>
+        </Button>
+      </div>
+    `,
+  }),
+}
 
-        <!-- Sizes -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Sizes</h3>
-          <div class="flex flex-wrap items-center gap-3">
-            <Button v-for="s in sizes" :key="s" :size="s">
-              <Icon v-if="s.startsWith('icon')" name="plus" />
-              <template v-else>{{ s }}</template>
-            </Button>
-          </div>
-        </section>
+export const WithIcons: Story = {
+  render: () => ({
+    components: { Button },
+    template: `
+      <div class="flex flex-wrap items-center gap-3">
+        <Button icon="mail">Login with Email</Button>
+        <Button icon="chevron-right" iconPosition="end" variant="secondary">Next</Button>
+        <Button icon="trash-2" variant="destructive">Delete</Button>
+        <Button icon="plus" size="icon" variant="outline" />
+      </div>
+    `,
+  }),
+}
 
-        <!-- With Icons -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">With Icons</h3>
-          <div class="flex flex-wrap items-center gap-3">
-            <Button icon="mail">Login with Email</Button>
-            <Button icon="chevron-right" iconPosition="end" variant="secondary">Next</Button>
-            <Button icon="trash-2" variant="destructive">Delete</Button>
-            <Button icon="plus" size="icon" variant="outline" />
-          </div>
-        </section>
+export const Loading: Story = {
+  render: () => ({
+    components: { Button },
+    template: `
+      <div class="flex flex-wrap items-center gap-3">
+        <Button loading icon="mail">Login with Email</Button>
+        <Button loading icon="chevron-right" iconPosition="end" variant="secondary">Next</Button>
+        <Button loading icon="trash-2" variant="destructive">Delete</Button>
+        <Button loading icon="plus" size="icon" variant="outline" />
+      </div>
+    `,
+  }),
+}
 
-        <!-- Loading -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Loading</h3>
-          <div class="flex flex-wrap items-center gap-3">
-            <Button loading icon="mail">Login with Email</Button>
-            <Button loading icon="chevron-right" iconPosition="end" variant="secondary">Next</Button>
-            <Button loading icon="trash-2" variant="destructive">Delete</Button>
-            <Button loading icon="plus" size="icon" variant="outline" />
-          </div>
-        </section>
+export const Disabled: Story = {
+  render: () => ({
+    components: { Button },
+    setup: () => ({ variants }),
+    template: `
+      <div class="flex flex-wrap items-center gap-3">
+        <Button v-for="v in variants" :key="v" :variant="v" disabled>{{ v }}</Button>
+      </div>
+    `,
+  }),
+}
 
-        <!-- Disabled -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Disabled</h3>
-          <div class="flex flex-wrap items-center gap-3">
-            <Button v-for="v in variants" :key="v" :variant="v" disabled>{{ v }}</Button>
-          </div>
-        </section>
+export const Rounded: Story = {
+  render: () => ({
+    components: { Button },
+    template: `
+      <div class="flex flex-wrap items-center gap-3">
+        <Button rounded>Rounded</Button>
+        <Button rounded variant="outline">Outline</Button>
+        <Button rounded variant="secondary">Secondary</Button>
+        <Button rounded size="icon" variant="outline" icon="plus" />
+        <Button rounded size="icon" variant="secondary" icon="sun" />
+      </div>
+    `,
+  }),
+}
 
-        <!-- Rounded -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Rounded</h3>
-          <div class="flex flex-wrap items-center gap-3">
-            <Button rounded>Rounded</Button>
-            <Button rounded variant="outline">Outline</Button>
-            <Button rounded variant="secondary">Secondary</Button>
-            <Button rounded size="icon" variant="outline" icon="plus" />
-            <Button rounded size="icon" variant="secondary" icon="sun" />
-          </div>
-        </section>
-
-        <!-- Link Buttons -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Link Buttons</h3>
-          <div class="flex flex-wrap items-center gap-3">
-            <Button href="/dialog" variant="outline">Internal Link</Button>
-            <Button href="https://example.com" icon="chevron-right" iconPosition="end">External Link</Button>
-          </div>
-        </section>
+export const LinkButtons: Story = {
+  render: () => ({
+    components: { Button },
+    template: `
+      <div class="flex flex-wrap items-center gap-3">
+        <Button href="/dialog" variant="outline">Internal Link</Button>
+        <Button href="https://example.com" icon="external-link" iconPosition="end">External Link</Button>
       </div>
     `,
   }),

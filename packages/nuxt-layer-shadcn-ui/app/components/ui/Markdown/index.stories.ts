@@ -10,17 +10,9 @@ const meta = {
   args: {
     hideTitle: false,
   },
-} satisfies Meta<typeof Markdown>
-
-export default meta
-type Story = StoryObj<typeof meta>
-
-export const Default: Story = {
   render: args => ({
     components: { Markdown },
-    setup () {
-      return { args }
-    },
+    setup: () => ({ args }),
     template: `
       <Markdown v-bind="args">
         <h1>Document Title</h1>
@@ -49,4 +41,9 @@ console.log(greeting)</code></pre>
       </Markdown>
     `,
   }),
-}
+} satisfies Meta<typeof Markdown>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {}

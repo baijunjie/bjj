@@ -6,68 +6,122 @@ const meta = {
   title: 'UI/Input',
   component: Input,
   argTypes: {
+    modelValue: { control: 'text' },
+    autocomplete: { control: 'text' },
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
     invalid: { control: 'boolean' },
   },
   args: {
+    modelValue: '',
+    autocomplete: 'off',
     disabled: false,
     readonly: false,
     invalid: false,
   },
-} satisfies Meta
+  render: args => ({
+    components: { Input },
+    setup: () => ({ args }),
+    template: `
+      <Input v-bind="args" placeholder="Type something..." class="max-w-sm" />
+    `,
+  }),
+} satisfies Meta<typeof Input>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  render: args => ({
+export const Default: Story = {}
+
+export const Controlled: Story = {
+  render: () => ({
+    components: { Input },
+    setup () {
+      const value = ref('')
+      return { value }
+    },
+    template: `
+      <div class="max-w-sm space-y-2">
+        <Input v-model="value" placeholder="Enter your name..." />
+        <div class="text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
+}
+
+export const WithPrefix: Story = {
+  render: () => ({
     components: { Input, Icon },
     setup () {
       const value = ref('')
-      const withPrefix = ref('')
-      const withSuffix = ref('')
-      const password = ref('')
-      return { args, value, withPrefix, withSuffix, password }
+      return { value }
     },
     template: `
-      <div class="space-y-10 max-w-sm">
-        <!-- Controlled -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Controlled</h3>
-          <Input v-model="value" v-bind="args" placeholder="Enter your name..." />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
-        </section>
-
-        <!-- With Prefix Icon -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">With Prefix Icon</h3>
-          <Input v-model="withPrefix" placeholder="Search...">
-            <template #prefix>
-              <Icon name="search" />
-            </template>
-          </Input>
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ withPrefix }}</div>
-        </section>
-
-        <!-- With Suffix Icon -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">With Suffix Icon</h3>
-          <Input v-model="withSuffix" placeholder="Email">
-            <template #suffix>
-              <Icon name="mail" />
-            </template>
-          </Input>
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ withSuffix }}</div>
-        </section>
-
-        <!-- Password -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Password</h3>
-          <Input v-model="password" type="password" placeholder="Password" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ password }}</div>
-        </section>
+      <div class="max-w-sm space-y-2">
+        <Input v-model="value" placeholder="Search...">
+          <template #prefix>
+            <Icon name="search" />
+          </template>
+        </Input>
+        <div class="text-sm text-muted-foreground">Value: {{ value }}</div>
       </div>
     `,
+  }),
+}
+
+export const WithSuffix: Story = {
+  render: () => ({
+    components: { Input, Icon },
+    setup () {
+      const value = ref('')
+      return { value }
+    },
+    template: `
+      <div class="max-w-sm space-y-2">
+        <Input v-model="value" placeholder="Email">
+          <template #suffix>
+            <Icon name="mail" />
+          </template>
+        </Input>
+        <div class="text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
+}
+
+export const Password: Story = {
+  render: () => ({
+    components: { Input },
+    setup () {
+      const value = ref('')
+      return { value }
+    },
+    template: `
+      <div class="max-w-sm space-y-2">
+        <Input v-model="value" type="password" placeholder="Password" />
+        <div class="text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
+}
+
+export const Disabled: Story = {
+  render: () => ({
+    components: { Input },
+    template: '<Input disabled placeholder="Disabled input" class="max-w-sm" />',
+  }),
+}
+
+export const Readonly: Story = {
+  render: () => ({
+    components: { Input },
+    template: '<Input readonly modelValue="Read-only value" class="max-w-sm" />',
+  }),
+}
+
+export const Invalid: Story = {
+  render: () => ({
+    components: { Input },
+    template: '<Input invalid modelValue="Invalid value" class="max-w-sm" />',
   }),
 }

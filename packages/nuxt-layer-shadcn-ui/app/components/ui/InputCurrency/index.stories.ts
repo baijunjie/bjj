@@ -1,74 +1,114 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import InputCurrency from './index.vue'
 
+const currencyDisplays = [ 'symbol', 'narrowSymbol', 'code', 'name' ] as const
+
 const meta = {
   title: 'UI/InputCurrency',
   component: InputCurrency,
   argTypes: {
-    disabled: { control: 'boolean' },
+    currency: { control: 'text' },
+    currencyDisplay: { control: 'select', options: currencyDisplays },
   },
   args: {
-    disabled: false,
+    currency: 'JPY',
+    currencyDisplay: 'symbol',
   },
-} satisfies Meta
+  render: args => ({
+    components: { InputCurrency },
+    setup () {
+      const value = ref(1000)
+      return { args, value }
+    },
+    template: `
+      <div class="max-w-xs">
+        <InputCurrency v-model="value" v-bind="args" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
+} satisfies Meta<typeof InputCurrency>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  render: args => ({
+export const Default: Story = {}
+
+export const UsdSymbol: Story = {
+  render: () => ({
     components: { InputCurrency },
     setup () {
-      const jpy = ref(1000)
-      const usd = ref(49.99)
-      const eurCode = ref(29.99)
-      const cadSymbol = ref(79.99)
-      const cadNarrow = ref(79.99)
-      const jpyName = ref(5000)
-      return { args, jpy, usd, eurCode, cadSymbol, cadNarrow, jpyName }
+      const value = ref(49.99)
+      return { value }
     },
     template: `
-      <div class="space-y-10 max-w-xs">
-        <!-- Controlled -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Controlled</h3>
-          <InputCurrency v-model="jpy" v-bind="args" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ jpy }}</div>
-        </section>
+      <div class="max-w-xs">
+        <InputCurrency v-model="value" currency="USD" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- USD (symbol) -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">USD (symbol)</h3>
-          <InputCurrency v-model="usd" currency="USD" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ usd }}</div>
-        </section>
+export const EurCodeDisplay: Story = {
+  render: () => ({
+    components: { InputCurrency },
+    setup () {
+      const value = ref(29.99)
+      return { value }
+    },
+    template: `
+      <div class="max-w-xs">
+        <InputCurrency v-model="value" currency="EUR" currencyDisplay="code" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- EUR (code display) -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">EUR (code display)</h3>
-          <InputCurrency v-model="eurCode" currency="EUR" currencyDisplay="code" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ eurCode }}</div>
-        </section>
+export const CadSymbol: Story = {
+  render: () => ({
+    components: { InputCurrency },
+    setup () {
+      const value = ref(79.99)
+      return { value }
+    },
+    template: `
+      <div class="max-w-xs">
+        <InputCurrency v-model="value" currency="CAD" currencyDisplay="symbol" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- CAD symbol vs narrowSymbol -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">CAD (symbol → CA$)</h3>
-          <InputCurrency v-model="cadSymbol" currency="CAD" currencyDisplay="symbol" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ cadSymbol }}</div>
-        </section>
+export const CadNarrowSymbol: Story = {
+  render: () => ({
+    components: { InputCurrency },
+    setup () {
+      const value = ref(79.99)
+      return { value }
+    },
+    template: `
+      <div class="max-w-xs">
+        <InputCurrency v-model="value" currency="CAD" currencyDisplay="narrowSymbol" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <section>
-          <h3 class="mb-4 text-lg font-medium">CAD (narrowSymbol → $)</h3>
-          <InputCurrency v-model="cadNarrow" currency="CAD" currencyDisplay="narrowSymbol" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ cadNarrow }}</div>
-        </section>
-
-        <!-- JPY (name display) -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">JPY (name display)</h3>
-          <InputCurrency v-model="jpyName" currencyDisplay="name" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ jpyName }}</div>
-        </section>
+export const JpyNameDisplay: Story = {
+  render: () => ({
+    components: { InputCurrency },
+    setup () {
+      const value = ref(5000)
+      return { value }
+    },
+    template: `
+      <div class="max-w-xs">
+        <InputCurrency v-model="value" currencyDisplay="name" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
       </div>
     `,
   }),

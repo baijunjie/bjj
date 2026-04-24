@@ -12,8 +12,9 @@ const surfaceVariants = cva(
         bordered: 'border bg-transparent',
         flat: '',
       },
-      type: {
+      color: {
         default: '',
+        primary: '',
         success: '',
         info: '',
         help: '',
@@ -23,81 +24,91 @@ const surfaceVariants = cva(
     },
     compoundVariants: [
       // solid — full color background
-      { variant: 'solid', type: 'default', class: `
+      { variant: 'solid', color: 'default', class: `
         border-transparent bg-accent text-accent-foreground
       ` },
-      { variant: 'solid', type: 'success', class: `
+      { variant: 'solid', color: 'primary', class: `
+        border-primary bg-primary text-primary-foreground
+      ` },
+      { variant: 'solid', color: 'success', class: `
         border-success bg-success text-success-foreground
       ` },
-      { variant: 'solid', type: 'info', class: `
+      { variant: 'solid', color: 'info', class: `
         border-info bg-info text-info-foreground
       ` },
-      { variant: 'solid', type: 'help', class: `
+      { variant: 'solid', color: 'help', class: `
         border-help bg-help text-help-foreground
       ` },
-      { variant: 'solid', type: 'warn', class: `
+      { variant: 'solid', color: 'warn', class: `
         border-warn bg-warn text-warn-foreground
       ` },
-      { variant: 'solid', type: 'danger', class: `
+      { variant: 'solid', color: 'danger', class: `
         border-danger bg-danger text-danger-foreground
       ` },
       // soft — tinted background + soft border
-      { variant: 'soft', type: 'default', class: `
+      { variant: 'soft', color: 'default', class: `
         border-border bg-secondary text-secondary-foreground
       ` },
-      { variant: 'soft', type: 'success', class: `
+      { variant: 'soft', color: 'primary', class: `
+        border-primary/50 bg-primary/10 text-primary
+      ` },
+      { variant: 'soft', color: 'success', class: `
         border-success/50 bg-success/10 text-success
       ` },
-      { variant: 'soft', type: 'info', class: `
+      { variant: 'soft', color: 'info', class: `
         border-info/50 bg-info/10 text-info
       ` },
-      { variant: 'soft', type: 'help', class: `
+      { variant: 'soft', color: 'help', class: `
         border-help/50 bg-help/10 text-help
       ` },
-      { variant: 'soft', type: 'warn', class: `
+      { variant: 'soft', color: 'warn', class: `
         border-warn/50 bg-warn/10 text-warn
       ` },
-      { variant: 'soft', type: 'danger', class: `
+      { variant: 'soft', color: 'danger', class: `
         border-danger/50 bg-danger/10 text-danger
       ` },
       // bordered — border only
-      { variant: 'bordered', type: 'default', class: `
+      { variant: 'bordered', color: 'default', class: `
         border-border text-foreground
       ` },
-      { variant: 'bordered', type: 'success', class: `
+      { variant: 'bordered', color: 'primary', class: `
+        border-primary/50 text-primary
+      ` },
+      { variant: 'bordered', color: 'success', class: `
         border-success/50 text-success
       ` },
-      { variant: 'bordered', type: 'info', class: 'border-info/50 text-info' },
-      { variant: 'bordered', type: 'help', class: 'border-help/50 text-help' },
-      { variant: 'bordered', type: 'warn', class: 'border-warn/50 text-warn' },
-      { variant: 'bordered', type: 'danger', class: `
+      { variant: 'bordered', color: 'info', class: 'border-info/50 text-info' },
+      { variant: 'bordered', color: 'help', class: 'border-help/50 text-help' },
+      { variant: 'bordered', color: 'warn', class: 'border-warn/50 text-warn' },
+      { variant: 'bordered', color: 'danger', class: `
         border-danger/50 text-danger
       ` },
       // flat — tinted background only
-      { variant: 'flat', type: 'default', class: `
+      { variant: 'flat', color: 'default', class: `
         bg-secondary text-secondary-foreground
       ` },
-      { variant: 'flat', type: 'success', class: 'bg-success/10 text-success' },
-      { variant: 'flat', type: 'info', class: 'bg-info/10 text-info' },
-      { variant: 'flat', type: 'help', class: 'bg-help/10 text-help' },
-      { variant: 'flat', type: 'warn', class: 'bg-warn/10 text-warn' },
-      { variant: 'flat', type: 'danger', class: 'bg-danger/10 text-danger' },
+      { variant: 'flat', color: 'primary', class: 'bg-primary/10 text-primary' },
+      { variant: 'flat', color: 'success', class: 'bg-success/10 text-success' },
+      { variant: 'flat', color: 'info', class: 'bg-info/10 text-info' },
+      { variant: 'flat', color: 'help', class: 'bg-help/10 text-help' },
+      { variant: 'flat', color: 'warn', class: 'bg-warn/10 text-warn' },
+      { variant: 'flat', color: 'danger', class: 'bg-danger/10 text-danger' },
     ],
     defaultVariants: {
       variant: 'soft',
-      type: 'default',
+      color: 'default',
     },
   },
 )
 
 const props = withDefaults(defineProps<SurfaceProps>(), {
-  type: 'default',
+  color: 'default',
   variant: 'soft',
   class: undefined,
 })
 
 const mergedClass = computed(() =>
-  cn(surfaceVariants({ type: props.type, variant: props.variant }), props.class),
+  cn(surfaceVariants({ color: props.color, variant: props.variant }), props.class),
 )
 </script>
 

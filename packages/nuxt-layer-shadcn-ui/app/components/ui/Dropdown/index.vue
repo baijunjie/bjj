@@ -18,6 +18,10 @@ const actionColorVariants = cva('', {
   variants: {
     color: {
       default: '',
+      primary: `
+        text-primary
+        focus:bg-primary/10 focus:text-primary
+      `,
       success: `
         text-success
         focus:bg-success/10 focus:text-success

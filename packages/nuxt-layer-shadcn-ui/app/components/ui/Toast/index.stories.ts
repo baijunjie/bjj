@@ -3,15 +3,38 @@ import { toast } from 'vue-sonner'
 import Button from '../Button/index.vue'
 import Toast from './index.vue'
 
+const positions = [ 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'top-center', 'bottom-center' ] as const
+
 const meta = {
   title: 'UI/Toast',
   component: Toast,
+  argTypes: {
+    position: { control: 'select', options: positions },
+  },
+  args: {
+    position: 'bottom-right',
+  },
+  render: args => ({
+    components: { Toast, Button },
+    setup () {
+      const show = () => toast('This is a toast')
+      return { args, show }
+    },
+    template: `
+      <div class="space-y-4">
+        <Toast v-bind="args" />
+        <Button variant="outline" @click="show">Show Toast</Button>
+      </div>
+    `,
+  }),
 } satisfies Meta<typeof Toast>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
+export const Default: Story = {}
+
+export const Types: Story = {
   render: () => ({
     components: { Toast, Button },
     setup () {
@@ -20,28 +43,58 @@ export const Default: Story = {
       const showError = () => toast.error('Something went wrong')
       const showInfo = () => toast.info('Here is some information')
       const showWarning = () => toast.warning('Please be careful')
-      const showWithDescription = () => toast('Event created', { description: 'Your event has been scheduled for tomorrow at 3:00 PM.' })
-      return { showDefault, showSuccess, showError, showInfo, showWarning, showWithDescription }
+      return { showDefault, showSuccess, showError, showInfo, showWarning }
     },
     template: `
-      <div class="space-y-10">
+      <div>
         <Toast position="bottom-right" />
+        <div class="flex flex-wrap gap-3">
+          <Button variant="outline" @click="showDefault">Default</Button>
+          <Button variant="outline" @click="showSuccess">Success</Button>
+          <Button variant="outline" @click="showError">Error</Button>
+          <Button variant="outline" @click="showInfo">Info</Button>
+          <Button variant="outline" @click="showWarning">Warning</Button>
+        </div>
+      </div>
+    `,
+  }),
+}
 
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Toast Types</h3>
-          <div class="flex flex-wrap gap-3">
-            <Button variant="outline" @click="showDefault">Default</Button>
-            <Button variant="outline" @click="showSuccess">Success</Button>
-            <Button variant="outline" @click="showError">Error</Button>
-            <Button variant="outline" @click="showInfo">Info</Button>
-            <Button variant="outline" @click="showWarning">Warning</Button>
-          </div>
-        </section>
+export const WithDescription: Story = {
+  render: () => ({
+    components: { Toast, Button },
+    setup () {
+      const show = () => toast('Event created', {
+        description: 'Your event has been scheduled for tomorrow at 3:00 PM.',
+      })
+      return { show }
+    },
+    template: `
+      <div>
+        <Toast position="bottom-right" />
+        <Button variant="outline" @click="show">Show Toast with Description</Button>
+      </div>
+    `,
+  }),
+}
 
-        <section>
-          <h3 class="mb-4 text-lg font-medium">With Description</h3>
-          <Button variant="outline" @click="showWithDescription">Show Toast with Description</Button>
-        </section>
+export const Positions: Story = {
+  render: () => ({
+    components: { Toast, Button },
+    setup () {
+      const current = ref<typeof positions[number]>('bottom-right')
+      const show = (pos: typeof positions[number]) => {
+        current.value = pos
+        nextTick(() => toast(`Toast at ${pos}`))
+      }
+      return { positions, current, show }
+    },
+    template: `
+      <div>
+        <Toast :position="current" />
+        <div class="flex flex-wrap gap-3">
+          <Button v-for="p in positions" :key="p" variant="outline" @click="show(p)">{{ p }}</Button>
+        </div>
       </div>
     `,
   }),

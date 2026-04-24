@@ -1,52 +1,63 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import type { BreadcrumbItem } from './types'
 import Breadcrumb from './index.vue'
+
+const home: BreadcrumbItem = { label: 'Home', icon: 'house', href: '/' }
+
+const basicItems: BreadcrumbItem[] = [
+  { label: 'Products', href: '/products' },
+  { label: 'Electronics', href: '/products/electronics' },
+  { label: 'Laptops' },
+]
+
+const withIconItems: BreadcrumbItem[] = [
+  { label: 'Settings', icon: 'settings', href: '/settings' },
+  { label: 'Profile' },
+]
 
 const meta = {
   title: 'UI/Breadcrumb',
   component: Breadcrumb,
+  argTypes: {
+    model: { control: 'object' },
+    home: { control: 'object' },
+  },
+  args: {
+    model: basicItems,
+    home,
+  },
+  render: args => ({
+    components: { Breadcrumb },
+    setup: () => ({ args }),
+    template: '<Breadcrumb v-bind="args" />',
+  }),
 } satisfies Meta<typeof Breadcrumb>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
+export const Default: Story = {}
+
+export const WithHome: Story = {
   render: () => ({
     components: { Breadcrumb },
-    setup () {
-      const home = { label: 'Home', icon: 'house', href: '/' }
-      const basicItems = [
-        { label: 'Products', href: '/products' },
-        { label: 'Electronics', href: '/products/electronics' },
-        { label: 'Laptops' },
-      ]
-      const withIcons = [
-        { label: 'Settings', icon: 'settings', href: '/settings' },
-        { label: 'Profile' },
-      ]
-      return { home, basicItems, withIcons }
-    },
-    template: `
-      <div class="space-y-10">
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Basic</h3>
-          <Breadcrumb :model="basicItems" />
-        </section>
+    setup: () => ({ home, basicItems }),
+    template: '<Breadcrumb :home="home" :model="basicItems" />',
+  }),
+}
 
-        <section>
-          <h3 class="mb-4 text-lg font-medium">With Home</h3>
-          <Breadcrumb :home="home" :model="basicItems" />
-        </section>
+export const WithIcons: Story = {
+  render: () => ({
+    components: { Breadcrumb },
+    setup: () => ({ home, withIconItems }),
+    template: '<Breadcrumb :home="home" :model="withIconItems" />',
+  }),
+}
 
-        <section>
-          <h3 class="mb-4 text-lg font-medium">With Icons</h3>
-          <Breadcrumb :home="home" :model="withIcons" />
-        </section>
-
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Single Item</h3>
-          <Breadcrumb :home="home" />
-        </section>
-      </div>
-    `,
+export const SingleItem: Story = {
+  render: () => ({
+    components: { Breadcrumb },
+    setup: () => ({ home }),
+    template: '<Breadcrumb :home="home" />',
   }),
 }

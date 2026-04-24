@@ -1,20 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import Icon from './index.vue'
 
-const meta = {
-  title: 'UI/Icon',
-  component: Icon,
-  argTypes: {
-    name: { control: 'text' },
-  },
-  args: {
-    name: 'house',
-  },
-} satisfies Meta<typeof Icon>
-
-export default meta
-type Story = StoryObj<typeof meta>
-
 const commonIcons = [
   'house', 'search', 'settings', 'user', 'mail', 'bell',
   'heart', 'star', 'plus', 'minus', 'check', 'x',
@@ -24,44 +10,56 @@ const commonIcons = [
   'upload', 'share', 'link', 'external-link', 'info', 'triangle-alert',
 ]
 
-export const Default: Story = {
+const meta = {
+  title: 'UI/Icon',
+  component: Icon,
+  argTypes: {
+    name: { control: 'text' },
+  },
+  args: {
+    name: 'house',
+  },
   render: args => ({
     components: { Icon },
-    setup: () => ({ args, commonIcons }),
+    setup: () => ({ args }),
+    template: '<Icon v-bind="args" />',
+  }),
+} satisfies Meta<typeof Icon>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {}
+
+export const CommonIcons: Story = {
+  render: () => ({
+    components: { Icon },
+    setup: () => ({ commonIcons }),
     template: `
-      <div class="space-y-10">
-        <!-- Controlled -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Controlled</h3>
-          <Icon v-bind="args" />
-        </section>
+      <div class="grid grid-cols-8 gap-4">
+        <div
+          v-for="name in commonIcons"
+          :key="name"
+          class="flex flex-col items-center gap-2 rounded-md border p-3"
+        >
+          <Icon :name="name" class="size-5" />
+          <span class="text-xs text-muted-foreground">{{ name }}</span>
+        </div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- Common Icons -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Common Icons</h3>
-          <div class="grid grid-cols-8 gap-4">
-            <div
-              v-for="name in commonIcons"
-              :key="name"
-              class="flex flex-col items-center gap-2 rounded-md border p-3"
-            >
-              <Icon :name="name" class="size-5" />
-              <span class="text-xs text-muted-foreground">{{ name }}</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- Sizes -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Sizes</h3>
-          <div class="flex items-end gap-4">
-            <Icon name="star" class="size-3" />
-            <Icon name="star" class="size-4" />
-            <Icon name="star" class="size-5" />
-            <Icon name="star" class="size-6" />
-            <Icon name="star" class="size-8" />
-          </div>
-        </section>
+export const Sizes: Story = {
+  render: () => ({
+    components: { Icon },
+    template: `
+      <div class="flex items-end gap-4">
+        <Icon name="star" class="size-3" />
+        <Icon name="star" class="size-4" />
+        <Icon name="star" class="size-5" />
+        <Icon name="star" class="size-6" />
+        <Icon name="star" class="size-8" />
       </div>
     `,
   }),

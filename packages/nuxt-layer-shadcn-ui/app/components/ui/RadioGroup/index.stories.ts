@@ -18,82 +18,105 @@ const meta = {
   title: 'UI/RadioGroup',
   component: RadioGroup,
   argTypes: {
+    items: { control: 'object' },
+    modelValue: { control: 'text' },
     disabled: { control: 'boolean' },
-    orientation: {
-      control: 'inline-radio',
-      options: [ 'vertical', 'horizontal' ],
-    },
+    orientation: { control: 'inline-radio', options: [ 'vertical', 'horizontal' ]},
   },
   args: {
     items: options,
+    modelValue: 'option1',
     disabled: false,
     orientation: 'vertical',
   },
+  render: args => ({
+    components: { RadioGroup },
+    setup: () => ({ args }),
+    template: '<RadioGroup v-bind="args" />',
+  }),
 } satisfies Meta<typeof RadioGroup>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  render: args => ({
+export const Default: Story = {}
+
+export const Controlled: Story = {
+  render: () => ({
     components: { RadioGroup },
     setup () {
       const selected = ref('option1')
-      const horizontal = ref('option1')
-      const plan = ref('pro')
-      const customized = ref('pro')
-      return { args, selected, horizontal, plan, customized, plans }
+      return { options, selected }
     },
     template: `
-      <div class="space-y-10">
-        <!-- Controlled -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Controlled</h3>
-          <RadioGroup
-            v-model="selected"
-            :items="args.items"
-            :disabled="args.disabled"
-            :orientation="args.orientation"
-          />
-          <div class="mt-2 text-sm text-muted-foreground">Selected: {{ selected }}</div>
-        </section>
+      <div class="space-y-2">
+        <RadioGroup v-model="selected" :items="options" />
+        <div class="text-sm text-muted-foreground">Selected: {{ selected }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- Horizontal -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Horizontal</h3>
-          <RadioGroup
-            v-model="horizontal"
-            :items="args.items"
-            orientation="horizontal"
-          />
-          <div class="mt-2 text-sm text-muted-foreground">Selected: {{ horizontal }}</div>
-        </section>
+export const Horizontal: Story = {
+  render: () => ({
+    components: { RadioGroup },
+    setup () {
+      const selected = ref('option1')
+      return { options, selected }
+    },
+    template: `
+      <div class="space-y-2">
+        <RadioGroup v-model="selected" :items="options" orientation="horizontal" />
+        <div class="text-sm text-muted-foreground">Selected: {{ selected }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- With Disabled Item -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">With Disabled Item</h3>
-          <RadioGroup
-            v-model="plan"
-            :items="plans"
-          />
-          <div class="mt-2 text-sm text-muted-foreground">Plan: {{ plan }}</div>
-        </section>
+export const WithDisabledItem: Story = {
+  render: () => ({
+    components: { RadioGroup },
+    setup () {
+      const plan = ref('pro')
+      return { plans, plan }
+    },
+    template: `
+      <div class="space-y-2">
+        <RadioGroup v-model="plan" :items="plans" />
+        <div class="text-sm text-muted-foreground">Plan: {{ plan }}</div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- Custom Label Slot -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Custom Label Slot</h3>
-          <RadioGroup
-            v-model="customized"
-            :items="plans"
-          >
-            <template #label="{ item, checked }">
-              <span :class="checked ? 'font-semibold text-primary' : 'text-foreground'">
-                {{ item.label }}
-              </span>
-            </template>
-          </RadioGroup>
-          <div class="mt-2 text-sm text-muted-foreground">Plan: {{ customized }}</div>
-        </section>
+export const Disabled: Story = {
+  render: () => ({
+    components: { RadioGroup },
+    setup () {
+      const selected = ref('option1')
+      return { options, selected }
+    },
+    template: '<RadioGroup v-model="selected" :items="options" disabled />',
+  }),
+}
+
+export const CustomSlots: Story = {
+  render: () => ({
+    components: { RadioGroup },
+    setup () {
+      const plan = ref('pro')
+      return { plans, plan }
+    },
+    template: `
+      <div class="space-y-2">
+        <RadioGroup v-model="plan" :items="plans">
+          <template #label="{ item, checked }">
+            <span :class="checked ? 'font-semibold text-primary' : 'text-foreground'">
+              {{ item.label }}
+            </span>
+          </template>
+        </RadioGroup>
+        <div class="text-sm text-muted-foreground">Plan: {{ plan }}</div>
       </div>
     `,
   }),

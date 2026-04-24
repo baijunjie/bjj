@@ -1,6 +1,6 @@
 ---
 name: storybook
-description: Storybook story 开发规范。**创建或修改任何 `.stories.ts` 文件前必须调用**。涵盖 story 文件位置、meta 结构、story 拆分原则、Playground 放在末尾、Controls 完整性、Docs 页面聚合等规范。
+description: Storybook story 开发规范。**创建或修改任何 `.stories.ts` 文件前必须调用**。涵盖 story 文件位置、meta 结构、story 拆分原则、Default 作为 Primary / Controls 的载体、Controls 完整性、Docs 页面聚合等规范。
 ---
 
 # Storybook Story 开发指南
@@ -17,8 +17,8 @@ description: Storybook story 开发规范。**创建或修改任何 `.stories.ts
 - **每个可配置 Prop 至少要有一个专门的演示 story**
 - **meta 的 `argTypes` 必须列出所有可配置 Prop**
 - **meta 的 `args` 必须给所有可配置 Prop 设默认值**
-- **最后一个 story 必须是 `Playground`**（args 绑定，用户可通过 Controls 交互）
-  - 原因：Storybook Docs 页里 Controls 面板在最下面，把 Playground 放末尾可以让交互演示和其控件正好挨在一起
+- **第一个 export 必须是 `Default`，且为空对象 `{}` 继承 meta.render**
+  - 原因：Storybook Docs 页把第一个 story 当作 Primary，紧跟其下渲染 ArgsTable（Controls）。`Default` 继承 meta 的 `<X v-bind="args">` 模板后，用户在 Controls 里改动会立即反映到这个交互演示上。把 args 绑定的 story 放第一位才能和 Controls 挨在一起。
 
 ---
 
@@ -63,7 +63,7 @@ const meta = {
     loading: false,
     disabled: false,
   },
-  render: args => ({               // ⑤ meta 级 render：被 Playground 继承
+  render: args => ({               // ⑤ meta 级 render：被 Default 继承
     components: { Button },
     setup: () => ({ args }),
     template: '<Button v-bind="args">Button</Button>',
@@ -82,7 +82,7 @@ type Story = StoryObj<typeof meta>
 | `component` | 必填，**不要加 `as any`**（除非真的遇到无法解决的类型冲突） |
 | `argTypes` | 列出**所有** Prop；用 `control: 'select'`/`'boolean'`/`'text'`/`'number'` 配合 `options` |
 | `args` | 每个 Prop 都给默认值，消费方在 Controls 里改动会基于这套默认值 |
-| `render` | 提升到 meta，供 `Playground` 继承；template 里应该用 `v-bind="args"` 让 Controls 生效 |
+| `render` | 提升到 meta，供 `Default` 继承；template 里**必须**用 `<X v-bind="args">` 让 Controls 驱动 |
 
 ---
 
@@ -91,18 +91,35 @@ type Story = StoryObj<typeof meta>
 ### 顺序
 
 ```
-export const Default       // ① 开场：最典型的一个用法
-export const <FeatureA>    // ②~⑨ 演示每一个 Prop / 特性
+export const Default       // ① 第一个：args 驱动的 Primary，Controls 面板挂在它下面
+export const <FeatureA>    // ② 起 各 feature story（覆盖每个 Prop / 特性）
 export const <FeatureB>
 ...
-export const Playground    // ⑩ 末尾：args 驱动的交互演示（继承 meta.render）
 ```
+
+### `Default` story
+
+`Default` 是空对象，继承 `meta.render`——用户在 Controls 里改 args，这里会直接响应：
+
+```ts
+export const Default: Story = {}
+```
+
+如需覆盖 meta 的默认 args，可以：
+
+```ts
+export const Default: Story = {
+  args: { variant: 'outline' },
+}
+```
+
+**不要给 `Default` 写自己的 `render`**。一写 render 就脱离 args 绑定，Controls 就没用了。
 
 ### 命名约定（PascalCase）
 
 | 演示内容 | export 名 |
 |---|---|
-| 最典型的默认用法 | `Default` |
+| **首个 Primary，args 驱动** | **`Default`**（空对象 `{}`） |
 | 列举某枚举型 prop 的所有取值 | 用 prop 名的复数形式，如 `Variants` / `Sizes` / `Types` / `Colors` |
 | 带图标 | `WithIcons` / `WithPrefix` / `WithSuffix` |
 | 带描述 | `WithDescription` |
@@ -115,24 +132,7 @@ export const Playground    // ⑩ 末尾：args 驱动的交互演示（继承 m
 | 圆角 | `Rounded` |
 | 链接形式 | `AsLink` / `LinkButtons` |
 | 自定义 slot | `CustomSlots` |
-| 两个枚举 prop 的矩阵组合 | `<A><B>Matrix`，如 `VariantTypeMatrix` |
-| **末尾交互演示** | **`Playground`** |
-
-### Playground story
-
-`Playground` 通常只留空对象（继承 meta.render）：
-
-```ts
-export const Playground: Story = {}
-```
-
-如需覆盖默认 args，可以：
-
-```ts
-export const Playground: Story = {
-  args: { variant: 'outline' },
-}
-```
+| 两个枚举 prop 的矩阵组合 | `<A><B>Matrix`，如 `VariantColorMatrix` |
 
 ---
 
@@ -142,31 +142,30 @@ export const Playground: Story = {
 
 假设组件有 `variant`、`size`、`disabled`、`loading`、`icon`、`rounded` 这些 Prop，story 文件里应**至少**有：
 
-- `Default`
+- `Default`（args 驱动，继承 meta.render）
 - `Variants`（覆盖 `variant`）
 - `Sizes`（覆盖 `size`）
 - `WithIcons`（覆盖 `icon` / `iconPosition`）
 - `Disabled`（覆盖 `disabled`）
 - `Loading`（覆盖 `loading`）
 - `Rounded`（覆盖 `rounded`）
-- `Playground`
 
 可以合并相关 Prop 到一个 story（比如 `iconPosition` 可以作为 `WithIcons` 的一部分），但不能跳过。
 
 ### 组合型演示
 
-某些 Prop 配合使用才有意义（比如 `variant × type`），用矩阵演示：
+某些 Prop 配合使用才有意义（比如 `variant × color`），用矩阵演示：
 
 ```ts
-export const VariantTypeMatrix: Story = {
+export const VariantColorMatrix: Story = {
   render: () => ({
     components: { Tag },
-    setup: () => ({ types, variants }),
+    setup: () => ({ colors, variants }),
     template: `
       <div class="space-y-3">
         <div v-for="v in variants" :key="v" class="flex flex-wrap items-center gap-3">
           <span class="w-20 text-sm text-muted-foreground">{{ v }}</span>
-          <Tag v-for="t in types" :key="t" :type="t" :variant="v">{{ t }}</Tag>
+          <Tag v-for="c in colors" :key="c" :color="c" :variant="v">{{ c }}</Tag>
         </div>
       </div>
     `,
@@ -265,7 +264,7 @@ parameters: {
 }
 ```
 
-原则：**Playground** 的 source 必须能自动生成（`<Component v-bind="args" />` 模板极简）。其他展示型 story 的 source 不重要时可以放弃或关闭。
+原则：**`Default`**（继承 meta.render 的 `<Component v-bind="args" />`）的 source 必须能自动生成。其他展示型 story 的 source 不重要时可以放弃或关闭。
 
 ---
 

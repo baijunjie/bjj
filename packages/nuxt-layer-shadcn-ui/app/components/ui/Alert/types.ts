@@ -4,6 +4,7 @@ export type AlertType = 'default' | 'success' | 'info' | 'help' | 'warn' | 'dang
 
 export interface AlertProps {
   type?: AlertType
-  icon?: string | Component
+  /** Pass `null` to explicitly hide the icon; leave undefined to use the type's default. */
+  icon?: string | Component | null
   class?: ClassValue
 }

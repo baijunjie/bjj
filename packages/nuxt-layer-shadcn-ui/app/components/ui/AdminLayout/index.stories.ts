@@ -6,6 +6,9 @@ import Breadcrumb from '../Breadcrumb/index.vue'
 import Button from '../Button/index.vue'
 import Card from '../Card/index.vue'
 
+const variants = [ 'sidebar', 'floating', 'inset' ] as const
+const collapsibles = [ 'icon', 'offcanvas', 'none' ] as const
+
 const menus: AdminLayoutSidebarMenuItem[] = [
   {
     label: 'Dashboard',
@@ -91,17 +94,15 @@ const meta = {
   title: 'UI/AdminLayout',
   component: AdminLayout,
   argTypes: {
-    variant: {
-      control: 'select',
-      options: [ 'sidebar', 'floating', 'inset' ],
-    },
-    collapsible: {
-      control: 'select',
-      options: [ 'icon', 'offcanvas', 'none' ],
-    },
+    menus: { control: 'object' },
+    headerDropdown: { control: 'object' },
+    footerDropdown: { control: 'object' },
+    variant: { control: 'select', options: variants },
+    collapsible: { control: 'select', options: collapsibles },
   },
   args: {
     menus,
+    headerDropdown: undefined,
     footerDropdown: { profile, menuItems },
     variant: 'sidebar',
     collapsible: 'icon',

@@ -2,8 +2,7 @@
 import { Alert as ShadcnAlert } from '../../shadcn/alert'
 import type { AlertProps, AlertType } from './types'
 
-const typeIconNameMap: Record<AlertType, string> = {
-  default: 'info',
+const typeIconNameMap: Partial<Record<AlertType, string>> = {
   success: 'circle-check',
   info: 'info',
   help: 'circle-question-mark',
@@ -27,7 +26,8 @@ const props = withDefaults(defineProps<AlertProps>(), {
 })
 
 const defaultIconName = computed(() => {
-  if (props.icon) return undefined
+  // null explicitly hides the icon; any truthy value is an explicit icon.
+  if (props.icon || props.icon === null) return undefined
   return typeIconNameMap[props.type]
 })
 
@@ -42,7 +42,7 @@ const mergedClass = computed(() =>
 <template>
   <ShadcnAlert :class="mergedClass">
     <Icon
-      v-if="typeof icon === 'string'"
+      v-if="typeof icon === 'string' && icon"
       :name="icon"
     />
     <component
@@ -54,7 +54,7 @@ const mergedClass = computed(() =>
       v-else-if="defaultIconName"
       :name="defaultIconName"
     />
-    <div>
+    <div class="col-start-2">
       <slot />
     </div>
   </ShadcnAlert>

@@ -10,12 +10,6 @@ const meta = {
   args: {
     disabled: false,
   },
-} satisfies Meta<typeof Switch>
-
-export default meta
-type Story = StoryObj<typeof meta>
-
-export const Default: Story = {
   render: args => ({
     components: { Switch },
     setup () {
@@ -29,4 +23,9 @@ export const Default: Story = {
       </div>
     `,
   }),
-}
+} satisfies Meta<typeof Switch>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {}

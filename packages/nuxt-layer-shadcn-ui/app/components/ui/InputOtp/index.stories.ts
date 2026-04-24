@@ -12,12 +12,6 @@ const meta = {
     disabled: false,
     length: 6,
   },
-} satisfies Meta<typeof InputOtp>
-
-export default meta
-type Story = StoryObj<typeof meta>
-
-export const Default: Story = {
   render: args => ({
     components: { InputOtp },
     setup () {
@@ -36,4 +30,9 @@ export const Default: Story = {
       </div>
     `,
   }),
-}
+} satisfies Meta<typeof InputOtp>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {}

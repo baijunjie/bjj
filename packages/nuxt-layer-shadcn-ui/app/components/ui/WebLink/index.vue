@@ -6,7 +6,7 @@ const props = withDefaults(defineProps<WebLinkProps>(), {
   href: undefined,
   to: undefined,
   target: undefined,
-  externalIcon: true,
+  externalIcon: false,
   class: undefined,
 })
 

@@ -1,9 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import type { DataTableColumn } from './types'
-import DataTableRaw from './index.vue'
-
-// Cast generic component for Storybook compatibility
-const DataTable = DataTableRaw as any
+import DataTable from './index.vue'
 
 interface User {
   id: number
@@ -30,36 +27,121 @@ const basicColumns: DataTableColumn[] = [
   { field: 'status', title: 'Status', width: '100px' },
 ]
 
+const sortableColumns: DataTableColumn[] = [
+  { field: 'name', title: 'Name', width: '120px', sortable: true },
+  { field: 'email', title: 'Email', minWidth: '200px' },
+  { field: 'role', title: 'Role', width: '100px', sortable: true },
+  { field: 'amount', title: 'Amount', width: '120px', type: 'currency', sortable: true },
+  { field: 'createdAt', title: 'Created', width: '140px', type: 'date', sortable: true },
+]
+
+const typeColumns: DataTableColumn[] = [
+  { field: 'name', title: 'Name', width: '120px' },
+  { field: 'amount', title: 'Amount', width: '120px', type: 'currency' },
+  { field: 'createdAt', title: 'Date', width: '140px', type: 'date' },
+  { field: 'status', title: 'Empty', width: '100px', type: 'empty' },
+]
+
+const slotColumns: DataTableColumn[] = [
+  { field: 'name', title: 'Name', width: '120px' },
+  { field: 'email', title: 'Email', minWidth: '200px' },
+  { field: 'status', title: 'Status', width: '120px' },
+  { field: 'amount', title: 'Amount', width: '120px' },
+]
+
+const frozenColumns: DataTableColumn[] = [
+  { field: 'name', title: 'Name', width: '120px', fixed: 'left' },
+  { field: 'email', title: 'Email', width: '250px', fixed: 'left' },
+  { field: 'role', title: 'Role', width: '150px' },
+  { field: 'status', title: 'Status', width: '150px' },
+  { field: 'amount', title: 'Amount', width: '150px' },
+  { field: 'createdAt', title: 'Created', width: '180px', type: 'date' },
+  { field: 'id', title: 'Actions', width: '100px', fixed: 'right' },
+]
+
 const meta = {
   title: 'UI/DataTable',
-  component: DataTable,
+  component: DataTable as any,
   argTypes: {
+    selectionMode: { control: 'select', options: [ undefined, 'single', 'multiple' ]},
     loading: { control: 'boolean' },
+    sortBy: { control: 'text' },
+    sortOrder: { control: 'select', options: [ null, 1, -1 ]},
   },
   args: {
+    selectionMode: undefined,
     loading: false,
+    sortBy: null,
+    sortOrder: null,
   },
+  render: args => ({
+    components: { DataTable: DataTable as any },
+    setup: () => ({ args, data: sampleData, basicColumns }),
+    template: `
+      <div class="w-full">
+        <DataTable :data="data" :columns="basicColumns" v-bind="args" />
+      </div>
+    `,
+  }),
 } satisfies Meta
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  render: args => ({
-    components: { DataTable },
+export const Default: Story = {}
+
+export const SingleSelection: Story = {
+  render: () => ({
+    components: { DataTable: DataTable as any },
     setup () {
-      const singleSelection = ref(null)
-      const multipleSelection = ref([])
+      const selection = ref<User | null>(null)
+      return { data: sampleData, basicColumns, selection }
+    },
+    template: `
+      <div class="w-full">
+        <DataTable
+          :data="data"
+          :columns="basicColumns"
+          selectionMode="single"
+          v-model:selection="selection"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">
+          Selected: {{ selection?.name ?? 'none' }}
+        </div>
+      </div>
+    `,
+  }),
+}
+
+export const MultipleSelection: Story = {
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup () {
+      const selection = ref<User[]>([])
+      return { data: sampleData, basicColumns, selection }
+    },
+    template: `
+      <div class="w-full">
+        <DataTable
+          :data="data"
+          :columns="basicColumns"
+          selectionMode="multiple"
+          v-model:selection="selection"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">
+          Selected: {{ selection.length > 0 ? selection.map(r => r.name).join(', ') : 'none' }}
+        </div>
+      </div>
+    `,
+  }),
+}
+
+export const Sortable: Story = {
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup () {
       const sortBy = ref<string | null>(null)
       const sortOrder = ref<number | null>(null)
-
-      const sortableColumns: DataTableColumn[] = [
-        { field: 'name', title: 'Name', width: '120px', sortable: true },
-        { field: 'email', title: 'Email', minWidth: '200px' },
-        { field: 'role', title: 'Role', width: '100px', sortable: true },
-        { field: 'amount', title: 'Amount', width: '120px', type: 'currency', sortable: true },
-        { field: 'createdAt', title: 'Created', width: '140px', type: 'date', sortable: true },
-      ]
 
       const sortedData = computed(() => {
         if (!sortBy.value || !sortOrder.value) return sampleData
@@ -72,159 +154,127 @@ export const Default: Story = {
         })
       })
 
-      const typeColumns: DataTableColumn[] = [
-        { field: 'name', title: 'Name', width: '120px' },
-        { field: 'amount', title: 'Amount', width: '120px', type: 'currency' },
-        { field: 'createdAt', title: 'Date', width: '140px', type: 'date' },
-        { field: 'status', title: 'Empty', width: '100px', type: 'empty' },
-      ]
-
-      const slotColumns: DataTableColumn[] = [
-        { field: 'name', title: 'Name', width: '120px' },
-        { field: 'email', title: 'Email', minWidth: '200px' },
-        { field: 'status', title: 'Status', width: '120px' },
-        { field: 'amount', title: 'Amount', width: '120px' },
-      ]
-
-      const frozenColumns: DataTableColumn[] = [
-        { field: 'name', title: 'Name', width: '120px', fixed: 'left' },
-        { field: 'email', title: 'Email', width: '250px', fixed: 'left' },
-        { field: 'role', title: 'Role', width: '150px' },
-        { field: 'status', title: 'Status', width: '150px' },
-        { field: 'amount', title: 'Amount', width: '150px', type: 'currency' },
-        { field: 'createdAt', title: 'Created', width: '180px', type: 'date' },
-        { field: 'id', title: 'Actions', width: '100px', fixed: 'right' },
-      ]
-
-      return {
-        args,
-        data: sampleData,
-        basicColumns,
-        sortableColumns,
-        typeColumns,
-        slotColumns,
-        frozenColumns,
-        singleSelection,
-        multipleSelection,
-        sortBy,
-        sortOrder,
-        sortedData,
-      }
+      return { sortableColumns, sortBy, sortOrder, sortedData }
     },
     template: `
-      <div class="w-full space-y-10">
-        <!-- Controlled -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Controlled</h3>
-          <DataTable :data="data" :columns="basicColumns" v-bind="args" />
-        </section>
+      <div class="w-full">
+        <DataTable
+          :data="sortedData"
+          :columns="sortableColumns"
+          v-model:sortBy="sortBy"
+          v-model:sortOrder="sortOrder"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">
+          Sort: {{ sortBy ?? 'none' }} / {{ sortOrder ?? 'none' }}
+        </div>
+      </div>
+    `,
+  }),
+}
 
-        <!-- Single Selection -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Single Selection</h3>
-          <DataTable
-            :data="data"
-            :columns="basicColumns"
-            selectionMode="single"
-            v-model:selection="singleSelection"
-          />
-          <div class="mt-2 text-sm text-muted-foreground">
-            Selected: {{ singleSelection?.name ?? 'none' }}
-          </div>
-        </section>
+export const ColumnTypes: Story = {
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup: () => ({ data: sampleData, typeColumns }),
+    template: `
+      <div class="w-full">
+        <DataTable :data="data" :columns="typeColumns" />
+      </div>
+    `,
+  }),
+}
 
-        <!-- Multiple Selection -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Multiple Selection</h3>
-          <DataTable
-            :data="data"
-            :columns="basicColumns"
-            selectionMode="multiple"
-            v-model:selection="multipleSelection"
-          />
-          <div class="mt-2 text-sm text-muted-foreground">
-            Selected: {{ multipleSelection.length > 0 ? multipleSelection.map(r => r.name).join(', ') : 'none' }}
-          </div>
-        </section>
-
-        <!-- Sortable -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Sortable Columns</h3>
-          <DataTable
-            :data="sortedData"
-            :columns="sortableColumns"
-            v-model:sortBy="sortBy"
-            v-model:sortOrder="sortOrder"
-          />
-          <div class="mt-2 text-sm text-muted-foreground">
-            Sort: {{ sortBy ?? 'none' }} / {{ sortOrder ?? 'none' }}
-          </div>
-        </section>
-
-        <!-- Column Types -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Column Types (text, currency, date, empty)</h3>
-          <DataTable :data="data" :columns="typeColumns" />
-        </section>
-
-        <!-- Custom Slots -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Custom Cell Slots</h3>
-          <DataTable :data="data" :columns="slotColumns">
-            <template #status="{ value }">
-              <span
-                :class="[
-                  'inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium',
-                  value === 'active'
-                    ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                    : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200',
-                ]"
-              >
-                {{ value }}
-              </span>
-            </template>
-            <template #amount="{ value }">
-              <span class="font-mono font-medium">\${{ Number(value).toFixed(2) }}</span>
-            </template>
-          </DataTable>
-        </section>
-
-        <!-- Empty State -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Empty State</h3>
-          <DataTable :data="[]" :columns="basicColumns" />
-        </section>
-
-        <!-- Footer Slot -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Footer Slot</h3>
-          <DataTable :data="data" :columns="slotColumns">
-            <template #footer>
-              <tr class="h-12 border-t text-sm font-medium">
-                <td class="px-4">Total</td>
-                <td class="px-4" colspan="2"></td>
-                <td class="px-4 font-mono">\${{ data.reduce((sum, r) => sum + r.amount, 0).toFixed(2) }}</td>
-              </tr>
-            </template>
-          </DataTable>
-        </section>
-
-        <!-- Frozen Columns -->
-        <section>
-          <h3 class="mb-4 text-lg font-medium">Frozen Columns (scroll horizontally)</h3>
-          <div class="max-w-[600px]">
-            <DataTable
-              :data="data"
-              :columns="frozenColumns"
-              selectionMode="multiple"
-              v-model:selection="multipleSelection"
+export const CustomSlots: Story = {
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup: () => ({ data: sampleData, slotColumns }),
+    template: `
+      <div class="w-full">
+        <DataTable :data="data" :columns="slotColumns">
+          <template #status="{ value }">
+            <span
+              :class="[
+                'inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium',
+                value === 'active'
+                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                  : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200',
+              ]"
             >
-              <template #id>
-                <button class="text-sm text-primary underline">Edit</button>
-              </template>
-            </DataTable>
-          </div>
-        </section>
+              {{ value }}
+            </span>
+          </template>
+          <template #amount="{ value }">
+            <span class="font-mono font-medium">\${{ Number(value).toFixed(2) }}</span>
+          </template>
+        </DataTable>
+      </div>
+    `,
+  }),
+}
+
+export const EmptyState: Story = {
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup: () => ({ basicColumns }),
+    template: `
+      <div class="w-full">
+        <DataTable :data="[]" :columns="basicColumns" />
+      </div>
+    `,
+  }),
+}
+
+export const FooterSlot: Story = {
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup: () => ({ data: sampleData, slotColumns }),
+    template: `
+      <div class="w-full">
+        <DataTable :data="data" :columns="slotColumns">
+          <template #footer>
+            <tr class="h-12 border-t text-sm font-medium">
+              <td class="px-4">Total</td>
+              <td class="px-4" colspan="2"></td>
+              <td class="px-4 font-mono">\${{ data.reduce((sum, r) => sum + r.amount, 0).toFixed(2) }}</td>
+            </tr>
+          </template>
+        </DataTable>
+      </div>
+    `,
+  }),
+}
+
+export const FrozenColumns: Story = {
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup () {
+      const selection = ref<User[]>([])
+      return { data: sampleData, frozenColumns, selection }
+    },
+    template: `
+      <div class="max-w-[600px]">
+        <DataTable
+          :data="data"
+          :columns="frozenColumns"
+          selectionMode="multiple"
+          v-model:selection="selection"
+        >
+          <template #id>
+            <button class="text-sm text-primary underline">Edit</button>
+          </template>
+        </DataTable>
+      </div>
+    `,
+  }),
+}
+
+export const Loading: Story = {
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup: () => ({ data: sampleData, basicColumns }),
+    template: `
+      <div class="w-full">
+        <DataTable :data="data" :columns="basicColumns" loading />
       </div>
     `,
   }),
