@@ -1,6 +1,6 @@
 {
   "name": "@bjj/nuxt-layer-shadcn-ui",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Nuxt layer providing shadcn-vue based UI components",
   "type": "module",
   "main": "./nuxt.config.ts",
@@ -37,6 +37,8 @@
   "dependencies": {
     "@tailwindcss/postcss": "^4.2.4",
     "@tanstack/vue-table": "^8.21.3",
+    "@types/lodash-es": "^4.17.12",
+    "@types/qrcode": "^1.5.6",
     "@vuepic/vue-datepicker": "^12.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -67,8 +69,6 @@
     "@storybook-vue/nuxt": "9.1.0-29411911.f34c865",
     "@storybook/addon-docs": "^10.3.5",
     "@storybook/vue3": "~9.1.0",
-    "@types/lodash-es": "^4.17.12",
-    "@types/qrcode": "^1.5.6",
     "storybook": "^10.3.5"
   }
 }
