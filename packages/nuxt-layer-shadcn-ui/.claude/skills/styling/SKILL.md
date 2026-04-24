@@ -1,6 +1,6 @@
 ---
 name: styling
-description: 样式开发规范。在编写 CSS/Tailwind 样式、处理 Dark Mode、设置背景色/文本色/边框色、封装组件的 type 配色（default/success/info/help/warn/danger）时使用。
+description: 样式开发规范。在编写 CSS/Tailwind 样式、处理 Dark Mode、设置背景色/文本色/边框色、封装组件的语义配色属性（`color` / `type`）时使用。
 ---
 
 # 样式开发指南
@@ -157,9 +157,9 @@ background: var(--color-muted);
 
 ---
 
-## 组件配色类型约定
+## 组件语义配色约定
 
-封装组件的 `type` prop（`default | success | info | help | warn | danger`）对应配色方案时，**`default` 必须使用语义化的 `secondary` 色，禁止使用 `primary`**。`primary` 仅保留给主题主色按钮和高亮场景。
+封装组件的语义配色属性（`color` / `type`，命名规则见 `component` skill）取值固定为 `default | success | info | help | warn | danger`。映射配色方案时，**`default` 必须使用语义化的 `secondary` 色，禁止使用 `primary`**。`primary` 仅保留给主题主色按钮和高亮场景。
 
 ### 默认 `default` 映射
 
@@ -208,13 +208,3 @@ background: var(--color-muted);
 修改色值 → `colors.css`；新增 utility → `utilities.css`；动画 → `animate.css`。
 
 `nuxt.config.ts` 通过 `css: [...]` 注册 globals.css，消费方 `extends` 本 layer 时自动继承。
-
----
-
-## 检查清单
-
-- [ ] 组件中不直接引用调色板变量（`--foreground` 等），只用 `--color-*` 语义变量
-- [ ] `type` prop 仅用 6 种合法值（`default`/`success`/`info`/`help`/`warn`/`danger`）
-- [ ] `default` type 映射到 `secondary` 色系，不用 `primary`
-- [ ] Dark mode 样式通过 `dark:` 前缀处理，不硬编码 HTML `.dark` 判断
-- [ ] 新颜色值加到 `colors.css` 并在 `@theme inline` 中声明语义名

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Alert as ShadcnAlert } from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/alert'
+import { Alert as ShadcnAlert } from '../../shadcn/alert'
 import type { AlertProps, AlertType } from './types'
 
 const typeIconNameMap: Record<AlertType, string> = {

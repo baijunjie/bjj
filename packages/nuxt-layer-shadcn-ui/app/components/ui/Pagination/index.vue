@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { DropdownItem } from '@bjj/nuxt-layer-shadcn-ui/app/components/ui/Dropdown/types'
-import { buttonVariants } from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/button'
+import { buttonVariants } from '../../shadcn/button'
 import {
   Pagination as ShadcnPagination,
   PaginationContent,
@@ -10,7 +10,7 @@ import {
   PaginationLast,
   PaginationNext,
   PaginationPrevious,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/pagination'
+} from '../../shadcn/pagination'
 import type { PaginationProps } from './types'
 
 const props = withDefaults(defineProps<PaginationProps>(), {

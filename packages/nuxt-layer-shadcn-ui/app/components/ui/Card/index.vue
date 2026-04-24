@@ -5,7 +5,7 @@ import {
   CardFooter as ShadcnCardFooter,
   CardHeader as ShadcnCardHeader,
   CardTitle as ShadcnCardTitle,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/card'
+} from '../../shadcn/card'
 import type { CardProps } from './types'
 
 defineProps<CardProps>()

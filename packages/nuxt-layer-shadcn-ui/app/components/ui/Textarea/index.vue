@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Textarea as ShadcnTextarea } from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/textarea'
+import { Textarea as ShadcnTextarea } from '../../shadcn/textarea'
 import type { TextareaProps } from './types'
 
 defineOptions({ inheritAttrs: false })

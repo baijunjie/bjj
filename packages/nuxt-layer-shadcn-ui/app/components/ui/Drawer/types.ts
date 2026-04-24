@@ -1,4 +1,4 @@
-import type { ButtonVariants } from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/button'
+import type { ButtonVariants } from '../../shadcn/button'
 
 export type DrawerSide = 'top' | 'right' | 'bottom' | 'left'
 

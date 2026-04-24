@@ -10,7 +10,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/table'
+} from '../../shadcn/table'
 import type {
   DataTableColumn,
   DataTableProps,

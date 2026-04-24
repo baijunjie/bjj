@@ -2,7 +2,7 @@
 import {
   RadioGroup,
   RadioGroupItem,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/radio-group'
+} from '../../shadcn/radio-group'
 import type { RadioCardGroupProps } from './types'
 
 const props = withDefaults(defineProps<RadioCardGroupProps>(), {

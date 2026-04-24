@@ -7,7 +7,7 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/sheet'
+} from '../../shadcn/sheet'
 import type { DrawerProps } from './types'
 
 const props = withDefaults(defineProps<DrawerProps>(), {

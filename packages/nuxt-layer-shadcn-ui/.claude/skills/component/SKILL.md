@@ -51,7 +51,8 @@ app/
 | 简单封装 | `app/components/ui/Xxx/index.vue`（目录形式，保留类型扩展空间） |
 | 带对外类型 | `Xxx/index.vue` + `Xxx/types.ts` |
 | 带 i18n | `Xxx/index.vue` + `Xxx/en.json` |
-| 带 stories | `Xxx/index.vue` + `Xxx/index.stories.ts` |
+
+**`app/components/ui/` 下每个组件都必须带 `index.stories.ts`**。详见"Storybook 维护"一节。
 
 ---
 
@@ -220,20 +221,14 @@ const mergedClass = computed(() => cn('base default', props.class))
 
 ---
 
-## 配色类型规范
+## 配色属性规范
 
-封装组件时，**语义配色统一使用以下 6 种 `type`**，禁止自定义：
+具体的语义配色取值和 Tailwind 映射见 `styling` skill。
 
-| type | 含义 |
-|------|------|
-| `default` | 默认/中性（用 `secondary`，不是 `primary`） |
-| `success` | 成功 |
-| `info` | 信息 |
-| `help` | 帮助/提示 |
-| `warn` | 警告 |
-| `danger` | 危险/错误 |
+属性命名判断：
 
-具体颜色对应详见 `styling` skill。
+- **`color`** — 属性只控制颜色
+- **`type`** — 属性同时还控制其它样式差异（比如 icon、排版等）
 
 ---
 
@@ -296,67 +291,22 @@ const T = useTranslations('components.ui.Select')
 
 ## shadcn 组件管理
 
-### 新增
+新增和更新都用同一个命令（会提示覆盖）：
 
 ```bash
 pnpm shadcn:add <component-name>
 ```
 
-读取 `components.json` 的 aliases（指向 `@bjj/nuxt-layer-shadcn-ui/app/components/shadcn` 等），生成到正确位置。
-
-### 更新
-
-同 `shadcn:add`，CLI 会提示覆盖。**不要手动编辑 shadcn 文件**。
-
-### 别名解析
-
-- `components.json` 的 `utils` alias → `@bjj/nuxt-layer-shadcn-ui/app/utils`（就是本层 `app/utils/index.ts`，内部 re-export `cn` 给 shadcn 使用）
-- 自引用的解析由 `nuxt.config.ts` 的 Vite `alias` 处理（pnpm 不会为包自身建 symlink）
+读取 `components.json` 的 aliases，生成到 `app/components/shadcn/`。`utils` alias 指向 `app/utils/index.ts`，内部 re-export `cn` 给 shadcn 使用；自引用解析由 `nuxt.config.ts` 的 Vite `alias` 处理（pnpm 不为包自身建 symlink）。
 
 ---
 
-## 组件自治原则
+## Storybook 维护
 
-| 原则 | 说明 |
-|---|---|
-| 独立性 | 组件不依赖消费方特定的业务逻辑或全局状态 |
-| 最小化 Props | 仅暴露必要的配置；避免"万能 prop" |
-| 自带默认样式 | 合理默认值，消费方通过 `class` 覆盖 |
-| 文档即代码 | Props 类型是契约；复杂行为用 JSDoc 注释 |
+`app/components/ui/*` 的 `index.stories.ts` 是组件对外契约的活文档，和组件本身一起维护：
 
----
+- 新建组件 → 同步建 stories
+- 改 Prop / slot / 默认值 → 同步改 `argTypes`、`args` 和对应演示
+- 删组件 → 一起删
 
-## 检查清单
-
-### 组件结构
-
-- [ ] `app/components/ui/` 组件是目录形式（`Xxx/index.vue`）
-- [ ] 有对外类型的组件，在同目录建 `types.ts`
-- [ ] 有 i18n 的组件，同目录建 `en.json`（默认语言）
-- [ ] 禁止直接修改 `app/components/shadcn/` 下任何文件
-
-### Props 处理
-
-- [ ] **Props 必须在 `types.ts` 中 `export`**
-- [ ] `defineProps<T>()` 的类型**显式 `import type`**
-- [ ] 继承第三方 Props 用 `/* @vue-ignore */`
-- [ ] 非根节点：`defineOptions({ inheritAttrs: false })` + `v-bind="$attrs"`
-
-### 类型
-
-- [ ] `.vue` 文件**禁止 `export`** 任何类型
-- [ ] 对外类型在同目录 `types.ts`
-- [ ] 命名**以组件名为前缀**（`<Component>Props`、`<Component>Emits`、相关 sub-types）
-
-### i18n
-
-- [ ] 用户可见文案走 `useTranslations()`，禁止硬编码
-- [ ] 文案就近放 `en.json`
-- [ ] 新增/改文案后跑 `pnpm i18n:build`
-
-### 其他
-
-- [ ] 禁止 `defineModel`、`useAttrs()`、`useSlots()`
-- [ ] 有默认 class 才用 `cn()` 合并；否则不声明 `class` prop
-- [ ] 配色严格用 6 种 `type`（`default`/`success`/`info`/`help`/`warn`/`danger`）
-- [ ] 单 slot 用 `<slot />`，多 slots 用动态透传
+具体 stories 写法（meta 结构、命名、Playground 放末尾等）见 `storybook` skill。

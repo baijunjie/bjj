@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button as ShadcnButton } from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/button'
+import { Button as ShadcnButton } from '../../shadcn/button'
 import WebLink from '@bjj/nuxt-layer-shadcn-ui/app/components/ui/WebLink/index.vue'
 import type { ButtonProps } from './types'
 

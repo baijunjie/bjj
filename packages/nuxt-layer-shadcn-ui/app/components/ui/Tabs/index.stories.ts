@@ -21,11 +21,14 @@ const items: TabsItem[] = [
     title: 'Notifications',
     icon: 'bell',
     content: 'Control which notifications you receive and how they are delivered.',
-    disabled: true,
   },
 ]
 
 const navItems: TabsItem[] = items.map(({ content, ...rest }) => rest)
+
+const disabledItems: TabsItem[] = items.map((item, index) =>
+  index === 2 ? { ...item, disabled: true } : item,
+)
 
 const meta = {
   title: 'UI/Tabs',
@@ -48,7 +51,7 @@ export const Default: Story = {
     components: { Tabs, Card },
     setup () {
       const value = ref<string>('account')
-      return { args, items, navItems, value }
+      return { args, items, navItems, disabledItems, value }
     },
     template: `
       <div class="max-w-md space-y-10">
@@ -79,6 +82,15 @@ export const Default: Story = {
           <Tabs
             rounded
             :items="items"
+            default-value="account"
+          />
+        </section>
+
+        <!-- Disabled Item -->
+        <section>
+          <h3 class="mb-4 text-lg font-medium">Disabled Item</h3>
+          <Tabs
+            :items="disabledItems"
             default-value="account"
           />
         </section>

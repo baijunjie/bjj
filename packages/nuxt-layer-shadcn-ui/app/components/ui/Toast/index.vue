@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Toaster as ShadcnSonner } from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/sonner'
+import { Toaster as ShadcnSonner } from '../../shadcn/sonner'
 import 'vue-sonner/style.css'
 import type { ToastProps } from './types'
 

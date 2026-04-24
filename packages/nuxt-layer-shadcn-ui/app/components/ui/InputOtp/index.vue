@@ -3,7 +3,7 @@ import {
   PinInput,
   PinInputGroup,
   PinInputSlot,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/pin-input'
+} from '../../shadcn/pin-input'
 import type { InputOtpProps } from './types'
 
 withDefaults(defineProps<InputOtpProps>(), {

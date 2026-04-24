@@ -5,7 +5,7 @@ import {
   FieldDescription,
   FieldError,
   FieldLabel,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/field'
+} from '../../shadcn/field'
 import type { FormItemProps } from './types'
 
 const props = defineProps<FormItemProps>()

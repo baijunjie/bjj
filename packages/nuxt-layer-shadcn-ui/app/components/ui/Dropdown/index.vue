@@ -6,7 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/dropdown-menu'
+} from '../../shadcn/dropdown-menu'
 import { cva } from 'class-variance-authority'
 import type {
   DropdownActionItem,

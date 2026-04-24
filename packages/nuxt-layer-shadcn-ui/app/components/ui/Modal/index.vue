@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/dialog'
+} from '../../shadcn/dialog'
 import type { ModalProps } from './types'
 
 const props = withDefaults(defineProps<ModalProps>(), {

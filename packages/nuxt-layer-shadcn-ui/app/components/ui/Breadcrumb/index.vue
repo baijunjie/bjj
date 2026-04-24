@@ -6,7 +6,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/breadcrumb'
+} from '../../shadcn/breadcrumb'
 import type { BreadcrumbItem as BreadcrumbItemType, BreadcrumbProps } from './types'
 
 const props = defineProps<BreadcrumbProps>()

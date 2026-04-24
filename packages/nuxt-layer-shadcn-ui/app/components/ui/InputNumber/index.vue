@@ -5,7 +5,7 @@ import {
   NumberFieldDecrement,
   NumberFieldIncrement,
   NumberFieldInput,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/number-field'
+} from '../../shadcn/number-field'
 import type { InputNumberProps } from './types'
 
 const props = withDefaults(defineProps<InputNumberProps>(), {

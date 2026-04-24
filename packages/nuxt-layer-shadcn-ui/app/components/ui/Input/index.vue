@@ -4,7 +4,7 @@ import {
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/input-group'
+} from '../../shadcn/input-group'
 import type { InputProps } from './types'
 
 defineOptions({ inheritAttrs: false })

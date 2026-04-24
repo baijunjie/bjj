@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {
   ScrollArea as ShadcnScrollArea,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/scroll-area'
+} from '../../shadcn/scroll-area'
 import { useResizeObserver } from '@vueuse/core'
 import type { ScrollAreaProps } from './types'
 

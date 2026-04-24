@@ -7,17 +7,17 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/command'
+} from '../../shadcn/command'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/input-group'
+} from '../../shadcn/input-group'
 import {
   Popover as ShadcnPopover,
   PopoverContent,
   PopoverTrigger,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/popover'
+} from '../../shadcn/popover'
 import type { SelectOption, SelectProps } from './types'
 
 type Option = SelectOption<TValue, TMeta>

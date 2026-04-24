@@ -3,7 +3,7 @@ import {
   Popover as ShadcnPopover,
   PopoverContent,
   PopoverTrigger,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/popover'
+} from '../../shadcn/popover'
 import type { PopoverProps } from './types'
 
 const props = defineProps<PopoverProps>()

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Slider as ShadcnSlider } from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/slider'
+import { Slider as ShadcnSlider } from '../../shadcn/slider'
 import type { SliderProps } from './types'
 
 const props = withDefaults(defineProps<SliderProps>(), {

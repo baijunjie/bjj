@@ -1,0 +1,44 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Introduction" />
+
+# nuxt-layer-shadcn-ui
+
+A Nuxt Layer built on [shadcn-vue](https://www.shadcn-vue.com/), providing a ready-to-use set of UI components, composables, and utilities.
+
+## Installation
+
+```bash
+pnpm add @bjj/nuxt-layer-shadcn-ui
+```
+
+Peer dependencies (install in the host project):
+
+```
+@bjj/shared @nuxtjs/i18n @vueuse/core dayjs nuxt vue vue-i18n vue-router
+```
+
+## Usage
+
+Extend the layer from the host project's `nuxt.config.ts`:
+
+```ts
+export default defineNuxtConfig({
+  extends: ['@bjj/nuxt-layer-shadcn-ui'],
+})
+```
+
+The layer automatically registers:
+
+- All components under `app/components/ui/**` (no prefix, usable as global components)
+- Business components under `app/components/**` (with directory-based prefix)
+- Auto-imports from `app/composables`, `app/utils`, and `app/types`
+- The global stylesheet `app/assets/styles/globals.css` (Tailwind v4)
+- `@nuxtjs/i18n` module with the layer's locale files under `i18n/messages/`, declared as lazy-loaded locales (merged with the consumer's own locales per matching `code`)
+
+## Navigating this Storybook
+
+- **Foundations** — Design tokens (colors, light/dark palettes) powering every component.
+- **Components** — Each UI component with interactive props, slots, and usage examples.
+
+Use the backgrounds toolbar (top) to toggle **Light** / **Dark** mode preview.

@@ -4,7 +4,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/tabs'
+} from '../../shadcn/tabs'
 import type { TabsItem, TabsProps } from './types'
 
 const props = withDefaults(defineProps<TabsProps>(), {

@@ -3,7 +3,7 @@ import {
   Avatar as ShadcnAvatar,
   AvatarFallback,
   AvatarImage,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/avatar'
+} from '../../shadcn/avatar'
 import type { AvatarProps } from './types'
 
 const props = withDefaults(defineProps<AvatarProps>(), {

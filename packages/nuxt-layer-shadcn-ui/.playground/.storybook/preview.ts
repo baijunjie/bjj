@@ -1,6 +1,7 @@
 import type { Preview } from '@storybook-vue/nuxt'
 
 const preview: Preview = {
+  tags: [ 'autodocs' ],
   parameters: {
     controls: {
       matchers: {
@@ -14,6 +15,11 @@ const preview: Preview = {
         { name: 'light', value: 'oklch(var(--background))' },
         { name: 'dark', value: 'dark' },
       ],
+    },
+    options: {
+      storySort: {
+        order: [ 'Introduction', 'Foundations', [ 'Colors' ], 'Components' ],
+      },
     },
   },
   decorators: [

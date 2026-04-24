@@ -4,7 +4,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/tooltip'
+} from '../../shadcn/tooltip'
 import type { TooltipProps } from './types'
 
 const props = withDefaults(defineProps<TooltipProps>(), {

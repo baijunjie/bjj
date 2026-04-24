@@ -4,7 +4,7 @@ import {
   AccordionContent,
   AccordionItem as ShadcnAccordionItem,
   AccordionTrigger,
-} from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/accordion'
+} from '../../shadcn/accordion'
 import type { AccordionRootProps } from 'reka-ui'
 import type { AccordionItem, AccordionProps } from './types'
 

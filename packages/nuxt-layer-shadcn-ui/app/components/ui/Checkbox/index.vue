@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Checkbox as ShadcnCheckbox } from '@bjj/nuxt-layer-shadcn-ui/app/components/shadcn/checkbox'
+import { Checkbox as ShadcnCheckbox } from '../../shadcn/checkbox'
 import type { CheckboxProps } from './types'
 
 defineProps<CheckboxProps>()

@@ -3,9 +3,11 @@ import { createRequire } from 'node:module'
 
 const config: StorybookConfig = {
   stories: [
+    './*.mdx',
     '../../app/assets/**/*.stories.@(ts|tsx)',
     '../../app/components/**/*.stories.@(ts|tsx)',
   ],
+  addons: [ '@storybook/addon-docs' ],
   framework: {
     name: '@storybook-vue/nuxt',
     options: {
@@ -28,6 +30,12 @@ const config: StorybookConfig = {
       'dayjs/plugin/duration',
       'dayjs/plugin/utc',
       'dayjs/plugin/timezone',
+      // @storybook/addon-docs is React-based — pre-bundle React so named
+      // exports like `Component` work under Vite's `noDiscovery: true`.
+      'react',
+      'react-dom',
+      'react-dom/client',
+      'react/jsx-runtime',
     ]
 
     // Fix infinite module resolution loop in pnpm monorepo:
