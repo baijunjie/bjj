@@ -24,9 +24,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const DynamicContent: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Qrcode },
     setup () {
@@ -49,6 +52,7 @@ export const DynamicContent: Story = {
 }
 
 export const Sizes: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Qrcode },
     template: `

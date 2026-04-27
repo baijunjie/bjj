@@ -38,6 +38,8 @@ export interface AsyncDataTableProps<T = Record<string, any>> {
   showPagination?: boolean
   /** Whether rows are selectable */
   selectable?: boolean
+  /** Whether rows are clickable (shows pointer cursor and pairs with `@rowClick`) */
+  clickable?: boolean
   /** Batch action definitions for selected rows */
   batchActions?: AsyncDataTableBatchAction<T>[]
   /** Selected rows (v-model:selection) */

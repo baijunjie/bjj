@@ -32,9 +32,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const UsdSymbol: Story = {
+  parameters: noControls,
   render: () => ({
     components: { InputCurrency },
     setup () {
@@ -51,6 +54,7 @@ export const UsdSymbol: Story = {
 }
 
 export const EurCodeDisplay: Story = {
+  parameters: noControls,
   render: () => ({
     components: { InputCurrency },
     setup () {
@@ -67,6 +71,7 @@ export const EurCodeDisplay: Story = {
 }
 
 export const CadSymbol: Story = {
+  parameters: noControls,
   render: () => ({
     components: { InputCurrency },
     setup () {
@@ -83,6 +88,7 @@ export const CadSymbol: Story = {
 }
 
 export const CadNarrowSymbol: Story = {
+  parameters: noControls,
   render: () => ({
     components: { InputCurrency },
     setup () {
@@ -99,6 +105,7 @@ export const CadNarrowSymbol: Story = {
 }
 
 export const JpyNameDisplay: Story = {
+  parameters: noControls,
   render: () => ({
     components: { InputCurrency },
     setup () {

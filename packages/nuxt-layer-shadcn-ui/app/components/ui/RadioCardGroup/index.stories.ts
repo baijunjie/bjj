@@ -65,17 +65,40 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const WithDisabledOption: Story = {
-  args: {
-    modelValue: 'pro',
-    options: planOptions,
-  },
+  parameters: noControls,
+  render: () => ({
+    components: { RadioCardGroup },
+    setup () {
+      const selected = ref('pro')
+      return { selected, planOptions }
+    },
+    template: `
+      <div class="max-w-md space-y-4">
+        <RadioCardGroup v-model="selected" :options="planOptions" />
+        <div class="text-sm text-muted-foreground">Selected: {{ selected }}</div>
+      </div>
+    `,
+  }),
 }
 
 export const Disabled: Story = {
-  args: {
-    disabled: true,
-  },
+  parameters: noControls,
+  render: () => ({
+    components: { RadioCardGroup },
+    setup () {
+      const selected = ref('current')
+      return { selected, options }
+    },
+    template: `
+      <div class="max-w-md space-y-4">
+        <RadioCardGroup v-model="selected" :options="options" disabled />
+        <div class="text-sm text-muted-foreground">Selected: {{ selected }}</div>
+      </div>
+    `,
+  }),
 }

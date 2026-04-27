@@ -39,9 +39,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const Controlled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { RadioGroup },
     setup () {
@@ -58,6 +61,7 @@ export const Controlled: Story = {
 }
 
 export const Horizontal: Story = {
+  parameters: noControls,
   render: () => ({
     components: { RadioGroup },
     setup () {
@@ -74,6 +78,7 @@ export const Horizontal: Story = {
 }
 
 export const WithDisabledItem: Story = {
+  parameters: noControls,
   render: () => ({
     components: { RadioGroup },
     setup () {
@@ -90,6 +95,7 @@ export const WithDisabledItem: Story = {
 }
 
 export const Disabled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { RadioGroup },
     setup () {
@@ -101,6 +107,7 @@ export const Disabled: Story = {
 }
 
 export const CustomSlots: Story = {
+  parameters: noControls,
   render: () => ({
     components: { RadioGroup },
     setup () {

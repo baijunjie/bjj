@@ -83,9 +83,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const Preselected: Story = {
+  parameters: noControls,
   render: () => ({
     components: { SearchSelect },
     setup () {
@@ -107,6 +110,7 @@ export const Preselected: Story = {
 }
 
 export const WithDefaultOptions: Story = {
+  parameters: noControls,
   render: () => ({
     components: { SearchSelect },
     setup () {
@@ -128,6 +132,7 @@ export const WithDefaultOptions: Story = {
 }
 
 export const WithCreateNew: Story = {
+  parameters: noControls,
   render: () => ({
     components: { SearchSelect },
     setup () {
@@ -149,6 +154,7 @@ export const WithCreateNew: Story = {
 }
 
 export const Disabled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { SearchSelect },
     setup () {

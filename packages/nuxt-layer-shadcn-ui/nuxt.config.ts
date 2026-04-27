@@ -13,6 +13,7 @@ export default defineNuxtConfig({
   },
 
   // Package is declared as peerDependency so consumers own the version.
+  extends: [ '@bjj/nuxt-layer-effect' ],
   modules: [ '@nuxtjs/i18n' ],
 
   // Lazy-loaded messages. @nuxtjs/i18n v9+ lazy-loads every locale file by
@@ -49,12 +50,6 @@ export default defineNuxtConfig({
   // Register the layer's global stylesheet. Consumers extending this layer
   // automatically inherit it via Nuxt's css array merging.
   css: [ join(currentDir, 'app/assets/styles/globals.css') ],
-
-  postcss: {
-    plugins: {
-      '@tailwindcss/postcss': {},
-    },
-  },
 
   components: [
     // Layer's own components (absolute paths required)

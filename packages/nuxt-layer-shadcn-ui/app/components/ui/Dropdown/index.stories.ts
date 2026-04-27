@@ -83,9 +83,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const HoverTrigger: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Dropdown, Button },
     setup: () => ({ basicMenus }),
@@ -98,6 +101,7 @@ export const HoverTrigger: Story = {
 }
 
 export const ClickTrigger: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Dropdown, Button },
     setup: () => ({ basicMenus }),
@@ -110,6 +114,7 @@ export const ClickTrigger: Story = {
 }
 
 export const WithDisabledItems: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Dropdown, Button },
     setup: () => ({ accountMenus }),
@@ -122,6 +127,7 @@ export const WithDisabledItems: Story = {
 }
 
 export const WithLinks: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Dropdown, Button },
     setup: () => ({ linkMenus }),
@@ -134,6 +140,7 @@ export const WithLinks: Story = {
 }
 
 export const WithGroups: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Dropdown, Button },
     setup: () => ({ groupedMenus }),
@@ -146,6 +153,7 @@ export const WithGroups: Story = {
 }
 
 export const CustomSlots: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Dropdown, Button },
     setup: () => ({ customMenus }),
@@ -170,6 +178,7 @@ export const CustomSlots: Story = {
 }
 
 export const PopupSlot: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Dropdown, Button },
     template: `

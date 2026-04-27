@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<AsyncDataTableProps<TData>>(), {
   pageSizeOptions: () => [ 10, 20, 50, 100 ],
   showPagination: true,
   selectable: false,
+  clickable: false,
   batchActions: () => [],
   selection: () => [],
 })
@@ -28,6 +29,7 @@ const props = withDefaults(defineProps<AsyncDataTableProps<TData>>(), {
 const emit = defineEmits<{
   'update:filters': [filters: Record<string, any>]
   'update:selection': [value: TData[]]
+  'rowClick': [row: TData, event: MouseEvent]
 }>()
 
 const T = useTranslations('components.ui.AsyncDataTable')
@@ -213,9 +215,9 @@ onMounted(() => {
     <!-- Top toolbar -->
     <div
       v-if="shouldShowTopToolbar && (!!$slots.toolbar || hasBatchActions || (showPagination && hasPaginationData))"
-      class="mb-4 flex flex-wrap items-center justify-between gap-4"
+      class="mb-4 gap-4 flex flex-wrap items-center justify-between"
     >
-      <div class="flex items-center gap-2">
+      <div class="gap-2 flex items-center">
         <Dropdown
           v-if="hasBatchActions"
           :menus="batchMenuItems"
@@ -256,11 +258,13 @@ onMounted(() => {
       :columns="columns"
       :loading="loading"
       :selectionMode="showSelectionColumn ? 'multiple' : undefined"
+      :clickable="clickable"
       :sortBy="sortState.sortBy"
       :sortOrder="sortState.sortOrder"
       @update:selection="onSelectionChange"
       @update:sortBy="onSortByUpdate"
       @update:sortOrder="onSortOrderUpdate"
+      @rowClick="(row: TData, event: MouseEvent) => emit('rowClick', row, event)"
     >
       <template
         v-for="name in Object.keys($slots).filter(n => n !== 'toolbar')"
@@ -277,9 +281,9 @@ onMounted(() => {
     <!-- Bottom toolbar -->
     <div
       v-if="shouldShowBottomToolbar && (!!$slots.toolbar || hasBatchActions || (showPagination && hasPaginationData))"
-      class="mt-4 flex flex-wrap items-center justify-between gap-4"
+      class="mt-4 gap-4 flex flex-wrap items-center justify-between"
     >
-      <div class="flex items-center gap-2">
+      <div class="gap-2 flex items-center">
         <Dropdown
           v-if="hasBatchActions"
           :menus="batchMenuItems"

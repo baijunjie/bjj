@@ -34,9 +34,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const ExternalLink: Story = {
+  parameters: noControls,
   render: () => ({
     components: { WebLink },
     template: `
@@ -49,6 +52,7 @@ export const ExternalLink: Story = {
 }
 
 export const ExternalWithoutIcon: Story = {
+  parameters: noControls,
   render: () => ({
     components: { WebLink },
     template: `
@@ -58,6 +62,7 @@ export const ExternalWithoutIcon: Story = {
 }
 
 export const WithExplicitTarget: Story = {
+  parameters: noControls,
   render: () => ({
     components: { WebLink },
     template: `
@@ -67,6 +72,7 @@ export const WithExplicitTarget: Story = {
 }
 
 export const Unstyled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { WebLink },
     template: `
@@ -79,6 +85,7 @@ export const Unstyled: Story = {
 }
 
 export const InlineUsage: Story = {
+  parameters: noControls,
   render: () => ({
     components: { WebLink },
     template: `

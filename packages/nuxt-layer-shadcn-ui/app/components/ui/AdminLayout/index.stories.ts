@@ -90,6 +90,59 @@ const profile: AdminLayoutSidebarDropdownProfile = {
   subtitle: 'demo@example.com',
 }
 
+const layoutContent = `
+  <template #navbar-left>
+    <Breadcrumb :model="breadcrumb" />
+  </template>
+  <template #navbar-right>
+    <Button variant="ghost" size="icon" icon="search" aria-label="Search" />
+    <Button variant="ghost" size="icon" icon="bell" aria-label="Notifications" />
+    <Avatar label="DU" size="small" />
+  </template>
+
+  <div class="space-y-6 p-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-semibold tracking-tight">Overview</h1>
+        <p class="text-sm text-muted-foreground">Welcome back, here is what is happening today.</p>
+      </div>
+      <Button icon="plus">New Project</Button>
+    </div>
+
+    <div class="grid gap-4 md:grid-cols-3">
+      <Card title="Total Revenue">
+        <div class="text-2xl font-semibold">$45,231.89</div>
+        <p class="text-xs text-muted-foreground">+20.1% from last month</p>
+      </Card>
+      <Card title="Subscriptions">
+        <div class="text-2xl font-semibold">+2,350</div>
+        <p class="text-xs text-muted-foreground">+180.1% from last month</p>
+      </Card>
+      <Card title="Active Users">
+        <div class="text-2xl font-semibold">+12,234</div>
+        <p class="text-xs text-muted-foreground">+19% from last month</p>
+      </Card>
+    </div>
+
+    <Card title="Recent Activity">
+      <ul class="divide-y divide-border text-sm">
+        <li class="flex items-center justify-between py-3">
+          <span>Alice updated the design system</span>
+          <span class="text-xs text-muted-foreground">2 min ago</span>
+        </li>
+        <li class="flex items-center justify-between py-3">
+          <span>Bob deployed v1.4.0 to production</span>
+          <span class="text-xs text-muted-foreground">1 hour ago</span>
+        </li>
+        <li class="flex items-center justify-between py-3">
+          <span>Charlie opened a new issue</span>
+          <span class="text-xs text-muted-foreground">3 hours ago</span>
+        </li>
+      </ul>
+    </Card>
+  </div>
+`
+
 const meta = {
   title: 'UI/AdminLayout',
   component: AdminLayout,
@@ -116,60 +169,7 @@ const meta = {
       ]
       return { args, breadcrumb }
     },
-    template: `
-      <AdminLayout v-bind="args">
-        <template #navbar-left>
-          <Breadcrumb :model="breadcrumb" />
-        </template>
-        <template #navbar-right>
-          <Button variant="ghost" size="icon" icon="search" aria-label="Search" />
-          <Button variant="ghost" size="icon" icon="bell" aria-label="Notifications" />
-          <Avatar label="DU" size="small" />
-        </template>
-
-        <div class="space-y-6 p-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <h1 class="text-2xl font-semibold tracking-tight">Overview</h1>
-              <p class="text-sm text-muted-foreground">Welcome back, here is what is happening today.</p>
-            </div>
-            <Button icon="plus">New Project</Button>
-          </div>
-
-          <div class="grid gap-4 md:grid-cols-3">
-            <Card title="Total Revenue">
-              <div class="text-2xl font-semibold">$45,231.89</div>
-              <p class="text-xs text-muted-foreground">+20.1% from last month</p>
-            </Card>
-            <Card title="Subscriptions">
-              <div class="text-2xl font-semibold">+2,350</div>
-              <p class="text-xs text-muted-foreground">+180.1% from last month</p>
-            </Card>
-            <Card title="Active Users">
-              <div class="text-2xl font-semibold">+12,234</div>
-              <p class="text-xs text-muted-foreground">+19% from last month</p>
-            </Card>
-          </div>
-
-          <Card title="Recent Activity">
-            <ul class="divide-y divide-border text-sm">
-              <li class="flex items-center justify-between py-3">
-                <span>Alice updated the design system</span>
-                <span class="text-xs text-muted-foreground">2 min ago</span>
-              </li>
-              <li class="flex items-center justify-between py-3">
-                <span>Bob deployed v1.4.0 to production</span>
-                <span class="text-xs text-muted-foreground">1 hour ago</span>
-              </li>
-              <li class="flex items-center justify-between py-3">
-                <span>Charlie opened a new issue</span>
-                <span class="text-xs text-muted-foreground">3 hours ago</span>
-              </li>
-            </ul>
-          </Card>
-        </div>
-      </AdminLayout>
-    `,
+    template: `<AdminLayout v-bind="args">${layoutContent}</AdminLayout>`,
   }),
   decorators: [
     () => ({
@@ -189,12 +189,28 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
+const renderAdminLayoutVariant = (variant: 'floating' | 'inset') => () => ({
+  components: { AdminLayout, Avatar, Breadcrumb, Button, Card },
+  setup () {
+    const breadcrumb = [
+      { label: 'Dashboard', href: '#' },
+      { label: 'Overview' },
+    ]
+    return { menus, footerDropdown: { profile, menuItems }, breadcrumb, variant }
+  },
+  template: `<AdminLayout :variant="variant" collapsible="icon" :menus="menus" :footer-dropdown="footerDropdown">${layoutContent}</AdminLayout>`,
+})
+
 export const Default: Story = {}
 
 export const Floating: Story = {
-  args: { variant: 'floating' },
+  parameters: noControls,
+  render: renderAdminLayoutVariant('floating'),
 }
 
 export const Inset: Story = {
-  args: { variant: 'inset' },
+  parameters: noControls,
+  render: renderAdminLayoutVariant('inset'),
 }

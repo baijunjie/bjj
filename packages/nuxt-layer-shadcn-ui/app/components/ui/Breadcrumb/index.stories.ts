@@ -36,9 +36,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const WithHome: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Breadcrumb },
     setup: () => ({ home, basicItems }),
@@ -47,6 +50,7 @@ export const WithHome: Story = {
 }
 
 export const WithIcons: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Breadcrumb },
     setup: () => ({ home, withIconItems }),
@@ -55,6 +59,7 @@ export const WithIcons: Story = {
 }
 
 export const SingleItem: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Breadcrumb },
     setup: () => ({ home }),

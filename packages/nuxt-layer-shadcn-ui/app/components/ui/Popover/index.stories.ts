@@ -25,9 +25,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const WithForm: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Popover, Button, Input },
     template: `
@@ -46,6 +49,7 @@ export const WithForm: Story = {
 }
 
 export const Controlled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Popover, Button },
     setup () {

@@ -1,0 +1,44 @@
+{
+  "name": "@bjj/nuxt-layer-effect",
+  "version": "0.1.1",
+  "description": "Nuxt layer providing UI-agnostic effect components (AutoScale, AutoTruncate, IntersectionChecker)",
+  "type": "module",
+  "main": "./nuxt.config.ts",
+  "exports": {
+    ".": "./nuxt.config.ts",
+    "./*": "./*"
+  },
+  "files": [
+    "app",
+    "nuxt.config.ts"
+  ],
+  "scripts": {
+    "prepare": "nuxt prepare .playground",
+    "typecheck": "nuxt prepare .playground && nuxt typecheck .playground",
+    "lint": "git add . && lint-staged --config ../../.lintstagedrc.lint-only.json",
+    "format": "git add . && lint-staged --config ../../.lintstagedrc.json",
+    "storybook": "cd .playground && storybook dev -p 6007",
+    "storybook:build": "cd .playground && storybook build",
+    "release": "npm run release:bjj && npm run release:polymarbot && npm run release:elepay",
+    "release:bjj": "tsx ../../scripts/publish.ts --name @bjj/nuxt-layer-effect --token BJJ_NPM_TOKEN",
+    "release:polymarbot": "tsx ../../scripts/publish.ts --name @polymarbot/nuxt-layer-effect --token POLYMARBOT_NPM_TOKEN --rewrite '@bjj/nuxt-layer-effect=@polymarbot/nuxt-layer-effect'",
+    "release:elepay": "tsx ../../scripts/publish.ts --name @elepay-io/nuxt-layer-effect --token ELEPAY_IO_NPM_TOKEN --registry https://npm.pkg.github.com/ --rewrite '@bjj/nuxt-layer-effect=@elepay-io/nuxt-layer-effect'"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "nuxt": "^4",
+    "vue": "^3"
+  },
+  "devDependencies": {
+    "@bjj/eslint-config-shared": "workspace:*",
+    "@nuxt/eslint": "catalog:",
+    "@storybook-vue/nuxt": "catalog:",
+    "@storybook/addon-docs": "catalog:",
+    "@storybook/vue3": "catalog:",
+    "@tailwindcss/postcss": "catalog:",
+    "storybook": "catalog:",
+    "tailwindcss": "catalog:"
+  }
+}

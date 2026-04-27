@@ -36,9 +36,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const NoTitle: Story = {
+  parameters: noControls,
   render: () => ({
     components: { PageCard },
     template: `
@@ -50,6 +53,7 @@ export const NoTitle: Story = {
 }
 
 export const WithSubtitle: Story = {
+  parameters: noControls,
   render: () => ({
     components: { PageCard },
     template: `
@@ -65,6 +69,7 @@ export const WithSubtitle: Story = {
 }
 
 export const WithBackButton: Story = {
+  parameters: noControls,
   render: () => ({
     components: { PageCard },
     template: `
@@ -76,6 +81,7 @@ export const WithBackButton: Story = {
 }
 
 export const BackWithSubtitle: Story = {
+  parameters: noControls,
   render: () => ({
     components: { PageCard },
     template: `
@@ -92,6 +98,7 @@ export const BackWithSubtitle: Story = {
 }
 
 export const WithActions: Story = {
+  parameters: noControls,
   render: () => ({
     components: { PageCard, Button },
     template: `
@@ -107,6 +114,7 @@ export const WithActions: Story = {
 }
 
 export const ActionsSubtitleBack: Story = {
+  parameters: noControls,
   render: () => ({
     components: { PageCard, WebLink },
     template: `
@@ -127,6 +135,7 @@ export const ActionsSubtitleBack: Story = {
 }
 
 export const CustomTitleSlot: Story = {
+  parameters: noControls,
   render: () => ({
     components: { PageCard },
     template: `
@@ -147,6 +156,7 @@ export const CustomTitleSlot: Story = {
 }
 
 export const WithFooter: Story = {
+  parameters: noControls,
   render: () => ({
     components: { PageCard, Button },
     template: `
@@ -164,6 +174,7 @@ export const WithFooter: Story = {
 }
 
 export const CardVariant: Story = {
+  parameters: noControls,
   render: () => ({
     components: { PageCard },
     template: `
@@ -180,6 +191,7 @@ export const CardVariant: Story = {
 }
 
 export const Loading: Story = {
+  parameters: noControls,
   render: () => ({
     components: { PageCard },
     template: `
@@ -191,6 +203,7 @@ export const Loading: Story = {
 }
 
 export const NotReady: Story = {
+  parameters: noControls,
   render: () => ({
     components: { PageCard },
     template: `
@@ -202,6 +215,7 @@ export const NotReady: Story = {
 }
 
 export const Disabled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { PageCard, Button },
     template: `

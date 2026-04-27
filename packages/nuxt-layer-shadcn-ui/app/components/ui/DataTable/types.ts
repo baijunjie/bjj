@@ -39,4 +39,6 @@ export interface DataTableProps<T = Record<string, any>> {
   sortOrder?: number | null
   /** Show loading overlay */
   loading?: boolean
+  /** Whether rows are clickable (shows pointer cursor and pairs with `@rowClick`) */
+  clickable?: boolean
 }

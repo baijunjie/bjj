@@ -36,9 +36,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const Controlled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Textarea },
     setup () {
@@ -55,6 +58,7 @@ export const Controlled: Story = {
 }
 
 export const WithRows: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Textarea },
     template: `
@@ -66,6 +70,7 @@ export const WithRows: Story = {
 }
 
 export const Invalid: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Textarea },
     template: `
@@ -77,6 +82,7 @@ export const Invalid: Story = {
 }
 
 export const Disabled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Textarea },
     template: `
@@ -88,6 +94,7 @@ export const Disabled: Story = {
 }
 
 export const Readonly: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Textarea },
     template: `

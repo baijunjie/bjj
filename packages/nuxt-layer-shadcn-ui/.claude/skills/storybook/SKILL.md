@@ -18,7 +18,9 @@ description: Storybook story 开发规范。**创建或修改任何 `.stories.ts
 - **meta 的 `argTypes` 必须列出所有可配置 Prop**
 - **meta 的 `args` 必须给所有可配置 Prop 设默认值**
 - **第一个 export 必须是 `Default`，且为空对象 `{}` 继承 meta.render**
-  - 原因：Storybook Docs 页把第一个 story 当作 Primary，紧跟其下渲染 ArgsTable（Controls）。`Default` 继承 meta 的 `<X v-bind="args">` 模板后，用户在 Controls 里改动会立即反映到这个交互演示上。把 args 绑定的 story 放第一位才能和 Controls 挨在一起。
+  - 原因：Storybook Docs 页把第一个 story 当作 Primary，紧跟其下渲染 ArgsTable（Controls）。`Default` 继承 meta 的 `<X v-bind="args">` 模板后，用户在 Controls 里改动会立即反映到这个交互演示上。
+- **非 `Default` story 一律不受控**：必须写自己的 `render`（不能只重写 `args` 继承 `meta.render`），并加 `parameters: { controls: { disable: true }}` 关闭 Controls 面板
+  - 原因：只重写 `args` 会继承 `meta.render` 里的 `v-bind="args"`，story 仍然是 args 驱动，违反"只有 `Default` 受控"的约定。要展示某种 props 组合，应在 `render` 里把 props 硬编码进 template。同时 Controls 面板对硬编码 `render` 改了没反应，留着会误导消费方，因此一并关闭。
 
 ---
 
@@ -114,6 +116,38 @@ export const Default: Story = {
 ```
 
 **不要给 `Default` 写自己的 `render`**。一写 render 就脱离 args 绑定，Controls 就没用了。
+
+### 非 `Default` story 关闭 Controls
+
+非 `Default` 的 story 都是**展示型**演示（硬编码 `render`、不绑定 `args`）。如果不显式关闭 Controls 面板，消费方会看到一个改了没反应的面板，造成误导。
+
+文件顶层抽一个常量，所有非 `Default` story 复用：
+
+```ts
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
+export const Variants: Story = {
+  parameters: noControls,
+  render: () => ({ ... }),
+}
+
+export const Sizes: Story = {
+  parameters: noControls,
+  render: () => ({ ... }),
+}
+```
+
+如果某个 story 还需要其他 `parameters`（比如 `docs.source`），用展开合并：
+
+```ts
+export const Variants: Story = {
+  parameters: {
+    ...noControls,
+    docs: { source: { code: '...' }},
+  },
+  render: () => ({ ... }),
+}
+```
 
 ### 命名约定（PascalCase）
 
@@ -260,7 +294,7 @@ export const Variants: Story = {
 
 ```ts
 parameters: {
-  docs: { source: { code: null } }
+  docs: { source: { code: null }}
 }
 ```
 

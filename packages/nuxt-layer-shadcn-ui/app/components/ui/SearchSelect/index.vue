@@ -220,7 +220,8 @@ defineExpose({ refresh: resetAndLoad })
       <EffectIntersectionChecker
         v-if="hasMore"
         :disabled="isLoading"
-        class="flex items-center justify-center py-2"
+        bao
+        class="py-2 flex items-center justify-center"
         @show="loadMore"
       >
         <Icon
@@ -235,15 +236,15 @@ defineExpose({ refresh: resetAndLoad })
       #footer
     >
       <slot name="footer">
-        <div class="border-t border-border">
+        <div class="border-border border-t">
           <WebLink
             :to="createNewTo!"
             target="_blank"
             unstyled
             class="
-              flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground
-              transition-colors
+              gap-2 px-3 py-2 text-sm text-muted-foreground
               hover:bg-accent
+              flex items-center transition-colors
             "
           >
             <Icon

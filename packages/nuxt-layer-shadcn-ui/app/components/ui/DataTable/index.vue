@@ -25,11 +25,13 @@ const props = withDefaults(defineProps<DataTableProps<TData>>(), {
   sortBy: undefined,
   sortOrder: undefined,
   loading: false,
+  clickable: false,
 })
 
 const emit = defineEmits<{
   'update:sortBy': [value: string | null]
   'update:sortOrder': [value: number | null]
+  'rowClick': [row: TData, event: MouseEvent]
 }>()
 
 const selection = defineModel<TData | TData[] | null>('selection', { default: null })
@@ -89,6 +91,11 @@ function toggleRow (row: TData) {
     set.has(rawRow) ? set.delete(rawRow) : set.add(rawRow)
     selection.value = [ ...set ]
   }
+}
+
+function onRowClick (row: TData, event: MouseEvent) {
+  emit('rowClick', row, event)
+  if (showSelectionColumn.value) toggleRow(row)
 }
 
 // -- Sorting --
@@ -208,8 +215,8 @@ function buildColumnClass (column: DataTableColumn, headerIndex?: number): strin
     column.align === 'right' && 'text-right',
     // Header-specific
     isHeader && column.sortable && `
-      cursor-pointer select-none
       hover:text-foreground
+      cursor-pointer select-none
     `,
     hasDivider && headerDividerClass,
     // Fixed column last — sticky overrides relative via tailwind-merge
@@ -258,7 +265,7 @@ const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
 
 <template>
   <div
-    :class="cn('relative rounded-lg bg-border px-1 text-foreground', !$slots.footer && `
+    :class="cn('rounded-lg bg-border px-1 text-foreground relative', !$slots.footer && `
       pb-1
     `)"
   >
@@ -272,8 +279,8 @@ const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
       <div
         v-if="loading"
         class="
-          absolute inset-0 z-20 flex items-center justify-center rounded-lg
-          bg-background/60
+          inset-0 rounded-lg bg-background/60 absolute z-20 flex items-center
+          justify-center
         "
       >
         <Icon
@@ -317,7 +324,7 @@ const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
             >
               <div
                 :class="cn(
-                  'flex items-center gap-1',
+                  'gap-1 flex items-center',
                   column.align === 'center' && 'justify-center',
                   column.align === 'right' && 'justify-end',
                 )"
@@ -349,9 +356,9 @@ const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
           <TableRow
             v-for="(row, index) in data"
             :key="index"
-            :class="showSelectionColumn && 'cursor-pointer'"
+            :class="(showSelectionColumn || clickable) && 'cursor-pointer'"
             :data-state="isRowSelected(row) ? 'selected' : undefined"
-            @click="showSelectionColumn && toggleRow(row)"
+            @click="onRowClick(row, $event)"
           >
             <!-- Selection cell: stop click to prevent double toggle with row click -->
             <TableCell
@@ -386,7 +393,7 @@ const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
                 <span
                   v-if="!formatCellValue(get(row, column.field), column) && column.type !== 'empty'"
                   class="
-                    inline-block h-0.5 w-2.5 rounded-full bg-muted-foreground/50
+                    h-0.5 w-2.5 bg-muted-foreground/50 inline-block rounded-full
                     align-middle
                   "
                 />
@@ -402,7 +409,7 @@ const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
           <TableEmpty :colspan="totalColumns">
             <slot name="empty">
               <div
-                class="flex flex-col items-center gap-2 text-muted-foreground"
+                class="gap-2 text-muted-foreground flex flex-col items-center"
               >
                 <Icon
                   name="inbox"

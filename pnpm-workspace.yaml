@@ -1,2 +1,18 @@
 packages:
   - packages/*
+
+# Shared dependency versions referenced via the `catalog:` protocol from
+# package.json files. Use this for any library declared in more than one
+# package, so versions stay in sync across the workspace.
+#
+# Note: `catalog:` is resolved by pnpm install but NOT by `npm publish`,
+# so peerDependencies that ship in published artifacts must use a literal
+# version range that matches the catalog entry below.
+catalog:
+  '@nuxt/eslint': ^1.15.2
+  '@storybook-vue/nuxt': 9.1.0-29411911.f34c865
+  '@storybook/addon-docs': ^10.3.5
+  '@storybook/vue3': ~9.1.0
+  '@tailwindcss/postcss': ^4.2.4
+  storybook: ^10.3.5
+  tailwindcss: ^4.2.4

@@ -15,8 +15,10 @@ pnpm add @bjj/nuxt-layer-shadcn-ui
 Peer dependencies (install in the host project):
 
 ```
-@bjj/shared @nuxtjs/i18n @vueuse/core dayjs nuxt vue vue-i18n vue-router
+@bjj/shared @nuxtjs/i18n @vueuse/core dayjs nuxt tailwindcss vue vue-i18n vue-router
 ```
+
+The host must have Tailwind v4 set up — pick whichever integration you prefer (`@tailwindcss/postcss`, `@tailwindcss/vite`, `@nuxtjs/tailwindcss`, etc.); the layer doesn't dictate that choice.
 
 ## Usage
 
@@ -28,17 +30,23 @@ export default defineNuxtConfig({
 })
 ```
 
+In the host's main Tailwind entry CSS, import the layer's preset alongside Tailwind — this registers the layer's design tokens, custom utilities, `dark:` variant, and `@source` for layer templates:
+
+```css
+@import 'tailwindcss';
+@import '@bjj/nuxt-layer-shadcn-ui/app/assets/styles/tailwind-preset.css';
+```
+
 The layer automatically registers:
 
 - All components under `app/components/ui/**` (no prefix, usable as global components)
 - Business components under `app/components/**` (with directory-based prefix)
 - Auto-imports from `app/composables`, `app/utils`, and `app/types`
-- The global stylesheet `app/assets/styles/globals.css` (Tailwind v4)
 - `@nuxtjs/i18n` module with the layer's locale files under `i18n/messages/`, declared as lazy-loaded locales (merged with the consumer's own locales per matching `code`)
 
 ## Navigating this Storybook
 
-- **Foundations** — Design tokens (colors, light/dark palettes) powering every component.
-- **Components** — Each UI component with interactive props, slots, and usage examples.
+- **Theme** — Design tokens (colors, light/dark palettes) powering every component.
+- **UI** — Each component with interactive props, slots, and usage examples.
 
 Use the backgrounds toolbar (top) to toggle **Light** / **Dark** mode preview.

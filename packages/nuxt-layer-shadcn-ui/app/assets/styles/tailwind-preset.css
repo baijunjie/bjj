@@ -1,0 +1,15 @@
+@import 'tw-animate-css';
+@import './tailwind-colors.css';
+@import './tailwind-utilities.css';
+
+@source '../../..'yi ge;
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

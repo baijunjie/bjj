@@ -32,9 +32,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const Sizes: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Avatar },
     setup: () => ({ sizes }),
@@ -50,6 +53,7 @@ export const Sizes: Story = {
 }
 
 export const Shapes: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Avatar },
     setup: () => ({ shapes }),
@@ -65,6 +69,7 @@ export const Shapes: Story = {
 }
 
 export const WithImage: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Avatar },
     template: `
@@ -77,6 +82,7 @@ export const WithImage: Story = {
 }
 
 export const FallbackLabel: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Avatar },
     template: `

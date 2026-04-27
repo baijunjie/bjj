@@ -39,9 +39,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const Required: Story = {
+  parameters: noControls,
   render: () => ({
     components: { FormItem, Input },
     setup () {
@@ -59,6 +62,7 @@ export const Required: Story = {
 }
 
 export const WithError: Story = {
+  parameters: noControls,
   render: () => ({
     components: { FormItem, Input },
     template: `
@@ -72,6 +76,7 @@ export const WithError: Story = {
 }
 
 export const WithDescription: Story = {
+  parameters: noControls,
   render: () => ({
     components: { FormItem, Input },
     template: `
@@ -85,6 +90,7 @@ export const WithDescription: Story = {
 }
 
 export const Horizontal: Story = {
+  parameters: noControls,
   render: () => ({
     components: { FormItem, Input },
     template: `
@@ -98,6 +104,7 @@ export const Horizontal: Story = {
 }
 
 export const Responsive: Story = {
+  parameters: noControls,
   render: () => ({
     components: { FormItem, Input },
     template: `

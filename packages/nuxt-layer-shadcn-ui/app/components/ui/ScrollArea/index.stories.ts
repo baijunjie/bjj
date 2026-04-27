@@ -45,9 +45,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const FadeMask: Story = {
+  parameters: noControls,
   render: () => ({
     components: { ScrollArea },
     setup () {
@@ -73,6 +76,7 @@ export const FadeMask: Story = {
 }
 
 export const NoOverflow: Story = {
+  parameters: noControls,
   render: () => ({
     components: { ScrollArea },
     setup () {

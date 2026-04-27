@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'packages/nuxt-layer-shadcn-ui/**'
+      - 'packages/nuxt-layer-effect/**'
       - 'packages/shared/**'
       - 'pnpm-lock.yaml'
       - '.github/workflows/deploy-storybook.yml'
@@ -37,15 +38,21 @@ jobs:
       - name: Build @bjj/shared
         run: pnpm --filter @bjj/shared build
 
-      - name: Build Storybook
+      - name: Build nuxt-layer-shadcn-ui Storybook
         env:
           STORYBOOK_BASE_PATH: /bjj/nuxt-layer-shadcn-ui/storybook/
         run: pnpm --filter @bjj/nuxt-layer-shadcn-ui storybook:build
 
+      - name: Build nuxt-layer-effect Storybook
+        env:
+          STORYBOOK_BASE_PATH: /bjj/nuxt-layer-effect/storybook/
+        run: pnpm --filter @bjj/nuxt-layer-effect storybook:build
+
       - name: Assemble site
         run: |
-          mkdir -p _site/nuxt-layer-shadcn-ui
+          mkdir -p _site/nuxt-layer-shadcn-ui _site/nuxt-layer-effect
           cp -r packages/nuxt-layer-shadcn-ui/.playground/storybook-static _site/nuxt-layer-shadcn-ui/storybook
+          cp -r packages/nuxt-layer-effect/.playground/storybook-static _site/nuxt-layer-effect/storybook
 
       - uses: actions/upload-pages-artifact@v3
         with:

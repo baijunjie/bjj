@@ -1,0 +1,11 @@
+node_modules
+.nuxt
+.output
+.nitro
+.cache
+.publish-tmp
+dist
+storybook-static
+components.d.ts
+.DS_Store
+*.log

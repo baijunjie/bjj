@@ -34,9 +34,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const Controlled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Pagination },
     setup () {
@@ -63,6 +66,7 @@ export const Controlled: Story = {
 }
 
 export const Sizes: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Pagination },
     template: `
@@ -81,6 +85,7 @@ export const Sizes: Story = {
 }
 
 export const Simple: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Pagination },
     template: `

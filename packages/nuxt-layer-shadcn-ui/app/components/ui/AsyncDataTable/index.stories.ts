@@ -84,6 +84,7 @@ const meta = {
     pageSizeOptions: { control: 'object' },
     showPagination: { control: 'boolean' },
     selectable: { control: 'boolean' },
+    clickable: { control: 'boolean' },
     batchActions: { control: 'object' },
     selection: { control: 'object' },
   },
@@ -98,6 +99,7 @@ const meta = {
     pageSizeOptions: [ 10, 20, 50 ],
     showPagination: true,
     selectable: false,
+    clickable: false,
     batchActions: [],
     selection: [],
   },
@@ -111,11 +113,14 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 /** Async fetch with pagination, sorting, page size selector */
 export const Default: Story = {}
 
 /** Batch actions with row selection and dual toolbars */
 export const WithBatchActions: Story = {
+  parameters: noControls,
   render: () => ({
     components: { AsyncDataTable },
     setup () {
@@ -139,6 +144,7 @@ export const WithBatchActions: Story = {
 
 /** Custom toolbar slot with action button */
 export const WithCustomToolbar: Story = {
+  parameters: noControls,
   render: () => ({
     components: { AsyncDataTable },
     setup: () => ({ columns, mockFetch }),

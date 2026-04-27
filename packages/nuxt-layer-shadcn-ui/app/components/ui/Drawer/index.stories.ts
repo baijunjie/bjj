@@ -58,9 +58,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const WithDescription: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Drawer, Button, Input },
     setup () {
@@ -88,6 +91,7 @@ export const WithDescription: Story = {
 }
 
 export const ScrollableContent: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Drawer, Button },
     setup () {
@@ -110,6 +114,7 @@ export const ScrollableContent: Story = {
 }
 
 export const Sides: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Drawer, Button },
     setup () {
@@ -145,6 +150,7 @@ export const Sides: Story = {
 }
 
 export const EventHandling: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Drawer, Button },
     setup () {

@@ -57,9 +57,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const Controlled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Tabs },
     setup () {
@@ -76,6 +79,7 @@ export const Controlled: Story = {
 }
 
 export const IconOnly: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Tabs },
     setup: () => ({ items }),
@@ -91,6 +95,7 @@ export const IconOnly: Story = {
 }
 
 export const Rounded: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Tabs },
     setup: () => ({ items }),
@@ -106,6 +111,7 @@ export const Rounded: Story = {
 }
 
 export const DisabledItem: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Tabs },
     setup: () => ({ disabledItems }),
@@ -120,6 +126,7 @@ export const DisabledItem: Story = {
 }
 
 export const NoContent: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Tabs },
     setup: () => ({ navItems }),
@@ -134,6 +141,7 @@ export const NoContent: Story = {
 }
 
 export const CustomSlots: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Tabs, Card },
     setup: () => ({ items }),

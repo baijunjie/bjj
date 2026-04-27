@@ -29,9 +29,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const CommonIcons: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Icon },
     setup: () => ({ commonIcons }),
@@ -51,6 +54,7 @@ export const CommonIcons: Story = {
 }
 
 export const Sizes: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Icon },
     template: `

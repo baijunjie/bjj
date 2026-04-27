@@ -31,9 +31,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const Controlled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Input },
     setup () {
@@ -50,6 +53,7 @@ export const Controlled: Story = {
 }
 
 export const WithPrefix: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Input, Icon },
     setup () {
@@ -70,6 +74,7 @@ export const WithPrefix: Story = {
 }
 
 export const WithSuffix: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Input, Icon },
     setup () {
@@ -90,6 +95,7 @@ export const WithSuffix: Story = {
 }
 
 export const Password: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Input },
     setup () {
@@ -106,6 +112,7 @@ export const Password: Story = {
 }
 
 export const Disabled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Input },
     template: '<Input disabled placeholder="Disabled input" class="max-w-sm" />',
@@ -113,6 +120,7 @@ export const Disabled: Story = {
 }
 
 export const Readonly: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Input },
     template: '<Input readonly modelValue="Read-only value" class="max-w-sm" />',
@@ -120,6 +128,7 @@ export const Readonly: Story = {
 }
 
 export const Invalid: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Input },
     template: '<Input invalid modelValue="Invalid value" class="max-w-sm" />',

@@ -1,0 +1,37 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Introduction" />
+
+# nuxt-layer-effect
+
+A Nuxt Layer providing UI-agnostic effect components built on top of native browser APIs (`ResizeObserver`, `MutationObserver`, `IntersectionObserver`). The layer has **no third-party UI library dependencies** — components are styled with inline CSS only and ship without Tailwind.
+
+## Installation
+
+```bash
+pnpm add @bjj/nuxt-layer-effect
+```
+
+Peer dependencies (install in the host project):
+
+```
+nuxt vue
+```
+
+## Usage
+
+Extend the layer from the host project's `nuxt.config.ts`:
+
+```ts
+export default defineNuxtConfig({
+  extends: ['@bjj/nuxt-layer-effect'],
+})
+```
+
+The layer registers all components under `app/components/**` with directory-based prefix.
+
+## Navigating this Storybook
+
+- **Effect** — Each component with interactive props, slots, and usage examples.
+
+> Note: The Tailwind utility classes you see in story wrappers are loaded only by `.playground` for demo purposes — the components themselves ship without Tailwind.

@@ -51,9 +51,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const WithTime: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DateRangePicker },
     setup () {
@@ -70,6 +73,7 @@ export const WithTime: Story = {
 }
 
 export const MaxSpanDays: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DateRangePicker },
     setup () {
@@ -86,6 +90,7 @@ export const MaxSpanDays: Story = {
 }
 
 export const Preselected: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DateRangePicker },
     setup () {
@@ -105,6 +110,7 @@ export const Preselected: Story = {
 }
 
 export const Disabled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DateRangePicker },
     setup () {
@@ -123,6 +129,7 @@ export const Disabled: Story = {
 }
 
 export const Readonly: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DateRangePicker },
     setup () {

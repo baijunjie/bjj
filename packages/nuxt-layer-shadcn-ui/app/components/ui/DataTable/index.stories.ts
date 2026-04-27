@@ -65,14 +65,12 @@ const meta = {
   argTypes: {
     selectionMode: { control: 'select', options: [ undefined, 'single', 'multiple' ]},
     loading: { control: 'boolean' },
-    sortBy: { control: 'text' },
-    sortOrder: { control: 'select', options: [ null, 1, -1 ]},
+    clickable: { control: 'boolean' },
   },
   args: {
     selectionMode: undefined,
     loading: false,
-    sortBy: null,
-    sortOrder: null,
+    clickable: false,
   },
   render: args => ({
     components: { DataTable: DataTable as any },
@@ -88,9 +86,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const SingleSelection: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DataTable: DataTable as any },
     setup () {
@@ -114,6 +115,7 @@ export const SingleSelection: Story = {
 }
 
 export const MultipleSelection: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DataTable: DataTable as any },
     setup () {
@@ -137,6 +139,7 @@ export const MultipleSelection: Story = {
 }
 
 export const Sortable: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DataTable: DataTable as any },
     setup () {
@@ -173,6 +176,7 @@ export const Sortable: Story = {
 }
 
 export const ColumnTypes: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DataTable: DataTable as any },
     setup: () => ({ data: sampleData, typeColumns }),
@@ -185,6 +189,7 @@ export const ColumnTypes: Story = {
 }
 
 export const CustomSlots: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DataTable: DataTable as any },
     setup: () => ({ data: sampleData, slotColumns }),
@@ -213,6 +218,7 @@ export const CustomSlots: Story = {
 }
 
 export const EmptyState: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DataTable: DataTable as any },
     setup: () => ({ basicColumns }),
@@ -225,6 +231,7 @@ export const EmptyState: Story = {
 }
 
 export const FooterSlot: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DataTable: DataTable as any },
     setup: () => ({ data: sampleData, slotColumns }),
@@ -245,6 +252,7 @@ export const FooterSlot: Story = {
 }
 
 export const FrozenColumns: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DataTable: DataTable as any },
     setup () {
@@ -269,12 +277,37 @@ export const FrozenColumns: Story = {
 }
 
 export const Loading: Story = {
+  parameters: noControls,
   render: () => ({
     components: { DataTable: DataTable as any },
     setup: () => ({ data: sampleData, basicColumns }),
     template: `
       <div class="w-full">
         <DataTable :data="data" :columns="basicColumns" loading />
+      </div>
+    `,
+  }),
+}
+
+export const RowClick: Story = {
+  parameters: noControls,
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup () {
+      const lastClicked = ref<User | null>(null)
+      return { data: sampleData, basicColumns, lastClicked }
+    },
+    template: `
+      <div class="w-full">
+        <DataTable
+          :data="data"
+          :columns="basicColumns"
+          clickable
+          @rowClick="row => lastClicked = row"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">
+          Last clicked: {{ lastClicked?.name ?? 'none' }}
+        </div>
       </div>
     `,
   }),

@@ -36,9 +36,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const Range: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Slider },
     setup () {
@@ -55,6 +58,7 @@ export const Range: Story = {
 }
 
 export const WithStep: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Slider },
     setup () {
@@ -71,6 +75,7 @@ export const WithStep: Story = {
 }
 
 export const CustomMinMax: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Slider },
     setup () {
@@ -87,6 +92,7 @@ export const CustomMinMax: Story = {
 }
 
 export const Disabled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Slider },
     setup () {

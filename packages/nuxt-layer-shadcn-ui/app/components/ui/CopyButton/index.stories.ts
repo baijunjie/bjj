@@ -37,9 +37,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const IconOnly: Story = {
+  parameters: noControls,
   render: () => ({
     components: { CopyButton },
     template: `
@@ -53,6 +56,7 @@ export const IconOnly: Story = {
 }
 
 export const WithLabel: Story = {
+  parameters: noControls,
   render: () => ({
     components: { CopyButton },
     template: `
@@ -65,6 +69,7 @@ export const WithLabel: Story = {
 }
 
 export const Variants: Story = {
+  parameters: noControls,
   render: () => ({
     components: { CopyButton },
     setup: () => ({ variants }),
@@ -84,6 +89,7 @@ export const Variants: Story = {
 }
 
 export const Sizes: Story = {
+  parameters: noControls,
   render: () => ({
     components: { CopyButton },
     template: `
@@ -97,6 +103,7 @@ export const Sizes: Story = {
 }
 
 export const CustomTooltipText: Story = {
+  parameters: noControls,
   render: () => ({
     components: { CopyButton },
     template: `

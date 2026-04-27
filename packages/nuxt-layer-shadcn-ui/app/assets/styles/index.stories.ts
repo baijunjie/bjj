@@ -72,7 +72,7 @@ const foregrounds = [
 ]
 
 const meta = {
-  title: 'Foundations/Colors',
+  title: 'Theme/Colors',
   parameters: {
     layout: 'padded',
     docs: {

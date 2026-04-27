@@ -52,9 +52,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const Variants: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Button },
     setup: () => ({ variants }),
@@ -67,6 +70,7 @@ export const Variants: Story = {
 }
 
 export const Sizes: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Button, Icon },
     setup: () => ({ sizes }),
@@ -82,6 +86,7 @@ export const Sizes: Story = {
 }
 
 export const WithIcons: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Button },
     template: `
@@ -96,6 +101,7 @@ export const WithIcons: Story = {
 }
 
 export const Loading: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Button },
     template: `
@@ -110,6 +116,7 @@ export const Loading: Story = {
 }
 
 export const Disabled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Button },
     setup: () => ({ variants }),
@@ -122,6 +129,7 @@ export const Disabled: Story = {
 }
 
 export const Rounded: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Button },
     template: `
@@ -137,6 +145,7 @@ export const Rounded: Story = {
 }
 
 export const LinkButtons: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Button },
     template: `

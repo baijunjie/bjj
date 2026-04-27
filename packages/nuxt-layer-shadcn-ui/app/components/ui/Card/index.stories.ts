@@ -25,9 +25,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const WithTitle: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Card },
     template: `
@@ -39,6 +42,7 @@ export const WithTitle: Story = {
 }
 
 export const CustomHeader: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Card, Button },
     template: `
@@ -56,6 +60,7 @@ export const CustomHeader: Story = {
 }
 
 export const WithFooter: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Card, Button },
     template: `

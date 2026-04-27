@@ -26,9 +26,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const Colors: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Surface },
     setup: () => ({ colors }),
@@ -43,6 +46,7 @@ export const Colors: Story = {
 }
 
 export const Variants: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Surface },
     setup: () => ({ variants }),
@@ -57,6 +61,7 @@ export const Variants: Story = {
 }
 
 export const VariantColorMatrix: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Surface },
     setup: () => ({ colors, variants }),

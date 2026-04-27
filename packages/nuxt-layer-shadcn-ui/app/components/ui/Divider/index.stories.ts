@@ -33,9 +33,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const Horizontal: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Divider },
     template: `
@@ -49,6 +52,7 @@ export const Horizontal: Story = {
 }
 
 export const Vertical: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Divider },
     template: `

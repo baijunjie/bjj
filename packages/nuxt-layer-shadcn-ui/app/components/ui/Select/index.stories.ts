@@ -66,9 +66,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const WithFilter: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Select },
     setup () {
@@ -90,6 +93,7 @@ export const WithFilter: Story = {
 }
 
 export const Multiple: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Select },
     setup () {
@@ -111,6 +115,7 @@ export const Multiple: Story = {
 }
 
 export const WithDisabledOptions: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Select },
     setup () {
@@ -128,6 +133,7 @@ export const WithDisabledOptions: Story = {
 }
 
 export const Scrollable: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Select },
     setup () {
@@ -148,6 +154,7 @@ export const Scrollable: Story = {
 }
 
 export const Grouped: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Select },
     setup () {
@@ -168,6 +175,7 @@ export const Grouped: Story = {
 }
 
 export const Disabled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Select },
     setup () {

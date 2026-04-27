@@ -35,9 +35,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
 
 export const Checked: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Checkbox },
     setup () {
@@ -57,6 +60,7 @@ export const Checked: Story = {
 }
 
 export const Indeterminate: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Checkbox },
     template: `
@@ -69,6 +73,7 @@ export const Indeterminate: Story = {
 }
 
 export const Disabled: Story = {
+  parameters: noControls,
   render: () => ({
     components: { Checkbox },
     template: `

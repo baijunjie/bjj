@@ -5,9 +5,13 @@ description: 样式开发规范。在编写 CSS/Tailwind 样式、处理 Dark Mo
 
 # 样式开发指南
 
-本包基于 [shadcn-vue 主题规范](https://www.shadcn-vue.com/themes)，采用**调色板 → 语义映射**两层架构。调色板变量定义在 `app/assets/styles/colors.css`（oklch 格式），通过 `@theme inline` 映射为 Tailwind 语义类。
+本包基于 [shadcn-vue 主题规范](https://www.shadcn-vue.com/themes)，采用**调色板 → 语义映射**两层架构。调色板变量定义在 `app/assets/styles/tailwind-colors.css`（oklch 格式），通过 `@theme inline` 映射为 Tailwind 语义类。
 
-全局入口：`app/assets/styles/globals.css`（由 `nuxt.config.ts` 的 `css` 数组注册）。
+文件命名约定：`tailwind-*.css` 表示需要 Tailwind 编译上下文（含 `@theme` / `@apply` 等指令）；其他 `.css` 是纯 CSS。
+
+入口：
+- `app/assets/styles/globals.css`（layer 自动注入，纯 CSS）
+- `app/assets/styles/tailwind-preset.css`（消费方在自己的 Tailwind 主 CSS 里 `@import`）
 
 ---
 
@@ -28,7 +32,7 @@ description: 样式开发规范。在编写 CSS/Tailwind 样式、处理 Dark Mo
 ### 两层设计
 
 ```
-colors.css                       @theme inline                   使用方式
+tailwind-colors.css              @theme inline                   使用方式
 ──────────────                   ──────────────                  ──────────
 调色板变量（定义实际色值）     →   语义变量（映射到调色板）      →   Tailwind class / var(--color-*)
 --background                     --color-background              bg-background
@@ -203,14 +207,13 @@ background: var(--color-muted);
 
 ## 样式文件加载
 
-`app/assets/styles/globals.css` 是总入口，依次 `@import`：
-- `tailwindcss`
-- `tw-animate-css`
-- `./colors.css`
-- `./utilities.css`
-- `./animate.css`
-- `./transition.css`
+两个入口分工：
 
-修改色值 → `colors.css`；新增 utility → `utilities.css`；动画 → `animate.css`。
+- `globals.css`（layer 自动注入，纯 CSS）：当前只 `@import './z-index.css'`。可以加纯 CSS 规则，但**不能**写 `@theme` / `@apply` / `@source` 等需要 Tailwind 编译上下文的指令。
+- `tailwind-preset.css`（消费方在主 Tailwind CSS 里 `@import`）：依次 `@import`
+  - `tw-animate-css`
+  - `./tailwind-colors.css`
+  - `./tailwind-utilities.css`
+  - 然后是 `@source` / `@custom-variant` / `@layer base { @apply ... }`
 
-`nuxt.config.ts` 通过 `css: [...]` 注册 globals.css，消费方 `extends` 本 layer 时自动继承。
+修改色值 → `tailwind-colors.css`；新增需要 Tailwind 编译的 utility/动画 → `tailwind-utilities.css`；纯 CSS portal/选择器 → `z-index.css`（或新建无 `tailwind-` 前缀的文件）。
