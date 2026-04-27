@@ -35,10 +35,10 @@ const emit = defineEmits<{
 const { t } = useI18n()
 
 const resolvedConfirmText = computed(
-  () => props.confirmText ?? t('common.actions.confirm'),
+  () => props.confirmText || t('common.actions.confirm'),
 )
 const resolvedCancelText = computed(
-  () => props.cancelText ?? t('common.actions.cancel'),
+  () => props.cancelText || t('common.actions.cancel'),
 )
 
 const dialogOpen = computed({
@@ -138,7 +138,7 @@ const contentClass = computed(() =>
 
           <!-- Right side buttons -->
           <div
-            class="flex shrink-0 gap-4"
+            class="gap-4 flex shrink-0"
             :class="[ alignCenter ? 'justify-center' : 'justify-end' ]"
           >
             <Button
@@ -167,10 +167,11 @@ const contentClass = computed(() =>
         v-if="showClose"
         :disabled="loading"
         class="
-          absolute top-3 right-3 flex size-8 items-center justify-center
-          rounded-full text-muted-foreground ring-offset-background transition
+          top-3 right-3 size-8 text-muted-foreground ring-offset-background
           hover:bg-accent/50 hover:text-foreground
-          focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden
+          focus:ring-ring
+          absolute flex items-center justify-center rounded-full transition
+          focus:ring-2 focus:ring-offset-2 focus:outline-hidden
           disabled:pointer-events-none disabled:opacity-50
         "
       >

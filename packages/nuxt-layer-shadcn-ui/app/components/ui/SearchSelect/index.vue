@@ -251,7 +251,7 @@ defineExpose({ refresh: resetAndLoad })
               name="plus"
               class="size-4"
             />
-            {{ createNewText ?? T('createNew') }}
+            {{ createNewText || T('createNew') }}
           </WebLink>
         </div>
       </slot>

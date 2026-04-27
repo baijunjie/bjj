@@ -34,10 +34,10 @@ const emit = defineEmits<{
 const { t } = useI18n()
 
 const resolvedConfirmText = computed(
-  () => props.confirmText ?? t('common.actions.confirm'),
+  () => props.confirmText || t('common.actions.confirm'),
 )
 const resolvedCancelText = computed(
-  () => props.cancelText ?? t('common.actions.cancel'),
+  () => props.cancelText || t('common.actions.cancel'),
 )
 
 const sheetOpen = computed({
@@ -65,7 +65,7 @@ function onCancel () {
 }
 
 const contentClass = computed(() =>
-  cn('flex flex-col gap-0 p-0', props.class),
+  cn('gap-0 p-0 flex flex-col', props.class),
 )
 </script>
 
@@ -128,7 +128,7 @@ const contentClass = computed(() =>
             <slot name="footerLeft" />
           </div>
 
-          <div class="flex shrink-0 justify-end gap-4">
+          <div class="gap-4 flex shrink-0 justify-end">
             <Button
               v-if="showCancel"
               class="min-w-24"
@@ -155,10 +155,11 @@ const contentClass = computed(() =>
         v-if="showClose"
         :disabled="loading"
         class="
-          absolute top-3 right-3 flex size-8 items-center justify-center
-          rounded-full text-muted-foreground ring-offset-background transition
+          top-3 right-3 size-8 text-muted-foreground ring-offset-background
           hover:bg-accent/50 hover:text-foreground
-          focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden
+          focus:ring-ring
+          absolute flex items-center justify-center rounded-full transition
+          focus:ring-2 focus:ring-offset-2 focus:outline-hidden
           disabled:pointer-events-none disabled:opacity-50
         "
       >

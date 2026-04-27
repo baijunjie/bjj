@@ -23,7 +23,7 @@ const sizeClasses: Record<string, string> = {
   xlarge: 'size-16 text-lg',
 }
 
-const effectiveLabel = computed(() => props.fallbackLabel ?? props.label)
+const effectiveLabel = computed(() => props.fallbackLabel || props.label)
 
 const mergedClass = computed(() =>
   cn(

@@ -34,7 +34,7 @@ const orientationClass = {
 } as const
 
 const mergedClass = computed(() => cn(
-  'flex gap-3',
+  'gap-3 flex',
   orientationClass[props.orientation],
   props.class,
 ))
@@ -51,7 +51,7 @@ const mergedClass = computed(() => cn(
       v-for="item in items"
       :key="item.value"
       class="
-        flex cursor-pointer items-center gap-2
+        gap-2 flex cursor-pointer items-center
         has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50
       "
     >
@@ -65,7 +65,7 @@ const mergedClass = computed(() => cn(
           :item="item"
           :checked="model === item.value"
         >
-          {{ item.label ?? item.value }}
+          {{ item.label || item.value }}
         </slot>
       </span>
     </label>
