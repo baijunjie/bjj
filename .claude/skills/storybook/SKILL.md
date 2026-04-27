@@ -1,18 +1,29 @@
 ---
 name: storybook
-description: Storybook story 开发规范。**创建或修改任何 `.stories.ts` 文件前必须调用**。涵盖 story 文件位置、meta 结构、story 拆分原则、Default 作为 Primary / Controls 的载体、Controls 完整性、Docs 页面聚合等规范。
+description: Storybook story 开发规范。**创建或修改任何 `.stories.ts` 文件前必须调用**。涵盖 story 文件位置、meta 结构、story 拆分原则、Default 作为 Primary / Controls 的载体、Controls 完整性、Docs 页面聚合等规范。适用于本仓库所有带 Storybook 的 Nuxt layer 包。
 ---
 
 # Storybook Story 开发指南
 
-本包的 Storybook 作为封装层（`app/components/ui/*`）的活文档。每个 story 文件会被聚合到 Docs 页，把该组件的所有使用方式一次性展示给消费方。
+本仓库的 Nuxt layer 包用 Storybook 作为封装层组件的活文档。每个 story 文件会被聚合到 Docs 页，把该组件的所有使用方式一次性展示给消费方。
+
+## 适用范围
+
+| Package | 封装层目录 | story title 前缀 |
+|---|---|---|
+| `nuxt-layer-shadcn-ui` | `app/components/ui/` | `UI/` |
+| `nuxt-layer-effect` | `app/components/effect/` | `Effect/` |
+
+下文以 `<封装层>` 指代当前包的封装目录（`ui/` 或 `effect/`），以 `<TitlePrefix>` 指代 title 前缀（`UI` 或 `Effect`）。
+
+各 package 的 `.playground/.storybook/main.ts` 已经把 `app/components/**/*.stories.@(ts|tsx)` 配进 glob，story 文件放在组件目录下就会自动被扫到。
 
 ---
 
 ## ⛔ 硬性规则
 
-- **`app/components/ui/` 下每个组件都必须有 `index.stories.ts`**（和 `index.vue` 同目录）
-- `app/components/shadcn/` 是 CLI 产物、不可修改，**永远不写 stories**；其他业务组件目录视情况自行决定
+- **`app/components/<封装层>/` 下每个组件都必须有 `index.stories.ts`**（和 `index.vue` 同目录）
+- `nuxt-layer-shadcn-ui` 的 `app/components/shadcn/` 是 CLI 产物、不可修改，**永远不写 stories**；其他业务组件目录视情况自行决定
 - **一个 demo = 一个 story export**（禁止巨石 `Default`：把多个 `<section>` 塞进同一个 render）
 - **每个可配置 Prop 至少要有一个专门的演示 story**
 - **meta 的 `argTypes` 必须列出所有可配置 Prop**
@@ -29,9 +40,7 @@ description: Storybook story 开发规范。**创建或修改任何 `.stories.ts
 | 组件路径 | story 文件路径 |
 |---|---|
 | `app/components/ui/Button/index.vue` | `app/components/ui/Button/index.stories.ts` |
-| `app/components/ui/DataTable/index.vue` | `app/components/ui/DataTable/index.stories.ts` |
-
-`nuxt-layer-shadcn-ui/.playground/.storybook/main.ts` 的 glob 已经覆盖这个路径，放对位置就会自动被扫到。
+| `app/components/effect/AutoScale/index.vue` | `app/components/effect/AutoScale/index.stories.ts` |
 
 ---
 
@@ -45,7 +54,7 @@ const variants = [ 'default', 'destructive', 'outline', 'secondary', 'ghost', 'l
 const sizes = [ 'sm', 'default', 'lg', 'icon-sm', 'icon', 'icon-lg' ] as const
 
 const meta = {
-  title: 'UI/Button',              // ① 固定前缀 UI/
+  title: 'UI/Button',              // ① 固定前缀 <TitlePrefix>/，如 UI/ 或 Effect/
   component: Button,               // ② 必填，Docs 会据此生成 Props 表
   argTypes: {                      // ③ 列出所有可配置 Prop
     variant: { control: 'select', options: variants },
@@ -80,7 +89,7 @@ type Story = StoryObj<typeof meta>
 
 | 字段 | 规范 |
 |---|---|
-| `title` | 固定 `UI/<PascalComponent>`，和组件目录名一致 |
+| `title` | 固定 `<TitlePrefix>/<PascalComponent>`（`UI/Button`、`Effect/AutoScale`），和组件目录名一致 |
 | `component` | 必填，**不要加 `as any`**（除非真的遇到无法解决的类型冲突） |
 | `argTypes` | 列出**所有** Prop；用 `control: 'select'`/`'boolean'`/`'text'`/`'number'` 配合 `options` |
 | `args` | 每个 Prop 都给默认值，消费方在 Controls 里改动会基于这套默认值 |
