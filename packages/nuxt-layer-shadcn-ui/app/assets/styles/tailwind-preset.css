@@ -2,7 +2,7 @@
 @import './tailwind-colors.css';
 @import './tailwind-utilities.css';
 
-@source '../../..'yi ge;
+@source '../../..';
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
