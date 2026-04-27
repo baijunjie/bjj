@@ -45,7 +45,17 @@ const REWRITABLE_EXTS = new Set([
 // 遍历目录时始终跳过的条目
 const WALK_SKIP = new Set([ 'node_modules', '.DS_Store' ])
 
+// 需要解析 catalog: 引用的依赖字段
+const DEP_FIELDS = [ 'dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies' ] as const
+
 interface Rewrite { from: string, to: string }
+
+interface Catalogs {
+  /** 默认 catalog（pnpm-workspace.yaml 的 `catalog:` 段，等价于 `catalogs.default`） */
+  default: Record<string, string>
+  /** 命名 catalog（pnpm-workspace.yaml 的 `catalogs.<name>:` 段） */
+  named: Record<string, Record<string, string>>
+}
 
 function parseRewrite (spec: string): Rewrite {
   const eq = spec.indexOf('=')
@@ -58,6 +68,102 @@ function parseRewrite (spec: string): Rewrite {
 
 function escapeRegExp (s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+/**
+ * 解析 pnpm-workspace.yaml 的 catalog / catalogs 段
+ * 仅支持平铺的 `key: value` 形式（catalog 协议本身不支持嵌套）
+ */
+function parseCatalogs (yaml: string): Catalogs {
+  const out: Catalogs = { default: {}, named: {}}
+  const lines = yaml.replace(/\r/g, '').split('\n').map(l => l.replace(/(?:^|\s)#.*$/, ''))
+
+  const parseEntry = (s: string): [string, string] | null => {
+    const m = /^(['"]?)([^'"]+)\1\s*:\s*(.+?)\s*$/.exec(s.trim())
+    if (!m) return null
+    return [ m[2].trim(), m[3].replace(/^['"]|['"]$/g, '').trim() ]
+  }
+
+  let mode: null | 'catalog' | 'catalogs' = null
+  let currentNamed: string | null = null
+  let namedIndent = -1
+
+  for (const line of lines) {
+    if (!line.trim()) continue
+    const indent = line.match(/^ */)![0].length
+
+    if (indent === 0) {
+      mode = null
+      currentNamed = null
+      namedIndent = -1
+      const top = line.trim()
+      if (top === 'catalog:') mode = 'catalog'
+      else if (top === 'catalogs:') mode = 'catalogs'
+      continue
+    }
+
+    if (mode === 'catalog') {
+      const e = parseEntry(line)
+      if (e) out.default[e[0]] = e[1]
+      continue
+    }
+
+    if (mode === 'catalogs') {
+      // 第一层缩进：named catalog 名称（行尾以 `:` 结束、无值）
+      const nameMatch = /^(['"]?)([^'":]+)\1:\s*$/.exec(line.trim())
+      if (currentNamed === null || indent <= namedIndent) {
+        if (nameMatch) {
+          currentNamed = nameMatch[2].trim()
+          out.named[currentNamed] = {}
+          namedIndent = indent
+        }
+      } else {
+        const e = parseEntry(line)
+        if (e) out.named[currentNamed][e[0]] = e[1]
+      }
+    }
+  }
+
+  // pnpm 把顶层 `catalog:` 视为 `catalogs.default` 的语法糖，合并两者
+  if (out.named.default) {
+    out.default = { ...out.named.default, ...out.default }
+    delete out.named.default
+  }
+
+  return out
+}
+
+/** 沿目录上行查找 pnpm-workspace.yaml 并加载 catalog 定义 */
+function loadCatalogs (start: string): Catalogs {
+  let dir = start
+  while (true) {
+    const wsFile = path.join(dir, 'pnpm-workspace.yaml')
+    if (fs.existsSync(wsFile)) return parseCatalogs(fs.readFileSync(wsFile, 'utf-8'))
+    const parent = path.dirname(dir)
+    if (parent === dir) return { default: {}, named: {}}
+    dir = parent
+  }
+}
+
+/** 把 deps 里的 `catalog:` / `catalog:<name>` 引用替换为实际版本范围 */
+function resolveCatalogDeps (deps: Record<string, string> | undefined, catalogs: Catalogs, sectionName: string): void {
+  if (!deps) return
+  for (const [ name, spec ] of Object.entries(deps)) {
+    if (!spec.startsWith('catalog:')) continue
+    const catalogName = spec.slice('catalog:'.length).trim()
+    const isDefault = !catalogName || catalogName === 'default'
+    const catalog = isDefault ? catalogs.default : catalogs.named[catalogName]
+    if (!catalog) {
+      console.error(`未找到 catalog "${catalogName || 'default'}"（来自 ${sectionName}.${name}: ${spec}）`)
+      process.exit(1)
+    }
+    const resolved = catalog[name]
+    if (!resolved) {
+      console.error(`catalog "${catalogName || 'default'}" 中未声明 ${name}（来自 ${sectionName}.${name}: ${spec}）`)
+      process.exit(1)
+    }
+    deps[name] = resolved
+  }
 }
 
 function applyRewrites (content: string, rewrites: Rewrite[]): string {
@@ -169,6 +275,10 @@ function main () {
     delete distPkg.packageManager
     delete distPkg.workspaces
     delete distPkg.private
+
+    // catalog: 引用 → 实际版本范围（npm 不识别 catalog: 协议，需在发布前展开）
+    const catalogs = loadCatalogs(CWD)
+    for (const f of DEP_FIELDS) resolveCatalogDeps(distPkg[f], catalogs, f)
 
     const pkgJson = applyRewrites(JSON.stringify(distPkg, null, 2), rewrites) + '\n'
     fs.writeFileSync(path.join(PUBLISH_DIR, 'package.json'), pkgJson)

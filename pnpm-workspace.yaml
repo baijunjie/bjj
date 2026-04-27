@@ -5,9 +5,11 @@ packages:
 # package.json files. Use this for any library declared in more than one
 # package, so versions stay in sync across the workspace.
 #
-# Note: `catalog:` is resolved by pnpm install but NOT by `npm publish`,
-# so peerDependencies that ship in published artifacts must use a literal
-# version range that matches the catalog entry below.
+# `catalog:` is resolved by pnpm install. For published artifacts (where npm
+# itself does not understand the protocol), `scripts/publish.ts` expands
+# `catalog:` references in dependencies / peerDependencies / optionalDependencies
+# to the literal range below when staging package.json — so peerDeps can use
+# `catalog:` too and the version is maintained in one place.
 catalog:
   '@nuxt/eslint': ^1.15.2
   '@storybook-vue/nuxt': 9.1.0-29411911.f34c865
