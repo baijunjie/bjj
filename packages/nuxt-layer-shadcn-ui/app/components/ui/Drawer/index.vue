@@ -65,7 +65,7 @@ function onCancel () {
 }
 
 const contentClass = computed(() =>
-  cn('gap-0 p-0 flex flex-col', props.class),
+  cn('bg-popover gap-0 p-0 flex flex-col', props.class),
 )
 </script>
 

@@ -67,7 +67,7 @@ function onCancel () {
 
 const contentClass = computed(() =>
   cn(
-    'gap-0 py-0',
+    'bg-popover gap-0 py-0',
     props.alignCenter && 'text-center',
     props.class,
   ),
