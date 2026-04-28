@@ -12,6 +12,7 @@ import type { ModalProps } from './types'
 
 const props = withDefaults(defineProps<ModalProps>(), {
   showClose: true,
+  closeOnClickOutside: false,
   title: undefined,
   description: undefined,
   confirmText: undefined,
@@ -65,6 +66,10 @@ function onCancel () {
   emit('update:visible', false)
 }
 
+function onPointerDownOutside (event: Event) {
+  if (!props.closeOnClickOutside) event.preventDefault()
+}
+
 const contentClass = computed(() =>
   cn(
     'bg-popover gap-0 py-0',
@@ -79,7 +84,7 @@ const contentClass = computed(() =>
     <DialogContent
       :class="contentClass"
       :showCloseButton="false"
-      @pointerDownOutside.prevent
+      @pointerDownOutside="onPointerDownOutside"
       @closeAutoFocus="emit('closed')"
     >
       <!-- Header -->

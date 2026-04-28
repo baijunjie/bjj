@@ -8,6 +8,7 @@ export interface ModalProps {
   confirmDisabled?: boolean
   showCancel?: boolean
   showClose?: boolean
+  closeOnClickOutside?: boolean
   hideHeader?: boolean
   hideFooter?: boolean
   alignCenter?: boolean

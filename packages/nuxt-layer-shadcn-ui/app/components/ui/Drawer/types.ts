@@ -9,6 +9,7 @@ export interface DrawerProps {
   confirmDisabled?: boolean
   showCancel?: boolean
   showClose?: boolean
+  closeOnClickOutside?: boolean
   hideHeader?: boolean
   hideFooter?: boolean
   side?: DrawerSide

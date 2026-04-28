@@ -12,6 +12,7 @@ import type { DrawerProps } from './types'
 
 const props = withDefaults(defineProps<DrawerProps>(), {
   showClose: true,
+  closeOnClickOutside: false,
   side: 'right',
   title: undefined,
   description: undefined,
@@ -64,6 +65,10 @@ function onCancel () {
   emit('update:visible', false)
 }
 
+function onPointerDownOutside (event: Event) {
+  if (!props.closeOnClickOutside) event.preventDefault()
+}
+
 const contentClass = computed(() =>
   cn('bg-popover gap-0 p-0 flex flex-col', props.class),
 )
@@ -74,7 +79,7 @@ const contentClass = computed(() =>
     <SheetContent
       :side="side"
       :class="contentClass"
-      @pointerDownOutside.prevent
+      @pointerDownOutside="onPointerDownOutside"
       @closeAutoFocus="emit('closed')"
     >
       <!-- Header -->
