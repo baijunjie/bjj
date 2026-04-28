@@ -16,8 +16,8 @@ const errorArray = computed(() => {
 })
 
 const labelClass = computed(() => {
-  if (props.orientation === 'horizontal') return '!flex-initial mt-2'
-  if (props.orientation === 'responsive') return '@md/field-group:!flex-initial @md/field-group:mt-2'
+  if (props.orientation === 'horizontal') return 'justify-end text-right mt-2'
+  if (props.orientation === 'responsive') return '@md/field-group:justify-end @md/field-group:text-right @md/field-group:mt-2'
   return undefined
 })
 </script>

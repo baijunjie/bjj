@@ -43,8 +43,14 @@ const pageReport = computed(() => {
   return T('pageReport', { first, last, total: props.total })
 })
 
+const pageItemClass = computed(() => props.size === 'sm'
+  ? 'min-w-8 w-auto! px-1.5'
+  : 'min-w-9 w-auto! px-2',
+)
+
 const activePageClass = computed(() => cn(
   buttonVariants({ variant: 'default', size: iconButtonSize.value }),
+  pageItemClass.value,
   `
     hover:text-primary-foreground
     dark:hover:bg-primary/90
@@ -65,7 +71,7 @@ const pageSizeMenuItems = computed<DropdownItem[]>(() =>
 <template>
   <div
     v-if="hasData"
-    class="flex items-center gap-2"
+    class="gap-2 flex items-center"
   >
     <!-- Simple mode: ‹ 1/9 › -->
     <template v-if="simple">
@@ -86,7 +92,7 @@ const pageSizeMenuItems = computed<DropdownItem[]>(() =>
         <Icon name="chevron-left" />
       </Button>
       <span
-        class="min-w-12 text-center text-sm text-muted-foreground tabular-nums"
+        class="min-w-12 text-sm text-muted-foreground text-center tabular-nums"
       >
         {{ page }} / {{ totalPages }}
       </span>
@@ -110,7 +116,7 @@ const pageSizeMenuItems = computed<DropdownItem[]>(() =>
 
     <!-- Full mode -->
     <template v-else>
-      <span class="text-sm whitespace-nowrap text-muted-foreground">
+      <span class="text-sm text-muted-foreground whitespace-nowrap">
         {{ pageReport }}
       </span>
       <ShadcnPagination
@@ -135,7 +141,7 @@ const pageSizeMenuItems = computed<DropdownItem[]>(() =>
               :key="index"
               :value="item.value"
               :size="iconButtonSize"
-              :class="item.value === page ? activePageClass : ''"
+              :class="item.value === page ? activePageClass : pageItemClass"
             >
               {{ item.value }}
             </PaginationItem>

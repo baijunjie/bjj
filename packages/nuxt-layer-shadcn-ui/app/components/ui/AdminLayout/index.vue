@@ -22,57 +22,51 @@ withDefaults(defineProps<AdminLayoutProps>(), {
 </script>
 
 <template>
-  <!-- Wrap with a real DOM element to avoid Vue <Transition> warning.
-       SidebarProvider's root is reka-ui TooltipProvider (renderless), which
-       Nuxt's layoutTransition cannot animate. `display: contents` keeps
-       layout unaffected. -->
-  <div class="contents">
-    <SidebarProvider>
-      <Sidebar
-        :variant="variant"
-        :collapsible="collapsible"
-      >
-        <SidebarHeader>
-          <slot name="header">
-            <SidebarDropdown
-              v-if="headerDropdown"
-              :profile="headerDropdown.profile"
-              :menuItems="headerDropdown.menuItems"
-            />
-          </slot>
-        </SidebarHeader>
+  <SidebarProvider>
+    <Sidebar
+      :variant="variant"
+      :collapsible="collapsible"
+    >
+      <SidebarHeader>
+        <slot name="header">
+          <SidebarDropdown
+            v-if="headerDropdown"
+            :profile="headerDropdown.profile"
+            :menuItems="headerDropdown.menuItems"
+          />
+        </slot>
+      </SidebarHeader>
 
-        <SidebarContent>
-          <SidebarMenus :menus="menus" />
-        </SidebarContent>
+      <SidebarContent>
+        <SidebarMenus :menus="menus" />
+      </SidebarContent>
 
-        <SidebarFooter>
-          <slot name="footer">
-            <SidebarDropdown
-              v-if="footerDropdown"
-              :profile="footerDropdown.profile"
-              :menuItems="footerDropdown.menuItems"
-            />
-          </slot>
-        </SidebarFooter>
+      <SidebarFooter>
+        <slot name="footer">
+          <SidebarDropdown
+            v-if="footerDropdown"
+            :profile="footerDropdown.profile"
+            :menuItems="footerDropdown.menuItems"
+          />
+        </slot>
+      </SidebarFooter>
 
-        <SidebarRail />
-      </Sidebar>
+      <SidebarRail />
+    </Sidebar>
 
-      <SidebarInset class="min-w-0">
-        <Navbar>
-          <div class="flex flex-1 items-center gap-3">
-            <slot name="navbar-left" />
-          </div>
-          <div class="flex items-center gap-3">
-            <slot name="navbar-right" />
-          </div>
-        </Navbar>
-
-        <div class="flex-1 overflow-auto">
-          <slot />
+    <SidebarInset class="min-w-0">
+      <Navbar>
+        <div class="gap-3 flex flex-1 items-center">
+          <slot name="navbar-left" />
         </div>
-      </SidebarInset>
-    </SidebarProvider>
-  </div>
+        <div class="gap-3 flex items-center">
+          <slot name="navbar-right" />
+        </div>
+      </Navbar>
+
+      <div class="flex-1 overflow-auto">
+        <slot />
+      </div>
+    </SidebarInset>
+  </SidebarProvider>
 </template>
