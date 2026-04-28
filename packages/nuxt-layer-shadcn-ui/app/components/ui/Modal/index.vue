@@ -188,16 +188,3 @@ const contentClass = computed(() =>
     </DialogContent>
   </Dialog>
 </template>
-
-<style>
-/* Translucent blur backdrop. DialogOverlay is rendered inside DialogPortal
-   (outside component scope), so use a non-scoped style. */
-[data-slot='dialog-overlay'] {
-  background-color: rgba(252, 252, 252, 0.3);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-}
-.dark [data-slot='dialog-overlay'] {
-  background-color: rgba(25, 25, 25, 0.3);
-}
-</style>

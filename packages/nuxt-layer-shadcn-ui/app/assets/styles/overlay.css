@@ -1,0 +1,19 @@
+/* =========================================================================
+ * Portal-rendered overlays — visual overrides
+ * -------------------------------------------------------------------------
+ * Reka UI portals (Dialog, Sheet) render their overlays OUTSIDE each
+ * component's DOM scope, so styling must use non-scoped selectors. Shared
+ * here so Modal and Drawer keep a consistent translucent blur backdrop.
+ * ========================================================================= */
+
+[data-slot='dialog-overlay'],
+[data-slot='sheet-overlay'] {
+  background-color: rgba(252, 252, 252, 0.3);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.dark [data-slot='dialog-overlay'],
+.dark [data-slot='sheet-overlay'] {
+  background-color: rgba(25, 25, 25, 0.3);
+}

@@ -178,17 +178,6 @@ const contentClass = computed(() =>
 </template>
 
 <style>
-/* Translucent blur backdrop. SheetOverlay is rendered inside DialogPortal
-   (outside component scope), so use a non-scoped style. */
-[data-slot='sheet-overlay'] {
-  background-color: rgba(252, 252, 252, 0.3);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-}
-.dark [data-slot='sheet-overlay'] {
-  background-color: rgba(25, 25, 25, 0.3);
-}
-
 /* Hide SheetContent's hardcoded built-in close button (no data-slot);
    we render our own SheetClose above with loading-aware disable. */
 [data-slot='sheet-content'] > button:not([data-slot]) {
