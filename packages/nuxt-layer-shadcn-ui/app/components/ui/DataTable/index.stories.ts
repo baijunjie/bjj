@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import Tag from '../Tag/index.vue'
 import type { DataTableColumn } from './types'
 import DataTable from './index.vue'
 
@@ -191,25 +192,58 @@ export const ColumnTypes: Story = {
 export const CustomSlots: Story = {
   parameters: noControls,
   render: () => ({
-    components: { DataTable: DataTable as any },
+    components: { DataTable: DataTable as any, Tag },
     setup: () => ({ data: sampleData, slotColumns }),
     template: `
       <div class="w-full">
         <DataTable :data="data" :columns="slotColumns">
           <template #status="{ value }">
-            <span
-              :class="[
-                'inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium',
-                value === 'active'
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                  : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200',
-              ]"
-            >
+            <Tag :color="value === 'active' ? 'success' : 'default'">
               {{ value }}
-            </span>
+            </Tag>
           </template>
           <template #amount="{ value }">
             <span class="font-mono font-medium">\${{ Number(value).toFixed(2) }}</span>
+          </template>
+        </DataTable>
+      </div>
+    `,
+  }),
+}
+
+export const SlotEmptyFallback: Story = {
+  parameters: noControls,
+  render: () => ({
+    components: { DataTable: DataTable as any, Tag },
+    setup () {
+      const data = [
+        { name: 'Empty value (no slot)', email: '', status: 'active', action: 'Edit' },
+        { name: 'Empty slot output', email: 'demo@example.com', status: 'pending', action: 'Edit' },
+        { name: 'Column type=\'empty\'', email: 'demo@example.com', status: 'active', action: '' },
+      ]
+      const columns: DataTableColumn[] = [
+        { field: 'name', title: 'Demo case', minWidth: '200px' },
+        { field: 'email', title: 'Email', minWidth: '200px' },
+        { field: 'status', title: 'Status', width: '120px' },
+        { field: 'action', title: 'Action', width: '120px', type: 'empty' },
+      ]
+      return { data, columns }
+    },
+    template: `
+      <div class="w-full">
+        <DataTable :data="data" :columns="columns">
+          <template #status="{ value }">
+            <Tag
+              v-if="value === 'active' || value === 'inactive'"
+              :color="value === 'active' ? 'success' : 'default'"
+            >
+              {{ value }}
+            </Tag>
+          </template>
+          <template #action="{ value }">
+            <button v-if="value" class="text-sm text-primary underline">
+              {{ value }}
+            </button>
           </template>
         </DataTable>
       </div>
@@ -233,7 +267,7 @@ export const EmptyState: Story = {
 export const FooterSlot: Story = {
   parameters: noControls,
   render: () => ({
-    components: { DataTable: DataTable as any },
+    components: { DataTable: DataTable as any, Tag },
     setup: () => ({ data: sampleData, slotColumns }),
     template: `
       <div class="w-full">

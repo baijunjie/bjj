@@ -11,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from '../../shadcn/table'
+import CellSlot from './CellSlot'
 import type {
   DataTableColumn,
   DataTableProps,
@@ -255,6 +256,7 @@ function buildColumnStyle (column: DataTableColumn): Record<string, string> {
 const headerCellClass = 'h-auto bg-border px-4 py-3 text-xs font-normal text-foreground'
 const headerDividerClass = 'relative after:absolute after:top-1/2 after:right-0 after:h-4 after:w-px after:-translate-y-1/2 after:bg-muted-foreground/25'
 const stickyLeftClass = 'sticky left-0 z-10'
+const emptyCellClass = 'h-0.5 w-2.5 bg-muted-foreground/50 inline-block rounded-full align-middle'
 
 const selectionColumnClass = '[&:has([role=checkbox])]:pr-4'
 const selectionColumnStyle = { width: '1%' }
@@ -383,24 +385,26 @@ const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
               :style="buildColumnStyle(column)"
               :data-shadow="buildFrozenShadow(column)"
             >
-              <slot
-                :name="column.field"
-                :column="column"
-                :row="row"
-                :value="get(row, column.field)"
-                :index="index"
+              <CellSlot
+                :slotFn="$slots[column.field]"
+                :scope="{ column, row, value: get(row, column.field), index }"
               >
-                <span
-                  v-if="!formatCellValue(get(row, column.field), column) && column.type !== 'empty'"
-                  class="
-                    h-0.5 w-2.5 bg-muted-foreground/50 inline-block rounded-full
-                    align-middle
-                  "
-                />
-                <template v-else>
-                  {{ formatCellValue(get(row, column.field), column) }}
+                <template #default>
+                  <span
+                    v-if="!formatCellValue(get(row, column.field), column) && column.type !== 'empty'"
+                    :class="emptyCellClass"
+                  />
+                  <template v-else>
+                    {{ formatCellValue(get(row, column.field), column) }}
+                  </template>
                 </template>
-              </slot>
+                <template
+                  v-if="column.type !== 'empty'"
+                  #empty
+                >
+                  <span :class="emptyCellClass" />
+                </template>
+              </CellSlot>
             </TableCell>
           </TableRow>
         </template>
