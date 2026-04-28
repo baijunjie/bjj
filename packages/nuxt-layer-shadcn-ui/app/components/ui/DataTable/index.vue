@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<DataTableProps<TData>>(), {
 const emit = defineEmits<{
   'update:sortBy': [value: string | null]
   'update:sortOrder': [value: number | null]
-  'rowClick': [row: TData, event: MouseEvent]
+  'rowClick': [row: TData, index: number, event: MouseEvent]
 }>()
 
 const selection = defineModel<TData | TData[] | null>('selection', { default: null })
@@ -93,8 +93,8 @@ function toggleRow (row: TData) {
   }
 }
 
-function onRowClick (row: TData, event: MouseEvent) {
-  emit('rowClick', row, event)
+function onRowClick (row: TData, index: number, event: MouseEvent) {
+  emit('rowClick', row, index, event)
   if (showSelectionColumn.value) toggleRow(row)
 }
 
@@ -358,7 +358,7 @@ const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
             :key="index"
             :class="(showSelectionColumn || clickable) && 'cursor-pointer'"
             :data-state="isRowSelected(row) ? 'selected' : undefined"
-            @click="onRowClick(row, $event)"
+            @click="onRowClick(row, index, $event)"
           >
             <!-- Selection cell: stop click to prevent double toggle with row click -->
             <TableCell

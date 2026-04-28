@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<AsyncDataTableProps<TData>>(), {
 const emit = defineEmits<{
   'update:filters': [filters: Record<string, any>]
   'update:selection': [value: TData[]]
-  'rowClick': [row: TData, event: MouseEvent]
+  'rowClick': [row: TData, index: number, event: MouseEvent]
 }>()
 
 const T = useTranslations('components.ui.AsyncDataTable')
@@ -264,7 +264,7 @@ onMounted(() => {
       @update:selection="onSelectionChange"
       @update:sortBy="onSortByUpdate"
       @update:sortOrder="onSortOrderUpdate"
-      @rowClick="(row: TData, event: MouseEvent) => emit('rowClick', row, event)"
+      @rowClick="(row: TData, index: number, event: MouseEvent) => emit('rowClick', row, index, event)"
     >
       <template
         v-for="name in Object.keys($slots).filter(n => n !== 'toolbar')"
