@@ -38,33 +38,6 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 
 export const Default: Story = {}
 
-export const Controlled: Story = {
-  parameters: noControls,
-  render: () => ({
-    components: { Pagination },
-    setup () {
-      const page = ref(1)
-      const pageSize = ref(10)
-      return { page, pageSize }
-    },
-    template: `
-      <div>
-        <Pagination
-          :page="page"
-          :total="85"
-          :pageSize="pageSize"
-          :pageSizeOptions="[10, 20, 50]"
-          @update:page="page = $event"
-          @update:pageSize="v => { pageSize = v; page = 1 }"
-        />
-        <div class="mt-2 text-sm text-muted-foreground">
-          Page: {{ page }}, Size: {{ pageSize }}
-        </div>
-      </div>
-    `,
-  }),
-}
-
 export const Sizes: Story = {
   parameters: noControls,
   render: () => ({

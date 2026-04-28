@@ -43,23 +43,6 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 
 export const Default: Story = {}
 
-export const Controlled: Story = {
-  parameters: noControls,
-  render: () => ({
-    components: { RadioGroup },
-    setup () {
-      const selected = ref('option1')
-      return { options, selected }
-    },
-    template: `
-      <div class="space-y-2">
-        <RadioGroup v-model="selected" :items="options" />
-        <div class="text-sm text-muted-foreground">Selected: {{ selected }}</div>
-      </div>
-    `,
-  }),
-}
-
 export const Horizontal: Story = {
   parameters: noControls,
   render: () => ({

@@ -61,23 +61,6 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 
 export const Default: Story = {}
 
-export const Controlled: Story = {
-  parameters: noControls,
-  render: () => ({
-    components: { Tabs },
-    setup () {
-      const value = ref<string>('account')
-      return { items, value }
-    },
-    template: `
-      <div class="max-w-md space-y-3">
-        <Tabs v-model="value" :items="items" />
-        <div class="text-sm text-muted-foreground">Active: {{ value }}</div>
-      </div>
-    `,
-  }),
-}
-
 export const IconOnly: Story = {
   parameters: noControls,
   render: () => ({

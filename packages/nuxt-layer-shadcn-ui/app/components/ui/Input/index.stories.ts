@@ -35,23 +35,6 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 
 export const Default: Story = {}
 
-export const Controlled: Story = {
-  parameters: noControls,
-  render: () => ({
-    components: { Input },
-    setup () {
-      const value = ref('')
-      return { value }
-    },
-    template: `
-      <div class="max-w-sm space-y-2">
-        <Input v-model="value" placeholder="Enter your name..." />
-        <div class="text-sm text-muted-foreground">Value: {{ value }}</div>
-      </div>
-    `,
-  }),
-}
-
 export const WithPrefix: Story = {
   parameters: noControls,
   render: () => ({

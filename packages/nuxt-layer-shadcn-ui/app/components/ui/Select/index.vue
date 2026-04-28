@@ -156,16 +156,16 @@ function handleClear (event: MouseEvent) {
         :data-disabled="disabled || undefined"
         :data-state="open ? 'open' : 'closed'"
         class="
+          data-[state=open]:border-ring data-[state=open]:ring-ring/50
           cursor-pointer
-          data-[state=open]:border-ring data-[state=open]:ring-[3px]
-          data-[state=open]:ring-ring/50
+          data-[state=open]:ring-[3px]
         "
       >
         <span
           class="
-            line-clamp-1 flex flex-1 items-center gap-2 px-3 py-1 text-base
-            whitespace-nowrap
+            gap-2 px-3 py-1 text-base
             md:text-sm
+            line-clamp-1 flex flex-1 items-center whitespace-nowrap
           "
         >
           <template v-if="multiple && selectedOptions.length > 0">
@@ -196,6 +196,7 @@ function handleClear (event: MouseEvent) {
           align="inline-end"
         >
           <InputGroupButton
+            type="button"
             size="icon-xs"
             @click="handleClear"
           >
@@ -210,7 +211,7 @@ function handleClear (event: MouseEvent) {
         </InputGroupAddon>
       </InputGroup>
     </PopoverTrigger>
-    <PopoverContent class="w-(--reka-popover-trigger-width) p-0">
+    <PopoverContent class="p-0 w-(--reka-popover-trigger-width)">
       <Command
         :modelValue="commandModelValue"
         :filterFunction="commandFilterFunction"
@@ -250,7 +251,7 @@ function handleClear (event: MouseEvent) {
                 <Icon
                   name="check"
                   :class="cn(
-                    'ml-auto size-4 shrink-0',
+                    'size-4 ml-auto shrink-0',
                     isSelected(option.value) ? 'opacity-100' : 'opacity-0',
                   )"
                 />

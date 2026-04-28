@@ -76,6 +76,7 @@ function clearInput () {
       align="inline-end"
     >
       <InputGroupButton
+        type="button"
         size="icon-xs"
         @click="clearInput"
       >

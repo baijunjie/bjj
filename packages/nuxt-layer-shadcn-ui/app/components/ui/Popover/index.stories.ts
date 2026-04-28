@@ -47,27 +47,3 @@ export const WithForm: Story = {
     `,
   }),
 }
-
-export const Controlled: Story = {
-  parameters: noControls,
-  render: () => ({
-    components: { Popover, Button },
-    setup () {
-      const open = ref(false)
-      return { open }
-    },
-    template: `
-      <div class="flex items-center gap-2">
-        <Popover v-model:open="open">
-          <template #trigger>
-            <Button variant="outline">Controlled Popover</Button>
-          </template>
-          <p class="text-sm">This popover is controlled externally.</p>
-        </Popover>
-        <Button variant="ghost" size="sm" @click="open = !open">
-          Toggle ({{ open ? 'Open' : 'Closed' }})
-        </Button>
-      </div>
-    `,
-  }),
-}
