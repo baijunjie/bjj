@@ -31,7 +31,22 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const Colors: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="grid grid-cols-2 gap-3 md:grid-cols-3">
+    <Surface v-for="c in colors" :key="c" :color="c" class="p-4">
+      <strong>{{ c }}</strong> surface
+    </Surface>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Surface },
     setup: () => ({ colors }),
@@ -46,7 +61,22 @@ export const Colors: Story = {
 }
 
 export const Variants: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="grid grid-cols-2 gap-3 md:grid-cols-4">
+    <Surface v-for="v in variants" :key="v" :variant="v" class="p-4">
+      <strong>{{ v }}</strong> surface
+    </Surface>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Surface },
     setup: () => ({ variants }),
@@ -61,7 +91,27 @@ export const Variants: Story = {
 }
 
 export const VariantColorMatrix: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="space-y-6">
+    <div v-for="v in variants" :key="v">
+      <div class="mb-2 text-sm text-muted-foreground">{{ v }}</div>
+      <div class="grid grid-cols-2 gap-3 md:grid-cols-3">
+        <Surface v-for="c in colors" :key="c" :variant="v" :color="c" class="p-4">
+          <strong>{{ c }}</strong> surface
+        </Surface>
+      </div>
+    </div>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Surface },
     setup: () => ({ colors, variants }),

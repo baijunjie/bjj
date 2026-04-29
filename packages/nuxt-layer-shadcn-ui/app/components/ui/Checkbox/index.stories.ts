@@ -40,7 +40,21 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const Checked: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <label class="flex items-center gap-2 cursor-pointer">
+    <Checkbox v-model="checked" />
+    <span class="text-sm">Enable notifications</span>
+  </label>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Checkbox },
     setup () {
@@ -60,7 +74,21 @@ export const Checked: Story = {
 }
 
 export const Indeterminate: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <label class="flex items-center gap-2 cursor-pointer">
+    <Checkbox model-value="indeterminate" />
+    <span class="text-sm">Select all items</span>
+  </label>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Checkbox },
     template: `
@@ -73,7 +101,29 @@ export const Indeterminate: Story = {
 }
 
 export const Disabled: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <label class="flex items-center gap-2 cursor-not-allowed opacity-50">
+    <Checkbox :model-value="false" disabled />
+    <span class="text-sm">Unchecked disabled</span>
+  </label>
+  <label class="flex items-center gap-2 cursor-not-allowed opacity-50">
+    <Checkbox :model-value="true" disabled />
+    <span class="text-sm">Checked disabled</span>
+  </label>
+  <label class="flex items-center gap-2 cursor-not-allowed opacity-50">
+    <Checkbox model-value="indeterminate" disabled />
+    <span class="text-sm">Indeterminate disabled</span>
+  </label>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Checkbox },
     template: `

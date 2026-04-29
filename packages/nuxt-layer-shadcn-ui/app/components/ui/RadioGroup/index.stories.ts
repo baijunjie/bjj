@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import EventLog from '#storybook/EventLog.vue'
 import type { RadioGroupItem } from './types'
 import RadioGroup from './index.vue'
 
@@ -45,52 +46,45 @@ export const Default: Story = {}
 
 export const Horizontal: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { RadioGroup },
-    setup () {
-      const selected = ref('option1')
-      return { options, selected }
-    },
-    template: `
-      <div class="space-y-2">
-        <RadioGroup v-model="selected" :items="options" orientation="horizontal" />
-        <div class="text-sm text-muted-foreground">Selected: {{ selected }}</div>
-      </div>
-    `,
-  }),
+  args: {
+    orientation: 'horizontal',
+  },
 }
 
 export const WithDisabledItem: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { RadioGroup },
-    setup () {
-      const plan = ref('pro')
-      return { plans, plan }
-    },
-    template: `
-      <div class="space-y-2">
-        <RadioGroup v-model="plan" :items="plans" />
-        <div class="text-sm text-muted-foreground">Plan: {{ plan }}</div>
-      </div>
-    `,
-  }),
+  args: {
+    items: plans,
+    modelValue: 'pro',
+  },
 }
 
 export const Disabled: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { RadioGroup },
-    setup () {
-      const selected = ref('option1')
-      return { options, selected }
-    },
-    template: '<RadioGroup v-model="selected" :items="options" disabled />',
-  }),
+  args: {
+    disabled: true,
+  },
 }
 
 export const CustomSlots: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <RadioGroup v-model="plan" :items="plans">
+    <template #label="{ item, checked }">
+      <span :class="checked ? 'font-semibold text-primary' : 'text-foreground'">
+        {{ item.label }}
+      </span>
+    </template>
+  </RadioGroup>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { RadioGroup },
     setup () {
@@ -108,6 +102,41 @@ export const CustomSlots: Story = {
         </RadioGroup>
         <div class="text-sm text-muted-foreground">Plan: {{ plan }}</div>
       </div>
+    `,
+  }),
+}
+
+export const EventHandling: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <RadioGroup
+    v-model="selected"
+    :items="options"
+    @update:modelValue="onUpdate"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { RadioGroup, EventLog },
+    setup () {
+      const selected = ref('option1')
+      return { options, selected }
+    },
+    template: `
+      <EventLog v-slot="{ record }">
+        <RadioGroup
+          v-model="selected"
+          :items="options"
+          @update:modelValue="(v) => record('update:modelValue', v)"
+        />
+      </EventLog>
     `,
   }),
 }

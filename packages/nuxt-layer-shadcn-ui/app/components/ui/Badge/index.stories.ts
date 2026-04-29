@@ -29,7 +29,20 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const Variants: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex flex-wrap items-center gap-3">
+    <Badge v-for="v in variants" :key="v" :variant="v">{{ v }}</Badge>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Badge },
     setup: () => ({ variants }),
@@ -42,7 +55,23 @@ export const Variants: Story = {
 }
 
 export const Numeric: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex flex-wrap items-center gap-3">
+    <Badge>1</Badge>
+    <Badge variant="secondary">42</Badge>
+    <Badge variant="destructive">99+</Badge>
+    <Badge variant="outline">0</Badge>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Badge },
     template: `
@@ -57,7 +86,23 @@ export const Numeric: Story = {
 }
 
 export const WithIcons: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex flex-wrap items-center gap-3">
+    <Badge><Icon name="check" /> Approved</Badge>
+    <Badge variant="secondary"><Icon name="clock" /> Pending</Badge>
+    <Badge variant="destructive"><Icon name="x" /> Rejected</Badge>
+    <Badge variant="outline"><Icon name="star" /> Featured</Badge>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Badge, Icon },
     template: `

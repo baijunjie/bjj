@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import EventLog from '#storybook/EventLog.vue'
 import type { RadioCardGroupOption } from './types'
 import RadioCardGroup from './index.vue'
 
@@ -70,7 +71,18 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const WithDisabledOption: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <RadioCardGroup v-model="selected" :options="planOptions" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { RadioCardGroup },
     setup () {
@@ -88,17 +100,44 @@ export const WithDisabledOption: Story = {
 
 export const Disabled: Story = {
   parameters: noControls,
+  args: {
+    disabled: true,
+  },
+}
+
+export const EventHandling: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <RadioCardGroup
+    v-model="selected"
+    :options="options"
+    @update:modelValue="onUpdate"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
-    components: { RadioCardGroup },
+    components: { RadioCardGroup, EventLog },
     setup () {
       const selected = ref('current')
       return { selected, options }
     },
     template: `
-      <div class="max-w-md space-y-4">
-        <RadioCardGroup v-model="selected" :options="options" disabled />
-        <div class="text-sm text-muted-foreground">Selected: {{ selected }}</div>
-      </div>
+      <EventLog v-slot="{ record }">
+        <div class="max-w-md">
+          <RadioCardGroup
+            v-model="selected"
+            :options="options"
+            @update:modelValue="(v) => record('update:modelValue', v)"
+          />
+        </div>
+      </EventLog>
     `,
   }),
 }

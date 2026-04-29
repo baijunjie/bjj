@@ -39,7 +39,18 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const ExternalLink: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <WebLink href="https://example.com">Visit Example.com</WebLink>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { WebLink },
     template: `
@@ -53,26 +64,36 @@ export const ExternalLink: Story = {
 
 export const ExternalWithoutIcon: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { WebLink },
-    template: `
-      <WebLink href="https://example.com" :externalIcon="false">No trailing icon</WebLink>
-    `,
-  }),
+  args: {
+    href: 'https://example.com',
+    externalIcon: false,
+  },
 }
 
 export const WithExplicitTarget: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { WebLink },
-    template: `
-      <WebLink href="https://example.com" target="_self">Same Tab External Link</WebLink>
-    `,
-  }),
+  args: {
+    href: 'https://example.com',
+    target: '_self',
+  },
 }
 
 export const Unstyled: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex flex-col gap-2">
+    <WebLink href="/settings" unstyled>Unstyled internal link (no color or underline)</WebLink>
+    <WebLink href="https://example.com" unstyled>Unstyled external link (icon still shows)</WebLink>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { WebLink },
     template: `
@@ -85,7 +106,24 @@ export const Unstyled: Story = {
 }
 
 export const InlineUsage: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <p class="text-sm">
+    Please read our
+    <WebLink href="https://example.com/terms">Terms of Service</WebLink>
+    and
+    <WebLink href="https://example.com/privacy">Privacy Policy</WebLink>
+    before continuing.
+  </p>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { WebLink },
     template: `

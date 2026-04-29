@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import EventLog from '#storybook/EventLog.vue'
 import Slider from './index.vue'
 
 const meta = {
@@ -41,7 +42,18 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const Range: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Slider v-model="range" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Slider },
     setup () {
@@ -58,7 +70,18 @@ export const Range: Story = {
 }
 
 export const WithStep: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Slider v-model="value" :step="25" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Slider },
     setup () {
@@ -75,7 +98,18 @@ export const WithStep: Story = {
 }
 
 export const CustomMinMax: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Slider v-model="value" :min="0" :max="1000" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Slider },
     setup () {
@@ -92,7 +126,18 @@ export const CustomMinMax: Story = {
 }
 
 export const Disabled: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Slider v-model="value" disabled />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Slider },
     setup () {
@@ -103,6 +148,24 @@ export const Disabled: Story = {
       <div class="max-w-sm">
         <Slider v-model="value" disabled />
       </div>
+    `,
+  }),
+}
+
+export const EventHandling: Story = {
+  parameters: noControls,
+  render: () => ({
+    components: { Slider, EventLog },
+    setup: () => ({ value: ref(50) }),
+    template: `
+      <EventLog v-slot="{ record }">
+        <div class="max-w-sm">
+          <Slider
+            v-model="value"
+            @update:modelValue="(v) => record('update:modelValue', v)"
+          />
+        </div>
+      </EventLog>
     `,
   }),
 }

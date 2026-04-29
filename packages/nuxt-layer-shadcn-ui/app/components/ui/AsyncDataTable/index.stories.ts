@@ -120,7 +120,24 @@ export const Default: Story = {}
 
 /** Batch actions with row selection and dual toolbars */
 export const WithBatchActions: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <AsyncDataTable
+    :columns="columns"
+    :fetchMethod="mockFetch"
+    :batchActions="batchActions"
+    v-model:selection="selection"
+    showTopToolbar
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { AsyncDataTable },
     setup () {
@@ -144,7 +161,24 @@ export const WithBatchActions: Story = {
 
 /** Custom toolbar slot with action button */
 export const WithCustomToolbar: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <AsyncDataTable :columns="columns" :fetchMethod="mockFetch" showTopToolbar>
+    <template #toolbar>
+      <button class="rounded-md bg-primary px-3 py-1.5 text-sm text-primary-foreground">
+        + Add User
+      </button>
+    </template>
+  </AsyncDataTable>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { AsyncDataTable },
     setup: () => ({ columns, mockFetch }),

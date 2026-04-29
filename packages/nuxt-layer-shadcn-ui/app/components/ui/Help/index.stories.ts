@@ -9,10 +9,12 @@ const meta = {
   argTypes: {
     text: { control: 'text' },
     position: { control: 'select', options: positions },
+    class: { control: 'text' },
   },
   args: {
     text: 'This is a helpful tooltip',
     position: 'top',
+    class: '',
   },
   render: args => ({
     components: { Help },
@@ -29,7 +31,23 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const Positions: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex items-center gap-8 py-10 justify-center">
+    <Help text="Top tooltip" position="top" />
+    <Help text="Bottom tooltip" position="bottom" />
+    <Help text="Left tooltip" position="left" />
+    <Help text="Right tooltip" position="right" />
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Help },
     template: `
@@ -56,7 +74,21 @@ export const Positions: Story = {
 }
 
 export const InlineWithLabel: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex items-center gap-1">
+    <span class="text-sm font-medium">API Key</span>
+    <Help text="Your unique API key for authentication" />
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Help },
     template: `

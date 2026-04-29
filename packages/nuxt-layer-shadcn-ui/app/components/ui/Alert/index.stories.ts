@@ -30,7 +30,22 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const Types: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="space-y-3">
+    <Alert v-for="t in types" :key="t" :type="t">
+      This is a <strong>{{ t }}</strong> alert message.
+    </Alert>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Alert },
     setup: () => ({ types }),
@@ -45,7 +60,22 @@ export const Types: Story = {
 }
 
 export const WithIcons: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="space-y-3">
+    <Alert type="info" icon="bell">Alert with a custom bell icon.</Alert>
+    <Alert type="success" icon="sparkles">Alert with a custom sparkles icon.</Alert>
+    <Alert type="warn" icon="flag">Alert with a custom flag icon.</Alert>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Alert },
     template: `

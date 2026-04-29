@@ -31,7 +31,20 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const Colors: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex flex-wrap items-center gap-3">
+    <Tag v-for="c in colors" :key="c" :color="c">{{ c }}</Tag>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Tag },
     setup: () => ({ colors }),
@@ -44,7 +57,20 @@ export const Colors: Story = {
 }
 
 export const Variants: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex flex-wrap items-center gap-3">
+    <Tag v-for="v in variants" :key="v" :variant="v">{{ v }}</Tag>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Tag },
     setup: () => ({ variants }),
@@ -57,7 +83,23 @@ export const Variants: Story = {
 }
 
 export const VariantColorMatrix: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="space-y-3">
+    <div v-for="v in variants" :key="v" class="flex flex-wrap items-center gap-3">
+      <span class="w-20 text-sm text-muted-foreground">{{ v }}</span>
+      <Tag v-for="c in colors" :key="c" :color="c" :variant="v">{{ c }}</Tag>
+    </div>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Tag },
     setup: () => ({ colors, variants }),

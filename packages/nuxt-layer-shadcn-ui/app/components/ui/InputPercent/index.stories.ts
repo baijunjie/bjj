@@ -4,12 +4,8 @@ import InputPercent from './index.vue'
 const meta = {
   title: 'UI/InputPercent',
   component: InputPercent,
-  argTypes: {
-    disabled: { control: 'boolean' },
-  },
-  args: {
-    disabled: false,
-  },
+  argTypes: {},
+  args: {},
   render: args => ({
     components: { InputPercent },
     setup () {
@@ -23,7 +19,7 @@ const meta = {
       </div>
     `,
   }),
-} satisfies Meta
+} satisfies Meta<typeof InputPercent>
 
 export default meta
 type Story = StoryObj<typeof meta>

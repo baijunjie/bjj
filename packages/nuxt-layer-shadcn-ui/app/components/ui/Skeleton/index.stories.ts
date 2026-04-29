@@ -27,7 +27,22 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const VariousSizes: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="space-y-3">
+    <Skeleton width="100%" height="12px" />
+    <Skeleton width="80%" height="12px" />
+    <Skeleton width="60%" height="12px" />
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Skeleton },
     template: `
@@ -41,7 +56,24 @@ export const VariousSizes: Story = {
 }
 
 export const CardSkeleton: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex items-center gap-4">
+    <Skeleton width="48px" height="48px" class="rounded-full" />
+    <div class="space-y-2">
+      <Skeleton width="160px" height="16px" />
+      <Skeleton width="120px" height="12px" />
+    </div>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Skeleton },
     template: `

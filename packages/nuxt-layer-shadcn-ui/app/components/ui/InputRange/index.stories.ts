@@ -1,24 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import EventLog from '#storybook/EventLog.vue'
 import InputRange from './index.vue'
 
 const meta = {
   title: 'UI/InputRange',
   component: InputRange,
   argTypes: {
-    disabled: { control: 'boolean' },
+    start: { control: 'number' },
+    end: { control: 'number' },
     min: { control: 'number' },
     max: { control: 'number' },
+    disabled: { control: 'boolean' },
   },
   args: {
-    disabled: false,
+    start: 20,
+    end: 80,
     min: 0,
     max: 100,
+    disabled: false,
   },
   render: args => ({
     components: { InputRange },
     setup () {
-      const start = ref(20)
-      const end = ref(80)
+      const start = ref<number | undefined>(args.start)
+      const end = ref<number | undefined>(args.end)
       return { args, start, end }
     },
     template: `
@@ -33,4 +38,46 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
+
+export const CustomBounds: Story = {
+  parameters: noControls,
+  args: {
+    start: -50,
+    end: 50,
+    min: -100,
+    max: 100,
+  },
+}
+
+export const Disabled: Story = {
+  parameters: noControls,
+  args: {
+    disabled: true,
+  },
+}
+
+export const EventHandling: Story = {
+  parameters: noControls,
+  render: () => ({
+    components: { InputRange, EventLog },
+    setup: () => ({
+      start: ref<number | undefined>(20),
+      end: ref<number | undefined>(80),
+    }),
+    template: `
+      <EventLog v-slot="{ record }">
+        <div class="max-w-md">
+          <InputRange
+            v-model:start="start"
+            v-model:end="end"
+            @update:start="(v) => record('update:start', v)"
+            @update:end="(v) => record('update:end', v)"
+          />
+        </div>
+      </EventLog>
+    `,
+  }),
+}

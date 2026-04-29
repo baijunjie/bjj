@@ -46,4 +46,13 @@ console.log(greeting)</code></pre>
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
+
+export const HideTitle: Story = {
+  parameters: noControls,
+  args: {
+    hideTitle: true,
+  },
+}

@@ -56,7 +56,14 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const MonthPicker: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DatePicker v-model="month" type="month" placeholder="Pick a month" />',
+      },
+    },
+  },
   render: () => ({
     components: { DatePicker },
     setup () {
@@ -73,7 +80,14 @@ export const MonthPicker: Story = {
 }
 
 export const YearPicker: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DatePicker v-model="year" type="year" placeholder="Pick a year" />',
+      },
+    },
+  },
   render: () => ({
     components: { DatePicker },
     setup () {
@@ -90,7 +104,14 @@ export const YearPicker: Story = {
 }
 
 export const WithTime: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DatePicker v-model="date" showTime />',
+      },
+    },
+  },
   render: () => ({
     components: { DatePicker },
     setup () {
@@ -107,7 +128,14 @@ export const WithTime: Story = {
 }
 
 export const Preselected: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DatePicker v-model="preselected" />',
+      },
+    },
+  },
   render: () => ({
     components: { DatePicker },
     setup () {
@@ -124,7 +152,14 @@ export const Preselected: Story = {
 }
 
 export const ValueFormat: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DatePicker v-model="formatted" valueFormat="yyyy-MM-dd" placeholder="Pick a date" />',
+      },
+    },
+  },
   render: () => ({
     components: { DatePicker },
     setup () {
@@ -141,7 +176,14 @@ export const ValueFormat: Story = {
 }
 
 export const Disabled: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DatePicker v-model="date" disabled />',
+      },
+    },
+  },
   render: () => ({
     components: { DatePicker },
     setup () {
@@ -157,7 +199,14 @@ export const Disabled: Story = {
 }
 
 export const Readonly: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DatePicker v-model="date" readonly />',
+      },
+    },
+  },
   render: () => ({
     components: { DatePicker },
     setup () {

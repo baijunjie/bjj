@@ -3,6 +3,10 @@ import type { DropdownItem } from './types'
 import Button from '../Button/index.vue'
 import Dropdown from './index.vue'
 
+const triggers = [ 'click', 'hover' ] as const
+const sides = [ 'top', 'bottom', 'left', 'right' ] as const
+const aligns = [ 'start', 'center', 'end' ] as const
+
 const basicMenus: DropdownItem[] = [
   { label: 'Edit', icon: 'pencil' },
   { label: 'Duplicate', icon: 'copy' },
@@ -57,9 +61,9 @@ const meta = {
   component: Dropdown,
   argTypes: {
     menus: { control: 'object' },
-    trigger: { control: 'inline-radio', options: [ 'click', 'hover' ]},
-    side: { control: 'select', options: [ 'top', 'bottom', 'left', 'right' ]},
-    align: { control: 'select', options: [ 'start', 'center', 'end' ]},
+    trigger: { control: 'inline-radio', options: triggers },
+    side: { control: 'select', options: sides },
+    align: { control: 'select', options: aligns },
     sideOffset: { control: 'number' },
   },
   args: {
@@ -89,58 +93,63 @@ export const Default: Story = {}
 
 export const HoverTrigger: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { Dropdown, Button },
-    setup: () => ({ basicMenus }),
-    template: `
-      <Dropdown :menus="basicMenus" trigger="hover">
-        <Button variant="outline">Hover me</Button>
-      </Dropdown>
-    `,
-  }),
+  args: {
+    menus: basicMenus,
+    trigger: 'hover',
+  },
 }
 
 export const WithDisabledItems: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { Dropdown, Button },
-    setup: () => ({ accountMenus }),
-    template: `
-      <Dropdown :menus="accountMenus" trigger="click">
-        <Button variant="outline">Account</Button>
-      </Dropdown>
-    `,
-  }),
+  args: {
+    menus: accountMenus,
+    trigger: 'click',
+  },
 }
 
 export const WithLinks: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { Dropdown, Button },
-    setup: () => ({ linkMenus }),
-    template: `
-      <Dropdown :menus="linkMenus" trigger="click">
-        <Button variant="outline">Resources</Button>
-      </Dropdown>
-    `,
-  }),
+  args: {
+    menus: linkMenus,
+    trigger: 'click',
+  },
 }
 
 export const WithGroups: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { Dropdown, Button },
-    setup: () => ({ groupedMenus }),
-    template: `
-      <Dropdown :menus="groupedMenus" trigger="click">
-        <Button variant="outline">Menu with Groups</Button>
-      </Dropdown>
-    `,
-  }),
+  args: {
+    menus: groupedMenus,
+    trigger: 'click',
+  },
 }
 
 export const CustomSlots: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Dropdown :menus="customMenus" trigger="click">
+    <Button variant="outline">Custom Slots</Button>
+    <template #profile="{ item }">
+      <div class="flex flex-col gap-1 px-2 py-1.5">
+        <span class="font-semibold text-sm">{{ item.title }}</span>
+        <span class="text-xs text-muted-foreground">{{ item.email }}</span>
+      </div>
+    </template>
+    <template #logout>
+      <span class="flex items-center gap-2 text-danger font-semibold">
+        <span>🚪</span>
+        <span>Custom Logout</span>
+      </span>
+    </template>
+  </Dropdown>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Dropdown, Button },
     setup: () => ({ customMenus }),
@@ -165,7 +174,29 @@ export const CustomSlots: Story = {
 }
 
 export const PopupSlot: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Dropdown trigger="click">
+    <Button variant="outline">Custom Popup</Button>
+    <template #popup="{ hide }">
+      <div class="flex flex-col gap-2 p-3 min-w-[220px]">
+        <div class="text-sm font-semibold">Custom content</div>
+        <p class="text-sm text-muted-foreground">
+          Use the <code>popup</code> slot to render arbitrary content inside the menu.
+        </p>
+        <Button size="sm" @click="hide">Close</Button>
+      </div>
+    </template>
+  </Dropdown>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Dropdown, Button },
     template: `

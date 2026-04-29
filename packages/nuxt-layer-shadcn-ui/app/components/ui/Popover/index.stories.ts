@@ -43,7 +43,26 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const HoverTrigger: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Popover trigger="hover">
+    <template #trigger>
+      <Button variant="outline">Hover me</Button>
+    </template>
+    <div class="space-y-2">
+      <h4 class="font-medium">Hovering opens it</h4>
+      <p class="text-sm text-muted-foreground">Move the cursor away to close.</p>
+    </div>
+  </Popover>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Popover, Button },
     template: `
@@ -61,7 +80,27 @@ export const HoverTrigger: Story = {
 }
 
 export const WithForm: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Popover>
+    <template #trigger>
+      <Button variant="outline">Edit Name</Button>
+    </template>
+    <div class="space-y-3">
+      <h4 class="font-medium">Update Name</h4>
+      <Input placeholder="Enter new name" />
+      <Button size="sm" class="w-full">Save</Button>
+    </div>
+  </Popover>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Popover, Button, Input },
     template: `

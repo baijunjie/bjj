@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import EventLog from '#storybook/EventLog.vue'
 import Icon from '../Icon/index.vue'
 import Input from './index.vue'
 
@@ -11,6 +12,7 @@ const meta = {
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
     invalid: { control: 'boolean' },
+    class: { control: 'text' },
   },
   args: {
     modelValue: '',
@@ -18,12 +20,13 @@ const meta = {
     disabled: false,
     readonly: false,
     invalid: false,
+    class: 'max-w-sm',
   },
   render: args => ({
     components: { Input },
     setup: () => ({ args }),
     template: `
-      <Input v-bind="args" placeholder="Type something..." class="max-w-sm" />
+      <Input v-bind="args" placeholder="Type something..." />
     `,
   }),
 } satisfies Meta<typeof Input>
@@ -36,7 +39,22 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const WithPrefix: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Input v-model="value" placeholder="Search...">
+    <template #prefix>
+      <Icon name="search" />
+    </template>
+  </Input>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Input, Icon },
     setup () {
@@ -57,7 +75,22 @@ export const WithPrefix: Story = {
 }
 
 export const WithSuffix: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Input v-model="value" placeholder="Email">
+    <template #suffix>
+      <Icon name="mail" />
+    </template>
+  </Input>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Input, Icon },
     setup () {
@@ -78,7 +111,14 @@ export const WithSuffix: Story = {
 }
 
 export const Password: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<Input v-model="value" type="password" placeholder="Password" />',
+      },
+    },
+  },
   render: () => ({
     components: { Input },
     setup () {
@@ -96,24 +136,43 @@ export const Password: Story = {
 
 export const Disabled: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { Input },
-    template: '<Input disabled placeholder="Disabled input" class="max-w-sm" />',
-  }),
+  args: {
+    disabled: true,
+    modelValue: 'Disabled input',
+  },
 }
 
 export const Readonly: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { Input },
-    template: '<Input readonly modelValue="Read-only value" class="max-w-sm" />',
-  }),
+  args: {
+    readonly: true,
+    modelValue: 'Read-only value',
+  },
 }
 
 export const Invalid: Story = {
   parameters: noControls,
+  args: {
+    invalid: true,
+    modelValue: 'Invalid value',
+  },
+}
+
+export const EventHandling: Story = {
+  parameters: noControls,
   render: () => ({
-    components: { Input },
-    template: '<Input invalid modelValue="Invalid value" class="max-w-sm" />',
+    components: { Input, EventLog },
+    setup: () => ({ value: ref('') }),
+    template: `
+      <EventLog v-slot="{ record }">
+        <Input
+          v-model="value"
+          class="max-w-sm"
+          placeholder="Type and blur to see events"
+          @update:modelValue="(v) => record('update:modelValue', v)"
+          @change="(v) => record('change', v)"
+        />
+      </EventLog>
+    `,
   }),
 }

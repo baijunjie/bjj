@@ -34,7 +34,23 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const WithIcons: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <ButtonGroup>
+    <Button variant="outline" size="icon"><Icon name="bold" /></Button>
+    <Button variant="outline" size="icon"><Icon name="italic" /></Button>
+    <Button variant="outline" size="icon"><Icon name="underline" /></Button>
+    <Button variant="outline" size="icon"><Icon name="strikethrough" /></Button>
+  </ButtonGroup>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { ButtonGroup, Button, Icon },
     template: `
@@ -49,7 +65,21 @@ export const WithIcons: Story = {
 }
 
 export const InputWithButton: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <ButtonGroup>
+    <Input v-model="search" placeholder="Search..." />
+    <Button variant="outline"><Icon name="search" /></Button>
+  </ButtonGroup>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { ButtonGroup, Button, Input, Icon },
     setup () {
@@ -66,7 +96,22 @@ export const InputWithButton: Story = {
 }
 
 export const ButtonWithInputWithButton: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <ButtonGroup>
+    <Button variant="outline" size="icon"><Icon name="minus" /></Button>
+    <Input class="w-20 text-center" model-value="5" />
+    <Button variant="outline" size="icon"><Icon name="plus" /></Button>
+  </ButtonGroup>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { ButtonGroup, Button, Input, Icon },
     template: `
@@ -80,7 +125,21 @@ export const ButtonWithInputWithButton: Story = {
 }
 
 export const MixedVariants: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <ButtonGroup>
+    <Button variant="outline">Save</Button>
+    <Button>Submit</Button>
+  </ButtonGroup>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { ButtonGroup, Button },
     template: `

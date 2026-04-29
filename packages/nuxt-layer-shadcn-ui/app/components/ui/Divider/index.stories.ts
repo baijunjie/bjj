@@ -37,22 +37,25 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 
 export const Default: Story = {}
 
-export const Horizontal: Story = {
-  parameters: noControls,
-  render: () => ({
-    components: { Divider },
-    template: `
-      <div class="space-y-4">
-        <p>Content above</p>
-        <Divider />
-        <p>Content below</p>
-      </div>
-    `,
-  }),
-}
-
 export const Vertical: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex h-8 items-center gap-4">
+    <span>Left</span>
+    <Divider type="vertical" />
+    <span>Center</span>
+    <Divider type="vertical" />
+    <span>Right</span>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Divider },
     template: `

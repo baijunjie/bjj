@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import EventLog from '#storybook/EventLog.vue'
 import Textarea from './index.vue'
 
 const meta = {
@@ -10,8 +11,6 @@ const meta = {
     rows: { control: 'number' },
     invalid: { control: 'boolean' },
     class: { control: 'text' },
-    disabled: { control: 'boolean' },
-    readonly: { control: 'boolean' },
   },
   args: {
     modelValue: '',
@@ -19,8 +18,6 @@ const meta = {
     rows: undefined,
     invalid: false,
     class: '',
-    disabled: false,
-    readonly: false,
   },
   render: args => ({
     components: { Textarea },
@@ -31,7 +28,7 @@ const meta = {
       </div>
     `,
   }),
-} satisfies Meta
+} satisfies Meta<typeof Textarea>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -41,7 +38,18 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const WithRows: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Textarea :rows="6" placeholder="6 rows of height" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Textarea },
     template: `
@@ -54,18 +62,25 @@ export const WithRows: Story = {
 
 export const Invalid: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { Textarea },
-    template: `
-      <div class="max-w-sm">
-        <Textarea invalid model-value="Invalid content" />
-      </div>
-    `,
-  }),
+  args: {
+    invalid: true,
+    modelValue: 'Invalid content',
+  },
 }
 
 export const Disabled: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Textarea disabled model-value="Disabled textarea" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Textarea },
     template: `
@@ -77,13 +92,44 @@ export const Disabled: Story = {
 }
 
 export const Readonly: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Textarea readonly model-value="Readonly content" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Textarea },
     template: `
       <div class="max-w-sm">
         <Textarea readonly model-value="Readonly content" />
       </div>
+    `,
+  }),
+}
+
+export const EventHandling: Story = {
+  parameters: noControls,
+  render: () => ({
+    components: { Textarea, EventLog },
+    setup: () => ({ value: ref('') }),
+    template: `
+      <EventLog v-slot="{ record }">
+        <div class="max-w-sm">
+          <Textarea
+            v-model="value"
+            placeholder="Type to see events"
+            @update:modelValue="(v) => record('update:modelValue', v)"
+            @change="(v) => record('change', v)"
+          />
+        </div>
+      </EventLog>
     `,
   }),
 }

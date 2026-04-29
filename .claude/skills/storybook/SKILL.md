@@ -28,10 +28,9 @@ description: Storybook story 开发规范。**创建或修改任何 `.stories.ts
 - **每个可配置 Prop 至少要有一个专门的演示 story**
 - **meta 的 `argTypes` 必须列出所有可配置 Prop**
 - **meta 的 `args` 必须给所有可配置 Prop 设默认值**
-- **第一个 export 必须是 `Default`，且为空对象 `{}` 继承 meta.render**
-  - 原因：Storybook Docs 页把第一个 story 当作 Primary，紧跟其下渲染 ArgsTable（Controls）。`Default` 继承 meta 的 `<X v-bind="args">` 模板后，用户在 Controls 里改动会立即反映到这个交互演示上。
-- **非 `Default` story 一律不受控**：必须写自己的 `render`（不能只重写 `args` 继承 `meta.render`），并加 `parameters: { controls: { disable: true }}` 关闭 Controls 面板
-  - 原因：只重写 `args` 会继承 `meta.render` 里的 `v-bind="args"`，story 仍然是 args 驱动，违反"只有 `Default` 受控"的约定。要展示某种 props 组合，应在 `render` 里把 props 硬编码进 template。同时 Controls 面板对硬编码 `render` 改了没反应，留着会误导消费方，因此一并关闭。
+- **第一个 export 必须是 `Default`**，且为空对象 `{}` 继承 meta.render
+- **非 `Default` story 必须关 Controls**：`parameters: { controls: { disable: true }}`
+- **非 `Default` story 优先 args-only**，能不写自定义 `render` 就不写
 
 ---
 
@@ -54,9 +53,9 @@ const variants = [ 'default', 'destructive', 'outline', 'secondary', 'ghost', 'l
 const sizes = [ 'sm', 'default', 'lg', 'icon-sm', 'icon', 'icon-lg' ] as const
 
 const meta = {
-  title: 'UI/Button',              // ① 固定前缀 <TitlePrefix>/，如 UI/ 或 Effect/
-  component: Button,               // ② 必填，Docs 会据此生成 Props 表
-  argTypes: {                      // ③ 列出所有可配置 Prop
+  title: 'UI/Button',                // 固定 <TitlePrefix>/<PascalComponent>，和组件目录名一致
+  component: Button,                 // 必填，不要 as any
+  argTypes: {                        // 所有可配置 Prop 都要列
     variant: { control: 'select', options: variants },
     size: { control: 'select', options: sizes },
     rounded: { control: 'boolean' },
@@ -65,7 +64,7 @@ const meta = {
     loading: { control: 'boolean' },
     disabled: { control: 'boolean' },
   },
-  args: {                          // ④ 所有可配置 Prop 都给默认值
+  args: {                            // 所有可配置 Prop 都给默认值
     variant: 'default',
     size: 'default',
     rounded: false,
@@ -74,10 +73,10 @@ const meta = {
     loading: false,
     disabled: false,
   },
-  render: args => ({               // ⑤ meta 级 render：被 Default 继承
+  render: args => ({                 // meta 级 render：被 Default 继承
     components: { Button },
     setup: () => ({ args }),
-    template: '<Button v-bind="args">Button</Button>',
+    template: '<Button v-bind="args">Button</Button>',  // 必须 v-bind="args"，Controls 才能驱动
   }),
 } satisfies Meta<typeof Button>
 
@@ -85,38 +84,27 @@ export default meta
 type Story = StoryObj<typeof meta>
 ```
 
-### 各字段要点
+`control` 类型按 prop 类型选：枚举 `'select'` + `options`、布尔 `'boolean'`、字符串 `'text'`、数字 `'number'`。
 
-| 字段 | 规范 |
-|---|---|
-| `title` | 固定 `<TitlePrefix>/<PascalComponent>`（`UI/Button`、`Effect/AutoScale`），和组件目录名一致 |
-| `component` | 必填，**不要加 `as any`**（除非真的遇到无法解决的类型冲突） |
-| `argTypes` | 列出**所有** Prop；用 `control: 'select'`/`'boolean'`/`'text'`/`'number'` 配合 `options` |
-| `args` | 每个 Prop 都给默认值，消费方在 Controls 里改动会基于这套默认值 |
-| `render` | 提升到 meta，供 `Default` 继承；template 里**必须**用 `<X v-bind="args">` 让 Controls 驱动 |
+**类型导入**：用到相邻 `types.ts` 的类型时显式 import：
+
+```ts
+import type { AccordionItem } from './types'
+```
 
 ---
 
-## Story 命名与排布
+## Story 编写
 
-### 顺序
+### Default
 
-```
-export const Default       // ① 第一个：args 驱动的 Primary，Controls 面板挂在它下面
-export const <FeatureA>    // ② 起 各 feature story（覆盖每个 Prop / 特性）
-export const <FeatureB>
-...
-```
-
-### `Default` story
-
-`Default` 是空对象，继承 `meta.render`——用户在 Controls 里改 args，这里会直接响应：
+第一个 export，空对象，继承 `meta.render`。**不要给它写自己的 `render`**——一写就脱离 args 绑定，Controls 失效。
 
 ```ts
 export const Default: Story = {}
 ```
 
-如需覆盖 meta 的默认 args，可以：
+如果想覆盖默认 args（比如把 outline 变体作为 Primary 展示）：
 
 ```ts
 export const Default: Story = {
@@ -124,97 +112,79 @@ export const Default: Story = {
 }
 ```
 
-**不要给 `Default` 写自己的 `render`**。一写 render 就脱离 args 绑定，Controls 就没用了。
+Storybook Docs 把第一个 story 当作 Primary、紧跟其下渲染 ArgsTable（Controls）。Default 继承 `<X v-bind="args" />` 模板后，用户在 Controls 里改动会立即反映到 Default 上。
 
-### 非 `Default` story 关闭 Controls
+### 非 Default story
 
-非 `Default` 的 story 都是**展示型**演示（硬编码 `render`、不绑定 `args`）。如果不显式关闭 Controls 面板，消费方会看到一个改了没反应的面板，造成误导。
+非 Default 都是**固定展示**，不接受用户改 args。
 
-文件顶层抽一个常量，所有非 `Default` story 复用：
+#### 关 Controls
+
+文件顶部抽常量复用：
 
 ```ts
 const noControls = { controls: { disable: true }} satisfies Story['parameters']
+```
 
-export const Variants: Story = {
-  parameters: noControls,
-  render: () => ({ ... }),
-}
+#### args-only vs 自定义 render
 
-export const Sizes: Story = {
+| 适用情形 | 写法 | "Show code" |
+|---|---|---|
+| 只是 props 差异 | **args-only**（不写 `render`，只覆盖 `args`） | ✅ 自动 dynamic 生成 |
+| 涉及 slot 内容 / 多组件并列 / 内部状态 / 事件 demo | 自定义 `render` + 手动 `parameters.docs.source.code` | ⚠️ 需手抄一段干净 HTML |
+
+**为什么这个分叉很关键**：args-only 继承 `meta.render` 的 `<X v-bind="args" />` 模板，Storybook 的 `dynamic` source 路径会自动从 args 序列化出代码。一旦写了自定义 `render`，要切到 `code` source（从源文件静态抽取），但 `@storybook-vue/nuxt` 没内置 `csf-plugin`，默认抽不到东西，"Show code" 会空——必须手动补 `source.code`。
+
+**args-only 写法（首选）**：
+
+```ts
+export const WithDescription: Story = {
   parameters: noControls,
-  render: () => ({ ... }),
+  args: {
+    title: 'Delete Project',
+    description: 'This will permanently remove the project.',
+    confirmVariant: 'destructive',
+    confirmText: 'Delete',
+  },
 }
 ```
 
-如果某个 story 还需要其他 `parameters`（比如 `docs.source`），用展开合并：
+**自定义 render 写法**（具体示例见后文 [Slots 演示](#slots-演示)、[Events 演示](#events-演示)）：
 
 ```ts
-export const Variants: Story = {
+export const SomeDemo: Story = {
   parameters: {
     ...noControls,
-    docs: { source: { code: '...' }},
+    docs: {
+      source: {
+        code: `
+<template>
+  <X ... />
+</template>
+`.trim(),    // 给消费方看的干净示例，不是 render 函数原文
+      },
+    },
   },
-  render: () => ({ ... }),
+  render: () => ({ /* ... */ }),
 }
 ```
 
-### 命名约定（PascalCase）
+**两条强制**：
 
-| 演示内容 | export 名 |
-|---|---|
-| **首个 Primary，args 驱动** | **`Default`**（空对象 `{}`） |
-| 列举某枚举型 prop 的所有取值 | 用 prop 名的复数形式，如 `Variants` / `Sizes` / `Types` / `Colors` |
-| 带图标 | `WithIcons` / `WithPrefix` / `WithSuffix` |
-| 带描述 | `WithDescription` |
-| 带默认值/预选 | `Preselected` |
-| 水平排列 | `Horizontal` |
-| 多选模式 | `Multiple` |
-| 不同位置 | `Positions` |
-| 禁用 | `Disabled` |
-| 加载中 | `Loading` |
-| 圆角 | `Rounded` |
-| 链接形式 | `AsLink` / `LinkButtons` |
-| 自定义 slot | `CustomSlots` |
-| 两个枚举 prop 的矩阵组合 | `<A><B>Matrix`，如 `VariantColorMatrix` |
+- **不要写 `language` 字段**，Storybook 框架默认就是 `html`
+- **`code` 内容必须用 `<template>` 包裹**——和自动生成的 Default source 保持一致
 
----
-
-## 演示覆盖度
-
-### 每个 Prop 必有一个演示
-
-假设组件有 `variant`、`size`、`disabled`、`loading`、`icon`、`rounded` 这些 Prop，story 文件里应**至少**有：
-
-- `Default`（args 驱动，继承 meta.render）
-- `Variants`（覆盖 `variant`）
-- `Sizes`（覆盖 `size`）
-- `WithIcons`（覆盖 `icon` / `iconPosition`）
-- `Disabled`（覆盖 `disabled`）
-- `Loading`（覆盖 `loading`）
-- `Rounded`（覆盖 `rounded`）
-
-可以合并相关 Prop 到一个 story（比如 `iconPosition` 可以作为 `WithIcons` 的一部分），但不能跳过。
-
-### 组合型演示
-
-某些 Prop 配合使用才有意义（比如 `variant × color`），用矩阵演示：
+少数确实不值得展示代码的 demo，可以彻底关掉 Show code 按钮：
 
 ```ts
-export const VariantColorMatrix: Story = {
-  render: () => ({
-    components: { Tag },
-    setup: () => ({ colors, variants }),
-    template: `
-      <div class="space-y-3">
-        <div v-for="v in variants" :key="v" class="flex flex-wrap items-center gap-3">
-          <span class="w-20 text-sm text-muted-foreground">{{ v }}</span>
-          <Tag v-for="c in colors" :key="c" :color="c" :variant="v">{{ c }}</Tag>
-        </div>
-      </div>
-    `,
-  }),
-}
+parameters: { ...noControls, docs: { source: { code: null }}}
 ```
+
+注意是 `code: null`——`code: ''` 按钮还在但点开是空。
+
+#### 命名
+
+Story export 用 PascalCase，名字跟 prop 名走（`Variants` / `Sizes` / `Disabled` 等），写者自由判断。两个枚举 prop 矩阵组合用 `<A><B>Matrix`（如 `VariantColorMatrix`）。
 
 ---
 
@@ -279,95 +249,140 @@ export const Controlled: Story = {
 
 ---
 
-## 处理 "Show code"
+## 必备 story 类型
 
-Storybook 自动从 VNode tree 反推 source code（不读你的 template 字符串）。复杂 story（多层包装 / 复杂 props / v-model）经常吐空。两种办法：
+### 每个 Prop 一个演示
 
-### a. 手动覆盖
+假设组件有 `variant`、`size`、`disabled`、`loading`、`icon`、`rounded` 这些 Prop，story 文件里应**至少**有：
+
+- `Default`（args 驱动，继承 meta.render）
+- 覆盖 `variant` 的 story
+- 覆盖 `size` 的 story
+- 覆盖 `icon` / `iconPosition` 的 story
+- 覆盖 `disabled` 的 story
+- 覆盖 `loading` 的 story
+- 覆盖 `rounded` 的 story
+
+可以合并相关 Prop 到一个 story（比如 `iconPosition` 作为图标 demo 的一部分），但不能跳过。
+
+### 矩阵演示
+
+某些 Prop 配合使用才有意义（比如 `variant × color`），用矩阵展开：
 
 ```ts
-export const Variants: Story = {
-  parameters: {
-    docs: {
-      source: {
-        language: 'vue',
-        code: `<Button v-for="v in variants" :key="v" :variant="v">{{ v }}</Button>`,
-      },
-    },
-  },
-  render: () => ({ ... }),
+export const VariantColorMatrix: Story = {
+  parameters: noControls,
+  render: () => ({
+    components: { Tag },
+    setup: () => ({ colors, variants }),
+    template: `
+      <div class="space-y-3">
+        <div v-for="v in variants" :key="v" class="flex flex-wrap items-center gap-3">
+          <span class="w-20 text-sm text-muted-foreground">{{ v }}</span>
+          <Tag v-for="c in colors" :key="c" :color="c" :variant="v">{{ c }}</Tag>
+        </div>
+      </div>
+    `,
+  }),
 }
 ```
 
-### b. 关闭
+### Slots 演示
 
-```ts
-parameters: {
-  docs: { source: { code: null }}
-}
-```
-
-原则：**`Default`**（继承 meta.render 的 `<Component v-bind="args" />`）的 source 必须能自动生成。其他展示型 story 的 source 不重要时可以放弃或关闭。
-
----
-
-## Slots 演示
-
-组件有命名 slot 时，至少给每个 slot 一个演示 story：
+组件有命名 slot 时，至少给每个 slot 一个演示 story。自定义 render 必须手动补 `source.code`：
 
 ```ts
 export const CustomSlots: Story = {
-  render: () => ({
-    components: { Accordion, Icon },
-    setup: () => ({ items }),
-    template: `
-      <Accordion :items="items">
-        <template #title="{ item, open }">
-          <Icon :name="open ? 'minus' : 'plus'" />
-          {{ item.title }}
-        </template>
-        <template #content="{ item }">
-          <p>{{ item.content }}</p>
-        </template>
-      </Accordion>
-    `,
-  }),
-}
-```
-
----
-
-## Events 演示
-
-组件有 emits 时，用 `actions` 展示（Actions 面板会显示触发记录）：
-
-```ts
-// meta 里不用特殊配置，Storybook 会自动捕获所有 emit
-export const EventHandling: Story = {
-  render: () => ({
-    components: { Modal },
-    setup () {
-      const open = ref(false)
-      return { open }
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Dropdown :menus="customMenus">
+    <Button variant="outline">Custom Slots</Button>
+    <template #profile="{ item }">
+      <div class="flex flex-col gap-1 px-2 py-1.5">
+        <span class="font-semibold text-sm">{{ item.title }}</span>
+        <span class="text-xs text-muted-foreground">{{ item.email }}</span>
+      </div>
+    </template>
+  </Dropdown>
+</template>
+`.trim(),
+      },
     },
+  },
+  render: () => ({
+    components: { Dropdown, Button },
+    setup: () => ({ customMenus }),    // customMenus: 文件顶部定义的演示数据
     template: `
-      <Button @click="open = true">Open</Button>
-      <Modal v-model:open="open" @close="() => {}">
-        <p>Content</p>
-      </Modal>
+      <Dropdown :menus="customMenus">
+        <Button variant="outline">Custom Slots</Button>
+        <template #profile="{ item }">
+          <div class="flex flex-col gap-1 px-2 py-1.5">
+            <span class="font-semibold text-sm">{{ item.title }}</span>
+            <span class="text-xs text-muted-foreground">{{ item.email }}</span>
+          </div>
+        </template>
+      </Dropdown>
     `,
   }),
 }
 ```
 
----
+`source.code` 写**给消费方看的干净示例**。如果 render 里只是这一个组件的演示（没有外层触发器、log 容器等），`source.code` 和 `template` 内容会几乎一致。
 
-## 类型导入
+### Events 演示
 
-stories.ts 里会用到相邻 `types.ts` 的类型或组件 Prop 类型，**显式 import**：
+组件有 emits 时，新增一个 `EventHandling` story，用 `<EventLog>` 把事件记录到画布内可见的 log 列表里。**不要靠 Storybook 的 Actions 面板**——多数消费方根本不会注意到底部那个 tab，且 Actions 需要 `v-bind="args"` 才能接通，写自定义 render 时容易失效。
+
+#### `<EventLog>` 组件
+
+`packages/nuxt-layer-shadcn-ui/.playground/.storybook/EventLog.vue` 提供一个带 scoped slot 的容器：通过 `v-slot="{ record }"` 暴露 `record(name, ...payload)` 函数，每次调用会在下方 log 列表追加一条带时间戳的记录。
+
+通过 `#storybook` alias 引入（已在 `.playground/nuxt.config.ts` 配置）：
 
 ```ts
-import type { Meta, StoryObj } from '@storybook/vue3'
-import type { AccordionItem } from './types'
-import Accordion from './index.vue'
+import EventLog from '#storybook/EventLog.vue'
 ```
+
+#### 标准写法
+
+```ts
+export const EventHandling: Story = {
+  parameters: noControls,
+  render: () => ({
+    components: { Modal, Button, EventLog },
+    setup: () => ({ visible: ref(false) }),
+    template: `
+      <EventLog v-slot="{ record }">
+        <Button @click="visible = true">Open Modal</Button>
+        <Modal
+          v-model:visible="visible"
+          title="Event Demo"
+          description="Each emitted event will be appended to the log below."
+          showCancel
+          confirmText="Confirm"
+          @open="record('open')"
+          @close="record('close')"
+          @closed="record('closed')"
+          @confirm="record('confirm')"
+          @cancel="record('cancel')"
+          @update:visible="(v) => record('update:visible', v)"
+        >
+          <p>Click Confirm, Cancel, or the close button to see events fire.</p>
+        </Modal>
+      </EventLog>
+    `,
+  }),
+}
+```
+
+#### 调用约定
+
+- **无参数**：`record('event-name')` —— log 显示 `12:34:56 — event-name`
+- **带参数**：`record('event-name', payload)` —— log 显示 `12:34:56 — event-name(payload-json)`
+- 多个参数会按顺序序列化：`record('foo', a, b)` → `foo(a-json, b-json)`
+
+Story export 名固定为 `EventHandling`——事件演示就这一处。

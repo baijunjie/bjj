@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import EventLog from '#storybook/EventLog.vue'
 import type { SearchSelectLoadMethodParams, SearchSelectLoadMethodResult } from './types'
 import SearchSelect from './index.vue'
 
@@ -88,7 +89,23 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const Preselected: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <SearchSelect
+    v-model="value"
+    :loadMethod="loadMethod"
+    :loadValueOptionMethod="loadValueOptionMethod"
+    autoLoad
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { SearchSelect },
     setup () {
@@ -110,7 +127,23 @@ export const Preselected: Story = {
 }
 
 export const WithDefaultOptions: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <SearchSelect
+    v-model="value"
+    :loadMethod="loadMethod"
+    :defaultOptions="defaultOptions"
+    autoLoad
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { SearchSelect },
     setup () {
@@ -133,38 +166,54 @@ export const WithDefaultOptions: Story = {
 
 export const WithCreateNew: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { SearchSelect },
-    setup () {
-      const value = ref<string>()
-      return { value, mockLoadMethod }
-    },
-    template: `
-      <div class="max-w-sm">
-        <SearchSelect
-          v-model="value"
-          :loadMethod="mockLoadMethod"
-          createNewTo="/create"
-          autoLoad
-        />
-        <div class="mt-2 text-sm text-muted-foreground">Selected: {{ value ?? 'none' }}</div>
-      </div>
-    `,
-  }),
+  args: {
+    createNewTo: '/create',
+    autoLoad: true,
+  },
 }
 
 export const Disabled: Story = {
   parameters: noControls,
+  args: {
+    disabled: true,
+  },
+}
+
+export const EventHandling: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <SearchSelect
+    v-model="value"
+    :loadMethod="loadMethod"
+    autoLoad
+    @update:modelValue="onUpdate"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
-    components: { SearchSelect },
+    components: { SearchSelect, EventLog },
     setup () {
       const value = ref<string>()
       return { value, mockLoadMethod }
     },
     template: `
-      <div class="max-w-sm">
-        <SearchSelect v-model="value" :loadMethod="mockLoadMethod" disabled />
-      </div>
+      <EventLog v-slot="{ record }">
+        <div class="max-w-sm">
+          <SearchSelect
+            v-model="value"
+            :loadMethod="mockLoadMethod"
+            autoLoad
+            @update:modelValue="(v) => record('update:modelValue', v)"
+          />
+        </div>
+      </EventLog>
     `,
   }),
 }

@@ -45,66 +45,54 @@ export const Default: Story = {}
 
 export const Required: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { FormItem, Input },
-    setup () {
-      const email = ref('')
-      return { email }
-    },
-    template: `
-      <div class="max-w-md">
-        <FormItem label="Email" required>
-          <Input v-model="email" placeholder="Enter your email" />
-        </FormItem>
-      </div>
-    `,
-  }),
+  args: {
+    label: 'Email',
+    required: true,
+  },
 }
 
 export const WithError: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { FormItem, Input },
-    template: `
-      <div class="max-w-md">
-        <FormItem label="Username" required error="Username is already taken">
-          <Input model-value="admin" />
-        </FormItem>
-      </div>
-    `,
-  }),
+  args: {
+    label: 'Username',
+    required: true,
+    error: 'Username is already taken',
+  },
 }
 
 export const WithDescription: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { FormItem, Input },
-    template: `
-      <div class="max-w-md">
-        <FormItem label="Password" description="Must be at least 8 characters long">
-          <Input type="password" placeholder="Enter password" />
-        </FormItem>
-      </div>
-    `,
-  }),
+  args: {
+    label: 'Password',
+    description: 'Must be at least 8 characters long',
+  },
 }
 
 export const Horizontal: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { FormItem, Input },
-    template: `
-      <div class="max-w-md">
-        <FormItem label="Display Name" orientation="horizontal">
-          <Input placeholder="Enter display name" />
-        </FormItem>
-      </div>
-    `,
-  }),
+  args: {
+    label: 'Display Name',
+    orientation: 'horizontal',
+  },
 }
 
 export const Responsive: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="@container/field-group resize-x overflow-auto rounded border border-dashed border-border bg-card p-4" style="min-width: 200px;">
+    <FormItem label="Address" orientation="responsive" description="Your mailing address">
+      <Input placeholder="Enter address" />
+    </FormItem>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { FormItem, Input },
     template: `

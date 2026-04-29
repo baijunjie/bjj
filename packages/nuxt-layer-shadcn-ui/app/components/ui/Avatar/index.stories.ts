@@ -37,7 +37,20 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const Sizes: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex items-end gap-4">
+    <Avatar v-for="s in sizes" :key="s" :size="s" label="AB" />
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Avatar },
     setup: () => ({ sizes }),
@@ -53,7 +66,20 @@ export const Sizes: Story = {
 }
 
 export const Shapes: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex items-center gap-4">
+    <Avatar v-for="sh in shapes" :key="sh" :shape="sh" label="AB" size="large" />
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Avatar },
     setup: () => ({ shapes }),
@@ -69,7 +95,21 @@ export const Shapes: Story = {
 }
 
 export const WithImage: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex items-center gap-4">
+    <Avatar image="https://i.pravatar.cc/150?u=1" size="large" />
+    <Avatar image="https://i.pravatar.cc/150?u=2" size="large" shape="square" />
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Avatar },
     template: `
@@ -82,7 +122,21 @@ export const WithImage: Story = {
 }
 
 export const FallbackLabel: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex items-center gap-4">
+    <Avatar label="John Doe" fallback-label="JD" />
+    <Avatar fallback-label="??" />
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Avatar },
     template: `

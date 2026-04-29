@@ -191,26 +191,18 @@ type Story = StoryObj<typeof meta>
 
 const noControls = { controls: { disable: true }} satisfies Story['parameters']
 
-const renderAdminLayoutVariant = (variant: 'floating' | 'inset') => () => ({
-  components: { AdminLayout, Avatar, Breadcrumb, Button, Card },
-  setup () {
-    const breadcrumb = [
-      { label: 'Dashboard', href: '#' },
-      { label: 'Overview' },
-    ]
-    return { menus, footerDropdown: { profile, menuItems }, breadcrumb, variant }
-  },
-  template: `<AdminLayout :variant="variant" collapsible="icon" :menus="menus" :footer-dropdown="footerDropdown">${layoutContent}</AdminLayout>`,
-})
-
 export const Default: Story = {}
 
 export const Floating: Story = {
   parameters: noControls,
-  render: renderAdminLayoutVariant('floating'),
+  args: {
+    variant: 'floating',
+  },
 }
 
 export const Inset: Story = {
   parameters: noControls,
-  render: renderAdminLayoutVariant('inset'),
+  args: {
+    variant: 'inset',
+  },
 }

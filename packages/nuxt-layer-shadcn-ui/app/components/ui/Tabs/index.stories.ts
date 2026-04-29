@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import EventLog from '#storybook/EventLog.vue'
 import Card from '../Card/index.vue'
 import type { TabsItem } from './types'
 import Tabs from './index.vue'
@@ -39,6 +40,8 @@ const meta = {
     defaultValue: { control: 'text' },
     rounded: { control: 'boolean' },
     iconOnly: { control: 'boolean' },
+    listClass: { control: 'text' },
+    triggerClass: { control: 'text' },
   },
   args: {
     items,
@@ -46,6 +49,8 @@ const meta = {
     defaultValue: 'account',
     rounded: false,
     iconOnly: false,
+    listClass: '',
+    triggerClass: '',
   },
   render: args => ({
     components: { Tabs },
@@ -63,68 +68,59 @@ export const Default: Story = {}
 
 export const IconOnly: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { Tabs },
-    setup: () => ({ items }),
-    template: `
-      <Tabs
-        icon-only
-        :items="items"
-        default-value="account"
-        class="max-w-md"
-      />
-    `,
-  }),
+  args: {
+    iconOnly: true,
+  },
 }
 
 export const Rounded: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { Tabs },
-    setup: () => ({ items }),
-    template: `
-      <Tabs
-        rounded
-        :items="items"
-        default-value="account"
-        class="max-w-md"
-      />
-    `,
-  }),
+  args: {
+    rounded: true,
+  },
 }
 
 export const DisabledItem: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { Tabs },
-    setup: () => ({ disabledItems }),
-    template: `
-      <Tabs
-        :items="disabledItems"
-        default-value="account"
-        class="max-w-md"
-      />
-    `,
-  }),
+  args: {
+    items: disabledItems,
+  },
 }
 
 export const NoContent: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { Tabs },
-    setup: () => ({ navItems }),
-    template: `
-      <Tabs
-        :items="navItems"
-        default-value="account"
-        class="max-w-md"
-      />
-    `,
-  }),
+  args: {
+    items: navItems,
+  },
 }
 
 export const CustomSlots: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Tabs
+    :items="items"
+    default-value="account"
+    list-class="w-full"
+    class="max-w-md"
+  >
+    <template #title="{ item, active }">
+      <span :class="active ? 'font-semibold' : ''">{{ item.title }}</span>
+    </template>
+    <template #content="{ item }">
+      <Card>
+        <p class="text-sm text-muted-foreground">{{ item.content }}</p>
+      </Card>
+    </template>
+  </Tabs>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Tabs, Card },
     setup: () => ({ items }),
@@ -144,6 +140,24 @@ export const CustomSlots: Story = {
           </Card>
         </template>
       </Tabs>
+    `,
+  }),
+}
+
+export const EventHandling: Story = {
+  parameters: noControls,
+  render: () => ({
+    components: { Tabs, EventLog },
+    setup: () => ({ items, value: ref('account') }),
+    template: `
+      <EventLog v-slot="{ record }">
+        <Tabs
+          v-model="value"
+          :items="items"
+          class="max-w-md"
+          @update:modelValue="(v) => record('update:modelValue', v)"
+        />
+      </EventLog>
     `,
   }),
 }

@@ -29,7 +29,21 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const DynamicContent: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <input v-model="url" placeholder="Enter URL or text" />
+  <div class="size-48">
+    <Qrcode :content="url" />
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Qrcode },
     setup () {
@@ -52,7 +66,23 @@ export const DynamicContent: Story = {
 }
 
 export const Sizes: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="size-24">
+    <Qrcode content="https://example.com/small" />
+  </div>
+  <div class="size-48">
+    <Qrcode content="https://example.com/medium" />
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Qrcode },
     template: `

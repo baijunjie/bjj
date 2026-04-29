@@ -39,7 +39,37 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const Offsets: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="space-y-3">
+    <div class="space-y-1">
+      <div class="text-xs text-gray-500">offset: 0 (default — truncate from end)</div>
+      <div class="overflow-hidden rounded border-2 border-dashed border-gray-300 bg-gray-100 p-2" style="resize: horizontal; width: 280px;">
+        <EffectAutoTruncate :text="sampleText" :offset="0" />
+      </div>
+    </div>
+    <div class="space-y-1">
+      <div class="text-xs text-gray-500">offset: 4 (preserve last 4 chars)</div>
+      <div class="overflow-hidden rounded border-2 border-dashed border-gray-300 bg-gray-100 p-2" style="resize: horizontal; width: 280px;">
+        <EffectAutoTruncate :text="sampleText" :offset="4" />
+      </div>
+    </div>
+    <div class="space-y-1">
+      <div class="text-xs text-gray-500">offset: 10 (preserve last 10 chars)</div>
+      <div class="overflow-hidden rounded border-2 border-dashed border-gray-300 bg-gray-100 p-2" style="resize: horizontal; width: 280px;">
+        <EffectAutoTruncate :text="sampleText" :offset="10" />
+      </div>
+    </div>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { EffectAutoTruncate },
     setup: () => ({ sampleText }),

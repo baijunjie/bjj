@@ -44,7 +44,27 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const Aligns: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex flex-wrap gap-4">
+    <div v-for="a in aligns" :key="a" class="space-y-1">
+      <div class="text-xs text-gray-500">align: {{ a }}</div>
+      <div class="overflow-hidden rounded border border-dashed border-gray-300 bg-gray-100" style="width: 220px; height: 80px;">
+        <EffectAutoScale :align="a" class="size-full">
+          <div class="text-base">Sample</div>
+        </EffectAutoScale>
+      </div>
+    </div>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { EffectAutoScale },
     setup: () => ({ aligns }),
@@ -64,7 +84,27 @@ export const Aligns: Story = {
 }
 
 export const VerticalAligns: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex flex-wrap gap-4">
+    <div v-for="v in verticalAligns" :key="v" class="space-y-1">
+      <div class="text-xs text-gray-500">verticalAlign: {{ v }}</div>
+      <div class="overflow-hidden rounded border border-dashed border-gray-300 bg-gray-100" style="width: 200px; height: 100px;">
+        <EffectAutoScale :vertical-align="v" class="size-full">
+          <div class="text-3xl font-bold">Wide Sample Text</div>
+        </EffectAutoScale>
+      </div>
+    </div>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { EffectAutoScale },
     setup: () => ({ verticalAligns }),
@@ -84,7 +124,41 @@ export const VerticalAligns: Story = {
 }
 
 export const AllowZoomIn: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex flex-wrap gap-4">
+    <div class="space-y-1">
+      <div class="text-xs text-gray-500">allowZoomIn: false (default — only shrinks)</div>
+      <div
+        class="overflow-hidden rounded border-2 border-dashed border-gray-300 bg-gray-100"
+        style="resize: both; width: 280px; height: 100px;"
+      >
+        <EffectAutoScale class="size-full">
+          <div class="text-sm">Small text stays small</div>
+        </EffectAutoScale>
+      </div>
+    </div>
+    <div class="space-y-1">
+      <div class="text-xs text-gray-500">allowZoomIn: true (also enlarges)</div>
+      <div
+        class="overflow-hidden rounded border-2 border-dashed border-gray-300 bg-gray-100"
+        style="resize: both; width: 280px; height: 100px;"
+      >
+        <EffectAutoScale allow-zoom-in class="size-full">
+          <div class="text-sm">Small text scales up</div>
+        </EffectAutoScale>
+      </div>
+    </div>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { EffectAutoScale },
     template: `

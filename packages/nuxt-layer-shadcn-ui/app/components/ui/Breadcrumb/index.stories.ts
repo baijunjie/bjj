@@ -40,29 +40,18 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 
 export const Default: Story = {}
 
-export const WithHome: Story = {
-  parameters: noControls,
-  render: () => ({
-    components: { Breadcrumb },
-    setup: () => ({ home, basicItems }),
-    template: '<Breadcrumb :home="home" :model="basicItems" />',
-  }),
-}
-
 export const WithIcons: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { Breadcrumb },
-    setup: () => ({ home, withIconItems }),
-    template: '<Breadcrumb :home="home" :model="withIconItems" />',
-  }),
+  args: {
+    home,
+    model: withIconItems,
+  },
 }
 
 export const SingleItem: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { Breadcrumb },
-    setup: () => ({ home }),
-    template: '<Breadcrumb :home="home" />',
-  }),
+  args: {
+    home,
+    model: undefined,
+  },
 }

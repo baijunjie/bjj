@@ -38,85 +38,40 @@ export const Default: Story = {}
 
 export const UsdSymbol: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { InputCurrency },
-    setup () {
-      const value = ref(49.99)
-      return { value }
-    },
-    template: `
-      <div class="max-w-xs">
-        <InputCurrency v-model="value" currency="USD" />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
-      </div>
-    `,
-  }),
+  args: {
+    currency: 'USD',
+    currencyDisplay: 'symbol',
+  },
 }
 
 export const EurCodeDisplay: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { InputCurrency },
-    setup () {
-      const value = ref(29.99)
-      return { value }
-    },
-    template: `
-      <div class="max-w-xs">
-        <InputCurrency v-model="value" currency="EUR" currencyDisplay="code" />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
-      </div>
-    `,
-  }),
+  args: {
+    currency: 'EUR',
+    currencyDisplay: 'code',
+  },
 }
 
 export const CadSymbol: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { InputCurrency },
-    setup () {
-      const value = ref(79.99)
-      return { value }
-    },
-    template: `
-      <div class="max-w-xs">
-        <InputCurrency v-model="value" currency="CAD" currencyDisplay="symbol" />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
-      </div>
-    `,
-  }),
+  args: {
+    currency: 'CAD',
+    currencyDisplay: 'symbol',
+  },
 }
 
 export const CadNarrowSymbol: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { InputCurrency },
-    setup () {
-      const value = ref(79.99)
-      return { value }
-    },
-    template: `
-      <div class="max-w-xs">
-        <InputCurrency v-model="value" currency="CAD" currencyDisplay="narrowSymbol" />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
-      </div>
-    `,
-  }),
+  args: {
+    currency: 'CAD',
+    currencyDisplay: 'narrowSymbol',
+  },
 }
 
 export const JpyNameDisplay: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { InputCurrency },
-    setup () {
-      const value = ref(5000)
-      return { value }
-    },
-    template: `
-      <div class="max-w-xs">
-        <InputCurrency v-model="value" currencyDisplay="name" />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
-      </div>
-    `,
-  }),
+  args: {
+    currency: 'JPY',
+    currencyDisplay: 'name',
+  },
 }

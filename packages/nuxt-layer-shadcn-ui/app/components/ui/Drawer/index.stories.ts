@@ -1,10 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import EventLog from '#storybook/EventLog.vue'
 import Button from '../Button/index.vue'
 import Input from '../Input/index.vue'
+import type { ButtonVariant } from '../Button/types'
 import type { DrawerSide } from './types'
 import Drawer from './index.vue'
 
 const sides: DrawerSide[] = [ 'top', 'right', 'bottom', 'left' ]
+const buttonVariants: ButtonVariant[] = [ 'default', 'destructive', 'outline', 'secondary', 'ghost', 'link' ]
 
 const meta = {
   title: 'UI/Drawer',
@@ -23,6 +26,9 @@ const meta = {
     description: { control: 'text' },
     confirmText: { control: 'text' },
     cancelText: { control: 'text' },
+    confirmVariant: { control: 'select', options: buttonVariants },
+    cancelVariant: { control: 'select', options: buttonVariants },
+    class: { control: 'text' },
   },
   args: {
     loading: false,
@@ -38,6 +44,9 @@ const meta = {
     description: '',
     confirmText: 'OK',
     cancelText: 'Cancel',
+    confirmVariant: 'default',
+    cancelVariant: 'outline',
+    class: '',
   },
   render: args => ({
     components: { Drawer, Button, Input },
@@ -65,7 +74,29 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const WithDescription: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Drawer
+    v-model:visible="visible"
+    title="Edit Profile"
+    description="Update your personal information. Changes will be visible to other users immediately."
+    showCancel
+    confirmText="Save"
+  >
+    <div class="space-y-3">
+      <Input placeholder="Name" />
+      <Input placeholder="Email" />
+    </div>
+  </Drawer>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Drawer, Button, Input },
     setup () {
@@ -93,7 +124,24 @@ export const WithDescription: Story = {
 }
 
 export const ScrollableContent: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Drawer v-model:visible="visible" title="Terms of Service" showCancel confirmText="Accept">
+    <div class="space-y-4">
+      <p v-for="i in 20" :key="i">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+      </p>
+    </div>
+  </Drawer>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Drawer, Button },
     setup () {
@@ -116,7 +164,29 @@ export const ScrollableContent: Story = {
 }
 
 export const Sides: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Drawer v-model:visible="sideTop" side="top" title="Top Drawer">
+    <p>Slides in from the top.</p>
+  </Drawer>
+  <Drawer v-model:visible="sideRight" side="right" title="Right Drawer">
+    <p>Slides in from the right.</p>
+  </Drawer>
+  <Drawer v-model:visible="sideBottom" side="bottom" title="Bottom Drawer">
+    <p>Slides in from the bottom.</p>
+  </Drawer>
+  <Drawer v-model:visible="sideLeft" side="left" title="Left Drawer">
+    <p>Slides in from the left.</p>
+  </Drawer>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Drawer, Button },
     setup () {
@@ -152,7 +222,23 @@ export const Sides: Story = {
 }
 
 export const WithTrigger: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Drawer title="Drawer with Trigger">
+    <template #trigger>
+      <Button>Open Drawer</Button>
+    </template>
+    <p>The trigger slot lets the consumer place the open button directly inside the Drawer, without managing visible state.</p>
+  </Drawer>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Drawer, Button },
     template: `
@@ -169,24 +255,15 @@ export const WithTrigger: Story = {
 export const EventHandling: Story = {
   parameters: noControls,
   render: () => ({
-    components: { Drawer, Button },
-    setup () {
-      const visible = ref(false)
-      const log = ref<string[]>([])
-      const record = (name: string) => log.value.unshift(`${new Date().toLocaleTimeString()} — ${name}`)
-      return { visible, log, record }
-    },
+    components: { Drawer, Button, EventLog },
+    setup: () => ({ visible: ref(false) }),
     template: `
-      <div class="space-y-3">
+      <EventLog v-slot="{ record }">
         <Button @click="visible = true">Open Drawer</Button>
-        <ul class="text-sm rounded-md border p-3 space-y-1 max-h-40 overflow-auto">
-          <li v-if="!log.length" class="text-muted-foreground">Open the drawer and trigger any action to see events log here.</li>
-          <li v-for="(line, i) in log" :key="i">{{ line }}</li>
-        </ul>
         <Drawer
           v-model:visible="visible"
           title="Event Demo"
-          description="Each emitted event will be appended to the log above."
+          description="Each emitted event will be appended to the log below."
           showCancel
           confirmText="Confirm"
           @open="record('open')"
@@ -194,11 +271,11 @@ export const EventHandling: Story = {
           @closed="record('closed')"
           @confirm="record('confirm')"
           @cancel="record('cancel')"
-          @update:visible="v => record(\`update:visible(\${v})\`)"
+          @update:visible="(v) => record('update:visible', v)"
         >
           <p>Click Confirm, Cancel, or the close button to see events fire.</p>
         </Drawer>
-      </div>
+      </EventLog>
     `,
   }),
 }

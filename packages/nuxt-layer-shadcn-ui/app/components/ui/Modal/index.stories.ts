@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import type { ModalContentType } from '../ModalContent/types'
+import EventLog from '#storybook/EventLog.vue'
 import Button from '../Button/index.vue'
 import Input from '../Input/index.vue'
 import Modal from './index.vue'
@@ -67,7 +68,27 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const WithDescription: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Modal
+    v-model:visible="visible"
+    title="Delete Project"
+    description="This will permanently remove the project and all its data. This action cannot be undone."
+    showCancel
+    confirmVariant="destructive"
+    confirmText="Delete"
+  >
+    <p>Are you sure you want to continue?</p>
+  </Modal>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Modal, Button },
     setup () {
@@ -93,7 +114,24 @@ export const WithDescription: Story = {
 }
 
 export const ScrollableContent: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Modal v-model:visible="visible" title="Terms of Service" showCancel confirmText="Accept">
+    <div class="space-y-4">
+      <p v-for="i in 20" :key="i">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+      </p>
+    </div>
+  </Modal>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Modal, Button },
     setup () {
@@ -116,7 +154,32 @@ export const ScrollableContent: Story = {
 }
 
 export const Types: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Modal v-model:visible="typeInfo" title="Information" type="info" showCancel>
+    <p>Your session will expire in 5 minutes.</p>
+  </Modal>
+  <Modal v-model:visible="typeSuccess" title="Success" type="success">
+    <p>Your payment has been processed successfully.</p>
+  </Modal>
+  <Modal v-model:visible="typeHelp" title="Help" type="help" showCancel>
+    <p>Need assistance? Check our documentation or contact support.</p>
+  </Modal>
+  <Modal v-model:visible="typeWarn" title="Warning" type="warn" showCancel confirmVariant="destructive">
+    <p>This operation may affect your existing data.</p>
+  </Modal>
+  <Modal v-model:visible="typeDanger" title="Delete Account" type="danger" showCancel confirmVariant="destructive" confirmText="Delete">
+    <p>All data will be permanently removed. This action cannot be undone.</p>
+  </Modal>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Modal, Button },
     setup () {
@@ -157,7 +220,23 @@ export const Types: Story = {
 }
 
 export const WithTrigger: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Modal title="Modal with Trigger">
+    <template #trigger>
+      <Button>Open Modal</Button>
+    </template>
+    <p>The trigger slot lets the consumer place the open button directly inside the Modal, without managing visible state.</p>
+  </Modal>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Modal, Button },
     template: `
@@ -172,26 +251,42 @@ export const WithTrigger: Story = {
 }
 
 export const EventHandling: Story = {
-  parameters: noControls,
-  render: () => ({
-    components: { Modal, Button },
-    setup () {
-      const visible = ref(false)
-      const log = ref<string[]>([])
-      const record = (name: string) => log.value.unshift(`${new Date().toLocaleTimeString()} — ${name}`)
-      return { visible, log, record }
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Modal
+    v-model:visible="visible"
+    title="Event Demo"
+    description="Each emitted event will be appended to the log below."
+    showCancel
+    confirmText="Confirm"
+    @open="onOpen"
+    @close="onClose"
+    @closed="onClosed"
+    @confirm="onConfirm"
+    @cancel="onCancel"
+    @update:visible="onVisibleUpdate"
+  >
+    <p>Click Confirm, Cancel, or the close button to see events fire.</p>
+  </Modal>
+</template>
+`.trim(),
+      },
     },
+  },
+  render: () => ({
+    components: { Modal, Button, EventLog },
+    setup: () => ({ visible: ref(false) }),
     template: `
-      <div class="space-y-3">
+      <EventLog v-slot="{ record }">
         <Button @click="visible = true">Open Modal</Button>
-        <ul class="text-sm rounded-md border p-3 space-y-1 max-h-40 overflow-auto">
-          <li v-if="!log.length" class="text-muted-foreground">Open the modal and trigger any action to see events log here.</li>
-          <li v-for="(line, i) in log" :key="i">{{ line }}</li>
-        </ul>
         <Modal
           v-model:visible="visible"
           title="Event Demo"
-          description="Each emitted event will be appended to the log above."
+          description="Each emitted event will be appended to the log below."
           showCancel
           confirmText="Confirm"
           @open="record('open')"
@@ -199,11 +294,11 @@ export const EventHandling: Story = {
           @closed="record('closed')"
           @confirm="record('confirm')"
           @cancel="record('cancel')"
-          @update:visible="v => record(\`update:visible(\${v})\`)"
+          @update:visible="(v) => record('update:visible', v)"
         >
           <p>Click Confirm, Cancel, or the close button to see events fire.</p>
         </Modal>
-      </div>
+      </EventLog>
     `,
   }),
 }

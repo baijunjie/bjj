@@ -51,32 +51,30 @@ export const Default: Story = {}
 
 export const FadeMask: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { ScrollArea },
-    setup () {
-      const items = Array.from({ length: 30 }, (_, i) => `Item ${i + 1}`)
-      return { items }
-    },
-    template: `
-      <div class="h-[250px] w-[250px] rounded-md border bg-card">
-        <ScrollArea class="h-full" fadeMask>
-          <div class="p-4 space-y-2">
-            <div
-              v-for="item in items"
-              :key="item"
-              class="rounded-md border bg-muted px-3 py-2 text-sm"
-            >
-              {{ item }}
-            </div>
-          </div>
-        </ScrollArea>
-      </div>
-    `,
-  }),
+  args: {
+    fadeMask: true,
+  },
 }
 
 export const NoOverflow: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <ScrollArea class="h-full" fadeMask>
+    <div class="p-4 space-y-2">
+      <div v-for="item in fewItems" :key="item" class="rounded-md border bg-muted px-3 py-2 text-sm">
+        {{ item }}
+      </div>
+    </div>
+  </ScrollArea>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { ScrollArea },
     setup () {

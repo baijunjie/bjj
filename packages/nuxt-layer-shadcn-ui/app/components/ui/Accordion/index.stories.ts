@@ -56,8 +56,26 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 
 export const Default: Story = {}
 
-export const Multiple: Story = {
+export const Disabled: Story = {
   parameters: noControls,
+  args: {
+    disabled: true,
+  },
+}
+
+export const Multiple: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Accordion v-model="value" type="multiple" :items="items" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Accordion, Surface },
     setup () {
@@ -75,21 +93,31 @@ export const Multiple: Story = {
   }),
 }
 
-export const Disabled: Story = {
-  parameters: noControls,
-  render: () => ({
-    components: { Accordion, Surface },
-    setup: () => ({ items }),
-    template: `
-      <Surface variant="bordered" class="max-w-md px-4">
-        <Accordion disabled :items="items" default-value="shipping" />
-      </Surface>
-    `,
-  }),
-}
-
 export const CustomSlots: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Accordion v-model="value" :items="items">
+    <template #title="{ item, open }">
+      <span class="flex items-center gap-2">
+        <span class="inline-flex size-5 items-center justify-center rounded-full bg-primary/15 text-primary">
+          <Icon :name="open ? 'minus' : 'plus'" class="size-3" />
+        </span>
+        {{ item.title }}
+      </span>
+    </template>
+    <template #content="{ item }">
+      <p class="text-muted-foreground">{{ item.content }}</p>
+    </template>
+  </Accordion>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Accordion, Surface, Icon },
     setup () {

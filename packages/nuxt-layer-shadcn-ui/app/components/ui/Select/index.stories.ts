@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import EventLog from '#storybook/EventLog.vue'
 import Select from './index.vue'
 
 const frameworks = [
@@ -71,7 +72,23 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const WithFilter: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Select
+    v-model="value"
+    :options="manyOptions"
+    placeholder="Search and select"
+    filter
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Select },
     setup () {
@@ -93,7 +110,23 @@ export const WithFilter: Story = {
 }
 
 export const Multiple: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Select
+    v-model="value"
+    :options="frameworks"
+    placeholder="Select frameworks"
+    multiple
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Select },
     setup () {
@@ -115,7 +148,21 @@ export const Multiple: Story = {
 }
 
 export const WithDisabledOptions: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Select
+    :options="withDisabled"
+    placeholder="Select a framework"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Select },
     setup () {
@@ -133,7 +180,22 @@ export const WithDisabledOptions: Story = {
 }
 
 export const Scrollable: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Select
+    v-model="value"
+    :options="manyOptions"
+    placeholder="Select an option"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Select },
     setup () {
@@ -154,7 +216,22 @@ export const Scrollable: Story = {
 }
 
 export const Grouped: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Select
+    v-model="value"
+    :options="withGroups"
+    placeholder="Select a framework"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Select },
     setup () {
@@ -175,7 +252,18 @@ export const Grouped: Story = {
 }
 
 export const Disabled: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Select :options="frameworks" placeholder="Disabled select" disabled />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Select },
     setup () {
@@ -185,6 +273,33 @@ export const Disabled: Story = {
       <div class="max-w-sm">
         <Select :options="frameworks" placeholder="Disabled select" disabled />
       </div>
+    `,
+  }),
+}
+
+export const EventHandling: Story = {
+  parameters: noControls,
+  render: () => ({
+    components: { Select, EventLog },
+    setup () {
+      const value = ref<string>()
+      return { value, frameworks }
+    },
+    template: `
+      <EventLog v-slot="{ record }">
+        <div class="max-w-sm">
+          <Select
+            v-model="value"
+            :options="frameworks"
+            filter
+            placeholder="Pick a framework"
+            @update:modelValue="(v) => record('update:modelValue', v)"
+            @search="(q) => record('search', q)"
+            @open="record('open')"
+            @close="record('close')"
+          />
+        </div>
+      </EventLog>
     `,
   }),
 }

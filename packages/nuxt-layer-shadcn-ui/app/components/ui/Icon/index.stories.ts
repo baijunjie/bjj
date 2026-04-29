@@ -15,9 +15,11 @@ const meta = {
   component: Icon,
   argTypes: {
     name: { control: 'text' },
+    class: { control: 'text' },
   },
   args: {
     name: 'house',
+    class: '',
   },
   render: args => ({
     components: { Icon },
@@ -34,7 +36,27 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const CommonIcons: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="grid grid-cols-8 gap-4">
+    <div
+      v-for="name in commonIcons"
+      :key="name"
+      class="flex flex-col items-center gap-2 rounded-md border p-3"
+    >
+      <Icon :name="name" class="size-5" />
+      <span class="text-xs text-muted-foreground">{{ name }}</span>
+    </div>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Icon },
     setup: () => ({ commonIcons }),
@@ -54,7 +76,24 @@ export const CommonIcons: Story = {
 }
 
 export const Sizes: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex items-end gap-4">
+    <Icon name="star" class="size-3" />
+    <Icon name="star" class="size-4" />
+    <Icon name="star" class="size-5" />
+    <Icon name="star" class="size-6" />
+    <Icon name="star" class="size-8" />
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Icon },
     template: `

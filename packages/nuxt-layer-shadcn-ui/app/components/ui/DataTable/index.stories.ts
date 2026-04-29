@@ -92,7 +92,23 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const SingleSelection: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable
+    :data="data"
+    :columns="columns"
+    selectionMode="single"
+    v-model:selection="selection"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { DataTable: DataTable as any },
     setup () {
@@ -116,7 +132,23 @@ export const SingleSelection: Story = {
 }
 
 export const MultipleSelection: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable
+    :data="data"
+    :columns="columns"
+    selectionMode="multiple"
+    v-model:selection="selection"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { DataTable: DataTable as any },
     setup () {
@@ -140,7 +172,23 @@ export const MultipleSelection: Story = {
 }
 
 export const Sortable: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable
+    :data="sortedData"
+    :columns="sortableColumns"
+    v-model:sortBy="sortBy"
+    v-model:sortOrder="sortOrder"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { DataTable: DataTable as any },
     setup () {
@@ -177,7 +225,18 @@ export const Sortable: Story = {
 }
 
 export const ColumnTypes: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable :data="data" :columns="typeColumns" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { DataTable: DataTable as any },
     setup: () => ({ data: sampleData, typeColumns }),
@@ -190,7 +249,27 @@ export const ColumnTypes: Story = {
 }
 
 export const CustomSlots: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable :data="data" :columns="columns">
+    <template #status="{ value }">
+      <Tag :color="value === 'active' ? 'success' : 'default'">
+        {{ value }}
+      </Tag>
+    </template>
+    <template #amount="{ value }">
+      <span class="font-mono font-medium">\${{ Number(value).toFixed(2) }}</span>
+    </template>
+  </DataTable>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { DataTable: DataTable as any, Tag },
     setup: () => ({ data: sampleData, slotColumns }),
@@ -212,7 +291,32 @@ export const CustomSlots: Story = {
 }
 
 export const SlotEmptyFallback: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable :data="data" :columns="columns">
+    <template #status="{ value }">
+      <Tag
+        v-if="value === 'active' || value === 'inactive'"
+        :color="value === 'active' ? 'success' : 'default'"
+      >
+        {{ value }}
+      </Tag>
+    </template>
+    <template #action="{ value }">
+      <button v-if="value" class="text-sm text-primary underline">
+        {{ value }}
+      </button>
+    </template>
+  </DataTable>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { DataTable: DataTable as any, Tag },
     setup () {
@@ -252,7 +356,14 @@ export const SlotEmptyFallback: Story = {
 }
 
 export const EmptyState: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DataTable :data="[]" :columns="columns" />',
+      },
+    },
+  },
   render: () => ({
     components: { DataTable: DataTable as any },
     setup: () => ({ basicColumns }),
@@ -265,7 +376,26 @@ export const EmptyState: Story = {
 }
 
 export const FooterSlot: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable :data="data" :columns="columns">
+    <template #footer>
+      <tr class="h-12 border-t text-sm font-medium">
+        <td class="px-4">Total</td>
+        <td class="px-4" colspan="2"></td>
+        <td class="px-4 font-mono">\${{ data.reduce((sum, r) => sum + r.amount, 0).toFixed(2) }}</td>
+      </tr>
+    </template>
+  </DataTable>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { DataTable: DataTable as any, Tag },
     setup: () => ({ data: sampleData, slotColumns }),
@@ -286,7 +416,27 @@ export const FooterSlot: Story = {
 }
 
 export const FrozenColumns: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable
+    :data="data"
+    :columns="frozenColumns"
+    selectionMode="multiple"
+    v-model:selection="selection"
+  >
+    <template #id>
+      <button class="text-sm text-primary underline">Edit</button>
+    </template>
+  </DataTable>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { DataTable: DataTable as any },
     setup () {
@@ -311,7 +461,14 @@ export const FrozenColumns: Story = {
 }
 
 export const Loading: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DataTable :data="data" :columns="columns" loading />',
+      },
+    },
+  },
   render: () => ({
     components: { DataTable: DataTable as any },
     setup: () => ({ data: sampleData, basicColumns }),
@@ -324,7 +481,23 @@ export const Loading: Story = {
 }
 
 export const RowClick: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable
+    :data="data"
+    :columns="columns"
+    clickable
+    @rowClick="row => lastClicked = row"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { DataTable: DataTable as any },
     setup () {

@@ -32,6 +32,9 @@ const meta = {
     iconPosition: { control: 'select', options: [ 'start', 'end' ]},
     loading: { control: 'boolean' },
     disabled: { control: 'boolean' },
+    href: { control: 'text' },
+    target: { control: 'text' },
+    class: { control: 'text' },
   },
   args: {
     variant: 'default',
@@ -41,6 +44,9 @@ const meta = {
     iconPosition: 'start',
     loading: false,
     disabled: false,
+    href: '',
+    target: '',
+    class: '',
   },
   render: args => ({
     components: { Button },
@@ -57,7 +63,23 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const Variants: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Button variant="default">default</Button>
+  <Button variant="destructive">destructive</Button>
+  <Button variant="outline">outline</Button>
+  <Button variant="secondary">secondary</Button>
+  <Button variant="ghost">ghost</Button>
+  <Button variant="link">link</Button>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Button },
     setup: () => ({ variants }),
@@ -70,7 +92,23 @@ export const Variants: Story = {
 }
 
 export const Sizes: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Button size="sm">sm</Button>
+  <Button size="default">default</Button>
+  <Button size="lg">lg</Button>
+  <Button size="icon-sm"><Icon name="plus" /></Button>
+  <Button size="icon"><Icon name="plus" /></Button>
+  <Button size="icon-lg"><Icon name="plus" /></Button>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Button, Icon },
     setup: () => ({ sizes }),
@@ -86,7 +124,21 @@ export const Sizes: Story = {
 }
 
 export const WithIcons: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Button icon="mail">Login with Email</Button>
+  <Button icon="chevron-right" iconPosition="end" variant="secondary">Next</Button>
+  <Button icon="trash-2" variant="destructive">Delete</Button>
+  <Button icon="plus" size="icon" variant="outline" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Button },
     template: `
@@ -101,7 +153,21 @@ export const WithIcons: Story = {
 }
 
 export const Loading: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Button loading icon="mail">Login with Email</Button>
+  <Button loading icon="chevron-right" iconPosition="end" variant="secondary">Next</Button>
+  <Button loading icon="trash-2" variant="destructive">Delete</Button>
+  <Button loading icon="plus" size="icon" variant="outline" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Button },
     template: `
@@ -116,7 +182,23 @@ export const Loading: Story = {
 }
 
 export const Disabled: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Button variant="default" disabled>default</Button>
+  <Button variant="destructive" disabled>destructive</Button>
+  <Button variant="outline" disabled>outline</Button>
+  <Button variant="secondary" disabled>secondary</Button>
+  <Button variant="ghost" disabled>ghost</Button>
+  <Button variant="link" disabled>link</Button>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Button },
     setup: () => ({ variants }),
@@ -129,7 +211,22 @@ export const Disabled: Story = {
 }
 
 export const Rounded: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Button rounded>Rounded</Button>
+  <Button rounded variant="outline">Outline</Button>
+  <Button rounded variant="secondary">Secondary</Button>
+  <Button rounded size="icon" variant="outline" icon="plus" />
+  <Button rounded size="icon" variant="secondary" icon="sun" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Button },
     template: `
@@ -145,7 +242,19 @@ export const Rounded: Story = {
 }
 
 export const LinkButtons: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Button href="/dialog" variant="outline">Internal Link</Button>
+  <Button href="https://example.com" icon="external-link" iconPosition="end">External Link</Button>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Button },
     template: `

@@ -56,7 +56,14 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const WithTime: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DateRangePicker v-model="withTime" showTime />',
+      },
+    },
+  },
   render: () => ({
     components: { DateRangePicker },
     setup () {
@@ -73,7 +80,14 @@ export const WithTime: Story = {
 }
 
 export const MaxSpanDays: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DateRangePicker v-model="maxSpan" :maxSpanDays="7" />',
+      },
+    },
+  },
   render: () => ({
     components: { DateRangePicker },
     setup () {
@@ -90,7 +104,14 @@ export const MaxSpanDays: Story = {
 }
 
 export const Preselected: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DateRangePicker v-model="preselected" />',
+      },
+    },
+  },
   render: () => ({
     components: { DateRangePicker },
     setup () {
@@ -110,7 +131,14 @@ export const Preselected: Story = {
 }
 
 export const Disabled: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DateRangePicker v-model="range" disabled />',
+      },
+    },
+  },
   render: () => ({
     components: { DateRangePicker },
     setup () {
@@ -129,7 +157,14 @@ export const Disabled: Story = {
 }
 
 export const Readonly: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DateRangePicker v-model="range" readonly />',
+      },
+    },
+  },
   render: () => ({
     components: { DateRangePicker },
     setup () {

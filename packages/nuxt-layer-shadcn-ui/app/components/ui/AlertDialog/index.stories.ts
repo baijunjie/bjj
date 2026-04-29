@@ -37,10 +37,55 @@ type Story = StoryObj<typeof meta>
 
 const noControls = { controls: { disable: true }} satisfies Story['parameters']
 
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<script setup lang="ts">
+const { confirm } = useDialog()
+const result = ref('')
+
+async function handleConfirm () {
+  const ok = await confirm({ title: 'Confirm', message: 'Do you want to proceed?' })
+  result.value = \`confirm → \${ok}\`
+}
+</script>
+
+<template>
+  <Button @click="handleConfirm">Confirm</Button>
+  <div v-if="result">Result: {{ result }}</div>
+</template>
+`.trim(),
+      },
+    },
+  },
+}
 
 export const Alert: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<script setup lang="ts">
+const { alert } = useDialog()
+const result = ref('')
+
+async function handleAlert () {
+  await alert({ title: 'Error', type: 'error', message: 'Something went wrong.' })
+  result.value = 'alert → closed'
+}
+</script>
+
+<template>
+  <Button variant="outline" @click="handleAlert">Alert</Button>
+  <div v-if="result">Result: {{ result }}</div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Button },
     setup () {
@@ -62,7 +107,29 @@ export const Alert: Story = {
 }
 
 export const Destroy: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<script setup lang="ts">
+const { destroy } = useDialog()
+const result = ref('')
+
+async function handleDestroy () {
+  const ok = await destroy({ title: 'Delete Item', message: 'This action cannot be undone.' })
+  result.value = \`destroy → \${ok}\`
+}
+</script>
+
+<template>
+  <Button variant="destructive" @click="handleDestroy">Destroy</Button>
+  <div v-if="result">Result: {{ result }}</div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Button },
     setup () {
@@ -84,7 +151,33 @@ export const Destroy: Story = {
 }
 
 export const MultiDialog: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<script setup lang="ts">
+const { confirm, alert, destroy } = useDialog()
+const result = ref('')
+
+async function handleMulti () {
+  result.value = 'waiting...'
+  const r1 = confirm({ title: 'Dialog 1', message: 'First confirm dialog' })
+  const r2 = alert({ title: 'Dialog 2', message: 'Second alert dialog' })
+  const r3 = destroy({ title: 'Dialog 3', message: 'Third destroy dialog' })
+  const [ v1, , v3 ] = await Promise.all([ r1, r2, r3 ])
+  result.value = \`multi → confirm: \${v1}, alert: done, destroy: \${v3}\`
+}
+</script>
+
+<template>
+  <Button variant="secondary" @click="handleMulti">Multi Dialog</Button>
+  <div v-if="result">Result: {{ result }}</div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Button },
     setup () {
@@ -110,7 +203,23 @@ export const MultiDialog: Story = {
 }
 
 export const WithTypes: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<script setup lang="ts">
+const { confirm, alert, destroy } = useDialog()
+
+confirm({ title: 'Warning', type: 'warn', message: 'This operation may affect your data.' })
+alert({ title: 'Information', type: 'info', message: 'Your changes have been saved.' })
+alert({ title: 'Success', type: 'success', message: 'Payment completed successfully.' })
+destroy({ title: 'Delete Account', message: 'All data will be permanently removed.' })
+</script>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Button },
     setup () {

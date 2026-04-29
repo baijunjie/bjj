@@ -6,6 +6,10 @@ export default defineNuxtConfig({
   extends: [ '..' ],
   modules: [ '@nuxt/eslint' ],
 
+  alias: {
+    '#storybook': join(playgroundDir, '.storybook'),
+  },
+
   // Playground is the Tailwind entry (where `@import 'tailwindcss'` lives).
   css: [ join(playgroundDir, 'app/assets/styles/globals.css') ],
 

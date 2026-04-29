@@ -25,7 +25,22 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const CustomSize: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex items-end gap-6">
+    <Loading class="size-6" />
+    <Loading class="size-10" />
+    <Loading class="size-16" />
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Loading },
     template: `

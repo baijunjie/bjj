@@ -42,7 +42,20 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const IconOnly: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <CopyButton copy="Hello, World!" variant="outline" />
+  <CopyButton copy="Hello, World!" variant="ghost" />
+  <CopyButton copy="Hello, World!" variant="secondary" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { CopyButton },
     template: `
@@ -56,7 +69,19 @@ export const IconOnly: Story = {
 }
 
 export const WithLabel: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <CopyButton copy="Hello, World!" variant="outline">Copy Text</CopyButton>
+  <CopyButton copy="123 Main St" variant="secondary">Copy Address</CopyButton>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { CopyButton },
     template: `
@@ -69,7 +94,23 @@ export const WithLabel: Story = {
 }
 
 export const Variants: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <CopyButton copy="Hello, World!" variant="default">default</CopyButton>
+  <CopyButton copy="Hello, World!" variant="destructive">destructive</CopyButton>
+  <CopyButton copy="Hello, World!" variant="outline">outline</CopyButton>
+  <CopyButton copy="Hello, World!" variant="secondary">secondary</CopyButton>
+  <CopyButton copy="Hello, World!" variant="ghost">ghost</CopyButton>
+  <CopyButton copy="Hello, World!" variant="link">link</CopyButton>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { CopyButton },
     setup: () => ({ variants }),
@@ -89,7 +130,20 @@ export const Variants: Story = {
 }
 
 export const Sizes: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <CopyButton copy="Hello, World!" variant="outline" size="sm">Small</CopyButton>
+  <CopyButton copy="Hello, World!" variant="outline" size="default">Default</CopyButton>
+  <CopyButton copy="Hello, World!" variant="outline" size="lg">Large</CopyButton>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { CopyButton },
     template: `
@@ -103,7 +157,25 @@ export const Sizes: Story = {
 }
 
 export const CustomTooltipText: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <CopyButton
+    copy="secret-token-123"
+    before-copy-text="Click to copy token"
+    after-copy-text="Token copied!"
+    variant="outline"
+  >
+    Copy Token
+  </CopyButton>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { CopyButton },
     template: `

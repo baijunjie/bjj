@@ -37,7 +37,35 @@ const noControls = { controls: { disable: true }} satisfies Story['parameters']
 export const Default: Story = {}
 
 export const Types: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<script setup lang="ts">
+import { toast } from 'vue-sonner'
+
+const showDefault = () => toast('This is a default toast')
+const showSuccess = () => toast.success('Operation completed successfully')
+const showError = () => toast.error('Something went wrong')
+const showInfo = () => toast.info('Here is some information')
+const showWarning = () => toast.warning('Please be careful')
+</script>
+
+<template>
+  <Toast position="bottom-right" />
+  <div class="flex flex-wrap gap-3">
+    <Button variant="outline" @click="showDefault">Default</Button>
+    <Button variant="outline" @click="showSuccess">Success</Button>
+    <Button variant="outline" @click="showError">Error</Button>
+    <Button variant="outline" @click="showInfo">Info</Button>
+    <Button variant="outline" @click="showWarning">Warning</Button>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Toast, Button },
     setup () {
@@ -64,7 +92,27 @@ export const Types: Story = {
 }
 
 export const WithDescription: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<script setup lang="ts">
+import { toast } from 'vue-sonner'
+
+const show = () => toast('Event created', {
+  description: 'Your event has been scheduled for tomorrow at 3:00 PM.',
+})
+</script>
+
+<template>
+  <Toast position="bottom-right" />
+  <Button variant="outline" @click="show">Show Toast with Description</Button>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Toast, Button },
     setup () {
@@ -83,7 +131,33 @@ export const WithDescription: Story = {
 }
 
 export const Positions: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<script setup lang="ts">
+import { toast } from 'vue-sonner'
+
+const positions = [ 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'top-center', 'bottom-center' ] as const
+const current = ref<typeof positions[number]>('bottom-right')
+
+const show = (pos: typeof positions[number]) => {
+  current.value = pos
+  nextTick(() => toast(\`Toast at \${pos}\`))
+}
+</script>
+
+<template>
+  <Toast :position="current" />
+  <div class="flex flex-wrap gap-3">
+    <Button v-for="p in positions" :key="p" variant="outline" @click="show(p)">{{ p }}</Button>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Toast, Button },
     setup () {

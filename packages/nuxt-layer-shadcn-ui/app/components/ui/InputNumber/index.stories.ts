@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import EventLog from '#storybook/EventLog.vue'
 import InputNumber from './index.vue'
 
 const meta = {
@@ -46,82 +47,54 @@ export const Default: Story = {}
 
 export const WithMinMax: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { InputNumber },
-    setup () {
-      const value = ref(5)
-      return { value }
-    },
-    template: `
-      <div class="max-w-xs">
-        <InputNumber v-model="value" :min="0" :max="10" />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
-      </div>
-    `,
-  }),
+  args: {
+    min: 0,
+    max: 10,
+  },
 }
 
 export const CustomStep: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { InputNumber },
-    setup () {
-      const value = ref(0)
-      return { value }
-    },
-    template: `
-      <div class="max-w-xs">
-        <InputNumber v-model="value" :step="5" />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
-      </div>
-    `,
-  }),
+  args: {
+    step: 5,
+  },
 }
 
 export const WithoutButtons: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { InputNumber },
-    setup () {
-      const value = ref(0)
-      return { value }
-    },
-    template: `
-      <div class="max-w-xs">
-        <InputNumber v-model="value" :showButtons="false" />
-      </div>
-    `,
-  }),
+  args: {
+    showButtons: false,
+  },
 }
 
 export const Disabled: Story = {
   parameters: noControls,
-  render: () => ({
-    components: { InputNumber },
-    setup () {
-      const value = ref(0)
-      return { value }
-    },
-    template: `
-      <div class="max-w-xs">
-        <InputNumber v-model="value" disabled />
-      </div>
-    `,
-  }),
+  args: {
+    disabled: true,
+  },
 }
 
 export const Invalid: Story = {
   parameters: noControls,
+  args: {
+    invalid: true,
+  },
+}
+
+export const EventHandling: Story = {
+  parameters: noControls,
   render: () => ({
-    components: { InputNumber },
-    setup () {
-      const value = ref(0)
-      return { value }
-    },
+    components: { InputNumber, EventLog },
+    setup: () => ({ value: ref(0) }),
     template: `
-      <div class="max-w-xs">
-        <InputNumber v-model="value" invalid />
-      </div>
+      <EventLog v-slot="{ record }">
+        <div class="max-w-xs">
+          <InputNumber
+            v-model="value"
+            @update:modelValue="(v) => record('update:modelValue', v)"
+          />
+        </div>
+      </EventLog>
     `,
   }),
 }
