@@ -153,7 +153,7 @@ const surfaceVariants = cva(
         hover:bg-danger/20
       ` },
       { selectable: true, variant: 'bordered', color: 'default', class: `
-        hover:bg-accent
+        hover:bg-accent/50
       ` },
       { selectable: true, variant: 'bordered', color: 'primary', class: `
         hover:bg-primary/10
