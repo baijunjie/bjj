@@ -7,6 +7,8 @@ on:
       - 'packages/nuxt-layer-shadcn-ui/**'
       - 'packages/nuxt-layer-effect/**'
       - 'packages/shared/**'
+      - 'packages/nuxt-layer-shadcn-ui/.playground/.storybook/**'
+      - 'packages/nuxt-layer-effect/.playground/.storybook/**'
       - 'pnpm-lock.yaml'
       - '.github/workflows/deploy-storybook.yml'
   workflow_dispatch:
