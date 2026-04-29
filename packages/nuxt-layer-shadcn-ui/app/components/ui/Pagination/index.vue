@@ -125,7 +125,10 @@ const pageSizeMenuItems = computed<DropdownItem[]>(() =>
         :page="page"
         :siblingCount="siblingCount"
         showEdges
-        class="mx-0 w-auto"
+        class="
+          mx-0 w-auto
+          [&_button]:cursor-pointer
+        "
         @update:page="emit('update:page', $event)"
       >
         <PaginationContent v-slot="{ items }">

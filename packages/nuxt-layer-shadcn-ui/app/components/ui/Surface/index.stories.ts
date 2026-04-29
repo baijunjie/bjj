@@ -11,10 +11,14 @@ const meta = {
   argTypes: {
     color: { control: 'select', options: colors },
     variant: { control: 'select', options: variants },
+    active: { control: 'boolean' },
+    selectable: { control: 'boolean' },
   },
   args: {
     color: 'default',
     variant: 'soft',
+    active: false,
+    selectable: false,
   },
   render: args => ({
     components: { Surface },
@@ -101,26 +105,53 @@ export const VariantColorMatrix: Story = {
     <div v-for="v in variants" :key="v">
       <div class="mb-2 text-sm text-muted-foreground">{{ v }}</div>
       <div class="grid grid-cols-2 gap-3 md:grid-cols-3">
-        <Surface v-for="c in colors" :key="c" :variant="v" :color="c" class="p-4">
+        <Surface
+          v-for="c in colors"
+          :key="c"
+          :variant="v"
+          :color="c"
+          selectable
+          :active="selected === keyFor(v, c)"
+          class="p-4"
+          @click="selected = keyFor(v, c)"
+        >
           <strong>{{ c }}</strong> surface
         </Surface>
       </div>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const selected = ref('')
+const keyFor = (v: string, c: string) => \`\${v}:\${c}\`
+</script>
 `.trim(),
       },
     },
   },
   render: () => ({
     components: { Surface },
-    setup: () => ({ colors, variants }),
+    setup () {
+      const selected = ref('')
+      const keyFor = (v: string, c: string) => `${v}:${c}`
+      return { colors, variants, selected, keyFor }
+    },
     template: `
       <div class="space-y-6">
         <div v-for="v in variants" :key="v">
           <div class="mb-2 text-sm text-muted-foreground">{{ v }}</div>
           <div class="grid grid-cols-2 gap-3 md:grid-cols-3">
-            <Surface v-for="c in colors" :key="c" :variant="v" :color="c" class="p-4">
+            <Surface
+              v-for="c in colors"
+              :key="c"
+              :variant="v"
+              :color="c"
+              selectable
+              :active="selected === keyFor(v, c)"
+              class="p-4"
+              @click="selected = keyFor(v, c)"
+            >
               <strong>{{ c }}</strong> surface
             </Surface>
           </div>
