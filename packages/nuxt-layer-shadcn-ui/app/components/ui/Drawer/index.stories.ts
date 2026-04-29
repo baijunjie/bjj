@@ -151,28 +151,50 @@ export const Sides: Story = {
   }),
 }
 
+export const WithTrigger: Story = {
+  parameters: noControls,
+  render: () => ({
+    components: { Drawer, Button },
+    template: `
+      <Drawer title="Drawer with Trigger">
+        <template #trigger>
+          <Button>Open Drawer</Button>
+        </template>
+        <p>The trigger slot lets the consumer place the open button directly inside the Drawer, without managing visible state.</p>
+      </Drawer>
+    `,
+  }),
+}
+
 export const EventHandling: Story = {
   parameters: noControls,
   render: () => ({
     components: { Drawer, Button },
     setup () {
       const visible = ref(false)
-      return { visible }
+      const log = ref<string[]>([])
+      const record = (name: string) => log.value.unshift(`${new Date().toLocaleTimeString()} — ${name}`)
+      return { visible, log, record }
     },
     template: `
-      <div>
+      <div class="space-y-3">
         <Button @click="visible = true">Open Drawer</Button>
+        <ul class="text-sm rounded-md border p-3 space-y-1 max-h-40 overflow-auto">
+          <li v-if="!log.length" class="text-muted-foreground">Open the drawer and trigger any action to see events log here.</li>
+          <li v-for="(line, i) in log" :key="i">{{ line }}</li>
+        </ul>
         <Drawer
           v-model:visible="visible"
           title="Event Demo"
-          description="Open the Actions panel to see emitted events."
+          description="Each emitted event will be appended to the log above."
           showCancel
           confirmText="Confirm"
-          @open="() => {}"
-          @close="() => {}"
-          @closed="() => {}"
-          @confirm="() => {}"
-          @cancel="() => {}"
+          @open="record('open')"
+          @close="record('close')"
+          @closed="record('closed')"
+          @confirm="record('confirm')"
+          @cancel="record('cancel')"
+          @update:visible="v => record(\`update:visible(\${v})\`)"
         >
           <p>Click Confirm, Cancel, or the close button to see events fire.</p>
         </Drawer>

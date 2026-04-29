@@ -100,19 +100,6 @@ export const HoverTrigger: Story = {
   }),
 }
 
-export const ClickTrigger: Story = {
-  parameters: noControls,
-  render: () => ({
-    components: { Dropdown, Button },
-    setup: () => ({ basicMenus }),
-    template: `
-      <Dropdown :menus="basicMenus" trigger="click">
-        <Button variant="outline">Click me</Button>
-      </Dropdown>
-    `,
-  }),
-}
-
 export const WithDisabledItems: Story = {
   parameters: noControls,
   render: () => ({

@@ -1,3 +1,4 @@
+import type { DropdownMenuContentProps } from 'reka-ui'
 import type { Component } from 'vue'
 
 export type DropdownItemColor = 'default' | 'primary' | 'success' | 'info' | 'help' | 'warn' | 'danger'
@@ -71,17 +72,11 @@ export type DropdownItem
     | DropdownCustomActionItem
     | DropdownCustomLabelItem
 
-export interface DropdownProps {
+export interface DropdownProps extends /* @vue-ignore */ DropdownMenuContentProps {
   /** Menu items to display in the dropdown (not required when using popup slot) */
   menus?: DropdownItem[]
-  /** Trigger mode for showing the dropdown */
+  /** Trigger mode for showing the dropdown. Defaults to 'hover'. */
   trigger?: 'click' | 'hover'
-  /** Preferred side of the trigger to render against. */
-  side?: 'top' | 'bottom' | 'left' | 'right'
-  /** Alignment against the trigger. */
-  align?: 'start' | 'center' | 'end'
-  /** Distance in pixels from the trigger. */
-  sideOffset?: number
   /** Extra class for the dropdown content container. */
   class?: ClassValue
 }

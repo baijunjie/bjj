@@ -47,12 +47,11 @@ const actionColorVariants = cva('', {
   defaultVariants: { color: 'default' },
 })
 
+defineOptions({ inheritAttrs: false })
+
 const props = withDefaults(defineProps<DropdownProps>(), {
   menus: () => [],
   trigger: 'hover',
-  side: undefined,
-  align: undefined,
-  sideOffset: undefined,
   class: undefined,
 })
 
@@ -138,9 +137,7 @@ onBeforeUnmount(() => {
       <slot />
     </DropdownMenuTrigger>
     <DropdownMenuContent
-      :side="side"
-      :align="align"
-      :sideOffset="sideOffset"
+      v-bind="$attrs"
       :class="props.class"
       @mouseenter="handleMenuEnter"
       @mouseleave="handleMenuLeave"
@@ -192,7 +189,7 @@ onBeforeUnmount(() => {
             <Icon
               v-if="item.active"
               name="check"
-              class="ml-auto size-4"
+              class="size-4 ml-auto"
             />
           </DropdownMenuItem>
           <!-- Built-in: action (default) -->
@@ -208,7 +205,7 @@ onBeforeUnmount(() => {
                 unstyled
                 :href="item.href"
                 :target="item.target"
-                class="flex w-full items-center gap-2"
+                class="gap-2 flex w-full items-center"
                 @click="handleItemAction(item, $event)"
               >
                 <Icon

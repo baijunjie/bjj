@@ -7,6 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from '../../shadcn/dialog'
 import type { ModalProps } from './types'
 
@@ -42,28 +43,32 @@ const resolvedCancelText = computed(
   () => props.cancelText || t('common.actions.cancel'),
 )
 
-const dialogOpen = computed({
-  get: () => props.visible ?? false,
-  set: (value: boolean) => {
-    if (!value && props.visible && !props.loading) {
-      onCancel()
-    }
-  },
+const dialogOpen = ref(props.visible ?? false)
+
+watch(() => props.visible, value => {
+  if (value !== undefined) dialogOpen.value = value
 })
 
-watch(() => props.visible, visible => {
-  if (visible) emit('open')
+watch(dialogOpen, value => {
+  emit('update:visible', value)
+  if (value) emit('open')
   else emit('close')
 })
 
+function onOpenUpdate (value: boolean) {
+  if (!value && props.loading) return
+  if (value) dialogOpen.value = true
+  else onCancel()
+}
+
 function onConfirm () {
   emit('confirm')
-  emit('update:visible', false)
+  dialogOpen.value = false
 }
 
 function onCancel () {
   emit('cancel')
-  emit('update:visible', false)
+  dialogOpen.value = false
 }
 
 function onPointerDownOutside (event: Event) {
@@ -80,7 +85,17 @@ const contentClass = computed(() =>
 </script>
 
 <template>
-  <Dialog v-model:open="dialogOpen">
+  <Dialog
+    :open="dialogOpen"
+    @update:open="onOpenUpdate"
+  >
+    <DialogTrigger
+      v-if="$slots.trigger"
+      asChild
+    >
+      <slot name="trigger" />
+    </DialogTrigger>
+
     <DialogContent
       :class="contentClass"
       :showCloseButton="false"

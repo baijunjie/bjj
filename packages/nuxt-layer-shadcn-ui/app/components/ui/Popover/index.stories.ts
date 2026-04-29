@@ -6,10 +6,23 @@ import Popover from './index.vue'
 const meta = {
   title: 'UI/Popover',
   component: Popover,
-  render: () => ({
+  argTypes: {
+    trigger: { control: 'inline-radio', options: [ 'click', 'hover' ]},
+    side: { control: 'select', options: [ 'top', 'bottom', 'left', 'right' ]},
+    align: { control: 'select', options: [ 'start', 'center', 'end' ]},
+    sideOffset: { control: 'number' },
+  },
+  args: {
+    trigger: 'click',
+    side: undefined,
+    align: undefined,
+    sideOffset: undefined,
+  },
+  render: args => ({
     components: { Popover, Button },
+    setup: () => ({ args }),
     template: `
-      <Popover>
+      <Popover v-bind="args">
         <template #trigger>
           <Button variant="outline">Open Popover</Button>
         </template>
@@ -28,6 +41,24 @@ type Story = StoryObj<typeof meta>
 const noControls = { controls: { disable: true }} satisfies Story['parameters']
 
 export const Default: Story = {}
+
+export const HoverTrigger: Story = {
+  parameters: noControls,
+  render: () => ({
+    components: { Popover, Button },
+    template: `
+      <Popover trigger="hover">
+        <template #trigger>
+          <Button variant="outline">Hover me</Button>
+        </template>
+        <div class="space-y-2">
+          <h4 class="font-medium">Hovering opens it</h4>
+          <p class="text-sm text-muted-foreground">Move the cursor away to close.</p>
+        </div>
+      </Popover>
+    `,
+  }),
+}
 
 export const WithForm: Story = {
   parameters: noControls,

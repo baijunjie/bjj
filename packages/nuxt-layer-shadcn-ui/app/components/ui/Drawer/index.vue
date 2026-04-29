@@ -7,6 +7,7 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
+  SheetTrigger,
 } from '../../shadcn/sheet'
 import type { DrawerProps } from './types'
 
@@ -41,28 +42,32 @@ const resolvedCancelText = computed(
   () => props.cancelText || t('common.actions.cancel'),
 )
 
-const sheetOpen = computed({
-  get: () => props.visible ?? false,
-  set: (value: boolean) => {
-    if (!value && props.visible && !props.loading) {
-      onCancel()
-    }
-  },
+const sheetOpen = ref(props.visible ?? false)
+
+watch(() => props.visible, value => {
+  if (value !== undefined) sheetOpen.value = value
 })
 
-watch(() => props.visible, visible => {
-  if (visible) emit('open')
+watch(sheetOpen, value => {
+  emit('update:visible', value)
+  if (value) emit('open')
   else emit('close')
 })
 
+function onOpenUpdate (value: boolean) {
+  if (!value && props.loading) return
+  if (value) sheetOpen.value = true
+  else onCancel()
+}
+
 function onConfirm () {
   emit('confirm')
-  emit('update:visible', false)
+  sheetOpen.value = false
 }
 
 function onCancel () {
   emit('cancel')
-  emit('update:visible', false)
+  sheetOpen.value = false
 }
 
 function onPointerDownOutside (event: Event) {
@@ -75,7 +80,17 @@ const contentClass = computed(() =>
 </script>
 
 <template>
-  <Sheet v-model:open="sheetOpen">
+  <Sheet
+    :open="sheetOpen"
+    @update:open="onOpenUpdate"
+  >
+    <SheetTrigger
+      v-if="$slots.trigger"
+      asChild
+    >
+      <slot name="trigger" />
+    </SheetTrigger>
+
     <SheetContent
       :side="side"
       :class="contentClass"

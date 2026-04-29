@@ -156,28 +156,50 @@ export const Types: Story = {
   }),
 }
 
+export const WithTrigger: Story = {
+  parameters: noControls,
+  render: () => ({
+    components: { Modal, Button },
+    template: `
+      <Modal title="Modal with Trigger">
+        <template #trigger>
+          <Button>Open Modal</Button>
+        </template>
+        <p>The trigger slot lets the consumer place the open button directly inside the Modal, without managing visible state.</p>
+      </Modal>
+    `,
+  }),
+}
+
 export const EventHandling: Story = {
   parameters: noControls,
   render: () => ({
     components: { Modal, Button },
     setup () {
       const visible = ref(false)
-      return { visible }
+      const log = ref<string[]>([])
+      const record = (name: string) => log.value.unshift(`${new Date().toLocaleTimeString()} — ${name}`)
+      return { visible, log, record }
     },
     template: `
-      <div>
+      <div class="space-y-3">
         <Button @click="visible = true">Open Modal</Button>
+        <ul class="text-sm rounded-md border p-3 space-y-1 max-h-40 overflow-auto">
+          <li v-if="!log.length" class="text-muted-foreground">Open the modal and trigger any action to see events log here.</li>
+          <li v-for="(line, i) in log" :key="i">{{ line }}</li>
+        </ul>
         <Modal
           v-model:visible="visible"
           title="Event Demo"
-          description="Open the Actions panel to see emitted events."
+          description="Each emitted event will be appended to the log above."
           showCancel
           confirmText="Confirm"
-          @open="() => {}"
-          @close="() => {}"
-          @closed="() => {}"
-          @confirm="() => {}"
-          @cancel="() => {}"
+          @open="record('open')"
+          @close="record('close')"
+          @closed="record('closed')"
+          @confirm="record('confirm')"
+          @cancel="record('cancel')"
+          @update:visible="v => record(\`update:visible(\${v})\`)"
         >
           <p>Click Confirm, Cancel, or the close button to see events fire.</p>
         </Modal>
