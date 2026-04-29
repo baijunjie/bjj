@@ -4,7 +4,7 @@ export type SurfaceVariant = 'solid' | 'soft' | 'bordered' | 'flat'
 export interface SurfaceProps {
   color?: SurfaceColor
   variant?: SurfaceVariant
-  selectable?: boolean
+  clickable?: boolean
   active?: boolean
   class?: ClassValue
 }

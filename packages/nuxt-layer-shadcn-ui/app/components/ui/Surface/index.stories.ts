@@ -12,13 +12,13 @@ const meta = {
     color: { control: 'select', options: colors },
     variant: { control: 'select', options: variants },
     active: { control: 'boolean' },
-    selectable: { control: 'boolean' },
+    clickable: { control: 'boolean' },
   },
   args: {
     color: 'default',
     variant: 'soft',
     active: false,
-    selectable: false,
+    clickable: false,
   },
   render: args => ({
     components: { Surface },
@@ -110,7 +110,7 @@ export const VariantColorMatrix: Story = {
           :key="c"
           :variant="v"
           :color="c"
-          selectable
+          clickable
           :active="selected === keyFor(v, c)"
           class="p-4"
           @click="selected = keyFor(v, c)"
@@ -147,7 +147,7 @@ const keyFor = (v: string, c: string) => \`\${v}:\${c}\`
               :key="c"
               :variant="v"
               :color="c"
-              selectable
+              clickable
               :active="selected === keyFor(v, c)"
               class="p-4"
               @click="selected = keyFor(v, c)"
