@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import type { DatePickerType } from './types'
+import Button from '../Button/index.vue'
+import Modal from '../Modal/index.vue'
 import DatePicker from './index.vue'
 
 const types: DatePickerType[] = [ 'date', 'month', 'year' ]
@@ -216,6 +218,43 @@ export const Readonly: Story = {
     template: `
       <div class="max-w-xs">
         <DatePicker v-model="date" readonly />
+      </div>
+    `,
+  }),
+}
+
+export const InModal: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      description: {
+        story: 'The calendar menu is teleported to `<body>` and overrides `pointer-events: auto` to bypass the body pointer-events lock applied by reka-ui modal layers, so it stays interactive inside Modal / Dialog / Sheet / Drawer.',
+      },
+      source: {
+        code: `
+<template>
+  <Modal v-model:visible="visible" title="Pick a date">
+    <DatePicker v-model="date" />
+  </Modal>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { DatePicker, Modal, Button },
+    setup () {
+      const visible = ref(false)
+      const date = ref<Date | string | null>(null)
+      return { visible, date }
+    },
+    template: `
+      <div>
+        <Button @click="visible = true">Open Modal</Button>
+        <Modal v-model:visible="visible" title="Pick a date" :hideFooter="true">
+          <DatePicker v-model="date" />
+          <div class="mt-4 text-sm text-muted-foreground">Value: {{ date }}</div>
+        </Modal>
       </div>
     `,
   }),
