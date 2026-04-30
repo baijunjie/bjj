@@ -46,6 +46,9 @@
         "startPlaceholder": "Дата начала",
         "to": "–"
       },
+      "Dropdown": {
+        "empty": "Нет элементов"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} из {total}"
       },

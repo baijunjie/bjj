@@ -46,6 +46,9 @@
         "startPlaceholder": "Data di inizio",
         "to": "–"
       },
+      "Dropdown": {
+        "empty": "Nessun elemento"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} di {total}"
       },

@@ -46,6 +46,9 @@
         "startPlaceholder": "Ngày bắt đầu",
         "to": "–"
       },
+      "Dropdown": {
+        "empty": "Không có mục"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} của {total}"
       },

@@ -23,7 +23,7 @@ const accountMenus: DropdownItem[] = [
 ]
 
 const linkMenus: DropdownItem[] = [
-  { label: 'Documentation', icon: 'book-open', href: 'https://example.com/docs', target: '_blank' },
+  { label: 'Documentation', icon: 'book-open', href: 'https://example.com/docs', target: '_blank', active: true },
   { label: 'Support', icon: 'life-buoy', href: 'https://example.com/support', target: '_blank' },
 ]
 
@@ -56,6 +56,53 @@ const customMenus: DropdownItem[] = [
   },
 ]
 
+const iconColorMenus: DropdownItem[] = [
+  { label: 'Default item', icon: 'circle' },
+  { label: 'Primary icon only', icon: 'star', iconColor: 'primary' },
+  { label: 'Success icon only', icon: 'circle-check', iconColor: 'success' },
+  { label: 'Warn icon only', icon: 'triangle-alert', iconColor: 'warn' },
+  { label: 'Danger icon only', icon: 'shield-alert', iconColor: 'danger' },
+  { type: 'separator' },
+  { label: 'Both danger', icon: 'trash-2', color: 'danger', iconColor: 'danger' },
+  { label: 'Danger label, info icon', icon: 'info', color: 'danger', iconColor: 'info' },
+]
+
+const subMenus: DropdownItem[] = [
+  { label: 'New File', icon: 'file-plus' },
+  { label: 'New Folder', icon: 'folder-plus' },
+  { type: 'separator' },
+  {
+    label: 'Share',
+    icon: 'share-2',
+    subMenus: [
+      { label: 'Email link', icon: 'mail' },
+      { label: 'Copy link', icon: 'link' },
+      { type: 'separator' },
+      {
+        label: 'Social',
+        icon: 'globe',
+        subMenus: [
+          { label: 'Twitter', icon: 'twitter' },
+          { label: 'Facebook', icon: 'facebook' },
+          { label: 'LinkedIn', icon: 'linkedin' },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Move to',
+    icon: 'folder-symlink',
+    active: true,
+    subMenus: [
+      { label: 'Documents', icon: 'folder' },
+      { label: 'Downloads', icon: 'folder', active: true },
+      { label: 'Trash', icon: 'trash-2', color: 'danger', iconColor: 'danger' },
+    ],
+  },
+  { type: 'separator' },
+  { label: 'Delete', icon: 'trash-2', color: 'danger' },
+]
+
 const meta = {
   title: 'UI/Dropdown',
   component: Dropdown,
@@ -65,6 +112,7 @@ const meta = {
     side: { control: 'select', options: sides },
     align: { control: 'select', options: aligns },
     sideOffset: { control: 'number' },
+    minWidth: { control: 'text' },
   },
   args: {
     menus: basicMenus,
@@ -72,6 +120,7 @@ const meta = {
     side: undefined,
     align: undefined,
     sideOffset: undefined,
+    minWidth: undefined,
   },
   render: args => ({
     components: { Dropdown, Button },
@@ -119,6 +168,47 @@ export const WithGroups: Story = {
   parameters: noControls,
   args: {
     menus: groupedMenus,
+    trigger: 'click',
+  },
+}
+
+export const WithIconColor: Story = {
+  parameters: noControls,
+  args: {
+    menus: iconColorMenus,
+    trigger: 'click',
+  },
+}
+
+export const WithSubMenus: Story = {
+  parameters: noControls,
+  args: {
+    menus: subMenus,
+    trigger: 'click',
+  },
+}
+
+export const WithSubMenusHover: Story = {
+  parameters: noControls,
+  args: {
+    menus: subMenus,
+    trigger: 'hover',
+  },
+}
+
+export const WithMinWidth: Story = {
+  parameters: noControls,
+  args: {
+    menus: subMenus,
+    trigger: 'click',
+    minWidth: 240,
+  },
+}
+
+export const EmptyMenus: Story = {
+  parameters: noControls,
+  args: {
+    menus: [],
     trigger: 'click',
   },
 }

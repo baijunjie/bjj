@@ -46,6 +46,9 @@
         "startPlaceholder": "開始日期",
         "to": "–"
       },
+      "Dropdown": {
+        "empty": "沒有項目"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} 共 {total}"
       },

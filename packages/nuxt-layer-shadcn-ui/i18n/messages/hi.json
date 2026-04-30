@@ -46,6 +46,9 @@
         "startPlaceholder": "प्रारंभ तारीख",
         "to": "–"
       },
+      "Dropdown": {
+        "empty": "कोई आइटम नहीं"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} में से {total}"
       },

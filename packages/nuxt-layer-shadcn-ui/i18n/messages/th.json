@@ -46,6 +46,9 @@
         "startPlaceholder": "วันที่เริ่มต้น",
         "to": "–"
       },
+      "Dropdown": {
+        "empty": "ไม่มีรายการ"
+      },
       "Pagination": {
         "pageReport": "รายการที่ {first}–{last} จากทั้งหมด {total}"
       },

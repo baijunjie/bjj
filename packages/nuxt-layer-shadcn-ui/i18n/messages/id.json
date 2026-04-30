@@ -46,6 +46,9 @@
         "startPlaceholder": "Tanggal awal",
         "to": "–"
       },
+      "Dropdown": {
+        "empty": "Tidak ada item"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} dari {total}"
       },

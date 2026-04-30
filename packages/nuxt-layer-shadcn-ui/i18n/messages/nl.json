@@ -46,6 +46,9 @@
         "startPlaceholder": "Startdatum",
         "to": "–"
       },
+      "Dropdown": {
+        "empty": "Geen items"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} van {total}"
       },

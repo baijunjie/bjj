@@ -46,6 +46,9 @@
         "startPlaceholder": "시작 날짜",
         "to": "–"
       },
+      "Dropdown": {
+        "empty": "항목 없음"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} / {total}"
       },

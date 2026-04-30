@@ -52,9 +52,15 @@ export default defineNuxtConfig({
   css: [ join(currentDir, 'app/assets/styles/globals.css') ],
 
   components: [
-    // Layer's own components (absolute paths required)
-    { path: join(currentDir, 'app/components/ui'), pathPrefix: false, extensions: [ 'vue' ]},
-    { path: join(currentDir, 'app/components'), pathPrefix: true, ignore: [ 'shadcn/**' ], extensions: [ 'vue' ]},
+    // Auto-import only first-level UI components: `Foo.vue` or `Foo/index.vue`.
+    // Files nested inside a component folder (e.g. `Dropdown/MenuItems.vue`)
+    // are intentionally skipped — those should be imported explicitly by their
+    // owning component. shadcn/* is excluded by the pattern (no nested scan).
+    {
+      path: join(currentDir, 'app/components/ui'),
+      pathPrefix: true,
+      pattern: '{*.vue,*/index.vue}',
+    },
   ],
 
   imports: {

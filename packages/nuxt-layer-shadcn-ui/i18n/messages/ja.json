@@ -46,6 +46,9 @@
         "startPlaceholder": "開始日",
         "to": "〜"
       },
+      "Dropdown": {
+        "empty": "アイテムなし"
+      },
       "Pagination": {
         "pageReport": "{first}〜{last}件 / 全{total}件"
       },

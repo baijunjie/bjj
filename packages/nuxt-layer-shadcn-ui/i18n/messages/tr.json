@@ -46,6 +46,9 @@
         "startPlaceholder": "Başlangıç tarihi",
         "to": "–"
       },
+      "Dropdown": {
+        "empty": "Öğe yok"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} / {total}"
       },

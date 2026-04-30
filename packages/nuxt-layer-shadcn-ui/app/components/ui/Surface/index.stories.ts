@@ -98,6 +98,9 @@ export const VariantColorMatrix: Story = {
   parameters: {
     ...noControls,
     docs: {
+      description: {
+        story: 'Surfaces in this matrix are clickable — click any cell to toggle its active state.',
+      },
       source: {
         code: `
 <template>

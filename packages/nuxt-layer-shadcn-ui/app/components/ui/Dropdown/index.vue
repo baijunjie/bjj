@@ -2,50 +2,10 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../../shadcn/dropdown-menu'
-import { cva } from 'class-variance-authority'
-import type {
-  DropdownActionItem,
-  DropdownCustomActionItem,
-  DropdownProps,
-} from './types'
-
-const actionColorVariants = cva('', {
-  variants: {
-    color: {
-      default: '',
-      primary: `
-        text-primary
-        focus:bg-primary/10 focus:text-primary
-      `,
-      success: `
-        text-success
-        focus:bg-success/10 focus:text-success
-      `,
-      info: `
-        text-info
-        focus:bg-info/10 focus:text-info
-      `,
-      help: `
-        text-help
-        focus:bg-help/10 focus:text-help
-      `,
-      warn: `
-        text-warn
-        focus:bg-warn/10 focus:text-warn
-      `,
-      danger: `
-        text-danger
-        focus:bg-danger/10 focus:text-danger
-      `,
-    },
-  },
-  defaultVariants: { color: 'default' },
-})
+import MenuItems from './MenuItems.vue'
+import type { DropdownProps } from './types'
 
 defineOptions({ inheritAttrs: false })
 
@@ -53,14 +13,23 @@ const props = withDefaults(defineProps<DropdownProps>(), {
   menus: () => [],
   trigger: 'hover',
   class: undefined,
+  minWidth: undefined,
 })
 
-defineSlots<{
-  default?: () => unknown
-  popup?: (props: { hide: () => void }) => unknown
-  [key: string]: ((props?: any) => unknown) | undefined
+const contentStyle = computed<{ minWidth?: string } | undefined>(() => {
+  if (props.minWidth == null) return undefined
+  const value = typeof props.minWidth === 'number' ? `${props.minWidth}px` : props.minWidth
+  return { minWidth: value }
+})
+
+const slots = defineSlots<{
+  default?: () => any
+  popup?: (props: { hide: () => void }) => any
+  empty?: () => any
+  [key: string]: ((props?: any) => any) | undefined
 }>()
 
+const T = useTranslations('components.ui.Dropdown')
 const { isMobile } = useDevice()
 
 // Force click trigger on mobile devices for better touch experience
@@ -107,17 +76,11 @@ const handleMenuLeave = () => {
   }
 }
 
-const handleItemAction = (
-  item: DropdownActionItem | DropdownCustomActionItem,
-  event?: Event,
-) => {
-  if (item.disabled) {
-    event?.preventDefault()
-    return
-  }
-  item.command?.()
-  hide()
-}
+provide(dropdownContextKey, {
+  hide,
+  slots,
+  contentStyle,
+})
 
 onBeforeUnmount(() => {
   clearHideTimeout()
@@ -139,6 +102,7 @@ onBeforeUnmount(() => {
     <DropdownMenuContent
       v-bind="$attrs"
       :class="props.class"
+      :style="contentStyle"
       @mouseenter="handleMenuEnter"
       @mouseleave="handleMenuLeave"
     >
@@ -151,109 +115,29 @@ onBeforeUnmount(() => {
       </template>
 
       <!-- Default menu dropdown -->
-      <template v-else>
-        <template
-          v-for="(item, index) in menus"
-          :key="index"
+      <MenuItems
+        v-else-if="menus.length"
+        :menus="menus"
+      />
+
+      <!-- Empty placeholder. Default content is wrapped; #empty slot is not. -->
+      <slot
+        v-else
+        name="empty"
+      >
+        <div
+          class="
+            gap-2 px-2 py-4 text-sm text-muted-foreground flex flex-col
+            items-center
+          "
         >
-          <!-- Built-in: separator -->
-          <DropdownMenuSeparator v-if="item.type === 'separator'" />
-          <!-- Built-in: group label -->
-          <DropdownMenuLabel
-            v-else-if="item.type === 'label'"
-            class="text-xs font-normal text-muted-foreground"
-          >
-            {{ item.label }}
-          </DropdownMenuLabel>
-          <!-- Custom label: content via named slot -->
-          <DropdownMenuLabel
-            v-else-if="item.type === 'custom-label'"
-            :class="cn('p-0 font-normal', item.class)"
-          >
-            <slot
-              :name="item.slot"
-              :item="item"
-            />
-          </DropdownMenuLabel>
-          <!-- Custom action: content via named slot -->
-          <DropdownMenuItem
-            v-else-if="item.type === 'custom-action'"
-            :disabled="item.disabled"
-            :class="cn(actionColorVariants({ color: item.color }), item.class)"
-            @click="handleItemAction(item, $event)"
-          >
-            <slot
-              :name="item.slot"
-              :item="item"
-            />
-            <Icon
-              v-if="item.active"
-              name="check"
-              class="size-4 ml-auto"
-            />
-          </DropdownMenuItem>
-          <!-- Built-in: action (default) -->
-          <DropdownMenuItem
-            v-else
-            :disabled="item.disabled"
-            :asChild="!!item.href"
-            :class="cn(actionColorVariants({ color: item.color }), item.class)"
-            @click="!item.href && handleItemAction(item, $event)"
-          >
-            <template v-if="item.href">
-              <WebLink
-                unstyled
-                :href="item.href"
-                :target="item.target"
-                class="gap-2 flex w-full items-center"
-                @click="handleItemAction(item, $event)"
-              >
-                <Icon
-                  v-if="typeof item.icon === 'string'"
-                  :name="item.icon"
-                />
-                <component
-                  :is="item.icon"
-                  v-else-if="item.icon"
-                  class="size-4"
-                />
-                <span class="flex-1">
-                  {{ item.label }}
-                </span>
-                <Icon
-                  v-if="isUrl(item.href)"
-                  name="external-link"
-                  class="size-3.5 text-muted-foreground"
-                />
-                <Icon
-                  v-if="item.active"
-                  name="check"
-                  class="size-4"
-                />
-              </WebLink>
-            </template>
-            <template v-else>
-              <Icon
-                v-if="typeof item.icon === 'string'"
-                :name="item.icon"
-              />
-              <component
-                :is="item.icon"
-                v-else-if="item.icon"
-                class="size-4"
-              />
-              <span class="flex-1">
-                {{ item.label }}
-              </span>
-              <Icon
-                v-if="item.active"
-                name="check"
-                class="size-4"
-              />
-            </template>
-          </DropdownMenuItem>
-        </template>
-      </template>
+          <Icon
+            name="inbox"
+            class="size-6"
+          />
+          <span>{{ T('empty') }}</span>
+        </div>
+      </slot>
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

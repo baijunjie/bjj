@@ -46,6 +46,9 @@
         "startPlaceholder": "تاريخ البداية",
         "to": "–"
       },
+      "Dropdown": {
+        "empty": "لا توجد عناصر"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} من {total}"
       },
