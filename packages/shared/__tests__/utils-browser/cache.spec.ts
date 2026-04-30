@@ -34,7 +34,7 @@ describe('Cache', () => {
   it('should delete keys', () => {
     cache.set('test', 123)
     cache.set('test2', '123')
-    cache.del('test2')
+    cache.remove('test2')
     expect(cache.get('test2')).toBe(undefined)
   })
 
@@ -69,7 +69,7 @@ describe('Cache', () => {
     vi.useRealTimers()
   })
 
-  it('should not expire when validTime is not set', () => {
+  it('should not expire when ttl is not set', () => {
     cache.set('permanent', 'value')
 
     vi.useFakeTimers()

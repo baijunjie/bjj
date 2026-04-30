@@ -2,9 +2,9 @@
  * Persistence cache (localStorage by default)
  */
 
-interface CacheData<T = unknown> {
+interface CacheEntry<T = unknown> {
   value: T
-  expire: number | null
+  expiresAt: number | null
 }
 
 export interface CacheOptions {
@@ -24,14 +24,10 @@ export class Cache {
   }
 
   clear (): void {
-    const keysToRemove = this.keys()
-    for (const key of keysToRemove) {
+    const keys = this.keys()
+    for (const key of keys) {
       this.storage.removeItem(this.prefix + key)
     }
-  }
-
-  del (key: string): void {
-    this.storage.removeItem(this.prefix + key)
   }
 
   get<T = unknown> (key: string, defaultValue?: T): T | undefined {
@@ -40,19 +36,19 @@ export class Cache {
       return defaultValue
     }
 
-    let data: CacheData<T> | null
+    let entry: CacheEntry<T> | null
     try {
-      data = JSON.parse(this.storage.getItem(this.prefix + key) ?? 'null')
+      entry = JSON.parse(this.storage.getItem(this.prefix + key) ?? 'null')
     } catch {
       return defaultValue
     }
 
-    data = overdueValidate(data)
+    entry = pickFresh(entry)
 
-    if (data) {
-      return data.value
+    if (entry) {
+      return entry.value
     } else {
-      this.del(key)
+      this.remove(key)
       return defaultValue
     }
   }
@@ -60,8 +56,8 @@ export class Cache {
   has (key: string): boolean {
     if (!key) return false
     try {
-      const data: CacheData | null = JSON.parse(this.storage.getItem(this.prefix + key) ?? 'null')
-      return overdueValidate(data) !== null
+      const entry: CacheEntry | null = JSON.parse(this.storage.getItem(this.prefix + key) ?? 'null')
+      return pickFresh(entry) !== null
     } catch {
       return false
     }
@@ -79,7 +75,11 @@ export class Cache {
     return result
   }
 
-  set<T = unknown> (key: string, value: T, validTime?: number | null): void {
+  remove (key: string): void {
+    this.storage.removeItem(this.prefix + key)
+  }
+
+  set<T = unknown> (key: string, value: T, ttl?: number | null): void {
     if (!key) {
       console.error('The parameter key cannot be empty.')
       return
@@ -92,21 +92,21 @@ export class Cache {
 
     const data = JSON.stringify({
       value,
-      expire: validTime ? Date.now() + validTime : null,
+      expiresAt: ttl ? Date.now() + ttl : null,
     })
 
     try {
       this.storage.setItem(this.prefix + key, data)
     } catch {
-      this.del(key)
+      this.remove(key)
       this.storage.setItem(this.prefix + key, data)
     }
   }
 }
 
-function overdueValidate<T> (data: CacheData<T> | null): CacheData<T> | null {
-  if (data && (!data.expire || data.expire > Date.now())) {
-    return data
+function pickFresh<T> (entry: CacheEntry<T> | null): CacheEntry<T> | null {
+  if (entry && (!entry.expiresAt || entry.expiresAt > Date.now())) {
+    return entry
   }
   return null
 }
