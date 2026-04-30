@@ -110,8 +110,12 @@ describe('useCountdown', () => {
 
   it('should expose readonly remaining', () => {
     const { result } = runInScope(() => useCountdown({ duration: 5 }))
+    // Vue emits a runtime warning when writing to a readonly ref;
+    // silence it so the test output stays clean.
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     // @ts-expect-error remaining is readonly
     result.remaining.value = 99
     expect(result.remaining.value).toBe(0)
+    warnSpy.mockRestore()
   })
 })
