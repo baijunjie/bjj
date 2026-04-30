@@ -4,7 +4,7 @@ import type { DateRangePickerProps, DateRangePickerValue } from './types'
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<DateRangePickerProps>(), {
-  modelValue: () => ({ start: null, end: null }),
+  modelValue: () => [ null, null ],
   showTime: false,
   disabled: false,
   readonly: false,
@@ -24,19 +24,16 @@ const emit = defineEmits<{
 
 const T = useTranslations('components.ui.DateRangePicker')
 
-const startDate = ref<Date | string | null>(props.modelValue?.start ?? null)
-const endDate = ref<Date | string | null>(props.modelValue?.end ?? null)
+const startDate = ref<Date | string | null>(props.modelValue?.[0] ?? null)
+const endDate = ref<Date | string | null>(props.modelValue?.[1] ?? null)
 
 watch(() => props.modelValue, val => {
-  startDate.value = val?.start ?? null
-  endDate.value = val?.end ?? null
+  startDate.value = val?.[0] ?? null
+  endDate.value = val?.[1] ?? null
 })
 
 function emitRange () {
-  emit('update:modelValue', {
-    start: startDate.value,
-    end: endDate.value,
-  })
+  emit('update:modelValue', [ startDate.value, endDate.value ])
 }
 
 function handleStartUpdate (value: Date | string | null) {
@@ -104,7 +101,7 @@ const endMaxDate = computed(() => {
 </script>
 
 <template>
-  <div :class="cn('flex items-center gap-2', props.class)">
+  <div :class="cn('gap-2 flex items-center', props.class)">
     <DatePicker
       :modelValue="startDate"
       :showTime="showTime"
@@ -118,7 +115,7 @@ const endMaxDate = computed(() => {
       v-bind="$attrs"
       @update:modelValue="handleStartUpdate"
     />
-    <span class="shrink-0 text-muted-foreground">
+    <span class="text-muted-foreground shrink-0">
       {{ T('to') }}
     </span>
     <DatePicker

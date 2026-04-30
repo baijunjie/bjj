@@ -79,6 +79,7 @@ const timeConfig = computed(() => {
     :yearPicker="type === 'year'"
     :autoApply="autoApply"
     :inputAttrs="{ clearable: false }"
+    :teleport="true"
     textInput
   >
     <template #dp-input="{ value, onInput, onEnter, onTab, onClear, onBlur, onFocus, openMenu }">
@@ -98,7 +99,7 @@ const timeConfig = computed(() => {
           <template #prefix>
             <Icon
               name="calendar-days"
-              class="cursor-pointer text-muted-foreground"
+              class="text-muted-foreground cursor-pointer"
               @click="openMenu"
             />
           </template>

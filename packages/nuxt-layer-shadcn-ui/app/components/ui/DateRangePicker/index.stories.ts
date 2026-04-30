@@ -20,7 +20,7 @@ const meta = {
     class: { control: 'text' },
   },
   args: {
-    modelValue: { start: null, end: null },
+    modelValue: [ null, null ],
     showTime: false,
     disabled: false,
     readonly: false,
@@ -36,7 +36,7 @@ const meta = {
   render: args => ({
     components: { DateRangePicker },
     setup () {
-      const range = ref<DateRangePickerValue>({ start: null, end: null })
+      const range = ref<DateRangePickerValue>([ null, null ])
       return { args, range }
     },
     template: `
@@ -67,7 +67,7 @@ export const WithTime: Story = {
   render: () => ({
     components: { DateRangePicker },
     setup () {
-      const withTime = ref<DateRangePickerValue>({ start: null, end: null })
+      const withTime = ref<DateRangePickerValue>([ null, null ])
       return { withTime }
     },
     template: `
@@ -91,7 +91,7 @@ export const MaxSpanDays: Story = {
   render: () => ({
     components: { DateRangePicker },
     setup () {
-      const maxSpan = ref<DateRangePickerValue>({ start: null, end: null })
+      const maxSpan = ref<DateRangePickerValue>([ null, null ])
       return { maxSpan }
     },
     template: `
@@ -115,10 +115,10 @@ export const Preselected: Story = {
   render: () => ({
     components: { DateRangePicker },
     setup () {
-      const preselected = ref<DateRangePickerValue>({
-        start: new Date(2025, 5, 1),
-        end: new Date(2025, 5, 15),
-      })
+      const preselected = ref<DateRangePickerValue>([
+        new Date(2025, 5, 1),
+        new Date(2025, 5, 15),
+      ])
       return { preselected }
     },
     template: `
@@ -142,10 +142,10 @@ export const Disabled: Story = {
   render: () => ({
     components: { DateRangePicker },
     setup () {
-      const range = ref<DateRangePickerValue>({
-        start: new Date(2025, 5, 1),
-        end: new Date(2025, 5, 15),
-      })
+      const range = ref<DateRangePickerValue>([
+        new Date(2025, 5, 1),
+        new Date(2025, 5, 15),
+      ])
       return { range }
     },
     template: `
@@ -168,10 +168,10 @@ export const Readonly: Story = {
   render: () => ({
     components: { DateRangePicker },
     setup () {
-      const range = ref<DateRangePickerValue>({
-        start: new Date(2025, 5, 1),
-        end: new Date(2025, 5, 15),
-      })
+      const range = ref<DateRangePickerValue>([
+        new Date(2025, 5, 1),
+        new Date(2025, 5, 15),
+      ])
       return { range }
     },
     template: `

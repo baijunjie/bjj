@@ -1,9 +1,9 @@
 import type { DatePickerTimeConfig } from '../DatePicker/types'
 
-export interface DateRangePickerValue {
-  start: Date | string | null
-  end: Date | string | null
-}
+export type DateRangePickerValue = [
+  start: Date | string | null,
+  end: Date | string | null,
+]
 
 export interface DateRangePickerProps {
   modelValue?: DateRangePickerValue
