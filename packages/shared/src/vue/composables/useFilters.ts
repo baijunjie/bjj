@@ -183,10 +183,10 @@ function parseValue (
 function serializeValue (value: unknown): string | string[] | undefined {
   if (value == null || value === '') return undefined
   if (Array.isArray(value)) {
-    if (!value.length) return undefined
-    return value.map(v =>
-      v != null && typeof v === 'object' ? JSON.stringify(v) : String(v),
-    )
+    const items = value
+      .filter(v => v != null)
+      .map(v => typeof v === 'object' ? JSON.stringify(v) : String(v))
+    return items.length ? items : undefined
   }
   if (typeof value === 'object') return JSON.stringify(value)
   return String(value)
