@@ -1,48 +1,53 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import type { DateRangePickerValue } from './types'
 import DateRangePicker from './index.vue'
 
 const meta = {
   title: 'UI/DateRangePicker',
   component: DateRangePicker,
   argTypes: {
-    modelValue: { control: 'object' },
+    start: { control: 'date' },
+    end: { control: 'date' },
+    minDate: { control: 'date' },
+    maxDate: { control: 'date' },
     showTime: { control: 'boolean' },
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
     startPlaceholder: { control: 'text' },
     endPlaceholder: { control: 'text' },
-    minDate: { control: 'date' },
-    maxDate: { control: 'date' },
     maxSpanDays: { control: 'number' },
     valueFormat: { control: 'text' },
     autoApply: { control: 'boolean' },
     class: { control: 'text' },
   },
   args: {
-    modelValue: [ null, null ],
+    start: null,
+    end: null,
+    minDate: undefined,
+    maxDate: undefined,
     showTime: false,
     disabled: false,
     readonly: false,
-    startPlaceholder: '',
-    endPlaceholder: '',
-    minDate: undefined,
-    maxDate: undefined,
+    startPlaceholder: undefined,
+    endPlaceholder: undefined,
     maxSpanDays: undefined,
-    valueFormat: '',
-    autoApply: false,
+    valueFormat: undefined,
+    autoApply: true,
     class: '',
   },
   render: args => ({
     components: { DateRangePicker },
     setup () {
-      const range = ref<DateRangePickerValue>([ null, null ])
-      return { args, range }
+      const start = ref<Date | string | null>(args.start ?? null)
+      const end = ref<Date | string | null>(args.end ?? null)
+      return { args, start, end }
     },
     template: `
       <div class="max-w-lg">
-        <DateRangePicker v-model="range" v-bind="args" />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ range }}</div>
+        <DateRangePicker v-bind="args" v-model:start="start" v-model:end="end" />
+        <div class="mt-2 text-sm text-muted-foreground">
+          <div>Start: {{ start }}</div>
+          <div>End: {{ end }}</div>
+        </div>
       </div>
     `,
   }),
@@ -60,20 +65,24 @@ export const WithTime: Story = {
     ...noControls,
     docs: {
       source: {
-        code: '<DateRangePicker v-model="withTime" showTime />',
+        code: '<DateRangePicker v-model:start="start" v-model:end="end" showTime />',
       },
     },
   },
   render: () => ({
     components: { DateRangePicker },
     setup () {
-      const withTime = ref<DateRangePickerValue>([ null, null ])
-      return { withTime }
+      const start = ref<Date | string | null>(null)
+      const end = ref<Date | string | null>(null)
+      return { start, end }
     },
     template: `
       <div class="max-w-lg">
-        <DateRangePicker v-model="withTime" showTime />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ withTime }}</div>
+        <DateRangePicker v-model:start="start" v-model:end="end" showTime />
+        <div class="mt-2 text-sm text-muted-foreground">
+          <div>Start: {{ start }}</div>
+          <div>End: {{ end }}</div>
+        </div>
       </div>
     `,
   }),
@@ -84,20 +93,24 @@ export const MaxSpanDays: Story = {
     ...noControls,
     docs: {
       source: {
-        code: '<DateRangePicker v-model="maxSpan" :maxSpanDays="7" />',
+        code: '<DateRangePicker v-model:start="start" v-model:end="end" :maxSpanDays="7" />',
       },
     },
   },
   render: () => ({
     components: { DateRangePicker },
     setup () {
-      const maxSpan = ref<DateRangePickerValue>([ null, null ])
-      return { maxSpan }
+      const start = ref<Date | string | null>(null)
+      const end = ref<Date | string | null>(null)
+      return { start, end }
     },
     template: `
       <div class="max-w-lg">
-        <DateRangePicker v-model="maxSpan" :maxSpanDays="7" />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ maxSpan }}</div>
+        <DateRangePicker v-model:start="start" v-model:end="end" :maxSpanDays="7" />
+        <div class="mt-2 text-sm text-muted-foreground">
+          <div>Start: {{ start }}</div>
+          <div>End: {{ end }}</div>
+        </div>
       </div>
     `,
   }),
@@ -108,23 +121,24 @@ export const Preselected: Story = {
     ...noControls,
     docs: {
       source: {
-        code: '<DateRangePicker v-model="preselected" />',
+        code: '<DateRangePicker v-model:start="start" v-model:end="end" />',
       },
     },
   },
   render: () => ({
     components: { DateRangePicker },
     setup () {
-      const preselected = ref<DateRangePickerValue>([
-        new Date(2025, 5, 1),
-        new Date(2025, 5, 15),
-      ])
-      return { preselected }
+      const start = ref<Date | string | null>(new Date(2025, 5, 1))
+      const end = ref<Date | string | null>(new Date(2025, 5, 15))
+      return { start, end }
     },
     template: `
       <div class="max-w-lg">
-        <DateRangePicker v-model="preselected" />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ preselected }}</div>
+        <DateRangePicker v-model:start="start" v-model:end="end" />
+        <div class="mt-2 text-sm text-muted-foreground">
+          <div>Start: {{ start }}</div>
+          <div>End: {{ end }}</div>
+        </div>
       </div>
     `,
   }),
@@ -135,22 +149,20 @@ export const Disabled: Story = {
     ...noControls,
     docs: {
       source: {
-        code: '<DateRangePicker v-model="range" disabled />',
+        code: '<DateRangePicker v-model:start="start" v-model:end="end" disabled />',
       },
     },
   },
   render: () => ({
     components: { DateRangePicker },
     setup () {
-      const range = ref<DateRangePickerValue>([
-        new Date(2025, 5, 1),
-        new Date(2025, 5, 15),
-      ])
-      return { range }
+      const start = ref<Date | string | null>(new Date(2025, 5, 1))
+      const end = ref<Date | string | null>(new Date(2025, 5, 15))
+      return { start, end }
     },
     template: `
       <div class="max-w-lg">
-        <DateRangePicker v-model="range" disabled />
+        <DateRangePicker v-model:start="start" v-model:end="end" disabled />
       </div>
     `,
   }),
@@ -161,22 +173,20 @@ export const Readonly: Story = {
     ...noControls,
     docs: {
       source: {
-        code: '<DateRangePicker v-model="range" readonly />',
+        code: '<DateRangePicker v-model:start="start" v-model:end="end" readonly />',
       },
     },
   },
   render: () => ({
     components: { DateRangePicker },
     setup () {
-      const range = ref<DateRangePickerValue>([
-        new Date(2025, 5, 1),
-        new Date(2025, 5, 15),
-      ])
-      return { range }
+      const start = ref<Date | string | null>(new Date(2025, 5, 1))
+      const end = ref<Date | string | null>(new Date(2025, 5, 15))
+      return { start, end }
     },
     template: `
       <div class="max-w-lg">
-        <DateRangePicker v-model="range" readonly />
+        <DateRangePicker v-model:start="start" v-model:end="end" readonly />
       </div>
     `,
   }),

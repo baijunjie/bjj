@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { DateRangePickerProps, DateRangePickerValue } from './types'
+import type { DateRangePickerProps } from './types'
 
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<DateRangePickerProps>(), {
-  modelValue: () => [ null, null ],
+  start: null,
+  end: null,
   showTime: false,
   disabled: false,
   readonly: false,
@@ -19,81 +20,69 @@ const props = withDefaults(defineProps<DateRangePickerProps>(), {
 })
 
 const emit = defineEmits<{
-  'update:modelValue': [value: DateRangePickerValue]
+  'update:start': [value: Date | string | null]
+  'update:end': [value: Date | string | null]
 }>()
 
 const T = useTranslations('components.ui.DateRangePicker')
 
-const startDate = ref<Date | string | null>(props.modelValue?.[0] ?? null)
-const endDate = ref<Date | string | null>(props.modelValue?.[1] ?? null)
-
-watch(() => props.modelValue, val => {
-  startDate.value = val?.[0] ?? null
-  endDate.value = val?.[1] ?? null
+const start = computed({
+  get: () => props.start,
+  set: value => emit('update:start', value),
 })
 
-function emitRange () {
-  emit('update:modelValue', [ startDate.value, endDate.value ])
-}
+const end = computed({
+  get: () => props.end,
+  set: value => {
+    // When time is disabled, normalize end to end of day so range is inclusive
+    if (value instanceof Date && !props.showTime) {
+      const adjusted = new Date(value)
+      adjusted.setHours(23, 59, 59, 999)
+      emit('update:end', adjusted)
+    } else {
+      emit('update:end', value)
+    }
+  },
+})
 
-function handleStartUpdate (value: Date | string | null) {
-  startDate.value = value
-  emitRange()
-}
-
-function handleEndUpdate (value: Date | string | null) {
-  // If time is disabled, set end time to end of day
-  if (value instanceof Date && !props.showTime) {
-    const adjusted = new Date(value)
-    adjusted.setHours(23, 59, 59, 999)
-    endDate.value = adjusted
-  } else {
-    endDate.value = value
-  }
-  emitRange()
-}
-
-// Helper functions for date constraints
 function addDays (date: Date, days: number): Date {
   const result = new Date(date)
   result.setDate(result.getDate() + days)
   return result
 }
 
-function toDate (value: Date | string | null): Date | undefined {
+function toDate (value: Date | string | null | undefined): Date | undefined {
   if (!value) return undefined
   return value instanceof Date ? value : new Date(value)
 }
 
-// Start picker constraints
 const startMinDate = computed(() => {
   const min = props.minDate
-  const spanLimit = props.maxSpanDays && endDate.value
-    ? addDays(toDate(endDate.value)!, -(props.maxSpanDays - 1))
+  const spanLimit = props.maxSpanDays && props.end
+    ? addDays(toDate(props.end)!, -(props.maxSpanDays - 1))
     : undefined
   if (min && spanLimit) return new Date(Math.max(+new Date(min), +spanLimit))
   return min ?? spanLimit
 })
 
 const startMaxDate = computed(() => {
-  const end = toDate(endDate.value)
+  const endDate = toDate(props.end)
   const max = props.maxDate
-  if (end && max) return new Date(Math.min(+end, +new Date(max)))
-  return end ?? max
+  if (endDate && max) return new Date(Math.min(+endDate, +new Date(max)))
+  return endDate ?? max
 })
 
-// End picker constraints
 const endMinDate = computed(() => {
-  const start = toDate(startDate.value)
+  const startDate = toDate(props.start)
   const min = props.minDate
-  if (start && min) return new Date(Math.max(+start, +new Date(min)))
-  return start ?? min
+  if (startDate && min) return new Date(Math.max(+startDate, +new Date(min)))
+  return startDate ?? min
 })
 
 const endMaxDate = computed(() => {
   const max = props.maxDate
-  const spanLimit = props.maxSpanDays && startDate.value
-    ? addDays(toDate(startDate.value)!, props.maxSpanDays - 1)
+  const spanLimit = props.maxSpanDays && props.start
+    ? addDays(toDate(props.start)!, props.maxSpanDays - 1)
     : undefined
   if (max && spanLimit) return new Date(Math.min(+new Date(max), +spanLimit))
   return max ?? spanLimit
@@ -103,7 +92,7 @@ const endMaxDate = computed(() => {
 <template>
   <div :class="cn('gap-2 flex items-center', props.class)">
     <DatePicker
-      :modelValue="startDate"
+      v-model="start"
       :showTime="showTime"
       :disabled="disabled"
       :readonly="readonly"
@@ -113,13 +102,12 @@ const endMaxDate = computed(() => {
       :valueFormat="valueFormat"
       :autoApply="autoApply"
       v-bind="$attrs"
-      @update:modelValue="handleStartUpdate"
     />
     <span class="text-muted-foreground shrink-0">
       {{ T('to') }}
     </span>
     <DatePicker
-      :modelValue="endDate"
+      v-model="end"
       :showTime="showTime"
       :disabled="disabled"
       :readonly="readonly"
@@ -129,7 +117,6 @@ const endMaxDate = computed(() => {
       :valueFormat="valueFormat"
       :autoApply="autoApply"
       v-bind="$attrs"
-      @update:modelValue="handleEndUpdate"
     />
   </div>
 </template>

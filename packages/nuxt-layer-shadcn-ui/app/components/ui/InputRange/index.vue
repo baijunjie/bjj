@@ -7,7 +7,7 @@ const props = withDefaults(defineProps<InputRangeProps>(), {
   start: undefined,
   end: undefined,
   min: 0,
-  max: 100,
+  max: undefined,
 })
 
 const emit = defineEmits<{
@@ -27,7 +27,7 @@ const end = computed({
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
+  <div class="gap-2 flex items-center">
     <InputNumber
       v-model="start"
       v-bind="$attrs"
