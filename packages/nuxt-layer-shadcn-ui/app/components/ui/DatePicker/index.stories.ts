@@ -38,13 +38,12 @@ const meta = {
   render: args => ({
     components: { DatePicker },
     setup () {
-      const value = ref<Date | string | null>(null)
-      return { args, value }
+      return { args }
     },
     template: `
       <div class="max-w-xs">
-        <DatePicker v-bind="args" v-model="value" />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
+        <DatePicker v-bind="args" @update:modelValue="v => args.modelValue = v" />
+        <div class="mt-2 text-sm text-muted-foreground">Value: {{ args.modelValue }}</div>
       </div>
     `,
   }),

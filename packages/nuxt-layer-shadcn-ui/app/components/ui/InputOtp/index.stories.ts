@@ -18,13 +18,12 @@ const meta = {
   render: args => ({
     components: { InputOtp },
     setup () {
-      const otp = ref('')
-      return { args, otp }
+      return { args }
     },
     template: `
       <div class="space-y-4">
-        <InputOtp v-bind="args" v-model="otp" />
-        <div class="text-sm text-muted-foreground">Value: {{ otp }}</div>
+        <InputOtp v-bind="args" @update:modelValue="v => args.modelValue = v" />
+        <div class="text-sm text-muted-foreground">Value: {{ args.modelValue }}</div>
       </div>
     `,
   }),

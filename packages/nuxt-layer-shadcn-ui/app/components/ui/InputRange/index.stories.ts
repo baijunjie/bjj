@@ -26,14 +26,16 @@ const meta = {
   render: args => ({
     components: { InputRange },
     setup () {
-      const start = ref<number | undefined>(args.start)
-      const end = ref<number | undefined>(args.end)
-      return { args, start, end }
+      return { args }
     },
     template: `
       <div class="max-w-md">
-        <InputRange v-bind="args" v-model:start="start" v-model:end="end" />
-        <div class="mt-2 text-sm text-muted-foreground">Start: {{ start }}, End: {{ end }}</div>
+        <InputRange
+          v-bind="args"
+          @update:start="v => args.start = v"
+          @update:end="v => args.end = v"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">Start: {{ args.start }}, End: {{ args.end }}</div>
       </div>
     `,
   }),

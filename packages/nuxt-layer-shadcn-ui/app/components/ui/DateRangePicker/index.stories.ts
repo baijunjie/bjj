@@ -37,16 +37,18 @@ const meta = {
   render: args => ({
     components: { DateRangePicker },
     setup () {
-      const start = ref<Date | string | null>(args.start ?? null)
-      const end = ref<Date | string | null>(args.end ?? null)
-      return { args, start, end }
+      return { args }
     },
     template: `
       <div class="max-w-lg">
-        <DateRangePicker v-bind="args" v-model:start="start" v-model:end="end" />
+        <DateRangePicker
+          v-bind="args"
+          @update:start="v => args.start = v"
+          @update:end="v => args.end = v"
+        />
         <div class="mt-2 text-sm text-muted-foreground">
-          <div>Start: {{ start }}</div>
-          <div>End: {{ end }}</div>
+          <div>Start: {{ args.start }}</div>
+          <div>End: {{ args.end }}</div>
         </div>
       </div>
     `,

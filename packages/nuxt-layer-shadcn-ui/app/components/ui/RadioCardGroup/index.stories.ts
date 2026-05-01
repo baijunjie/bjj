@@ -51,13 +51,12 @@ const meta = {
   render: args => ({
     components: { RadioCardGroup },
     setup () {
-      const selected = ref(args.modelValue ?? '')
-      return { args, selected }
+      return { args }
     },
     template: `
       <div class="max-w-md space-y-4">
-        <RadioCardGroup v-bind="args" v-model="selected" />
-        <div class="text-sm text-muted-foreground">Selected: {{ selected }}</div>
+        <RadioCardGroup v-bind="args" @update:modelValue="v => args.modelValue = v" />
+        <div class="text-sm text-muted-foreground">Selected: {{ args.modelValue }}</div>
       </div>
     `,
   }),

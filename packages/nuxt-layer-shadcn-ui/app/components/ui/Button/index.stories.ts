@@ -201,9 +201,9 @@ export const Disabled: Story = {
         code: `
 <template>
   <Button variant="default" disabled>default</Button>
+  <Button variant="secondary" disabled>secondary</Button>
   <Button variant="destructive" disabled>destructive</Button>
   <Button variant="outline" disabled>outline</Button>
-  <Button variant="secondary" disabled>secondary</Button>
   <Button variant="ghost" disabled>ghost</Button>
   <Button variant="link" disabled>link</Button>
 </template>
@@ -230,10 +230,10 @@ export const Rounded: Story = {
         code: `
 <template>
   <Button rounded>Rounded</Button>
-  <Button rounded variant="outline">Outline</Button>
   <Button rounded variant="secondary">Secondary</Button>
-  <Button rounded size="icon" variant="outline" icon="plus" />
+  <Button rounded variant="outline">Outline</Button>
   <Button rounded size="icon" variant="secondary" icon="sun" />
+  <Button rounded size="icon" variant="outline" icon="plus" />
 </template>
 `.trim(),
       },
@@ -244,10 +244,10 @@ export const Rounded: Story = {
     template: `
       <div class="flex flex-wrap items-center gap-3">
         <Button rounded>Rounded</Button>
-        <Button rounded variant="outline">Outline</Button>
         <Button rounded variant="secondary">Secondary</Button>
-        <Button rounded size="icon" variant="outline" icon="plus" />
+        <Button rounded variant="outline">Outline</Button>
         <Button rounded size="icon" variant="secondary" icon="sun" />
+        <Button rounded size="icon" variant="outline" icon="plus" />
       </div>
     `,
   }),

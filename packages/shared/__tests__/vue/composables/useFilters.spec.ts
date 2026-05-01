@@ -216,24 +216,14 @@ describe('useFilters', () => {
     expect(router.currentRoute.value.query.range).toBeUndefined()
   })
 
-  it('drops null/undefined entries from Array when serializing', async () => {
+  it('keeps empty/null Array entries as positional slots when others are non-empty', async () => {
     const { result, router, unmount: u } = await mount('/', () =>
-      useFilters({ tags: Array as unknown as ArrayConstructor }),
+      useFilters({ range: Array as unknown as ArrayConstructor }),
     )
     unmount = u
-    result.tags = [ 'a', null as unknown as string, 'b', undefined as unknown as string ]
+    result.range = [ '', '50', null as unknown as string ]
     await flush()
-    expect(router.currentRoute.value.query.tags).toEqual([ 'a', 'b' ])
-  })
-
-  it('drops empty-string entries from Array when serializing', async () => {
-    const { result, router, unmount: u } = await mount('/', () =>
-      useFilters({ tags: Array }),
-    )
-    unmount = u
-    result.tags = [ '', 'a', '' ]
-    await flush()
-    expect(router.currentRoute.value.query.tags).toEqual([ 'a' ])
+    expect(router.currentRoute.value.query.range).toEqual([ '', '50', '' ])
   })
 
   it('strips URL when an Array contains only empty entries', async () => {
