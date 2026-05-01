@@ -51,6 +51,10 @@
       "Dropdown": {
         "empty": "Нет элементов"
       },
+      "InputRange": {
+        "endPlaceholder": "Максимум",
+        "startPlaceholder": "Минимум"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} из {total}"
       },

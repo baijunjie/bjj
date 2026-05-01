@@ -51,6 +51,10 @@
       "Dropdown": {
         "empty": "Geen items"
       },
+      "InputRange": {
+        "endPlaceholder": "Maximum",
+        "startPlaceholder": "Minimum"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} van {total}"
       },

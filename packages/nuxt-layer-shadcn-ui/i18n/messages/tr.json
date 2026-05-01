@@ -51,6 +51,10 @@
       "Dropdown": {
         "empty": "Öğe yok"
       },
+      "InputRange": {
+        "endPlaceholder": "Maks",
+        "startPlaceholder": "Min"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} / {total}"
       },

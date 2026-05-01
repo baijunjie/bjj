@@ -8,6 +8,8 @@ const props = withDefaults(defineProps<InputRangeProps>(), {
   end: undefined,
   min: 0,
   max: undefined,
+  startPlaceholder: undefined,
+  endPlaceholder: undefined,
 })
 
 const emit = defineEmits<{
@@ -16,6 +18,7 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
+const T = useTranslations('components.ui.InputRange')
 
 const start = computed({
   get: () => props.start,
@@ -35,6 +38,7 @@ const end = computed({
       v-bind="$attrs"
       :min="min"
       :max="end ?? max"
+      :placeholder="startPlaceholder ?? T('startPlaceholder')"
       fluid
     />
     <span class="leading-0 text-muted-foreground">
@@ -45,6 +49,7 @@ const end = computed({
       v-bind="$attrs"
       :min="start ?? min"
       :max="max"
+      :placeholder="endPlaceholder ?? T('endPlaceholder')"
       fluid
     />
   </div>

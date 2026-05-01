@@ -51,6 +51,10 @@
       "Dropdown": {
         "empty": "无项目"
       },
+      "InputRange": {
+        "endPlaceholder": "最大值",
+        "startPlaceholder": "最小值"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} 共 {total}"
       },

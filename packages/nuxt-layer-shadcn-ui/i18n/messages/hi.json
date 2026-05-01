@@ -51,6 +51,10 @@
       "Dropdown": {
         "empty": "कोई आइटम नहीं"
       },
+      "InputRange": {
+        "endPlaceholder": "अधिकतम",
+        "startPlaceholder": "न्यूनतम"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} में से {total}"
       },

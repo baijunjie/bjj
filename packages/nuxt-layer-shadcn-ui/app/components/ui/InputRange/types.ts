@@ -5,4 +5,8 @@ export interface InputRangeProps extends /* @vue-ignore */ InputNumberProps {
   end?: number
   min?: number
   max?: number
+  /** Placeholder for start input */
+  startPlaceholder?: string
+  /** Placeholder for end input */
+  endPlaceholder?: string
 }

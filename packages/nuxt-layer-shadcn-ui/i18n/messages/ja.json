@@ -51,6 +51,10 @@
       "Dropdown": {
         "empty": "アイテムなし"
       },
+      "InputRange": {
+        "endPlaceholder": "最大値",
+        "startPlaceholder": "最小値"
+      },
       "Pagination": {
         "pageReport": "{first}〜{last}件 / 全{total}件"
       },

@@ -51,6 +51,10 @@
       "Dropdown": {
         "empty": "Nessun elemento"
       },
+      "InputRange": {
+        "endPlaceholder": "Massimo",
+        "startPlaceholder": "Minimo"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} di {total}"
       },

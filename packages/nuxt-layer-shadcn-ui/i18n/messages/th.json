@@ -51,6 +51,10 @@
       "Dropdown": {
         "empty": "ไม่มีรายการ"
       },
+      "InputRange": {
+        "endPlaceholder": "สูงสุด",
+        "startPlaceholder": "ต่ำสุด"
+      },
       "Pagination": {
         "pageReport": "รายการที่ {first}–{last} จากทั้งหมด {total}"
       },

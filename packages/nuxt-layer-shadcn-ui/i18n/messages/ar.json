@@ -51,6 +51,10 @@
       "Dropdown": {
         "empty": "لا توجد عناصر"
       },
+      "InputRange": {
+        "endPlaceholder": "أقصى",
+        "startPlaceholder": "أدنى"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} من {total}"
       },

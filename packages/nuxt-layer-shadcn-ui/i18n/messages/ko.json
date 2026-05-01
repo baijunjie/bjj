@@ -51,6 +51,10 @@
       "Dropdown": {
         "empty": "항목 없음"
       },
+      "InputRange": {
+        "endPlaceholder": "최대값",
+        "startPlaceholder": "최소값"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} / {total}"
       },

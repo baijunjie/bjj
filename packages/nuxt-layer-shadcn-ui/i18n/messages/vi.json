@@ -51,6 +51,10 @@
       "Dropdown": {
         "empty": "Không có mục"
       },
+      "InputRange": {
+        "endPlaceholder": "Tối đa",
+        "startPlaceholder": "Tối thiểu"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} của {total}"
       },

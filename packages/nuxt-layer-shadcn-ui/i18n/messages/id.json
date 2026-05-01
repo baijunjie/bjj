@@ -51,6 +51,10 @@
       "Dropdown": {
         "empty": "Tidak ada item"
       },
+      "InputRange": {
+        "endPlaceholder": "Maksimal",
+        "startPlaceholder": "Minimal"
+      },
       "Pagination": {
         "pageReport": "{first}–{last} dari {total}"
       },
