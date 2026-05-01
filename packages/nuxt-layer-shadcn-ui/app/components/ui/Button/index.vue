@@ -4,10 +4,28 @@ import WebLink from '@bjj/nuxt-layer-shadcn-ui/app/components/ui/WebLink/index.v
 import type { ButtonProps } from './types'
 
 const props = defineProps<ButtonProps>()
-const isTransparentHover = computed(() => props.variant === 'outline' || props.variant === 'ghost')
+
+const variantClasses: Partial<Record<NonNullable<ButtonVariant>, string>> = {
+  outline: `
+    bg-transparent
+    dark:bg-transparent
+    border-current/20
+    dark:border-current/20
+    hover:bg-current/10
+    dark:hover:bg-current/10
+    hover:text-current
+  `,
+  ghost: `
+    hover:bg-current/10
+    dark:hover:bg-current/10
+    hover:text-current
+  `,
+  link: 'text-current',
+}
+
 const mergedClass = computed(() => cn(
   'cursor-pointer',
-  isTransparentHover.value && 'hover:bg-accent/50',
+  props.variant && variantClasses[props.variant],
   props.rounded && 'rounded-full',
   props.class,
 ))

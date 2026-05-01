@@ -1,13 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import type { SurfaceColor } from '../Surface/types'
 import type { ButtonSize, ButtonVariant } from './types'
 import Icon from '../Icon/index.vue'
+import Surface from '../Surface/index.vue'
 import Button from './index.vue'
 
 const variants = [
   'default',
+  'secondary',
   'destructive',
   'outline',
-  'secondary',
   'ghost',
   'link',
 ] as const satisfies readonly ButtonVariant[]
@@ -20,6 +22,16 @@ const sizes = [
   'icon',
   'icon-lg',
 ] as const satisfies readonly ButtonSize[]
+
+const surfaceColors = [
+  'default',
+  'primary',
+  'success',
+  'info',
+  'help',
+  'warn',
+  'danger',
+] as const satisfies readonly SurfaceColor[]
 
 const meta = {
   title: 'UI/Button',
@@ -70,9 +82,9 @@ export const Variants: Story = {
         code: `
 <template>
   <Button variant="default">default</Button>
+  <Button variant="secondary">secondary</Button>
   <Button variant="destructive">destructive</Button>
   <Button variant="outline">outline</Button>
-  <Button variant="secondary">secondary</Button>
   <Button variant="ghost">ghost</Button>
   <Button variant="link">link</Button>
 </template>
@@ -261,6 +273,46 @@ export const LinkButtons: Story = {
       <div class="flex flex-wrap items-center gap-3">
         <Button href="/dialog" variant="outline">Internal Link</Button>
         <Button href="https://example.com" icon="external-link" iconPosition="end">External Link</Button>
+      </div>
+    `,
+  }),
+}
+
+export const InheritedHoverColor: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <!-- outline / ghost / link inherit the parent's currentColor -->
+  <Surface variant="soft" color="success">
+    <Button variant="outline">Outline</Button>
+    <Button variant="ghost">Ghost</Button>
+    <Button variant="link">Link</Button>
+  </Surface>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Button, Surface },
+    setup: () => ({ surfaceColors }),
+    template: `
+      <div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+        <Surface
+          v-for="c in surfaceColors"
+          :key="c"
+          variant="soft"
+          :color="c"
+          class="p-3 flex items-center gap-2"
+        >
+          <span class="mr-auto text-sm font-medium capitalize">{{ c }}</span>
+          <Button variant="outline" size="sm">Outline</Button>
+          <Button variant="ghost" size="sm">Ghost</Button>
+          <Button variant="link" size="sm">Link</Button>
+        </Surface>
       </div>
     `,
   }),

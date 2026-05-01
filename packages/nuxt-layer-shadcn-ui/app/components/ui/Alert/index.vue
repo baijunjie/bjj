@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Alert as ShadcnAlert } from '../../shadcn/alert'
+import { Alert as ShadcnAlert, AlertDescription, AlertTitle } from '../../shadcn/alert'
 import type { AlertProps, AlertType } from './types'
 
 const typeIconNameMap: Partial<Record<AlertType, string>> = {
@@ -22,8 +22,16 @@ const typeClasses: Record<AlertType, string> = {
 const props = withDefaults(defineProps<AlertProps>(), {
   type: 'default',
   icon: undefined,
+  title: undefined,
+  description: undefined,
   class: undefined,
 })
+
+const slots = defineSlots<{
+  default?: () => any
+  title?: () => any
+  icon?: () => any
+}>()
 
 const defaultIconName = computed(() => {
   // null explicitly hides the icon; any truthy value is an explicit icon.
@@ -37,25 +45,39 @@ const mergedClass = computed(() =>
     props.class,
   ),
 )
+
+const hasTitle = computed(() => Boolean(slots.title || props.title))
+const hasDescription = computed(() => Boolean(slots.default || props.description))
 </script>
 
 <template>
   <ShadcnAlert :class="mergedClass">
-    <Icon
-      v-if="typeof icon === 'string' && icon"
-      :name="icon"
-    />
-    <component
-      :is="icon"
-      v-else-if="icon"
-      class="size-4"
-    />
-    <Icon
-      v-else-if="defaultIconName"
-      :name="defaultIconName"
-    />
-    <div class="col-start-2">
-      <slot />
-    </div>
+    <slot name="icon">
+      <Icon
+        v-if="typeof icon === 'string' && icon"
+        :name="icon"
+      />
+      <component
+        :is="icon"
+        v-else-if="icon"
+      />
+      <Icon
+        v-else-if="defaultIconName"
+        :name="defaultIconName"
+      />
+    </slot>
+    <AlertTitle v-if="hasTitle">
+      <slot name="title">
+        {{ title }}
+      </slot>
+    </AlertTitle>
+    <AlertDescription
+      v-if="hasDescription"
+      class="text-current/80"
+    >
+      <slot>
+        {{ description }}
+      </slot>
+    </AlertDescription>
   </ShadcnAlert>
 </template>

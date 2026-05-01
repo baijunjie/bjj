@@ -10,15 +10,19 @@ const meta = {
   argTypes: {
     type: { control: 'select', options: types },
     icon: { control: 'text' },
+    title: { control: 'text' },
+    description: { control: 'text' },
   },
   args: {
     type: 'default',
     icon: '',
+    title: 'Heads up!',
+    description: 'You can add components to your app using the cli.',
   },
   render: args => ({
     components: { Alert },
     setup: () => ({ args }),
-    template: '<Alert v-bind="args">This is an alert message.</Alert>',
+    template: '<Alert v-bind="args" />',
   }),
 } satisfies Meta<typeof Alert>
 
@@ -37,9 +41,13 @@ export const Types: Story = {
         code: `
 <template>
   <div class="space-y-3">
-    <Alert v-for="t in types" :key="t" :type="t">
-      This is a <strong>{{ t }}</strong> alert message.
-    </Alert>
+    <Alert
+      v-for="t in types"
+      :key="t"
+      :type="t"
+      :title="t"
+      description="This is an alert message."
+    />
   </div>
 </template>
 `.trim(),
@@ -51,12 +59,34 @@ export const Types: Story = {
     setup: () => ({ types }),
     template: `
       <div class="space-y-3">
-        <Alert v-for="t in types" :key="t" :type="t">
-          This is a <strong>{{ t }}</strong> alert message.
-        </Alert>
+        <Alert
+          v-for="t in types"
+          :key="t"
+          :type="t"
+          :title="t"
+          description="This is an alert message."
+        />
       </div>
     `,
   }),
+}
+
+export const TitleOnly: Story = {
+  parameters: noControls,
+  args: {
+    type: 'info',
+    title: 'A short title without description.',
+    description: '',
+  },
+}
+
+export const DescriptionOnly: Story = {
+  parameters: noControls,
+  args: {
+    type: 'info',
+    title: '',
+    description: 'A standalone description without a title.',
+  },
 }
 
 export const WithIcons: Story = {
@@ -67,9 +97,9 @@ export const WithIcons: Story = {
         code: `
 <template>
   <div class="space-y-3">
-    <Alert type="info" icon="bell">Alert with a custom bell icon.</Alert>
-    <Alert type="success" icon="sparkles">Alert with a custom sparkles icon.</Alert>
-    <Alert type="warn" icon="flag">Alert with a custom flag icon.</Alert>
+    <Alert type="info" icon="bell" title="Custom bell icon" description="Override the default icon for this type." />
+    <Alert type="success" icon="sparkles" title="Custom sparkles icon" description="Pass any lucide icon name." />
+    <Alert type="warn" icon="flag" title="Custom flag icon" description="Works for every type." />
   </div>
 </template>
 `.trim(),
@@ -80,10 +110,68 @@ export const WithIcons: Story = {
     components: { Alert },
     template: `
       <div class="space-y-3">
-        <Alert type="info" icon="bell">Alert with a custom bell icon.</Alert>
-        <Alert type="success" icon="sparkles">Alert with a custom sparkles icon.</Alert>
-        <Alert type="warn" icon="flag">Alert with a custom flag icon.</Alert>
+        <Alert type="info" icon="bell" title="Custom bell icon" description="Override the default icon for this type." />
+        <Alert type="success" icon="sparkles" title="Custom sparkles icon" description="Pass any lucide icon name." />
+        <Alert type="warn" icon="flag" title="Custom flag icon" description="Works for every type." />
       </div>
+    `,
+  }),
+}
+
+export const HiddenIcon: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Alert type="success" :icon="null" title="Icon hidden" description="Pass icon=\\"null\\" to suppress the type's default icon." />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Alert },
+    template: `
+      <Alert type="success" :icon="null" title="Icon hidden" description="Pass icon=&quot;null&quot; to suppress the type's default icon." />
+    `,
+  }),
+}
+
+export const CustomSlots: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Alert type="info">
+    <template #icon>
+      <Icon name="rocket" />
+    </template>
+    <template #title>
+      <span class="underline">Custom title slot</span>
+    </template>
+    Description rendered via the default slot. You can put <strong>rich content</strong> here.
+  </Alert>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Alert },
+    template: `
+      <Alert type="info">
+        <template #icon>
+          <Icon name="rocket" />
+        </template>
+        <template #title>
+          <span class="underline">Custom title slot</span>
+        </template>
+        Description rendered via the default slot. You can put <strong>rich content</strong> here.
+      </Alert>
     `,
   }),
 }
