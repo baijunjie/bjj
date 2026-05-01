@@ -57,7 +57,7 @@ const meta = {
     },
     template: `
       <div class="max-w-sm">
-        <Select v-model="value" :options="frameworks" v-bind="args" />
+        <Select v-bind="args" v-model="value" :options="frameworks" />
         <div class="mt-2 text-sm text-muted-foreground">Selected: {{ value ?? 'none' }}</div>
       </div>
     `,

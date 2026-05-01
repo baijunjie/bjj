@@ -51,7 +51,7 @@ const meta = {
     template: `
       <div>
         <Button @click="visible = true">Open Modal</Button>
-        <Modal v-model:visible="visible" v-bind="args">
+        <Modal v-bind="args" v-model:visible="visible">
           <p>This is the modal content.</p>
           <Input class="mt-4" placeholder="Try interacting with this input" />
         </Modal>

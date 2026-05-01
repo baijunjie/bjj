@@ -32,7 +32,7 @@ const meta = {
     minDate: undefined,
     maxDate: undefined,
     valueFormat: undefined,
-    autoApply: false,
+    autoApply: true,
     class: '',
   },
   render: args => ({
@@ -43,7 +43,7 @@ const meta = {
     },
     template: `
       <div class="max-w-xs">
-        <DatePicker v-model="value" v-bind="args" />
+        <DatePicker v-bind="args" v-model="value" />
         <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
       </div>
     `,

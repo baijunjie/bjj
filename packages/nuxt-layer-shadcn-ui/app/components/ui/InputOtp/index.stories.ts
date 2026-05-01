@@ -23,7 +23,7 @@ const meta = {
     },
     template: `
       <div class="space-y-4">
-        <InputOtp v-model="otp" v-bind="args" />
+        <InputOtp v-bind="args" v-model="otp" />
         <div class="text-sm text-muted-foreground">Value: {{ otp }}</div>
       </div>
     `,

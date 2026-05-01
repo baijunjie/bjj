@@ -28,7 +28,7 @@ const meta = {
     },
     template: `
       <div class="max-w-md">
-        <InputRange v-model:start="start" v-model:end="end" v-bind="args" />
+        <InputRange v-bind="args" v-model:start="start" v-model:end="end" />
         <div class="mt-2 text-sm text-muted-foreground">Start: {{ start }}, End: {{ end }}</div>
       </div>
     `,

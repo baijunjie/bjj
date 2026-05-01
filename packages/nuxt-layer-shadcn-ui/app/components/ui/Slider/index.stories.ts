@@ -27,7 +27,7 @@ const meta = {
     },
     template: `
       <div class="max-w-sm">
-        <Slider v-model="value" v-bind="args" />
+        <Slider v-bind="args" v-model="value" />
         <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
       </div>
     `,

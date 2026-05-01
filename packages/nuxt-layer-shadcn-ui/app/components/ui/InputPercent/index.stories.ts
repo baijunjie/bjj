@@ -14,7 +14,7 @@ const meta = {
     },
     template: `
       <div class="max-w-xs space-y-4">
-        <InputPercent v-model="percent" v-bind="args" />
+        <InputPercent v-bind="args" v-model="percent" />
         <div class="text-sm text-muted-foreground">Value: {{ percent }}</div>
       </div>
     `,

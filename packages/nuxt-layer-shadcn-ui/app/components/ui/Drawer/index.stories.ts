@@ -57,7 +57,7 @@ const meta = {
     template: `
       <div>
         <Button @click="visible = true">Open Drawer</Button>
-        <Drawer v-model:visible="visible" v-bind="args">
+        <Drawer v-bind="args" v-model:visible="visible">
           <p>This is the drawer content.</p>
           <Input class="mt-4" placeholder="Try interacting with this input" />
         </Drawer>

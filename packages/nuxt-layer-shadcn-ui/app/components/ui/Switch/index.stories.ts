@@ -19,7 +19,7 @@ const meta = {
     },
     template: `
       <div class="flex items-center gap-4">
-        <Switch v-model="on" v-bind="args" />
+        <Switch v-bind="args" v-model="on" />
         <div class="text-sm text-muted-foreground">Value: {{ on }}</div>
       </div>
     `,

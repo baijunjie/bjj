@@ -22,7 +22,7 @@ const meta = {
     },
     template: `
       <div class="max-w-xs">
-        <InputCurrency v-model="value" v-bind="args" />
+        <InputCurrency v-bind="args" v-model="value" />
         <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
       </div>
     `,
