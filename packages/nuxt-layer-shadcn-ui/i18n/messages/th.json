@@ -18,6 +18,9 @@
         "minutes": "m",
         "seconds": "s"
       }
+    },
+    "symbols": {
+      "connector": "ถึง"
     }
   },
   "components": {
@@ -43,8 +46,7 @@
       },
       "DateRangePicker": {
         "endPlaceholder": "วันที่สิ้นสุด",
-        "startPlaceholder": "วันที่เริ่มต้น",
-        "to": "–"
+        "startPlaceholder": "วันที่เริ่มต้น"
       },
       "Dropdown": {
         "empty": "ไม่มีรายการ"

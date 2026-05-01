@@ -18,6 +18,9 @@
         "minutes": "m",
         "seconds": "s"
       }
+    },
+    "symbols": {
+      "connector": "～"
     }
   },
   "components": {
@@ -43,8 +46,7 @@
       },
       "DateRangePicker": {
         "endPlaceholder": "Fecha final",
-        "startPlaceholder": "Fecha de inicio",
-        "to": "–"
+        "startPlaceholder": "Fecha de inicio"
       },
       "Dropdown": {
         "empty": "Sin elementos"

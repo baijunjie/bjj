@@ -18,6 +18,9 @@
         "minutes": "m",
         "seconds": "s"
       }
+    },
+    "symbols": {
+      "connector": "～"
     }
   },
   "components": {
@@ -43,8 +46,7 @@
       },
       "DateRangePicker": {
         "endPlaceholder": "समाप्ति तारीख",
-        "startPlaceholder": "प्रारंभ तारीख",
-        "to": "–"
+        "startPlaceholder": "प्रारंभ तारीख"
       },
       "Dropdown": {
         "empty": "कोई आइटम नहीं"

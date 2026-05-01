@@ -18,6 +18,9 @@
         "minutes": "分",
         "seconds": "秒"
       }
+    },
+    "symbols": {
+      "connector": "～"
     }
   },
   "components": {
@@ -43,8 +46,7 @@
       },
       "DateRangePicker": {
         "endPlaceholder": "終了日",
-        "startPlaceholder": "開始日",
-        "to": "〜"
+        "startPlaceholder": "開始日"
       },
       "Dropdown": {
         "empty": "アイテムなし"

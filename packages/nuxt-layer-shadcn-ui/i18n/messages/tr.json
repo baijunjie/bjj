@@ -18,6 +18,9 @@
         "minutes": "d",
         "seconds": "sn"
       }
+    },
+    "symbols": {
+      "connector": "～"
     }
   },
   "components": {
@@ -43,8 +46,7 @@
       },
       "DateRangePicker": {
         "endPlaceholder": "Bitiş tarihi",
-        "startPlaceholder": "Başlangıç tarihi",
-        "to": "–"
+        "startPlaceholder": "Başlangıç tarihi"
       },
       "Dropdown": {
         "empty": "Öğe yok"

@@ -18,6 +18,9 @@
         "minutes": "м",
         "seconds": "с"
       }
+    },
+    "symbols": {
+      "connector": "～"
     }
   },
   "components": {
@@ -43,8 +46,7 @@
       },
       "DateRangePicker": {
         "endPlaceholder": "Дата окончания",
-        "startPlaceholder": "Дата начала",
-        "to": "–"
+        "startPlaceholder": "Дата начала"
       },
       "Dropdown": {
         "empty": "Нет элементов"

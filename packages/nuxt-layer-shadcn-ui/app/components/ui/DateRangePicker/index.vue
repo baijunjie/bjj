@@ -24,6 +24,7 @@ const emit = defineEmits<{
   'update:end': [value: Date | string | null]
 }>()
 
+const { t } = useI18n()
 const T = useTranslations('components.ui.DateRangePicker')
 
 const start = computed({
@@ -104,7 +105,7 @@ const endMaxDate = computed(() => {
       v-bind="$attrs"
     />
     <span class="text-muted-foreground shrink-0">
-      {{ T('to') }}
+      {{ t('common.symbols.connector') }}
     </span>
     <DatePicker
       v-model="end"

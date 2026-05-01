@@ -15,6 +15,8 @@ const emit = defineEmits<{
   'update:end': [value: number | undefined]
 }>()
 
+const { t } = useI18n()
+
 const start = computed({
   get: () => props.start,
   set: value => emit('update:start', value),
@@ -36,7 +38,7 @@ const end = computed({
       fluid
     />
     <span class="leading-0 text-muted-foreground">
-      -
+      {{ t('common.symbols.connector') }}
     </span>
     <InputNumber
       v-model="end"

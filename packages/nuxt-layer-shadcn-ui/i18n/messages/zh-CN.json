@@ -18,6 +18,9 @@
         "minutes": "分钟",
         "seconds": "秒"
       }
+    },
+    "symbols": {
+      "connector": "～"
     }
   },
   "components": {
@@ -43,8 +46,7 @@
       },
       "DateRangePicker": {
         "endPlaceholder": "结束日期",
-        "startPlaceholder": "开始日期",
-        "to": "–"
+        "startPlaceholder": "开始日期"
       },
       "Dropdown": {
         "empty": "无项目"

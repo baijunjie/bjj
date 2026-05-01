@@ -18,6 +18,9 @@
         "minutes": "m",
         "seconds": "d"
       }
+    },
+    "symbols": {
+      "connector": "～"
     }
   },
   "components": {
@@ -43,8 +46,7 @@
       },
       "DateRangePicker": {
         "endPlaceholder": "Tanggal akhir",
-        "startPlaceholder": "Tanggal awal",
-        "to": "–"
+        "startPlaceholder": "Tanggal awal"
       },
       "Dropdown": {
         "empty": "Tidak ada item"

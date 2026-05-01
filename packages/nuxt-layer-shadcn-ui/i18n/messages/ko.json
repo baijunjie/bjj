@@ -18,6 +18,9 @@
         "minutes": "m",
         "seconds": "s"
       }
+    },
+    "symbols": {
+      "connector": "～"
     }
   },
   "components": {
@@ -43,8 +46,7 @@
       },
       "DateRangePicker": {
         "endPlaceholder": "종료 날짜",
-        "startPlaceholder": "시작 날짜",
-        "to": "–"
+        "startPlaceholder": "시작 날짜"
       },
       "Dropdown": {
         "empty": "항목 없음"

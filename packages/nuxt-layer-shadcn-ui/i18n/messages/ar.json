@@ -18,6 +18,9 @@
         "minutes": "د",
         "seconds": "ث"
       }
+    },
+    "symbols": {
+      "connector": "الفاصل"
     }
   },
   "components": {
@@ -43,8 +46,7 @@
       },
       "DateRangePicker": {
         "endPlaceholder": "تاريخ الانتهاء",
-        "startPlaceholder": "تاريخ البداية",
-        "to": "–"
+        "startPlaceholder": "تاريخ البداية"
       },
       "Dropdown": {
         "empty": "لا توجد عناصر"
