@@ -184,7 +184,7 @@ function serializeValue (value: unknown): string | string[] | undefined {
   if (value == null || value === '') return undefined
   if (Array.isArray(value)) {
     const items = value
-      .filter(v => v != null)
+      .filter(v => v != null && v !== '')
       .map(v => typeof v === 'object' ? JSON.stringify(v) : String(v))
     return items.length ? items : undefined
   }

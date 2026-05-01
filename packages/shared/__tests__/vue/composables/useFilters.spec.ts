@@ -216,6 +216,36 @@ describe('useFilters', () => {
     expect(router.currentRoute.value.query.range).toBeUndefined()
   })
 
+  it('drops null/undefined entries from Array when serializing', async () => {
+    const { result, router, unmount: u } = await mount('/', () =>
+      useFilters({ tags: Array as unknown as ArrayConstructor }),
+    )
+    unmount = u
+    result.tags = [ 'a', null as unknown as string, 'b', undefined as unknown as string ]
+    await flush()
+    expect(router.currentRoute.value.query.tags).toEqual([ 'a', 'b' ])
+  })
+
+  it('drops empty-string entries from Array when serializing', async () => {
+    const { result, router, unmount: u } = await mount('/', () =>
+      useFilters({ tags: Array }),
+    )
+    unmount = u
+    result.tags = [ '', 'a', '' ]
+    await flush()
+    expect(router.currentRoute.value.query.tags).toEqual([ 'a' ])
+  })
+
+  it('strips URL when an Array contains only empty entries', async () => {
+    const { result, router, unmount: u } = await mount('/?tags=a&tags=b', () =>
+      useFilters({ tags: Array }),
+    )
+    unmount = u
+    result.tags = [ '', '' ]
+    await flush()
+    expect(router.currentRoute.value.query.tags).toBeUndefined()
+  })
+
   it('strips URL when an Array becomes empty', async () => {
     const { result, router, unmount: u } = await mount('/?tags=a&tags=b', () =>
       useFilters({ tags: Array }),
