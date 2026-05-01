@@ -1,5 +1,7 @@
 import type { BadgeVariants } from '../../shadcn/badge'
 
-export type BadgeVariant = NonNullable<BadgeVariants['variant']>
+export type BadgeVariant = BadgeVariants['variant']
 
-export interface BadgeProps extends /* @vue-ignore */ BadgeVariants {}
+export interface BadgeProps {
+  variant?: BadgeVariant
+}

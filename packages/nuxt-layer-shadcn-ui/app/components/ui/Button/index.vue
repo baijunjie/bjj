@@ -4,9 +4,13 @@ import WebLink from '@bjj/nuxt-layer-shadcn-ui/app/components/ui/WebLink/index.v
 import type { ButtonProps } from './types'
 
 const props = defineProps<ButtonProps>()
-const mergedClass = computed(() => cn('cursor-pointer', props.rounded && `
-  rounded-full
-`, props.class))
+const isTransparentHover = computed(() => props.variant === 'outline' || props.variant === 'ghost')
+const mergedClass = computed(() => cn(
+  'cursor-pointer',
+  isTransparentHover.value && 'hover:bg-accent/50',
+  props.rounded && 'rounded-full',
+  props.class,
+))
 
 const isLink = computed(() => !!props.href || !!props.to)
 const hasIcon = computed(() => !!$slots.icon || !!props.icon)
@@ -19,6 +23,8 @@ const $slots = defineSlots<{
 
 <template>
   <ShadcnButton
+    :variant="variant"
+    :size="size"
     :class="mergedClass"
     :asChild="isLink"
     :type="isLink ? undefined : 'button'"

@@ -6,7 +6,7 @@ defineProps<BadgeProps>()
 </script>
 
 <template>
-  <ShadcnBadge>
+  <ShadcnBadge :variant="variant">
     <slot />
   </ShadcnBadge>
 </template>

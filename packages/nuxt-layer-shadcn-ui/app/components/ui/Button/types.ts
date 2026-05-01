@@ -1,10 +1,12 @@
 import type { ButtonVariants } from '../../shadcn/button'
 import type { RouteLocationRaw } from 'vue-router'
 
-export type ButtonVariant = NonNullable<ButtonVariants['variant']>
-export type ButtonSize = NonNullable<ButtonVariants['size']>
+export type ButtonVariant = ButtonVariants['variant']
+export type ButtonSize = ButtonVariants['size']
 
-export interface ButtonProps extends /* @vue-ignore */ ButtonVariants {
+export interface ButtonProps {
+  variant?: ButtonVariant
+  size?: ButtonSize
   loading?: boolean
   disabled?: boolean
   rounded?: boolean
