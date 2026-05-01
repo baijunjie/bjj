@@ -130,7 +130,14 @@ export function useFilters<T extends Record<string, FilterType>> (
   watch(
     () => route.query,
     newQuery => {
-      Object.assign(filters, readFromQuery(newQuery))
+      // `readFromQuery` always returns fresh array / object references,
+      // so guard each key with `isEqual` to avoid spurious reactive
+      // notifications when the content is unchanged.
+      const next = readFromQuery(newQuery) as Record<string, unknown>
+      const target = filters as Record<string, unknown>
+      for (const key of Object.keys(next)) {
+        if (!isEqual(target[key], next[key])) target[key] = next[key]
+      }
     },
   )
 
