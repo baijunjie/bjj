@@ -13,6 +13,8 @@ export type SelectBaseProps<V extends string | number = string, M = unknown> = {
   options?: SelectOption<V, M>[]
   placeholder?: string
   disabled?: boolean
+  /** Show a spinner in place of the chevron */
+  loading?: boolean
   /** true: enable client-side label filter; function: custom filter (disables internal filter) */
   filter?: boolean | SelectFilterFunction
   /** Search input placeholder */

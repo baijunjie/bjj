@@ -38,7 +38,7 @@ const end = computed({
       v-bind="$attrs"
       :min="min"
       :max="end ?? max"
-      :placeholder="startPlaceholder ?? T('startPlaceholder')"
+      :placeholder="startPlaceholder || T('startPlaceholder')"
       fluid
     />
     <span class="leading-0 text-muted-foreground">
@@ -49,7 +49,7 @@ const end = computed({
       v-bind="$attrs"
       :min="start ?? min"
       :max="max"
-      :placeholder="endPlaceholder ?? T('endPlaceholder')"
+      :placeholder="endPlaceholder || T('endPlaceholder')"
       fluid
     />
   </div>

@@ -135,8 +135,8 @@ function handleSearch (value: string) {
 // -- Empty text --
 
 const computedEmptyText = computed(() => {
-  if (keyword.value) return props.searchEmptyText ?? T('noSearchItems')
-  return props.emptyText ?? T('noItems')
+  if (keyword.value) return props.searchEmptyText || T('noSearchItems')
+  return props.emptyText || T('noItems')
 })
 
 // -- Popover open/close --
@@ -188,9 +188,10 @@ defineExpose({ refresh: resetAndLoad })
     :options="displayedOptions"
     :filter="filterFunction"
     :placeholder="placeholder"
-    :disabled="disabled"
     :searchPlaceholder="searchPlaceholder"
     :emptyText="computedEmptyText"
+    :disabled="disabled"
+    :loading="isLoading"
     @search="handleSearch"
     @open="handleOpen"
     @close="handleClose"
@@ -220,7 +221,6 @@ defineExpose({ refresh: resetAndLoad })
       <EffectIntersectionChecker
         v-if="hasMore"
         :disabled="isLoading"
-        bao
         class="py-2 flex items-center justify-center"
         @show="loadMore"
       >

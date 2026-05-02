@@ -86,7 +86,7 @@ const timeConfig = computed(() => {
       <div @click.stop>
         <Input
           :modelValue="value"
-          :placeholder="placeholder ?? T('placeholder')"
+          :placeholder="placeholder || T('placeholder')"
           :disabled="disabled"
           :readonly="readonly"
           @update:modelValue="(v: string | undefined) => onInput(v ?? '')"

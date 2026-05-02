@@ -28,7 +28,7 @@ const meta = {
     showTime: false,
     disabled: false,
     readonly: false,
-    placeholder: undefined,
+    placeholder: '',
     minDate: undefined,
     maxDate: undefined,
     valueFormat: undefined,

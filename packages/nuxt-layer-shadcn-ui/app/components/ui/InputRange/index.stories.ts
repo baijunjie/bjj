@@ -19,8 +19,8 @@ const meta = {
     end: undefined,
     min: 0,
     max: 100,
-    startPlaceholder: undefined,
-    endPlaceholder: undefined,
+    startPlaceholder: '',
+    endPlaceholder: '',
     disabled: false,
   },
   render: args => ({

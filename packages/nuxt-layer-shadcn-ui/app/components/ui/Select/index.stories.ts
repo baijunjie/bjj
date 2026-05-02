@@ -36,6 +36,7 @@ const meta = {
   argTypes: {
     placeholder: { control: 'text' },
     disabled: { control: 'boolean' },
+    loading: { control: 'boolean' },
     filter: { control: 'boolean' },
     multiple: { control: 'boolean' },
     searchPlaceholder: { control: 'text' },
@@ -44,6 +45,7 @@ const meta = {
   args: {
     placeholder: 'Select an option',
     disabled: false,
+    loading: false,
     filter: false,
     multiple: false,
     searchPlaceholder: '',
@@ -275,6 +277,14 @@ export const Disabled: Story = {
       </div>
     `,
   }),
+}
+
+export const Loading: Story = {
+  parameters: noControls,
+  args: {
+    loading: true,
+    placeholder: 'Loading options',
+  },
 }
 
 export const EventHandling: Story = {

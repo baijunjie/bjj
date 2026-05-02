@@ -29,6 +29,7 @@ const props = withDefaults(defineProps<SelectProps<TValue, TMeta>>(), {
   modelValue: undefined,
   placeholder: undefined,
   disabled: false,
+  loading: false,
   filter: false,
   searchPlaceholder: undefined,
   emptyText: undefined,
@@ -188,7 +189,7 @@ function handleClear (event: MouseEvent) {
             v-else
             class="text-muted-foreground"
           >
-            {{ placeholder ?? T('placeholder') }}
+            {{ placeholder || T('placeholder') }}
           </span>
         </span>
         <InputGroupAddon
@@ -205,6 +206,12 @@ function handleClear (event: MouseEvent) {
         </InputGroupAddon>
         <InputGroupAddon align="inline-end">
           <Icon
+            v-if="loading"
+            name="loader-circle"
+            class="size-4 animate-spin opacity-50"
+          />
+          <Icon
+            v-else
             name="chevron-down"
             class="size-4 opacity-50"
           />
@@ -221,11 +228,11 @@ function handleClear (event: MouseEvent) {
       >
         <CommandInput
           v-if="!!filter"
-          :placeholder="searchPlaceholder ?? T('searchPlaceholder')"
+          :placeholder="searchPlaceholder || T('searchPlaceholder')"
         />
         <CommandList>
           <CommandEmpty>
-            {{ emptyText ?? T('noItems') }}
+            {{ emptyText || T('noItems') }}
           </CommandEmpty>
 
           <template
