@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "アイテムなし"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "すべて読み込み完了",
+        "count": "{loaded}/{total} 読み込み済み",
+        "refresh": "更新",
+        "scrollToTop": "トップへスクロール"
+      },
       "InputRange": {
         "endPlaceholder": "最大値",
         "startPlaceholder": "最小値"

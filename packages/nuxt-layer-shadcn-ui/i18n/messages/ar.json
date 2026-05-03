@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "لا توجد عناصر"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "— تم تحميل الكل —",
+        "count": "{loaded} من {total} تم تحميله",
+        "refresh": "تحديث",
+        "scrollToTop": "الرجوع إلى الأعلى"
+      },
       "InputRange": {
         "endPlaceholder": "أقصى",
         "startPlaceholder": "أدنى"

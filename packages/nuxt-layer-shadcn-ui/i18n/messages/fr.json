@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "Aucun élément"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "— tout chargé —",
+        "count": "{loaded} sur {total} chargés",
+        "refresh": "Actualiser",
+        "scrollToTop": "Retour au haut"
+      },
       "InputRange": {
         "endPlaceholder": "Max",
         "startPlaceholder": "Min"

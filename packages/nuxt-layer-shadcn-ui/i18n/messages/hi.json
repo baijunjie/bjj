@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "कोई आइटम नहीं"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "— सभी लोड हो गए —",
+        "count": "{loaded} of {total} लोड हो गया",
+        "refresh": "ताज़ा करें",
+        "scrollToTop": "शीर्ष पर जाएं"
+      },
       "InputRange": {
         "endPlaceholder": "अधिकतम",
         "startPlaceholder": "न्यूनतम"

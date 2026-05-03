@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "ไม่มีรายการ"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "— โหลดเสร็จแล้วทั้งหมด —",
+        "count": "{loaded} จาก {total} โหลดแล้ว",
+        "refresh": "รีเฟรช",
+        "scrollToTop": "เลื่อนขึ้นด้านบน"
+      },
       "InputRange": {
         "endPlaceholder": "สูงสุด",
         "startPlaceholder": "ต่ำสุด"

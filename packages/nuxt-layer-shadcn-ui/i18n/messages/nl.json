@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "Geen items"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "— alles geladen —",
+        "count": "{loaded} van {total} geladen",
+        "refresh": "Vernieuwen",
+        "scrollToTop": "Naar boven schuiven"
+      },
       "InputRange": {
         "endPlaceholder": "Maximum",
         "startPlaceholder": "Minimum"

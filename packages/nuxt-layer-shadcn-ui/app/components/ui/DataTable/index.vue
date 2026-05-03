@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<DataTableProps<TData>>(), {
   sortOrder: undefined,
   loading: false,
   clickable: false,
+  height: undefined,
 })
 
 const emit = defineEmits<{
@@ -46,6 +47,8 @@ defineSlots<
   }) => any> & {
     empty?: () => any
     footer?: () => any
+    bodyStart?: () => any
+    bodyEnd?: () => any
   } & Record<`header-${string}`, (_: { column: DataTableColumn }) => any>
 >()
 
@@ -252,6 +255,9 @@ function buildColumnStyle (column: DataTableColumn): Record<string, string> {
   return style
 }
 
+// CSS var bound on outer wrapper, read by table-container via :deep selector
+const heightStyle = computed(() => props.height ? { '--data-table-height': props.height } : undefined)
+
 // Reusable class fragments
 const headerCellClass = 'h-auto bg-border px-4 py-3 text-xs font-normal text-foreground'
 const headerDividerClass = 'relative after:absolute after:top-1/2 after:right-0 after:h-4 after:w-px after:-translate-y-1/2 after:bg-muted-foreground/25'
@@ -263,13 +269,21 @@ const selectionColumnStyle = { width: '1%' }
 const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
   showSelectionColumn.value && !lastLeftFrozenField.value && !atStart.value ? 'left' : undefined,
 )
+
+defineExpose({
+  /** The shadcn table-container element — useful as IntersectionObserver root. */
+  scrollEl,
+})
 </script>
 
 <template>
   <div
-    :class="cn('rounded-lg bg-border px-1 text-foreground relative', !$slots.footer && `
-      pb-1
-    `)"
+    :class="cn(
+      'rounded-lg bg-border px-1 text-foreground relative',
+      !$slots.footer && 'pb-1',
+      height && 'has-sticky-bounds',
+    )"
+    :style="heightStyle"
   >
     <!-- Loading overlay -->
     <Transition
@@ -281,7 +295,7 @@ const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
       <div
         v-if="loading"
         class="
-          inset-0 rounded-lg bg-background/60 absolute z-20 flex items-center
+          inset-0 rounded-lg bg-background/60 absolute z-30 flex items-center
           justify-center
         "
       >
@@ -292,7 +306,10 @@ const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
       </div>
     </Transition>
 
-    <Table ref="tableRef">
+    <Table
+      ref="tableRef"
+      class="h-full"
+    >
       <TableHeader>
         <TableRow
           class="hover:bg-transparent"
@@ -354,6 +371,17 @@ const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
           [&_tr]:h-15
         "
       >
+        <!-- Top body slot (e.g. infinite-scroll trigger) -->
+        <TableRow
+          v-if="$slots.bodyStart"
+          data-virtual-row
+          class="hover:bg-transparent"
+        >
+          <TableCell :colspan="totalColumns">
+            <slot name="bodyStart" />
+          </TableCell>
+        </TableRow>
+
         <template v-if="data?.length">
           <TableRow
             v-for="(row, index) in data"
@@ -409,40 +437,82 @@ const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
           </TableRow>
         </template>
 
-        <template v-else>
-          <TableEmpty :colspan="totalColumns">
-            <slot name="empty">
-              <div
-                class="gap-2 text-muted-foreground flex flex-col items-center"
-              >
-                <Icon
-                  name="inbox"
-                  class="size-8"
-                />
-                <span class="text-sm">
-                  {{ T('empty') }}
-                </span>
-              </div>
-            </slot>
-          </TableEmpty>
-        </template>
+        <TableEmpty
+          v-else-if="!loading"
+          :colspan="totalColumns"
+        >
+          <slot name="empty">
+            <div
+              class="gap-2 text-muted-foreground flex flex-col items-center"
+            >
+              <Icon
+                name="inbox"
+                class="size-8"
+              />
+              <span class="text-sm">
+                {{ T('empty') }}
+              </span>
+            </div>
+          </slot>
+        </TableEmpty>
+
+        <!-- Bottom body slot (e.g. infinite-scroll trigger / "all loaded") -->
+        <TableRow
+          v-if="$slots.bodyEnd"
+          data-virtual-row
+          class="hover:bg-transparent"
+        >
+          <TableCell :colspan="totalColumns">
+            <slot name="bodyEnd" />
+          </TableCell>
+        </TableRow>
       </TableBody>
 
       <TableFooter
         v-if="$slots.footer"
-        class="border-t-0 bg-transparent"
+        class="
+          [&_td]:px-4 [&_td]:py-2
+          border-t-0 bg-transparent
+        "
       >
-        <slot name="footer" />
+        <TableRow>
+          <TableCell
+            :colspan="totalColumns"
+            class="bg-border"
+          >
+            <slot name="footer" />
+          </TableCell>
+        </TableRow>
       </TableFooter>
     </Table>
   </div>
 </template>
 
 <style scoped>
-/* CSS variable on tr, background on td — sticky cells need opaque bg */
+:deep([data-slot="table-container"]) {
+  height: var(--data-table-height, auto);
+}
+
+/* sticky on <th>/<td>, not <tr> — row-level sticky lacks browser support */
+.has-sticky-bounds :deep(thead th) {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.has-sticky-bounds :deep(tfoot td) {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+}
+
+/* clip-path is reliable on table-row-group, unlike overflow:hidden */
+:deep(tbody) {
+  clip-path: inset(0 round 8px);
+}
+
 :deep(tbody tr) {
   --cell-bg: var(--color-card);
-  --corner-r: 8px;
 }
 
 :deep(tbody tr:hover) {
@@ -451,47 +521,6 @@ const selectionColumnShadowDir = computed<FrozenShadow | undefined>(() =>
 
 :deep(tbody td) {
   background: var(--cell-bg);
-}
-
-/* Rounded corners: radial-gradient positioned at each corner,
-   transparent circle inside reveals cell-bg, accent fills the corner gap */
-:deep(tbody tr:first-child td:first-child) {
-  background:
-    radial-gradient(circle at var(--corner-r) var(--corner-r), transparent var(--corner-r), var(--color-accent) var(--corner-r)) 0 0 / var(--corner-r) var(--corner-r) no-repeat,
-    var(--cell-bg);
-}
-
-:deep(tbody tr:first-child td:last-child) {
-  background:
-    radial-gradient(circle at 0 var(--corner-r), transparent var(--corner-r), var(--color-accent) var(--corner-r)) 100% 0 / var(--corner-r) var(--corner-r) no-repeat,
-    var(--cell-bg);
-}
-
-:deep(tbody tr:last-child td:first-child) {
-  background:
-    radial-gradient(circle at var(--corner-r) 0, transparent var(--corner-r), var(--color-accent) var(--corner-r)) 0 100% / var(--corner-r) var(--corner-r) no-repeat,
-    var(--cell-bg);
-}
-
-:deep(tbody tr:last-child td:last-child) {
-  background:
-    radial-gradient(circle at 0 0, transparent var(--corner-r), var(--color-accent) var(--corner-r)) 100% 100% / var(--corner-r) var(--corner-r) no-repeat,
-    var(--cell-bg);
-}
-
-/* Single row: combine top + bottom gradients */
-:deep(tbody tr:first-child:last-child td:first-child) {
-  background:
-    radial-gradient(circle at var(--corner-r) var(--corner-r), transparent var(--corner-r), var(--color-accent) var(--corner-r)) 0 0 / var(--corner-r) var(--corner-r) no-repeat,
-    radial-gradient(circle at var(--corner-r) 0, transparent var(--corner-r), var(--color-accent) var(--corner-r)) 0 100% / var(--corner-r) var(--corner-r) no-repeat,
-    var(--cell-bg);
-}
-
-:deep(tbody tr:first-child:last-child td:last-child) {
-  background:
-    radial-gradient(circle at 0 var(--corner-r), transparent var(--corner-r), var(--color-accent) var(--corner-r)) 100% 0 / var(--corner-r) var(--corner-r) no-repeat,
-    radial-gradient(circle at 0 0, transparent var(--corner-r), var(--color-accent) var(--corner-r)) 100% 100% / var(--corner-r) var(--corner-r) no-repeat,
-    var(--cell-bg);
 }
 
 /* Frozen column shadow via ::before — ::after is reserved for header divider */

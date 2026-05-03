@@ -21,6 +21,16 @@ const sampleData: User[] = [
   { id: 5, name: 'Eve', email: 'eve@example.com', role: 'User', status: 'inactive', amount: 3456.89, createdAt: '2024-05-12T11:20:00Z' },
 ]
 
+const longData: User[] = Array.from({ length: 30 }, (_, i) => ({
+  id: i + 1,
+  name: `User ${i + 1}`,
+  email: `user${i + 1}@example.com`,
+  role: [ 'Admin', 'Editor', 'User' ][i % 3]!,
+  status: i % 4 === 0 ? 'inactive' : 'active',
+  amount: Math.round(Math.random() * 10000) / 100,
+  createdAt: new Date(2024, 0, 1 + i).toISOString(),
+}))
+
 const basicColumns: DataTableColumn[] = [
   { field: 'name', title: 'Name', width: '120px' },
   { field: 'email', title: 'Email', minWidth: '200px' },
@@ -67,11 +77,13 @@ const meta = {
     selectionMode: { control: 'select', options: [ undefined, 'single', 'multiple' ]},
     loading: { control: 'boolean' },
     clickable: { control: 'boolean' },
+    height: { control: 'text' },
   },
   args: {
     selectionMode: undefined,
     loading: false,
     clickable: false,
+    height: undefined,
   },
   render: args => ({
     components: { DataTable: DataTable as any },
@@ -90,6 +102,163 @@ type Story = StoryObj<typeof meta>
 const noControls = { controls: { disable: true }} satisfies Story['parameters']
 
 export const Default: Story = {}
+
+export const Sortable: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable
+    :data="sortedData"
+    :columns="sortableColumns"
+    v-model:sortBy="sortBy"
+    v-model:sortOrder="sortOrder"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup () {
+      const sortBy = ref<string | null>(null)
+      const sortOrder = ref<number | null>(null)
+
+      const sortedData = computed(() => {
+        if (!sortBy.value || !sortOrder.value) return sampleData
+        return [ ...sampleData ].sort((a, b) => {
+          const av = a[sortBy.value as keyof User]
+          const bv = b[sortBy.value as keyof User]
+          if (av < bv) return -1 * sortOrder.value!
+          if (av > bv) return 1 * sortOrder.value!
+          return 0
+        })
+      })
+
+      return { sortableColumns, sortBy, sortOrder, sortedData }
+    },
+    template: `
+      <div class="w-full">
+        <DataTable
+          :data="sortedData"
+          :columns="sortableColumns"
+          v-model:sortBy="sortBy"
+          v-model:sortOrder="sortOrder"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">
+          Sort: {{ sortBy ?? 'none' }} / {{ sortOrder ?? 'none' }}
+        </div>
+      </div>
+    `,
+  }),
+}
+
+export const ColumnTypes: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable :data="data" :columns="typeColumns" />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup: () => ({ data: sampleData, typeColumns }),
+    template: `
+      <div class="w-full">
+        <DataTable :data="data" :columns="typeColumns" />
+      </div>
+    `,
+  }),
+}
+
+export const RowClick: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable
+    :data="data"
+    :columns="columns"
+    clickable
+    @rowClick="row => lastClicked = row"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup () {
+      const lastClicked = ref<User | null>(null)
+      return { data: sampleData, basicColumns, lastClicked }
+    },
+    template: `
+      <div class="w-full">
+        <DataTable
+          :data="data"
+          :columns="basicColumns"
+          clickable
+          @rowClick="row => lastClicked = row"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">
+          Last clicked: {{ lastClicked?.name ?? 'none' }}
+        </div>
+      </div>
+    `,
+  }),
+}
+
+export const Loading: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DataTable :data="data" :columns="columns" loading />',
+      },
+    },
+  },
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup: () => ({ data: sampleData, basicColumns }),
+    template: `
+      <div class="w-full">
+        <DataTable :data="data" :columns="basicColumns" loading />
+      </div>
+    `,
+  }),
+}
+
+export const EmptyState: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: '<DataTable :data="[]" :columns="columns" />',
+      },
+    },
+  },
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup: () => ({ basicColumns }),
+    template: `
+      <div class="w-full">
+        <DataTable :data="[]" :columns="basicColumns" />
+      </div>
+    `,
+  }),
+}
 
 export const SingleSelection: Story = {
   parameters: {
@@ -171,7 +340,7 @@ export const MultipleSelection: Story = {
   }),
 }
 
-export const Sortable: Story = {
+export const FrozenColumns: Story = {
   parameters: {
     ...noControls,
     docs: {
@@ -179,11 +348,15 @@ export const Sortable: Story = {
         code: `
 <template>
   <DataTable
-    :data="sortedData"
-    :columns="sortableColumns"
-    v-model:sortBy="sortBy"
-    v-model:sortOrder="sortOrder"
-  />
+    :data="data"
+    :columns="frozenColumns"
+    selectionMode="multiple"
+    v-model:selection="selection"
+  >
+    <template #id>
+      <button class="text-sm text-primary underline">Edit</button>
+    </template>
+  </DataTable>
 </template>
 `.trim(),
       },
@@ -192,46 +365,41 @@ export const Sortable: Story = {
   render: () => ({
     components: { DataTable: DataTable as any },
     setup () {
-      const sortBy = ref<string | null>(null)
-      const sortOrder = ref<number | null>(null)
-
-      const sortedData = computed(() => {
-        if (!sortBy.value || !sortOrder.value) return sampleData
-        return [ ...sampleData ].sort((a, b) => {
-          const av = a[sortBy.value as keyof User]
-          const bv = b[sortBy.value as keyof User]
-          if (av < bv) return -1 * sortOrder.value!
-          if (av > bv) return 1 * sortOrder.value!
-          return 0
-        })
-      })
-
-      return { sortableColumns, sortBy, sortOrder, sortedData }
+      const selection = ref<User[]>([])
+      return { data: sampleData, frozenColumns, selection }
     },
     template: `
-      <div class="w-full">
+      <div class="max-w-[600px]">
         <DataTable
-          :data="sortedData"
-          :columns="sortableColumns"
-          v-model:sortBy="sortBy"
-          v-model:sortOrder="sortOrder"
-        />
-        <div class="mt-2 text-sm text-muted-foreground">
-          Sort: {{ sortBy ?? 'none' }} / {{ sortOrder ?? 'none' }}
-        </div>
+          :data="data"
+          :columns="frozenColumns"
+          selectionMode="multiple"
+          v-model:selection="selection"
+        >
+          <template #id>
+            <button class="text-sm text-primary underline">Edit</button>
+          </template>
+        </DataTable>
       </div>
     `,
   }),
 }
 
-export const ColumnTypes: Story = {
+/** Internal vertical scroll: header and footer stay pinned, only tbody scrolls. */
+export const FixedHeight: Story = {
   parameters: {
     ...noControls,
     docs: {
       source: {
         code: `
 <template>
-  <DataTable :data="data" :columns="typeColumns" />
+  <DataTable :data="data" :columns="columns" height="360px">
+    <template #footer>
+      <div class="text-right text-sm font-medium">
+        Total: <span class="font-mono">\${{ total.toFixed(2) }}</span>
+      </div>
+    </template>
+  </DataTable>
 </template>
 `.trim(),
       },
@@ -239,16 +407,28 @@ export const ColumnTypes: Story = {
   },
   render: () => ({
     components: { DataTable: DataTable as any },
-    setup: () => ({ data: sampleData, typeColumns }),
+    setup () {
+      const total = computed(() => longData.reduce((sum, r) => sum + r.amount, 0))
+      return { data: longData, sortableColumns, total }
+    },
     template: `
       <div class="w-full">
-        <DataTable :data="data" :columns="typeColumns" />
+        <DataTable :data="data" :columns="sortableColumns" height="360px">
+          <template #footer>
+            <div class="text-right text-sm font-medium">
+              Total: <span class="font-mono">\${{ total.toFixed(2) }}</span>
+            </div>
+          </template>
+        </DataTable>
       </div>
     `,
   }),
 }
 
-export const CustomSlots: Story = {
+// -- Slot variations -------------------------------------------------------
+
+/** Per-column cell slots — slot name matches `column.field`, scope: `{ column, row, value, index }`. */
+export const CellSlots: Story = {
   parameters: {
     ...noControls,
     docs: {
@@ -290,7 +470,8 @@ export const CustomSlots: Story = {
   }),
 }
 
-export const SlotEmptyFallback: Story = {
+/** When a per-column cell slot renders nothing, a placeholder dash shows automatically. */
+export const CellSlotEmptyFallback: Story = {
   parameters: {
     ...noControls,
     docs: {
@@ -355,26 +536,46 @@ export const SlotEmptyFallback: Story = {
   }),
 }
 
-export const EmptyState: Story = {
+/** `bodyStart` / `bodyEnd` slots render full-width rows above/below the data. */
+export const BodySlots: Story = {
   parameters: {
     ...noControls,
     docs: {
       source: {
-        code: '<DataTable :data="[]" :columns="columns" />',
+        code: `
+<template>
+  <DataTable :data="data" :columns="columns" height="360px">
+    <template #bodyStart>
+      <div class="text-center text-xs text-muted-foreground">Latest entries</div>
+    </template>
+    <template #bodyEnd>
+      <div class="text-center text-xs text-muted-foreground">— end of list —</div>
+    </template>
+  </DataTable>
+</template>
+`.trim(),
       },
     },
   },
   render: () => ({
     components: { DataTable: DataTable as any },
-    setup: () => ({ basicColumns }),
+    setup: () => ({ data: longData, sortableColumns }),
     template: `
       <div class="w-full">
-        <DataTable :data="[]" :columns="basicColumns" />
+        <DataTable :data="data" :columns="sortableColumns" height="360px">
+          <template #bodyStart>
+            <div class="text-center text-xs text-muted-foreground">Latest entries</div>
+          </template>
+          <template #bodyEnd>
+            <div class="text-center text-xs text-muted-foreground">— end of list —</div>
+          </template>
+        </DataTable>
       </div>
     `,
   }),
 }
 
+/** Footer slot — content is wrapped internally in a full-width row. */
 export const FooterSlot: Story = {
   parameters: {
     ...noControls,
@@ -384,11 +585,9 @@ export const FooterSlot: Story = {
 <template>
   <DataTable :data="data" :columns="columns">
     <template #footer>
-      <tr class="h-12 border-t text-sm font-medium">
-        <td class="px-4">Total</td>
-        <td class="px-4" colspan="2"></td>
-        <td class="px-4 font-mono">\${{ data.reduce((sum, r) => sum + r.amount, 0).toFixed(2) }}</td>
-      </tr>
+      <div class="text-right text-sm font-medium">
+        Total: <span class="font-mono">\${{ total.toFixed(2) }}</span>
+      </div>
     </template>
   </DataTable>
 </template>
@@ -398,123 +597,19 @@ export const FooterSlot: Story = {
   },
   render: () => ({
     components: { DataTable: DataTable as any, Tag },
-    setup: () => ({ data: sampleData, slotColumns }),
+    setup () {
+      const total = computed(() => sampleData.reduce((sum, r) => sum + r.amount, 0))
+      return { data: sampleData, slotColumns, total }
+    },
     template: `
       <div class="w-full">
         <DataTable :data="data" :columns="slotColumns">
           <template #footer>
-            <tr class="h-12 border-t text-sm font-medium">
-              <td class="px-4">Total</td>
-              <td class="px-4" colspan="2"></td>
-              <td class="px-4 font-mono">\${{ data.reduce((sum, r) => sum + r.amount, 0).toFixed(2) }}</td>
-            </tr>
+            <div class="text-right text-sm font-medium">
+              Total: <span class="font-mono">\${{ total.toFixed(2) }}</span>
+            </div>
           </template>
         </DataTable>
-      </div>
-    `,
-  }),
-}
-
-export const FrozenColumns: Story = {
-  parameters: {
-    ...noControls,
-    docs: {
-      source: {
-        code: `
-<template>
-  <DataTable
-    :data="data"
-    :columns="frozenColumns"
-    selectionMode="multiple"
-    v-model:selection="selection"
-  >
-    <template #id>
-      <button class="text-sm text-primary underline">Edit</button>
-    </template>
-  </DataTable>
-</template>
-`.trim(),
-      },
-    },
-  },
-  render: () => ({
-    components: { DataTable: DataTable as any },
-    setup () {
-      const selection = ref<User[]>([])
-      return { data: sampleData, frozenColumns, selection }
-    },
-    template: `
-      <div class="max-w-[600px]">
-        <DataTable
-          :data="data"
-          :columns="frozenColumns"
-          selectionMode="multiple"
-          v-model:selection="selection"
-        >
-          <template #id>
-            <button class="text-sm text-primary underline">Edit</button>
-          </template>
-        </DataTable>
-      </div>
-    `,
-  }),
-}
-
-export const Loading: Story = {
-  parameters: {
-    ...noControls,
-    docs: {
-      source: {
-        code: '<DataTable :data="data" :columns="columns" loading />',
-      },
-    },
-  },
-  render: () => ({
-    components: { DataTable: DataTable as any },
-    setup: () => ({ data: sampleData, basicColumns }),
-    template: `
-      <div class="w-full">
-        <DataTable :data="data" :columns="basicColumns" loading />
-      </div>
-    `,
-  }),
-}
-
-export const RowClick: Story = {
-  parameters: {
-    ...noControls,
-    docs: {
-      source: {
-        code: `
-<template>
-  <DataTable
-    :data="data"
-    :columns="columns"
-    clickable
-    @rowClick="row => lastClicked = row"
-  />
-</template>
-`.trim(),
-      },
-    },
-  },
-  render: () => ({
-    components: { DataTable: DataTable as any },
-    setup () {
-      const lastClicked = ref<User | null>(null)
-      return { data: sampleData, basicColumns, lastClicked }
-    },
-    template: `
-      <div class="w-full">
-        <DataTable
-          :data="data"
-          :columns="basicColumns"
-          clickable
-          @rowClick="row => lastClicked = row"
-        />
-        <div class="mt-2 text-sm text-muted-foreground">
-          Last clicked: {{ lastClicked?.name ?? 'none' }}
-        </div>
       </div>
     `,
   }),

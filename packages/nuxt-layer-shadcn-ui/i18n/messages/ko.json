@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "항목 없음"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "— 모두 로드됨 —",
+        "count": "{loaded}개/{total}개 로드됨",
+        "refresh": "새로고침",
+        "scrollToTop": "상단으로 이동"
+      },
       "InputRange": {
         "endPlaceholder": "최대값",
         "startPlaceholder": "최소값"

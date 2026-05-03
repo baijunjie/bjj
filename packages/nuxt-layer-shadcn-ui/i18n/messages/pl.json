@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "Brak elementów"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "— wszystko załadowane —",
+        "count": "{loaded} z {total} załadowane",
+        "refresh": "Odśwież",
+        "scrollToTop": "Przewiń do góry"
+      },
       "InputRange": {
         "endPlaceholder": "Maksimum",
         "startPlaceholder": "Minimum"

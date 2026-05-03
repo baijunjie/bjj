@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "Tidak ada item"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "— semua dimuat —",
+        "count": "{loaded} dari {total} dimuat",
+        "refresh": "Segarkan",
+        "scrollToTop": "Gulir ke atas"
+      },
       "InputRange": {
         "endPlaceholder": "Maksimal",
         "startPlaceholder": "Minimal"

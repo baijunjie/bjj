@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "Нет элементов"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "— все загружено —",
+        "count": "{loaded} из {total} загружено",
+        "refresh": "Обновить",
+        "scrollToTop": "Прокрутить вверх"
+      },
       "InputRange": {
         "endPlaceholder": "Максимум",
         "startPlaceholder": "Минимум"

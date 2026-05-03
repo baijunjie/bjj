@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "沒有項目"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "— 全部已載入 —",
+        "count": "{loaded} 的 {total} 已載入",
+        "refresh": "重新整理",
+        "scrollToTop": "回到頂部"
+      },
       "InputRange": {
         "endPlaceholder": "最大值",
         "startPlaceholder": "最小值"

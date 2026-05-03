@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "Không có mục"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "— tất cả đã tải —",
+        "count": "{loaded} của {total} đã tải",
+        "refresh": "Làm mới",
+        "scrollToTop": "Cuộn lên đầu"
+      },
       "InputRange": {
         "endPlaceholder": "Tối đa",
         "startPlaceholder": "Tối thiểu"

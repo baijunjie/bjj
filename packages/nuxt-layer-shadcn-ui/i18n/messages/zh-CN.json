@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "无项目"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "全部已加载",
+        "count": "{loaded} / {total} 已加载",
+        "refresh": "刷新",
+        "scrollToTop": "回到顶部"
+      },
       "InputRange": {
         "endPlaceholder": "最大值",
         "startPlaceholder": "最小值"

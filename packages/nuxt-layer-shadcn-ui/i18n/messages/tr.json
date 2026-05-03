@@ -51,6 +51,12 @@
       "Dropdown": {
         "empty": "Öğe yok"
       },
+      "InfiniteDataTable": {
+        "allLoaded": "— tümü yüklendi —",
+        "count": "{loaded} / {total} yüklendi",
+        "refresh": "Yenile",
+        "scrollToTop": "Başa dön"
+      },
       "InputRange": {
         "endPlaceholder": "Maks",
         "startPlaceholder": "Min"
