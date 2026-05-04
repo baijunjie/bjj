@@ -208,15 +208,6 @@ onMounted(() => {
       <slot name="footer">
         <div class="gap-2 text-xs flex items-center justify-between">
           <div class="gap-2 flex items-center">
-            <Tooltip :text="T('scrollToTop')">
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                icon="arrow-up-to-line"
-                :disabled="loading || internalData.length === 0"
-                @click="scrollToTop"
-              />
-            </Tooltip>
             <Tooltip :text="T('refresh')">
               <Button
                 variant="ghost"
@@ -224,6 +215,15 @@ onMounted(() => {
                 icon="rotate-cw"
                 :disabled="loading"
                 @click="refresh"
+              />
+            </Tooltip>
+            <Tooltip :text="T('scrollToTop')">
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                icon="arrow-up-to-line"
+                :disabled="loading || internalData.length === 0"
+                @click="scrollToTop"
               />
             </Tooltip>
           </div>
