@@ -141,6 +141,7 @@ watch(() => props.filters, (newVal, oldVal) => {
 // -- Expose --
 
 defineExpose({
+  data: internalData,
   refresh,
   loadMore,
   scrollToTop,
