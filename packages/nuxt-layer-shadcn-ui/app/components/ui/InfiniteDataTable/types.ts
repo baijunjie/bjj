@@ -1,8 +1,8 @@
 import type { DataTableColumn } from '../DataTable/types'
 
 export interface InfiniteDataTableFetchParams {
-  /** Opaque token returned by the previous page; absent on the first page */
-  next?: string
+  /** Opaque cursor pointing at the next page; absent on the first page */
+  cursor?: string
   /** Page size requested */
   limit: number
   /** Filter / sort fields are spread onto the params object */
@@ -11,7 +11,7 @@ export interface InfiniteDataTableFetchParams {
 
 export interface InfiniteDataTableFetchResult<T = Record<string, any>> {
   items: T[]
-  /** Token for the next page; absent signals "no more" */
+  /** Cursor for the next page; pass back as `cursor` on the next request. Absent signals "no more". */
   next?: string
   /** Optional total count */
   total?: number

@@ -32,7 +32,7 @@ const columns: DataTableColumn[] = [
   { field: 'createdAt', title: 'Created', width: '140px', type: 'date' },
 ]
 
-/** Mock fetch using offset as the opaque `next` token */
+/** Mock fetch using offset as the opaque cursor */
 function mockFetch (params: InfiniteDataTableFetchParams): Promise<InfiniteDataTableFetchResult<User>> {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -53,7 +53,7 @@ function mockFetch (params: InfiniteDataTableFetchParams): Promise<InfiniteDataT
         })
       }
 
-      const offset = params.next ? Number(params.next) : 0
+      const offset = params.cursor ? Number(params.cursor) : 0
       const items = data.slice(offset, offset + params.limit)
       const nextOffset = offset + items.length
       resolve({

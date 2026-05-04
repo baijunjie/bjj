@@ -22,7 +22,7 @@ const T = useTranslations('components.ui.InfiniteDataTable')
 
 const loading = ref(false)
 const internalData = ref<TData[]>([]) as Ref<TData[]>
-const next = ref<string | undefined>(undefined)
+const cursor = ref<string | undefined>(undefined)
 const hasMore = ref(true)
 const total = ref<number | undefined>(undefined)
 const requestVersion = ref(0)
@@ -56,14 +56,14 @@ function getFilters (): Record<string, any> {
 function buildFetchParams (): InfiniteDataTableFetchParams {
   return {
     ...getFilters(),
-    next: next.value,
+    cursor: cursor.value,
     limit: props.pageSize,
   }
 }
 
 function resetState () {
   internalData.value = []
-  next.value = undefined
+  cursor.value = undefined
   hasMore.value = true
   total.value = undefined
 }
@@ -82,7 +82,7 @@ async function loadMore () {
 
     internalData.value = [ ...internalData.value, ...result.items ]
     if (result.total != null) total.value = result.total
-    next.value = result.next
+    cursor.value = result.next
     hasMore.value = !!result.next
   } catch (error) {
     if (currentVersion !== requestVersion.value) return
