@@ -5,7 +5,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableEmpty,
   TableFooter,
   TableHead,
   TableHeader,
@@ -437,24 +436,29 @@ defineExpose({
           </TableRow>
         </template>
 
-        <TableEmpty
+        <TableRow
           v-else-if="!loading"
-          :colspan="totalColumns"
+          data-virtual-row
+          class="hover:bg-transparent"
         >
-          <slot name="empty">
-            <div
-              class="gap-2 text-muted-foreground flex flex-col items-center"
-            >
-              <Icon
-                name="inbox"
-                class="size-8"
-              />
-              <span class="text-sm">
-                {{ T('empty') }}
-              </span>
+          <TableCell :colspan="totalColumns">
+            <div class="py-10 flex items-center justify-center">
+              <slot name="empty">
+                <div
+                  class="gap-2 text-muted-foreground flex flex-col items-center"
+                >
+                  <Icon
+                    name="inbox"
+                    class="size-8"
+                  />
+                  <span class="text-sm">
+                    {{ T('empty') }}
+                  </span>
+                </div>
+              </slot>
             </div>
-          </slot>
-        </TableEmpty>
+          </TableCell>
+        </TableRow>
 
         <!-- Bottom body slot (e.g. infinite-scroll trigger / "all loaded") -->
         <TableRow
@@ -515,7 +519,7 @@ defineExpose({
   --cell-bg: var(--color-card);
 }
 
-:deep(tbody tr:hover) {
+:deep(tbody tr:not([data-virtual-row]):hover) {
   --cell-bg: var(--color-muted);
 }
 
