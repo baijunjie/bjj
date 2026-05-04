@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="TData extends Record<string, any>">
 import type { InfiniteDataTableFetchParams, InfiniteDataTableProps } from './types'
+import { useEventListener } from '@vueuse/core'
 
 const props = withDefaults(defineProps<InfiniteDataTableProps<TData>>(), {
   columns: () => [],
@@ -37,11 +38,27 @@ const isInitialLoad = computed(() => loading.value && internalData.value.length 
 // -- IntersectionObserver root: only when internal scroll is active --
 
 const dataTableRef = ref<{ scrollEl?: HTMLElement } | null>(null)
+const scrollEl = computed<HTMLElement | undefined>(() => dataTableRef.value?.scrollEl)
 const intersectionOptions = computed<IntersectionObserverInit | undefined>(() => { // eslint-disable-line no-undef
   if (!props.height) return undefined
-  const root = dataTableRef.value?.scrollEl
+  const root = scrollEl.value
   return root ? { root } : undefined
 })
+
+// -- Scroll-to-top availability --
+
+const { isOverflowing, atStart } = useScrollState(scrollEl)
+const isWindowAboveTable = ref(false)
+
+function updateWindowPosition () {
+  const el = scrollEl.value
+  isWindowAboveTable.value = !!el && el.getBoundingClientRect().top < 0
+}
+
+useEventListener(window, 'scroll', updateWindowPosition, { passive: true })
+onMounted(() => nextTick(updateWindowPosition))
+
+const isAtTop = computed(() => isOverflowing.value ? atStart.value : !isWindowAboveTable.value)
 
 // -- Helpers --
 
@@ -99,9 +116,9 @@ async function refresh () {
 }
 
 function scrollToTop () {
-  const el = dataTableRef.value?.scrollEl
+  const el = scrollEl.value
   if (!el) return
-  if (el.scrollHeight > el.clientHeight) {
+  if (isOverflowing.value) {
     el.scrollTo({ top: 0, behavior: 'smooth' })
   } else {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -221,7 +238,7 @@ onMounted(() => {
                 variant="ghost"
                 size="icon-sm"
                 icon="arrow-up-to-line"
-                :disabled="loading || internalData.length === 0"
+                :disabled="loading || internalData.length === 0 || isAtTop"
                 @click="scrollToTop"
               />
             </Tooltip>
