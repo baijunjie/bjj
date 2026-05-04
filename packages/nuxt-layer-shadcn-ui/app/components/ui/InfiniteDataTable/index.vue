@@ -207,16 +207,13 @@ onMounted(() => {
     <template #footer>
       <slot name="footer">
         <div class="gap-2 text-xs flex items-center justify-between">
+          <span
+            v-if="total != null"
+            class="text-muted-foreground"
+          >
+            {{ T('count', { loaded: internalData.length, total }) }}
+          </span>
           <div class="gap-2 flex items-center">
-            <Tooltip :text="T('refresh')">
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                icon="rotate-cw"
-                :disabled="loading"
-                @click="refresh"
-              />
-            </Tooltip>
             <Tooltip :text="T('scrollToTop')">
               <Button
                 variant="ghost"
@@ -226,13 +223,16 @@ onMounted(() => {
                 @click="scrollToTop"
               />
             </Tooltip>
+            <Tooltip :text="T('refresh')">
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                icon="rotate-cw"
+                :disabled="loading"
+                @click="refresh"
+              />
+            </Tooltip>
           </div>
-          <span
-            v-if="total != null"
-            class="text-muted-foreground"
-          >
-            {{ T('count', { loaded: internalData.length, total }) }}
-          </span>
         </div>
       </slot>
     </template>
