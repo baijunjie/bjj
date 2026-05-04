@@ -207,12 +207,14 @@ onMounted(() => {
     <template #footer>
       <slot name="footer">
         <div class="gap-2 text-xs flex items-center justify-between">
-          <span
-            v-if="total != null"
-            class="text-muted-foreground"
-          >
-            {{ T('count', { loaded: internalData.length, total }) }}
-          </span>
+          <div>
+            <span
+              v-if="total != null"
+              class="text-muted-foreground"
+            >
+              {{ T('count', { loaded: internalData.length, total }) }}
+            </span>
+          </div>
           <div class="gap-2 flex items-center">
             <Tooltip :text="T('scrollToTop')">
               <Button
