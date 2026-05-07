@@ -12,7 +12,7 @@ description: Storybook story 开发规范。**创建或修改任何 `.stories.ts
 | Package | 封装层目录 | story title 前缀 |
 |---|---|---|
 | `nuxt-layer-shadcn-ui` | `app/components/ui/` | `UI/` |
-| `nuxt-layer-effect` | `app/components/effect/` | `Effect/` |
+| `nuxt-layer-basic` | `app/components/effect/` | `Effect/` |
 
 下文以 `<封装层>` 指代当前包的封装目录（`ui/` 或 `effect/`），以 `<TitlePrefix>` 指代 title 前缀（`UI` 或 `Effect`）。
 

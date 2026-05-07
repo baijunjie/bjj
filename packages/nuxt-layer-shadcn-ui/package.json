@@ -28,15 +28,15 @@
     "i18n:fix:alignment": "tsx scripts/i18n/checkI18nAlignment --fix",
     "release": "npm run release:bjj && npm run release:polymarbot && npm run release:elepay",
     "release:bjj": "tsx ../../scripts/publish.ts --name @bjj/nuxt-layer-shadcn-ui --token BJJ_NPM_TOKEN",
-    "release:polymarbot": "tsx ../../scripts/publish.ts --name @polymarbot/nuxt-layer-shadcn-ui --token POLYMARBOT_NPM_TOKEN --rewrite '@bjj/nuxt-layer-shadcn-ui=@polymarbot/nuxt-layer-shadcn-ui' --rewrite '@bjj/nuxt-layer-effect=@polymarbot/nuxt-layer-effect' --rewrite '@bjj/shared=@polymarbot/uitls-shared'",
-    "release:elepay": "tsx ../../scripts/publish.ts --name @elepay-io/nuxt-layer-shadcn-ui --token ELEPAY_IO_NPM_TOKEN --registry https://npm.pkg.github.com/ --rewrite '@bjj/nuxt-layer-shadcn-ui=@elepay-io/nuxt-layer-shadcn-ui' --rewrite '@bjj/nuxt-layer-effect=@elepay-io/nuxt-layer-effect' --rewrite '@bjj/shared=@elepay-io/frontend-shared'"
+    "release:polymarbot": "tsx ../../scripts/publish.ts --name @polymarbot/nuxt-layer-shadcn-ui --token POLYMARBOT_NPM_TOKEN --rewrite '@bjj/nuxt-layer-shadcn-ui=@polymarbot/nuxt-layer-shadcn-ui' --rewrite '@bjj/nuxt-layer-basic=@polymarbot/nuxt-layer-basic' --rewrite '@bjj/shared=@polymarbot/uitls-shared'",
+    "release:elepay": "tsx ../../scripts/publish.ts --name @elepay-io/nuxt-layer-shadcn-ui --token ELEPAY_IO_NPM_TOKEN --registry https://npm.pkg.github.com/ --rewrite '@bjj/nuxt-layer-shadcn-ui=@elepay-io/nuxt-layer-shadcn-ui' --rewrite '@bjj/nuxt-layer-basic=@elepay-io/nuxt-layer-basic' --rewrite '@bjj/shared=@elepay-io/frontend-shared'"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@bjj/nuxt-layer-effect": "^0.1",
-    "@bjj/shared": "^0.3",
+    "@bjj/nuxt-layer-basic": "^0.1",
+    "@bjj/shared": "^0.5",
     "@tanstack/vue-table": "^8.21.3",
     "@types/lodash-es": "^4.17.12",
     "@types/qrcode": "^1.5.6",

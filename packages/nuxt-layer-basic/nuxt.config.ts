@@ -7,4 +7,10 @@ export default defineNuxtConfig({
   components: [
     { path: join(currentDir, 'app/components'), pathPrefix: true, extensions: [ 'vue' ]},
   ],
+
+  imports: {
+    dirs: [
+      join(currentDir, 'app/utils/**'),
+    ],
+  },
 })

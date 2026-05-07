@@ -9,8 +9,6 @@ export default defineConfig({
     'src/vue/utils/index.ts',
     'src/vue/composables/index.ts',
     'src/vue/directives/index.ts',
-    'src/nuxt/app/utils/index.ts',
-    'src/nuxt/server/utils/index.ts',
   ],
   shims: true,
   format: [ 'esm' ],

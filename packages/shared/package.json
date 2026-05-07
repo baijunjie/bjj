@@ -1,6 +1,6 @@
 {
   "name": "@bjj/shared",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Shared utilities",
   "type": "module",
   "exports": {
@@ -31,14 +31,6 @@
     "./vue/directives": {
       "types": "./dist/vue/directives/index.d.ts",
       "import": "./dist/vue/directives/index.js"
-    },
-    "./nuxt/app/utils": {
-      "types": "./dist/nuxt/app/utils/index.d.ts",
-      "import": "./dist/nuxt/app/utils/index.js"
-    },
-    "./nuxt/server/utils": {
-      "types": "./dist/nuxt/server/utils/index.d.ts",
-      "import": "./dist/nuxt/server/utils/index.js"
     }
   },
   "main": "./dist/index.js",
@@ -71,8 +63,6 @@
   "peerDependencies": {
     "@vueuse/core": "*",
     "dayjs": "^1",
-    "nitropack": "*",
-    "nuxt": "^4",
     "vue": "^3",
     "vue-i18n": "^11",
     "vue-router": "^4 || ^5",
@@ -83,12 +73,6 @@
       "optional": true
     },
     "dayjs": {
-      "optional": true
-    },
-    "nitropack": {
-      "optional": true
-    },
-    "nuxt": {
       "optional": true
     },
     "vue": {
@@ -109,9 +93,6 @@
     "@vueuse/core": "^14.2.0",
     "dayjs": "^1.11.20",
     "jsdom": "^26.1.0",
-    "nitropack": "^2.13.3",
-    "nuxt": "^4.4.2",
-    "ofetch": "^1.5.1",
     "vitest": "^3.2.1",
     "vue": "^3.5.0",
     "vue-i18n": "^11.3.0",

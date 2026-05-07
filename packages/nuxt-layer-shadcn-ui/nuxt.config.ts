@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   },
 
   // Package is declared as peerDependency so consumers own the version.
-  extends: [ '@bjj/nuxt-layer-effect' ],
+  extends: [ '@bjj/nuxt-layer-basic' ],
   modules: [ '@nuxtjs/i18n' ],
 
   // Lazy-loaded messages. @nuxtjs/i18n v9+ lazy-loads every locale file by
