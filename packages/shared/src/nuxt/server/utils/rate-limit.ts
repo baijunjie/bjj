@@ -6,6 +6,10 @@
  * configure the underlying driver in `nitro.storage` on the consumer side.
  */
 
+// See cache.ts for why this is imported explicitly rather than relying on
+// Nitro's auto-import.
+import { useStorage } from 'nitropack/runtime'
+
 interface RateLimitConfig {
   /** Maximum number of requests allowed */
   maxRequests: number

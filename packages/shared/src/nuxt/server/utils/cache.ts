@@ -10,6 +10,11 @@
  * `nitro.storage` on the consumer side.
  */
 
+// `useStorage` is auto-imported in user code by Nitro. When this module is
+// pre-bundled into a published package, that build-time AST transform no
+// longer runs for it, so we import the runtime symbol explicitly.
+import { useStorage } from 'nitropack/runtime'
+
 interface CacheOptions<T, S = T> {
   /** Storage namespace for cache isolation */
   namespace: string
