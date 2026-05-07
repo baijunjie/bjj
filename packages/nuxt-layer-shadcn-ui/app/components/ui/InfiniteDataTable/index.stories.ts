@@ -163,3 +163,47 @@ export const PageScroll: Story = {
   parameters: noControls,
   args: { height: undefined },
 }
+
+/** First page loads, but every subsequent `loadMore` call rejects — the bottom loader is replaced by a retry prompt. */
+export const Errored: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <InfiniteDataTable
+    :columns="columns"
+    :fetchMethod="failingAfterFirst"
+    height="360px"
+  />
+</template>
+
+<script setup>
+function failingAfterFirst (params) {
+  if (!params.cursor) return mockFetch(params)
+  return Promise.reject(new Error('mocked failure'))
+}
+</script>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { InfiniteDataTable: InfiniteDataTable as any },
+    setup () {
+      const failingAfterFirst = (params: InfiniteDataTableFetchParams): Promise<InfiniteDataTableFetchResult<User>> => {
+        if (!params.cursor) return mockFetch(params)
+        return new Promise((_, reject) => setTimeout(() => reject(new Error('mocked failure')), 400))
+      }
+      return { columns, failingAfterFirst }
+    },
+    template: `
+      <InfiniteDataTable
+        :columns="columns"
+        :fetchMethod="failingAfterFirst"
+        height="360px"
+      />
+    `,
+  }),
+}

@@ -1,6 +1,6 @@
 {
   "allLoaded": "— all loaded —",
   "count": "{loaded} of {total} loaded",
-  "refresh": "Refresh",
+  "loadFailed": "Failed to load",
   "scrollToTop": "Scroll to top"
 }

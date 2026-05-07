@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "Batal",
       "close": "Tutup",
-      "confirm": "Konfirmasi"
+      "confirm": "Konfirmasi",
+      "refresh": "Segarkan",
+      "retry": "Coba Lagi"
     },
     "formats": {
       "date": "YYYY-MM-DD",
@@ -26,7 +28,8 @@
   "components": {
     "ui": {
       "AsyncDataTable": {
-        "actions": "Tindakan"
+        "actions": "Tindakan",
+        "loadFailed": "Gagal memuat"
       },
       "CopyButton": {
         "copied": "Disalin",
@@ -54,7 +57,7 @@
       "InfiniteDataTable": {
         "allLoaded": "— semua dimuat —",
         "count": "{loaded} dari {total} dimuat",
-        "refresh": "Segarkan",
+        "loadFailed": "Gagal memuat",
         "scrollToTop": "Gulir ke atas"
       },
       "InputRange": {

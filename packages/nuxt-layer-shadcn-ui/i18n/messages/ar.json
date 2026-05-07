@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "إلغاء",
       "close": "إغلاق",
-      "confirm": "تأكيد"
+      "confirm": "تأكيد",
+      "refresh": "تحديث",
+      "retry": "إعادة محاولة"
     },
     "formats": {
       "date": "YYYY-MM-DD",
@@ -26,7 +28,8 @@
   "components": {
     "ui": {
       "AsyncDataTable": {
-        "actions": "الإجراءات"
+        "actions": "الإجراءات",
+        "loadFailed": "فشل التحميل"
       },
       "CopyButton": {
         "copied": "تم النسخ",
@@ -54,7 +57,7 @@
       "InfiniteDataTable": {
         "allLoaded": "— تم تحميل الكل —",
         "count": "{loaded} من {total} تم تحميله",
-        "refresh": "تحديث",
+        "loadFailed": "فشل التحميل",
         "scrollToTop": "الرجوع إلى الأعلى"
       },
       "InputRange": {

@@ -17,6 +17,7 @@ const emit = defineEmits<{
   'rowClick': [row: TData, index: number, event: MouseEvent]
 }>()
 
+const { t } = useI18n()
 const T = useTranslations('components.ui.InfiniteDataTable')
 
 // -- Internal state --
@@ -25,6 +26,7 @@ const loading = ref(false)
 const internalData = ref<TData[]>([]) as Ref<TData[]>
 const cursor = ref<string | undefined>(undefined)
 const hasMore = ref(true)
+const errored = ref(false)
 const total = ref<number | undefined>(undefined)
 const requestVersion = ref(0)
 
@@ -82,7 +84,11 @@ function resetState () {
   internalData.value = []
   cursor.value = undefined
   hasMore.value = true
+  errored.value = false
   total.value = undefined
+  // Release the loading guard so a fresh loadMore can start even when one is
+  // in flight; the in-flight request bails out via the requestVersion check.
+  loading.value = false
 }
 
 // -- Loading --
@@ -90,6 +96,10 @@ function resetState () {
 async function loadMore () {
   if (!props.fetchMethod) return
   if (loading.value || !hasMore.value) return
+
+  // Calling loadMore is the retry path; the IntersectionChecker is hidden
+  // while errored, so it can't trigger this branch on its own.
+  errored.value = false
 
   const currentVersion = ++requestVersion.value
   loading.value = true
@@ -104,6 +114,7 @@ async function loadMore () {
   } catch (error) {
     if (currentVersion !== requestVersion.value) return
     console.error('InfiniteDataTable loadMore failed:', error)
+    errored.value = true
   } finally {
     if (currentVersion === requestVersion.value) loading.value = false
   }
@@ -203,20 +214,35 @@ onMounted(() => {
     >
       <div
         v-if="!hasMore"
-        class="py-2 text-xs text-muted-foreground text-center"
+        class="text-sm text-muted-foreground text-center"
       >
         {{ T('allLoaded') }}
+      </div>
+      <div
+        v-else-if="errored"
+        class="gap-2 text-sm flex items-center justify-center"
+      >
+        <span class="text-muted-foreground">
+          {{ T('loadFailed') }}
+        </span>
+        <Button
+          variant="ghost"
+          size="sm"
+          @click="loadMore"
+        >
+          {{ t('common.actions.retry') }}
+        </Button>
       </div>
       <EffectIntersectionChecker
         v-else-if="!isInitialLoad"
         :disabled="loading"
         :options="intersectionOptions"
-        class="py-2 flex items-center justify-center"
+        class="flex items-center justify-center"
         @show="loadMore"
       >
         <Icon
           name="loader-circle"
-          class="size-4 animate-spin text-muted-foreground"
+          class="size-6 animate-spin text-muted-foreground"
         />
       </EffectIntersectionChecker>
     </template>
@@ -242,7 +268,7 @@ onMounted(() => {
                 @click="scrollToTop"
               />
             </Tooltip>
-            <Tooltip :text="T('refresh')">
+            <Tooltip :text="t('common.actions.refresh')">
               <Button
                 variant="ghost"
                 size="icon-sm"

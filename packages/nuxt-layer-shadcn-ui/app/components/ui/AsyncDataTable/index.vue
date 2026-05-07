@@ -32,6 +32,7 @@ const emit = defineEmits<{
   'rowClick': [row: TData, index: number, event: MouseEvent]
 }>()
 
+const { t } = useI18n()
 const T = useTranslations('components.ui.AsyncDataTable')
 const { isMobile } = useDevice()
 
@@ -47,6 +48,7 @@ function onSelectionChange (value: TData | TData[] | null) {
 
 const loading = ref(false)
 const internalData = ref<TData[]>([]) as Ref<TData[]>
+const errored = ref(false)
 const requestVersion = ref(0)
 
 const pagination = ref<AsyncDataTablePagination>({
@@ -105,6 +107,7 @@ async function fetchData (page?: number, forceRefresh = false) {
     pagination.value.page = page
   }
 
+  errored.value = false
   loading.value = true
   try {
     const result = await props.fetchMethod(buildFetchParams())
@@ -115,6 +118,10 @@ async function fetchData (page?: number, forceRefresh = false) {
   } catch (error) {
     if (currentVersion !== requestVersion.value) return
     console.error('AsyncDataTable fetchData failed:', error)
+    // Surface the failure via the empty-state slot rather than leaving the
+    // previous page's rows on screen while the pagination already moved on.
+    errored.value = true
+    internalData.value = []
   } finally {
     if (currentVersion === requestVersion.value) {
       loading.value = false
@@ -267,7 +274,7 @@ onMounted(() => {
       @rowClick="(row: TData, index: number, event: MouseEvent) => emit('rowClick', row, index, event)"
     >
       <template
-        v-for="name in Object.keys($slots).filter(n => n !== 'toolbar')"
+        v-for="name in Object.keys($slots).filter(n => n !== 'toolbar' && n !== 'empty')"
         :key="name"
         #[name]="slotData"
       >
@@ -275,6 +282,34 @@ onMounted(() => {
           :name="name"
           v-bind="slotData ?? {}"
         />
+      </template>
+
+      <template
+        v-if="errored"
+        #empty
+      >
+        <div class="gap-2 text-muted-foreground flex flex-col items-center">
+          <Icon
+            name="circle-alert"
+            class="size-8"
+          />
+          <span class="text-sm">
+            {{ T('loadFailed') }}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            @click="() => fetchData(undefined, true)"
+          >
+            {{ t('common.actions.retry') }}
+          </Button>
+        </div>
+      </template>
+      <template
+        v-else-if="$slots.empty"
+        #empty
+      >
+        <slot name="empty" />
       </template>
     </DataTable>
 

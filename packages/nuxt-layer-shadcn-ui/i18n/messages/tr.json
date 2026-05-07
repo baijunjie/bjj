@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "İptal",
       "close": "Kapat",
-      "confirm": "Onayla"
+      "confirm": "Onayla",
+      "refresh": "Yenile",
+      "retry": "Yeniden Dene"
     },
     "formats": {
       "date": "YYYY-MM-DD",
@@ -26,7 +28,8 @@
   "components": {
     "ui": {
       "AsyncDataTable": {
-        "actions": "İşlemler"
+        "actions": "İşlemler",
+        "loadFailed": "Yüklenemedi"
       },
       "CopyButton": {
         "copied": "Kopyalandı",
@@ -54,7 +57,7 @@
       "InfiniteDataTable": {
         "allLoaded": "— tümü yüklendi —",
         "count": "{loaded} / {total} yüklendi",
-        "refresh": "Yenile",
+        "loadFailed": "Yüklenemedi",
         "scrollToTop": "Başa dön"
       },
       "InputRange": {

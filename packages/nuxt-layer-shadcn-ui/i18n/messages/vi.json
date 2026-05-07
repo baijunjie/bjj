@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "Hủy",
       "close": "Đóng",
-      "confirm": "Xác nhận"
+      "confirm": "Xác nhận",
+      "refresh": "Làm mới",
+      "retry": "Thử lại"
     },
     "formats": {
       "date": "YYYY-MM-DD",
@@ -26,7 +28,8 @@
   "components": {
     "ui": {
       "AsyncDataTable": {
-        "actions": "Hành động"
+        "actions": "Hành động",
+        "loadFailed": "Không thể tải"
       },
       "CopyButton": {
         "copied": "Đã sao chép",
@@ -54,7 +57,7 @@
       "InfiniteDataTable": {
         "allLoaded": "— tất cả đã tải —",
         "count": "{loaded} của {total} đã tải",
-        "refresh": "Làm mới",
+        "loadFailed": "Không thể tải",
         "scrollToTop": "Cuộn lên đầu"
       },
       "InputRange": {

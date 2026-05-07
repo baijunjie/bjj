@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "Annuleren",
       "close": "Sluiten",
-      "confirm": "Bevestigen"
+      "confirm": "Bevestigen",
+      "refresh": "Vernieuwen",
+      "retry": "Opnieuw proberen"
     },
     "formats": {
       "date": "YYYY-MM-DD",
@@ -26,7 +28,8 @@
   "components": {
     "ui": {
       "AsyncDataTable": {
-        "actions": "Acties"
+        "actions": "Acties",
+        "loadFailed": "Laden mislukt"
       },
       "CopyButton": {
         "copied": "Gekopieerd",
@@ -54,7 +57,7 @@
       "InfiniteDataTable": {
         "allLoaded": "— alles geladen —",
         "count": "{loaded} van {total} geladen",
-        "refresh": "Vernieuwen",
+        "loadFailed": "Laden mislukt",
         "scrollToTop": "Naar boven schuiven"
       },
       "InputRange": {

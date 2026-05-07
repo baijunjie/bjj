@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "रद्द करें",
       "close": "बंद करें",
-      "confirm": "पुष्टि करें"
+      "confirm": "पुष्टि करें",
+      "refresh": "ताज़ा करें",
+      "retry": "पुनः प्रयास करें"
     },
     "formats": {
       "date": "YYYY-MM-DD",
@@ -26,7 +28,8 @@
   "components": {
     "ui": {
       "AsyncDataTable": {
-        "actions": "क्रियाएं"
+        "actions": "क्रियाएं",
+        "loadFailed": "लोड करने में विफल"
       },
       "CopyButton": {
         "copied": "कॉपी किया गया",
@@ -54,7 +57,7 @@
       "InfiniteDataTable": {
         "allLoaded": "— सभी लोड हो गए —",
         "count": "{loaded} of {total} लोड हो गया",
-        "refresh": "ताज़ा करें",
+        "loadFailed": "लोड करने में विफल",
         "scrollToTop": "शीर्ष पर जाएं"
       },
       "InputRange": {

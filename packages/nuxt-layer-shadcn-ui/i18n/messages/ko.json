@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "취소",
       "close": "닫기",
-      "confirm": "확인"
+      "confirm": "확인",
+      "refresh": "새로고침",
+      "retry": "재시도"
     },
     "formats": {
       "date": "YYYY-MM-DD",
@@ -26,7 +28,8 @@
   "components": {
     "ui": {
       "AsyncDataTable": {
-        "actions": "작업"
+        "actions": "작업",
+        "loadFailed": "로드 실패"
       },
       "CopyButton": {
         "copied": "복사됨",
@@ -54,7 +57,7 @@
       "InfiniteDataTable": {
         "allLoaded": "— 모두 로드됨 —",
         "count": "{loaded}개/{total}개 로드됨",
-        "refresh": "새로고침",
+        "loadFailed": "로드 실패",
         "scrollToTop": "상단으로 이동"
       },
       "InputRange": {

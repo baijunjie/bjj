@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "キャンセル",
       "close": "閉じる",
-      "confirm": "確認"
+      "confirm": "確認",
+      "refresh": "更新",
+      "retry": "再試行"
     },
     "formats": {
       "date": "YYYY年MM月DD日",
@@ -26,7 +28,8 @@
   "components": {
     "ui": {
       "AsyncDataTable": {
-        "actions": "アクション"
+        "actions": "アクション",
+        "loadFailed": "読み込みに失敗しました"
       },
       "CopyButton": {
         "copied": "コピーしました",
@@ -54,7 +57,7 @@
       "InfiniteDataTable": {
         "allLoaded": "すべて読み込み完了",
         "count": "{loaded}/{total} 読み込み済み",
-        "refresh": "更新",
+        "loadFailed": "読み込みに失敗しました",
         "scrollToTop": "トップへスクロール"
       },
       "InputRange": {

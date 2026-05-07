@@ -197,3 +197,45 @@ export const WithCustomToolbar: Story = {
     `,
   }),
 }
+
+/** First page loads, but switching to any later page rejects — to inspect how the table behaves when only a follow-up fetch fails. */
+export const Errored: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <AsyncDataTable
+    :columns="columns"
+    :fetchMethod="failingAfterFirst"
+  />
+</template>
+
+<script setup>
+function failingAfterFirst (params) {
+  if (params.offset === 0) return mockFetch(params)
+  return Promise.reject(new Error('mocked failure'))
+}
+</script>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { AsyncDataTable },
+    setup () {
+      const failingAfterFirst = (params: AsyncDataTableFetchParams): Promise<AsyncDataTableFetchResult<User>> => {
+        if (params.offset === 0) return mockFetch(params)
+        return new Promise((_, reject) => setTimeout(() => reject(new Error('mocked failure')), 500))
+      }
+      return { columns, failingAfterFirst }
+    },
+    template: `
+      <AsyncDataTable
+        :columns="columns"
+        :fetchMethod="failingAfterFirst"
+      />
+    `,
+  }),
+}

@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "Отменить",
       "close": "Закрыть",
-      "confirm": "Подтвердить"
+      "confirm": "Подтвердить",
+      "refresh": "Обновить",
+      "retry": "Повторить"
     },
     "formats": {
       "date": "ГГГГ-ММ-ДД",
@@ -26,7 +28,8 @@
   "components": {
     "ui": {
       "AsyncDataTable": {
-        "actions": "Действия"
+        "actions": "Действия",
+        "loadFailed": "Ошибка загрузки"
       },
       "CopyButton": {
         "copied": "Скопировано",
@@ -54,7 +57,7 @@
       "InfiniteDataTable": {
         "allLoaded": "— все загружено —",
         "count": "{loaded} из {total} загружено",
-        "refresh": "Обновить",
+        "loadFailed": "Ошибка загрузки",
         "scrollToTop": "Прокрутить вверх"
       },
       "InputRange": {

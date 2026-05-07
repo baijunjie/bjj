@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "Cancel",
       "close": "Close",
-      "confirm": "Confirm"
+      "confirm": "Confirm",
+      "refresh": "Refresh",
+      "retry": "Retry"
     },
     "formats": {
       "date": "YYYY-MM-DD",

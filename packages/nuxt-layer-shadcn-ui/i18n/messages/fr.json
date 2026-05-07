@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "Annuler",
       "close": "Fermer",
-      "confirm": "Confirmer"
+      "confirm": "Confirmer",
+      "refresh": "Rafraîchir",
+      "retry": "Réessayer"
     },
     "formats": {
       "date": "YYYY-MM-DD",
@@ -26,7 +28,8 @@
   "components": {
     "ui": {
       "AsyncDataTable": {
-        "actions": "Actions"
+        "actions": "Actions",
+        "loadFailed": "Échec du chargement"
       },
       "CopyButton": {
         "copied": "Copié",
@@ -54,7 +57,7 @@
       "InfiniteDataTable": {
         "allLoaded": "— tout chargé —",
         "count": "{loaded} sur {total} chargés",
-        "refresh": "Actualiser",
+        "loadFailed": "Échec du chargement",
         "scrollToTop": "Retour au haut"
       },
       "InputRange": {

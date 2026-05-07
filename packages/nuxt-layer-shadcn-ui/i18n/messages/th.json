@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "ยกเลิก",
       "close": "ปิด",
-      "confirm": "ยืนยัน"
+      "confirm": "ยืนยัน",
+      "refresh": "รีเฟรช",
+      "retry": "ลองใหม่"
     },
     "formats": {
       "date": "YYYY-MM-DD",
@@ -26,7 +28,8 @@
   "components": {
     "ui": {
       "AsyncDataTable": {
-        "actions": "การกระทำ"
+        "actions": "การกระทำ",
+        "loadFailed": "ไม่สามารถโหลดได้"
       },
       "CopyButton": {
         "copied": "คัดลอกแล้ว",
@@ -54,7 +57,7 @@
       "InfiniteDataTable": {
         "allLoaded": "— โหลดเสร็จแล้วทั้งหมด —",
         "count": "{loaded} จาก {total} โหลดแล้ว",
-        "refresh": "รีเฟรช",
+        "loadFailed": "ไม่สามารถโหลดได้",
         "scrollToTop": "เลื่อนขึ้นด้านบน"
       },
       "InputRange": {

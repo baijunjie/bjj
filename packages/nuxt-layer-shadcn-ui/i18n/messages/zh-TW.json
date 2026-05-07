@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "取消",
       "close": "關閉",
-      "confirm": "確認"
+      "confirm": "確認",
+      "refresh": "重新整理",
+      "retry": "重試"
     },
     "formats": {
       "date": "YYYY-MM-DD",
@@ -26,7 +28,8 @@
   "components": {
     "ui": {
       "AsyncDataTable": {
-        "actions": "操作"
+        "actions": "操作",
+        "loadFailed": "載入失敗"
       },
       "CopyButton": {
         "copied": "已複製",
@@ -54,7 +57,7 @@
       "InfiniteDataTable": {
         "allLoaded": "— 全部已載入 —",
         "count": "{loaded} 的 {total} 已載入",
-        "refresh": "重新整理",
+        "loadFailed": "載入失敗",
         "scrollToTop": "回到頂部"
       },
       "InputRange": {

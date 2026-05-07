@@ -3,7 +3,9 @@
     "actions": {
       "cancel": "Cancel",
       "close": "Close",
-      "confirm": "Confirm"
+      "confirm": "Confirm",
+      "refresh": "Refresh",
+      "retry": "Retry"
     },
     "formats": {
       "date": "YYYY-MM-DD",
@@ -26,7 +28,8 @@
   "components": {
     "ui": {
       "AsyncDataTable": {
-        "actions": "Actions"
+        "actions": "Actions",
+        "loadFailed": "Failed to load"
       },
       "CopyButton": {
         "copied": "Copied",
@@ -54,7 +57,7 @@
       "InfiniteDataTable": {
         "allLoaded": "— all loaded —",
         "count": "{loaded} of {total} loaded",
-        "refresh": "Refresh",
+        "loadFailed": "Failed to load",
         "scrollToTop": "Scroll to top"
       },
       "InputRange": {
