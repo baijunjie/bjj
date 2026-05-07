@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { current, isOpen, close, onClosed } = useDialogState()
+const { current, isOpen, isActive, close, onClosed } = useDialogState()
 
 const isAlert = computed(() => current.value?.options.rejectLabel === '')
 const isDestructive = computed(() => {
@@ -10,6 +10,8 @@ const isDestructive = computed(() => {
 
 <template>
   <Modal
+    v-if="isActive"
+    data-alert-dialog
     :visible="isOpen"
     :title="current?.options.title"
     :type="current?.options.type"

@@ -8,6 +8,7 @@
  * Stacking order (low → high):
  *   layout header                         z-100  (project convention)
  *   dialog / sheet (Modal / Drawer)       z-200  (cover the header)
+ *   alert dialog (system interrupts)      z-250  (always above other modals)
  *   tooltip / popover / dropdown / select z-300  (above modal when nested)
  * ========================================================================= */
 
@@ -17,6 +18,17 @@
 [data-slot='sheet-content'],
 [data-slot='sidebar'][data-mobile='true'] {
   z-index: 200;
+}
+
+/* AlertDialog must always sit above regular Modals, regardless of teleport
+ * order. Vue's <Teleport> places content at a stable anchor based on the
+ * host component's mount time — so an AlertDialog declared in app.vue (early
+ * mount) ends up *behind* a page-level Modal opened later. The overlay is
+ * matched via :has() because reka-ui's DialogPortal renders it as the
+ * adjacent previous sibling of the content. */
+[data-slot='dialog-content'][data-alert-dialog],
+[data-slot='dialog-overlay']:has(+ [data-slot='dialog-content'][data-alert-dialog]) {
+  z-index: 250;
 }
 
 [data-slot='tooltip-content'],

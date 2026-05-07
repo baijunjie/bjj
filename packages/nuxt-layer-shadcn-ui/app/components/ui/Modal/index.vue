@@ -11,6 +11,8 @@ import {
 } from '../../shadcn/dialog'
 import type { ModalProps } from './types'
 
+defineOptions({ inheritAttrs: false })
+
 const props = withDefaults(defineProps<ModalProps>(), {
   showClose: true,
   closeOnClickOutside: false,
@@ -97,6 +99,7 @@ const contentClass = computed(() =>
     </DialogTrigger>
 
     <DialogContent
+      v-bind="$attrs"
       :class="contentClass"
       :showCloseButton="false"
       @pointerDownOutside="onPointerDownOutside"
