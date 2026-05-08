@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import Icon from '../Icon/index.vue'
 import Input from './index.vue'
 
@@ -22,13 +23,14 @@ const meta = {
     invalid: false,
     class: 'max-w-sm',
   },
-  render: args => ({
-    components: { Input },
-    setup: () => ({ args }),
-    template: `
-      <Input v-bind="args" placeholder="Type something..." />
-    `,
-  }),
+  render: args => {
+    const onUpdate = useArgsModel()
+    return {
+      components: { Input },
+      setup: () => ({ args, onUpdate }),
+      template: '<Input v-bind="args" placeholder="Type something..." @update:modelValue="onUpdate" />',
+    }
+  },
 } satisfies Meta<typeof Input>
 
 export default meta

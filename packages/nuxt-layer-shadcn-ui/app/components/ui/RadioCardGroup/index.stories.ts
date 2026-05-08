@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import type { RadioCardGroupOption } from './types'
 import RadioCardGroup from './index.vue'
 
@@ -48,18 +49,19 @@ const meta = {
     options,
     disabled: false,
   },
-  render: args => ({
-    components: { RadioCardGroup },
-    setup () {
-      return { args }
-    },
-    template: `
-      <div class="max-w-md space-y-4">
-        <RadioCardGroup v-bind="args" @update:modelValue="v => args.modelValue = v" />
-        <div class="text-sm text-muted-foreground">Selected: {{ args.modelValue }}</div>
-      </div>
-    `,
-  }),
+  render: args => {
+    const onUpdate = useArgsModel()
+    return {
+      components: { RadioCardGroup },
+      setup: () => ({ args, onUpdate }),
+      template: `
+        <div class="max-w-md space-y-4">
+          <RadioCardGroup v-bind="args" @update:modelValue="onUpdate" />
+          <div class="text-sm text-muted-foreground">Selected: {{ args.modelValue }}</div>
+        </div>
+      `,
+    }
+  },
 } satisfies Meta<typeof RadioCardGroup>
 
 export default meta

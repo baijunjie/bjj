@@ -1,29 +1,32 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import Switch from './index.vue'
 
 const meta = {
   title: 'UI/Switch',
   component: Switch,
   argTypes: {
+    modelValue: { control: 'boolean' },
     disabled: { control: 'boolean' },
   },
   args: {
+    modelValue: true,
     disabled: false,
   },
-  render: args => ({
-    components: { Switch },
-    setup () {
-      const on = ref(true)
-      return { args, on }
-    },
-    template: `
-      <div class="flex items-center gap-4">
-        <Switch v-bind="args" v-model="on" />
-        <div class="text-sm text-muted-foreground">Value: {{ on }}</div>
-      </div>
-    `,
-  }),
+  render: args => {
+    const onUpdate = useArgsModel()
+    return {
+      components: { Switch },
+      setup: () => ({ args, onUpdate }),
+      template: `
+        <div class="flex items-center gap-4">
+          <Switch v-bind="args" @update:modelValue="onUpdate" />
+          <div class="text-sm text-muted-foreground">Value: {{ args.modelValue }}</div>
+        </div>
+      `,
+    }
+  },
 } satisfies Meta<typeof Switch>
 
 export default meta

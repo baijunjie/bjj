@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import InputOtp from './index.vue'
 
 const meta = {
@@ -15,18 +16,19 @@ const meta = {
     length: 6,
     disabled: false,
   },
-  render: args => ({
-    components: { InputOtp },
-    setup () {
-      return { args }
-    },
-    template: `
-      <div class="space-y-4">
-        <InputOtp v-bind="args" @update:modelValue="v => args.modelValue = v" />
-        <div class="text-sm text-muted-foreground">Value: {{ args.modelValue }}</div>
-      </div>
-    `,
-  }),
+  render: args => {
+    const onUpdate = useArgsModel()
+    return {
+      components: { InputOtp },
+      setup: () => ({ args, onUpdate }),
+      template: `
+        <div class="space-y-4">
+          <InputOtp v-bind="args" @update:modelValue="onUpdate" />
+          <div class="text-sm text-muted-foreground">Value: {{ args.modelValue }}</div>
+        </div>
+      `,
+    }
+  },
 } satisfies Meta<typeof InputOtp>
 
 export default meta

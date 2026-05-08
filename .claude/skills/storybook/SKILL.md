@@ -114,6 +114,39 @@ export const Default: Story = {
 
 Storybook Docs 把第一个 story 当作 Primary、紧跟其下渲染 ArgsTable（Controls）。Default 继承 `<X v-bind="args" />` 模板后，用户在 Controls 里改动会立即反映到 Default 上。
 
+### v-model 组件的 Default
+
+封装层组件如果用 `modelValue` / `update:modelValue`（Checkbox / RadioGroup / Switch / Slider / Input / Select 等），**meta.render 必须用 `useArgsModel` 把用户交互回写到 args**。否则 `modelValue` 在 args 里写死后，用户在画布上点击 / 输入不会有视觉变化（事件 emit 出来但没人接）。
+
+`useArgsModel` 是对 Storybook 官方 `useArgs` 钩子的薄封装，位于 `#storybook/argsModel`：
+
+```ts
+import { useArgsModel } from '#storybook/argsModel'
+
+render: args => {
+  const onUpdate = useArgsModel()    // 默认绑定 'modelValue'，可传 key 绑定其它字段
+  return {
+    components: { Checkbox },
+    setup: () => ({ args, onUpdate }),
+    template: '<Checkbox v-bind="args" @update:modelValue="onUpdate" />',
+  }
+}
+```
+
+**两个要点**：
+
+- `useArgsModel()` 必须在 **`render` 函数体里** 调用，不要写到 `setup()` 里——`useArgs` 依赖 Storybook 的 render context，进了 setup 就拿不到。
+- 仍然要在 `args` 里给 `modelValue` 设默认值、在 `argTypes` 里登记，不能省——这才让 Controls 面板出现 `modelValue` 控件。
+
+绑定多个字段（如 `modelValue` + `visible`）就调多次：
+
+```ts
+const onUpdateValue = useArgsModel('modelValue')
+const onUpdateVisible = useArgsModel('visible')
+```
+
+模板里分别挂 `@update:modelValue` 和 `@update:visible`。
+
 ### 非 Default story
 
 非 Default 都是**固定展示**，不接受用户改 args。

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import { useArgsModel } from '#storybook/argsModel'
 import type { DatePickerType } from './types'
 import Button from '../Button/index.vue'
 import Modal from '../Modal/index.vue'
@@ -35,18 +36,19 @@ const meta = {
     autoApply: true,
     class: '',
   },
-  render: args => ({
-    components: { DatePicker },
-    setup () {
-      return { args }
-    },
-    template: `
-      <div class="max-w-xs">
-        <DatePicker v-bind="args" @update:modelValue="v => args.modelValue = v" />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ args.modelValue }}</div>
-      </div>
-    `,
-  }),
+  render: args => {
+    const onUpdate = useArgsModel()
+    return {
+      components: { DatePicker },
+      setup: () => ({ args, onUpdate }),
+      template: `
+        <div class="max-w-xs">
+          <DatePicker v-bind="args" @update:modelValue="onUpdate" />
+          <div class="mt-2 text-sm text-muted-foreground">Value: {{ args.modelValue }}</div>
+        </div>
+      `,
+    }
+  },
 } satisfies Meta<typeof DatePicker>
 
 export default meta

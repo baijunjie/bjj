@@ -14,6 +14,7 @@ import type { ModalProps } from './types'
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<ModalProps>(), {
+  showCancel: true,
   showClose: true,
   closeOnClickOutside: false,
   title: undefined,

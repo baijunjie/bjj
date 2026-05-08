@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import Select from './index.vue'
 
 const frameworks = [
@@ -34,6 +35,7 @@ const meta = {
   title: 'UI/Select',
   component: Select as any,
   argTypes: {
+    modelValue: { control: 'text' },
     placeholder: { control: 'text' },
     disabled: { control: 'boolean' },
     loading: { control: 'boolean' },
@@ -43,6 +45,7 @@ const meta = {
     emptyText: { control: 'text' },
   },
   args: {
+    modelValue: undefined,
     placeholder: 'Select an option',
     disabled: false,
     loading: false,
@@ -51,19 +54,19 @@ const meta = {
     searchPlaceholder: '',
     emptyText: '',
   },
-  render: args => ({
-    components: { Select },
-    setup () {
-      const value = ref<string>()
-      return { args, value, frameworks }
-    },
-    template: `
-      <div class="max-w-sm">
-        <Select v-bind="args" v-model="value" :options="frameworks" />
-        <div class="mt-2 text-sm text-muted-foreground">Selected: {{ value ?? 'none' }}</div>
-      </div>
-    `,
-  }),
+  render: args => {
+    const onUpdate = useArgsModel()
+    return {
+      components: { Select },
+      setup: () => ({ args, onUpdate, frameworks }),
+      template: `
+        <div class="max-w-sm">
+          <Select v-bind="args" :options="frameworks" @update:modelValue="onUpdate" />
+          <div class="mt-2 text-sm text-muted-foreground">Selected: {{ args.modelValue ?? 'none' }}</div>
+        </div>
+      `,
+    }
+  },
 } satisfies Meta
 
 export default meta

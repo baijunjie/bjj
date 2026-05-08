@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import InputRange from './index.vue'
 
 const meta = {
@@ -23,22 +24,24 @@ const meta = {
     endPlaceholder: '',
     disabled: false,
   },
-  render: args => ({
-    components: { InputRange },
-    setup () {
-      return { args }
-    },
-    template: `
-      <div class="max-w-md">
-        <InputRange
-          v-bind="args"
-          @update:start="v => args.start = v"
-          @update:end="v => args.end = v"
-        />
-        <div class="mt-2 text-sm text-muted-foreground">Start: {{ args.start }}, End: {{ args.end }}</div>
-      </div>
-    `,
-  }),
+  render: args => {
+    const onUpdateStart = useArgsModel('start')
+    const onUpdateEnd = useArgsModel('end')
+    return {
+      components: { InputRange },
+      setup: () => ({ args, onUpdateStart, onUpdateEnd }),
+      template: `
+        <div class="max-w-md">
+          <InputRange
+            v-bind="args"
+            @update:start="onUpdateStart"
+            @update:end="onUpdateEnd"
+          />
+          <div class="mt-2 text-sm text-muted-foreground">Start: {{ args.start }}, End: {{ args.end }}</div>
+        </div>
+      `,
+    }
+  },
 } satisfies Meta<typeof InputRange>
 
 export default meta

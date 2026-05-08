@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import type { ModalContentType } from '../ModalContent/types'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import Button from '../Button/index.vue'
 import Input from '../Input/index.vue'
 import Modal from './index.vue'
@@ -11,6 +12,7 @@ const meta = {
   title: 'UI/Modal',
   component: Modal,
   argTypes: {
+    visible: { control: 'boolean' },
     loading: { control: 'boolean' },
     disabled: { control: 'boolean' },
     confirmDisabled: { control: 'boolean' },
@@ -27,6 +29,7 @@ const meta = {
     cancelText: { control: 'text' },
   },
   args: {
+    visible: false,
     loading: false,
     disabled: false,
     confirmDisabled: false,
@@ -42,22 +45,22 @@ const meta = {
     confirmText: 'OK',
     cancelText: 'Cancel',
   },
-  render: args => ({
-    components: { Modal, Button, Input },
-    setup () {
-      const visible = ref(false)
-      return { args, visible }
-    },
-    template: `
-      <div>
-        <Button @click="visible = true">Open Modal</Button>
-        <Modal v-bind="args" v-model:visible="visible">
-          <p>This is the modal content.</p>
-          <Input class="mt-4" placeholder="Try interacting with this input" />
-        </Modal>
-      </div>
-    `,
-  }),
+  render: args => {
+    const onUpdateVisible = useArgsModel('visible')
+    return {
+      components: { Modal, Button, Input },
+      setup: () => ({ args, onUpdateVisible }),
+      template: `
+        <div>
+          <Button @click="onUpdateVisible(true)">Open Modal</Button>
+          <Modal v-bind="args" @update:visible="onUpdateVisible">
+            <p>This is the modal content.</p>
+            <Input class="mt-4" placeholder="Try interacting with this input" />
+          </Modal>
+        </div>
+      `,
+    }
+  },
 } satisfies Meta<typeof Modal>
 
 export default meta

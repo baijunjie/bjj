@@ -14,6 +14,7 @@ import type { DrawerProps } from './types'
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<DrawerProps>(), {
+  showCancel: true,
   showClose: true,
   closeOnClickOutside: false,
   side: 'right',

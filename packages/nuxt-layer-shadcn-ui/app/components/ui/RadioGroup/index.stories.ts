@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import type { RadioGroupItem } from './types'
 import RadioGroup from './index.vue'
 
@@ -30,11 +31,14 @@ const meta = {
     disabled: false,
     orientation: 'vertical',
   },
-  render: args => ({
-    components: { RadioGroup },
-    setup: () => ({ args }),
-    template: '<RadioGroup v-bind="args" />',
-  }),
+  render: args => {
+    const onUpdate = useArgsModel()
+    return {
+      components: { RadioGroup },
+      setup: () => ({ args, onUpdate }),
+      template: '<RadioGroup v-bind="args" @update:modelValue="onUpdate" />',
+    }
+  },
 } satisfies Meta<typeof RadioGroup>
 
 export default meta

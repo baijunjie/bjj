@@ -59,15 +59,15 @@ const mergedClass = computed(() => cn(
         :value="item.value"
         :disabled="item.disabled"
       />
-      <span class="text-sm">
-        <slot
-          name="label"
-          :item="item"
-          :checked="model === item.value"
-        >
+      <slot
+        name="label"
+        :item="item"
+        :checked="model === item.value"
+      >
+        <span class="text-sm">
           {{ item.label || item.value }}
-        </slot>
-      </span>
+        </span>
+      </slot>
     </label>
   </ShadcnRadioGroup>
 </template>

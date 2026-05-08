@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import { useArgsModel } from '#storybook/argsModel'
 import type { AccordionItem } from './types'
 import Icon from '../Icon/index.vue'
 import Surface from '../Surface/index.vue'
@@ -29,24 +30,29 @@ const meta = {
   title: 'UI/Accordion',
   component: Accordion as any,
   argTypes: {
+    modelValue: { control: 'text' },
     type: { control: 'select', options: [ 'single', 'multiple' ]},
     collapsible: { control: 'boolean' },
     disabled: { control: 'boolean' },
   },
   args: {
+    modelValue: 'shipping',
     type: 'single',
     collapsible: true,
     disabled: false,
   },
-  render: args => ({
-    components: { Accordion, Surface },
-    setup: () => ({ args, items }),
-    template: `
-      <Surface variant="bordered" class="max-w-md px-4">
-        <Accordion v-bind="args" :items="items" default-value="shipping" />
-      </Surface>
-    `,
-  }),
+  render: args => {
+    const onUpdate = useArgsModel()
+    return {
+      components: { Accordion, Surface },
+      setup: () => ({ args, onUpdate, items }),
+      template: `
+        <Surface variant="bordered" class="max-w-md px-4">
+          <Accordion v-bind="args" :items="items" @update:modelValue="onUpdate" />
+        </Surface>
+      `,
+    }
+  },
 } satisfies Meta
 
 export default meta

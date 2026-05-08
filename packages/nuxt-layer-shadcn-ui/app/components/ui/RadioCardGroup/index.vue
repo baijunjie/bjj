@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {
-  RadioGroup,
-  RadioGroupItem,
+  RadioGroup as ShadcnRadioGroup,
+  RadioGroupItem as ShadcnRadioGroupItem,
 } from '../../shadcn/radio-group'
 import type { RadioCardGroupProps } from './types'
 
@@ -26,7 +26,7 @@ const mergedClass = computed(() => cn('gap-3', props.class))
 </script>
 
 <template>
-  <RadioGroup
+  <ShadcnRadioGroup
     v-model="model"
     :disabled="disabled"
     :class="mergedClass"
@@ -35,20 +35,20 @@ const mergedClass = computed(() => cn('gap-3', props.class))
       v-for="option in options"
       :key="option.value"
       class="
-        flex cursor-pointer items-center gap-3 rounded-lg border border-border
-        px-4 py-3 transition-colors
-        has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50
+        gap-3 rounded-lg border-border px-4 py-3
         has-data-[state=checked]:border-primary
+        flex cursor-pointer items-center border transition-colors
+        has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50
       "
       :class="[
         option.disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-accent/50',
       ]"
     >
-      <RadioGroupItem
+      <ShadcnRadioGroupItem
         :value="option.value"
         :disabled="option.disabled"
       />
-      <div class="grid flex-1 gap-0.5">
+      <div class="gap-0.5 grid flex-1">
         <span class="text-sm font-medium">
           {{ option.title }}
         </span>
@@ -60,5 +60,5 @@ const mergedClass = computed(() => cn('gap-3', props.class))
         </span>
       </div>
     </label>
-  </RadioGroup>
+  </ShadcnRadioGroup>
 </template>

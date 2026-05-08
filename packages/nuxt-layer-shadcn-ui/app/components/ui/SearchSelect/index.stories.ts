@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import type { SearchSelectLoadMethodParams, SearchSelectLoadMethodResult } from './types'
 import SearchSelect from './index.vue'
 
@@ -41,6 +42,7 @@ const meta = {
   title: 'UI/SearchSelect',
   component: SearchSelect as any,
   argTypes: {
+    modelValue: { control: 'text' },
     placeholder: { control: 'text' },
     searchPlaceholder: { control: 'text' },
     emptyText: { control: 'text' },
@@ -52,6 +54,7 @@ const meta = {
     disabled: { control: 'boolean' },
   },
   args: {
+    modelValue: undefined,
     placeholder: '',
     searchPlaceholder: '',
     emptyText: '',
@@ -62,23 +65,23 @@ const meta = {
     autoLoad: false,
     disabled: false,
   },
-  render: args => ({
-    components: { SearchSelect },
-    setup () {
-      const value = ref<string>()
-      return { args, value, mockLoadMethod }
-    },
-    template: `
-      <div class="max-w-sm">
-        <SearchSelect
-          v-model="value"
-          :loadMethod="mockLoadMethod"
-          v-bind="args"
-        />
-        <div class="mt-2 text-sm text-muted-foreground">Selected: {{ value ?? 'none' }}</div>
-      </div>
-    `,
-  }),
+  render: args => {
+    const onUpdate = useArgsModel()
+    return {
+      components: { SearchSelect },
+      setup: () => ({ args, onUpdate, mockLoadMethod }),
+      template: `
+        <div class="max-w-sm">
+          <SearchSelect
+            v-bind="args"
+            :loadMethod="mockLoadMethod"
+            @update:modelValue="onUpdate"
+          />
+          <div class="mt-2 text-sm text-muted-foreground">Selected: {{ args.modelValue ?? 'none' }}</div>
+        </div>
+      `,
+    }
+  },
 } satisfies Meta
 
 export default meta

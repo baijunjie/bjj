@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import { useArgsModel } from '#storybook/argsModel'
 import DateRangePicker from './index.vue'
 
 const meta = {
@@ -34,25 +35,27 @@ const meta = {
     autoApply: true,
     class: '',
   },
-  render: args => ({
-    components: { DateRangePicker },
-    setup () {
-      return { args }
-    },
-    template: `
-      <div class="max-w-lg">
-        <DateRangePicker
-          v-bind="args"
-          @update:start="v => args.start = v"
-          @update:end="v => args.end = v"
-        />
-        <div class="mt-2 text-sm text-muted-foreground">
-          <div>Start: {{ args.start }}</div>
-          <div>End: {{ args.end }}</div>
+  render: args => {
+    const onUpdateStart = useArgsModel('start')
+    const onUpdateEnd = useArgsModel('end')
+    return {
+      components: { DateRangePicker },
+      setup: () => ({ args, onUpdateStart, onUpdateEnd }),
+      template: `
+        <div class="max-w-lg">
+          <DateRangePicker
+            v-bind="args"
+            @update:start="onUpdateStart"
+            @update:end="onUpdateEnd"
+          />
+          <div class="mt-2 text-sm text-muted-foreground">
+            <div>Start: {{ args.start }}</div>
+            <div>End: {{ args.end }}</div>
+          </div>
         </div>
-      </div>
-    `,
-  }),
+      `,
+    }
+  },
 } satisfies Meta<typeof DateRangePicker>
 
 export default meta

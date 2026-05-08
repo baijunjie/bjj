@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import Pagination from './index.vue'
 
 const sizes = [ 'default', 'sm' ] as const
@@ -25,11 +26,15 @@ const meta = {
     siblingCount: 1,
     size: 'default',
   },
-  render: args => ({
-    components: { Pagination },
-    setup: () => ({ args }),
-    template: '<Pagination v-bind="args" />',
-  }),
+  render: args => {
+    const onUpdatePage = useArgsModel('page')
+    const onUpdatePageSize = useArgsModel('pageSize')
+    return {
+      components: { Pagination },
+      setup: () => ({ args, onUpdatePage, onUpdatePageSize }),
+      template: '<Pagination v-bind="args" @update:page="onUpdatePage" @update:pageSize="onUpdatePageSize" />',
+    }
+  },
 } satisfies Meta<typeof Pagination>
 
 export default meta

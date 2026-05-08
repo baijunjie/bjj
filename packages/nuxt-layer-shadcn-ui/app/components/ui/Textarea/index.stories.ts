@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import Textarea from './index.vue'
 
 const meta = {
@@ -19,15 +20,18 @@ const meta = {
     invalid: false,
     class: '',
   },
-  render: args => ({
-    components: { Textarea },
-    setup: () => ({ args }),
-    template: `
-      <div class="max-w-sm">
-        <Textarea v-bind="args" placeholder="Type your message here..." />
-      </div>
-    `,
-  }),
+  render: args => {
+    const onUpdate = useArgsModel()
+    return {
+      components: { Textarea },
+      setup: () => ({ args, onUpdate }),
+      template: `
+        <div class="max-w-sm">
+          <Textarea v-bind="args" placeholder="Type your message here..." @update:modelValue="onUpdate" />
+        </div>
+      `,
+    }
+  },
 } satisfies Meta<typeof Textarea>
 
 export default meta

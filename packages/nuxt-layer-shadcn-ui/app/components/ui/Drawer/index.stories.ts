@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import Button from '../Button/index.vue'
 import Input from '../Input/index.vue'
 import type { ButtonVariant } from '../Button/types'
@@ -13,6 +14,7 @@ const meta = {
   title: 'UI/Drawer',
   component: Drawer,
   argTypes: {
+    visible: { control: 'boolean' },
     loading: { control: 'boolean' },
     disabled: { control: 'boolean' },
     confirmDisabled: { control: 'boolean' },
@@ -31,6 +33,7 @@ const meta = {
     class: { control: 'text' },
   },
   args: {
+    visible: false,
     loading: false,
     disabled: false,
     confirmDisabled: false,
@@ -48,22 +51,22 @@ const meta = {
     cancelVariant: 'outline',
     class: '',
   },
-  render: args => ({
-    components: { Drawer, Button, Input },
-    setup () {
-      const visible = ref(false)
-      return { args, visible }
-    },
-    template: `
-      <div>
-        <Button @click="visible = true">Open Drawer</Button>
-        <Drawer v-bind="args" v-model:visible="visible">
-          <p>This is the drawer content.</p>
-          <Input class="mt-4" placeholder="Try interacting with this input" />
-        </Drawer>
-      </div>
-    `,
-  }),
+  render: args => {
+    const onUpdateVisible = useArgsModel('visible')
+    return {
+      components: { Drawer, Button, Input },
+      setup: () => ({ args, onUpdateVisible }),
+      template: `
+        <div>
+          <Button @click="onUpdateVisible(true)">Open Drawer</Button>
+          <Drawer v-bind="args" @update:visible="onUpdateVisible">
+            <p>This is the drawer content.</p>
+            <Input class="mt-4" placeholder="Try interacting with this input" />
+          </Drawer>
+        </div>
+      `,
+    }
+  },
 } satisfies Meta<typeof Drawer>
 
 export default meta

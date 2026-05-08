@@ -1,11 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import Slider from './index.vue'
 
 const meta = {
   title: 'UI/Slider',
   component: Slider,
   argTypes: {
+    modelValue: { control: 'number' },
     min: { control: 'number' },
     max: { control: 'number' },
     step: { control: 'number' },
@@ -13,25 +15,26 @@ const meta = {
     orientation: { control: 'select', options: [ 'horizontal', 'vertical' ]},
   },
   args: {
+    modelValue: 50,
     min: 0,
     max: 100,
     step: 1,
     disabled: false,
     orientation: 'horizontal',
   },
-  render: args => ({
-    components: { Slider },
-    setup () {
-      const value = ref(50)
-      return { args, value }
-    },
-    template: `
-      <div class="max-w-sm">
-        <Slider v-bind="args" v-model="value" />
-        <div class="mt-2 text-sm text-muted-foreground">Value: {{ value }}</div>
-      </div>
-    `,
-  }),
+  render: args => {
+    const onUpdate = useArgsModel()
+    return {
+      components: { Slider },
+      setup: () => ({ args, onUpdate }),
+      template: `
+        <div class="max-w-sm">
+          <Slider v-bind="args" @update:modelValue="onUpdate" />
+          <div class="mt-2 text-sm text-muted-foreground">Value: {{ args.modelValue }}</div>
+        </div>
+      `,
+    }
+  },
 } satisfies Meta<typeof Slider>
 
 export default meta

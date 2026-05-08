@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import { useArgsModel } from '#storybook/argsModel'
 import Checkbox from './index.vue'
 
 const meta = {
@@ -20,16 +21,19 @@ const meta = {
     name: '',
     value: '',
   },
-  render: args => ({
-    components: { Checkbox },
-    setup: () => ({ args }),
-    template: `
-      <label class="flex items-center gap-2 cursor-pointer">
-        <Checkbox v-bind="args" />
-        <span class="text-sm">Accept terms and conditions</span>
-      </label>
-    `,
-  }),
+  render: args => {
+    const onUpdate = useArgsModel()
+    return {
+      components: { Checkbox },
+      setup: () => ({ args, onUpdate }),
+      template: `
+        <label class="flex items-center gap-2 cursor-pointer">
+          <Checkbox v-bind="args" @update:modelValue="onUpdate" />
+          <span class="text-sm">Accept terms and conditions</span>
+        </label>
+      `,
+    }
+  },
 } satisfies Meta<typeof Checkbox>
 
 export default meta

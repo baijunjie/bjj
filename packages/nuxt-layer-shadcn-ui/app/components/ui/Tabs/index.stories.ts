@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
+import { useArgsModel } from '#storybook/argsModel'
 import Card from '../Card/index.vue'
 import type { TabsItem } from './types'
 import Tabs from './index.vue'
@@ -52,11 +53,14 @@ const meta = {
     listClass: '',
     triggerClass: '',
   },
-  render: args => ({
-    components: { Tabs },
-    setup: () => ({ args }),
-    template: '<Tabs v-bind="args" class="max-w-md" />',
-  }),
+  render: args => {
+    const onUpdate = useArgsModel()
+    return {
+      components: { Tabs },
+      setup: () => ({ args, onUpdate }),
+      template: '<Tabs v-bind="args" class="max-w-md" @update:modelValue="onUpdate" />',
+    }
+  },
 } satisfies Meta<typeof Tabs>
 
 export default meta
