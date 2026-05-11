@@ -213,9 +213,12 @@ function buildColumnClass (column: DataTableColumn, headerIndex?: number): strin
   const isHeader = headerIndex !== undefined
   const hasDivider = isHeader && headerIndex < props.columns.length - 1
 
+  const isDateType = column.type === 'date' || column.type === 'unixDate'
+
   return cn(
     column.align === 'center' && 'text-center',
     column.align === 'right' && 'text-right',
+    isDateType ? 'whitespace-pre' : !column.wrap && 'whitespace-nowrap',
     // Header-specific
     isHeader && column.sortable && `
       hover:text-foreground
@@ -224,6 +227,8 @@ function buildColumnClass (column: DataTableColumn, headerIndex?: number): strin
     hasDivider && headerDividerClass,
     // Fixed column last — sticky overrides relative via tailwind-merge
     column.fixed && 'sticky z-10',
+    // User-provided class (kept last so it can override defaults)
+    isHeader ? column.headerClass : column.class,
   )
 }
 
@@ -237,12 +242,6 @@ function buildColumnStyle (column: DataTableColumn): Record<string, string> {
   const style: Record<string, string> = {}
   if (column.width) style.width = column.width
   if (column.minWidth) style.minWidth = column.minWidth
-
-  if (column.type === 'date' || column.type === 'unixDate') {
-    style.whiteSpace = 'pre'
-  } else if (!column.wrap) {
-    style.whiteSpace = 'nowrap'
-  }
 
   // Frozen column offset
   const offset = frozenOffsets.value.get(column.field)

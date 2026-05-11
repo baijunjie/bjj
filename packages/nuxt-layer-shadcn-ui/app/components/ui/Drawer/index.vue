@@ -14,6 +14,7 @@ import type { DrawerProps } from './types'
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<DrawerProps>(), {
+  modal: true,
   showCancel: true,
   showClose: true,
   closeOnClickOutside: false,
@@ -85,6 +86,7 @@ const contentClass = computed(() =>
 <template>
   <Sheet
     :open="sheetOpen"
+    :modal="modal"
     @update:open="onOpenUpdate"
   >
     <SheetTrigger

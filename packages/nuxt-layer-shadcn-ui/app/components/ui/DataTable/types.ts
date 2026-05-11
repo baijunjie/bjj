@@ -24,6 +24,10 @@ export interface DataTableColumn {
   sortable?: boolean
   /** Currency code for 'currency' type (e.g., 'USD', 'JPY'). Default: 'USD' */
   currency?: string
+  /** Custom class applied to the body cell (`<td>`) container */
+  class?: string
+  /** Custom class applied to the header cell (`<th>`) container */
+  headerClass?: string
 }
 
 export interface DataTableProps<T = Record<string, any>> {
