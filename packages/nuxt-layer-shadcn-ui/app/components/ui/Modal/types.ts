@@ -6,6 +6,7 @@ export interface ModalProps {
   loading?: boolean
   disabled?: boolean
   confirmDisabled?: boolean
+  modal?: boolean
   showCancel?: boolean
   showClose?: boolean
   closeOnClickOutside?: boolean

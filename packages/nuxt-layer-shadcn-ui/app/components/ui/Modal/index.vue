@@ -14,6 +14,7 @@ import type { ModalProps } from './types'
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<ModalProps>(), {
+  modal: true,
   showCancel: true,
   showClose: true,
   closeOnClickOutside: false,
@@ -90,6 +91,7 @@ const contentClass = computed(() =>
 <template>
   <Dialog
     :open="dialogOpen"
+    :modal="modal"
     @update:open="onOpenUpdate"
   >
     <DialogTrigger
