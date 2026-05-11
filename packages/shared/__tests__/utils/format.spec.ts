@@ -30,6 +30,21 @@ describe('formatCurrency', () => {
   it('should return $0 for NaN input', () => {
     expect(formatCurrency('abc', 'USD')).toBe('$0')
   })
+
+  it('should support currencyDisplay variants', () => {
+    // Intl.NumberFormat uses NBSP (U+00A0) between code/name and the number
+    const nbsp = ' '
+    expect(formatCurrency(1, 'USD', { currencyDisplay: 'code' })).toBe(`USD${nbsp}1`)
+    expect(formatCurrency(1.5, 'USD', { currencyDisplay: 'code' })).toBe(`USD${nbsp}1.5`)
+    expect(formatCurrency(1, 'USD', { currencyDisplay: 'name' })).toBe('1 US dollars')
+    expect(formatCurrency(1.5, 'USD', { currencyDisplay: 'name' })).toBe('1.5 US dollars')
+    expect(formatCurrency(1, 'CAD', { currencyDisplay: 'narrowSymbol' })).toBe('$1')
+  })
+
+  it('should keep trailing zeros when stripTrailingZeros is false', () => {
+    expect(formatCurrency(1, 'USD', { stripTrailingZeros: false })).toBe('$1.00')
+    expect(formatCurrency(1.5, 'USD', { stripTrailingZeros: false })).toBe('$1.50')
+  })
 })
 
 describe('formatDecimal', () => {

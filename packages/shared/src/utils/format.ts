@@ -1,18 +1,35 @@
+export interface FormatCurrencyOptions {
+  /** How to display the currency. Default: 'symbol' */
+  currencyDisplay?: 'symbol' | 'narrowSymbol' | 'code' | 'name'
+  /** Strip trailing zeros after decimal point (e.g. $1.00 -> $1). Default: true */
+  stripTrailingZeros?: boolean
+}
+
 /**
  * Format a number or string as currency
- * Trailing zeros after decimal point are removed (e.g., $1.00 -> $1, $1.50 -> $1.5)
  * @param value - The value to format (number or string)
  * @param currency - ISO 4217 currency code (e.g., 'USD', 'JPY', 'EUR')
+ * @param options - See {@link FormatCurrencyOptions}
  */
-export function formatCurrency (value: number | string, currency: string): string {
+export function formatCurrency (
+  value: number | string,
+  currency: string,
+  options: FormatCurrencyOptions = {},
+): string {
+  const { currencyDisplay = 'symbol', stripTrailingZeros = true } = options
   const num = typeof value === 'string' ? parseFloat(value) : value
   if (Number.isNaN(num)) return '$0'
   const formatted = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
+    currencyDisplay,
   }).format(num)
-  // Remove trailing zeros after decimal point (e.g., $1.00 -> $1, $1.50 -> $1.5)
-  return formatted.replace(/\.00$/, '').replace(/(\.\d*?)0+$/, '$1')
+  if (!stripTrailingZeros) return formatted
+  // Strip trailing zeros within the numeric portion so it works for any
+  // currencyDisplay variant (e.g. "1.00 US dollars" -> "1 US dollars").
+  return formatted
+    .replace(/(\d+)\.0+(?=\D|$)/g, '$1')
+    .replace(/(\d+\.\d*?)0+(?=\D|$)/g, '$1')
 }
 
 /**
