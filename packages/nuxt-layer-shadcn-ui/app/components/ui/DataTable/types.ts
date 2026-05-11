@@ -24,6 +24,8 @@ export interface DataTableColumn {
   sortable?: boolean
   /** Currency code for 'currency' type (e.g., 'USD', 'JPY'). Default: 'USD' */
   currency?: string
+  /** How to display the currency for 'currency' type. Default: 'symbol' */
+  currencyDisplay?: 'symbol' | 'narrowSymbol' | 'code' | 'name'
   /** Custom class applied to the body cell (`<td>`) container */
   class?: string
   /** Custom class applied to the header cell (`<th>`) container */

@@ -1,6 +1,6 @@
 {
   "name": "@bjj/nuxt-layer-shadcn-ui",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "description": "Nuxt layer providing shadcn-vue based UI components",
   "type": "module",
   "main": "./nuxt.config.ts",
@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@bjj/nuxt-layer-basic": "^0.1",
-    "@bjj/shared": "^0.5",
+    "@bjj/shared": "^0.5.1",
     "@tanstack/vue-table": "^8.21.3",
     "@types/lodash-es": "^4.17.12",
     "@types/qrcode": "^1.5.6",

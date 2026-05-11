@@ -2,7 +2,7 @@
 import type { InputCurrencyProps } from './types'
 
 const props = withDefaults(defineProps<InputCurrencyProps>(), {
-  currency: 'JPY',
+  currency: 'USD',
   currencyDisplay: 'symbol',
 })
 
