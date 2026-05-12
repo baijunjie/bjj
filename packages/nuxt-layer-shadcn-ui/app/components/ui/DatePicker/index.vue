@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
 })
 
 const emit = defineEmits<{
-  'update:modelValue': [value: Date | string | null]
+  'update:modelValue': [value: Date | string | number | null]
 }>()
 
 const model = computed({

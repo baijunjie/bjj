@@ -18,7 +18,7 @@ export interface DatePickerTimeConfig {
 export type DatePickerType = 'date' | 'month' | 'year'
 
 export interface DatePickerProps {
-  modelValue?: Date | string | null
+  modelValue?: Date | string | number | null
   /** Picker type: date (default), month, or year */
   type?: DatePickerType
   /** Enable time selection, or pass DatePickerTimeConfig for fine-grained control */
@@ -33,7 +33,11 @@ export interface DatePickerProps {
   minDate?: Date | string
   /** Maximum selectable date */
   maxDate?: Date | string
-  /** v-model output format (e.g. 'yyyy-MM-dd', 'timestamp', 'iso') */
+  /**
+   * v-model output format. Accepts any VueDatePicker `model-type` value:
+   * `'iso'`, `'timestamp'`, or a date-fns pattern (e.g. `'yyyy-MM-dd'`).
+   * Omit to bind a `Date` object.
+   */
   valueFormat?: string
   /** Auto apply selection without confirm button */
   autoApply?: boolean

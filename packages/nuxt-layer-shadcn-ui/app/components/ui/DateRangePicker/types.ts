@@ -1,8 +1,16 @@
 import type { DatePickerTimeConfig } from '../DatePicker/types'
 
 export interface DateRangePickerProps {
-  start?: Date | string | null
-  end?: Date | string | null
+  /**
+   * Range start. When `showTime` is false, the emitted value is normalized to
+   * the start of the day (00:00:00.000) so the range is inclusive.
+   */
+  start?: Date | string | number | null
+  /**
+   * Range end. When `showTime` is false, the emitted value is normalized to
+   * the end of the day (23:59:59.999) so the range is inclusive.
+   */
+  end?: Date | string | number | null
   /** Minimum selectable date */
   minDate?: Date | string
   /** Maximum selectable date */
@@ -19,7 +27,11 @@ export interface DateRangePickerProps {
   endPlaceholder?: string
   /** Maximum span in days between start and end date */
   maxSpanDays?: number
-  /** v-model output format (e.g. 'yyyy-MM-dd', 'timestamp', 'iso') */
+  /**
+   * v-model output format. Accepts any VueDatePicker `model-type` value:
+   * `'iso'`, `'timestamp'`, or a date-fns pattern (e.g. `'yyyy-MM-dd'`).
+   * Omit to bind a `Date` object.
+   */
   valueFormat?: string
   /** Auto apply selection without confirm button */
   autoApply?: boolean

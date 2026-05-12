@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { DateRangePickerProps } from './types'
+import { format as formatDate, parse as parseDate } from 'date-fns'
 
 defineOptions({ inheritAttrs: false })
 
@@ -20,30 +21,65 @@ const props = withDefaults(defineProps<DateRangePickerProps>(), {
 })
 
 const emit = defineEmits<{
-  'update:start': [value: Date | string | null]
-  'update:end': [value: Date | string | null]
+  'update:start': [value: Date | string | number | null]
+  'update:end': [value: Date | string | number | null]
 }>()
 
 const { t } = useI18n()
 const T = useTranslations('components.ui.DateRangePicker')
 
+// Convert a v-model value (whose shape depends on valueFormat) into a Date for manipulation.
+function parseValue (value: Date | string | number): Date | null {
+  if (value instanceof Date) return new Date(value)
+  if (typeof value === 'number') return new Date(value)
+  const fmt = props.valueFormat
+  if (!fmt || fmt === 'iso') return new Date(value)
+  if (fmt === 'timestamp') return new Date(Number(value))
+  if (fmt === 'format') return null // uses VueDatePicker `format` prop, not exposed here
+  try {
+    return parseDate(value, fmt, new Date())
+  } catch {
+    return null
+  }
+}
+
+// Convert a Date back to the same shape as the original value.
+function formatValue (date: Date, original: Date | string | number): Date | string | number {
+  if (original instanceof Date) return date
+  if (typeof original === 'number') return date.getTime()
+  const fmt = props.valueFormat
+  if (!fmt || fmt === 'iso') return date.toISOString()
+  if (fmt === 'timestamp') return date.getTime()
+  if (fmt === 'format') return original
+  try {
+    return formatDate(date, fmt)
+  } catch {
+    return original
+  }
+}
+
+// Normalize the time portion to start/end of day so the range is inclusive.
+// For date-only patterns (e.g. 'yyyy-MM-dd') the output is unchanged since the
+// formatted string carries no time component — the round-trip just preserves it.
+function normalizeTimeOfDay (
+  value: Date | string | number | null,
+  end: boolean,
+): Date | string | number | null {
+  if (value == null) return value
+  const date = parseValue(value)
+  if (!date || Number.isNaN(date.getTime())) return value
+  date.setHours(end ? 23 : 0, end ? 59 : 0, end ? 59 : 0, end ? 999 : 0)
+  return formatValue(date, value)
+}
+
 const start = computed({
   get: () => props.start,
-  set: value => emit('update:start', value),
+  set: value => emit('update:start', props.showTime ? value : normalizeTimeOfDay(value, false)),
 })
 
 const end = computed({
   get: () => props.end,
-  set: value => {
-    // When time is disabled, normalize end to end of day so range is inclusive
-    if (value instanceof Date && !props.showTime) {
-      const adjusted = new Date(value)
-      adjusted.setHours(23, 59, 59, 999)
-      emit('update:end', adjusted)
-    } else {
-      emit('update:end', value)
-    }
-  },
+  set: value => emit('update:end', props.showTime ? value : normalizeTimeOfDay(value, true)),
 })
 
 function addDays (date: Date, days: number): Date {
@@ -52,9 +88,10 @@ function addDays (date: Date, days: number): Date {
   return result
 }
 
-function toDate (value: Date | string | null | undefined): Date | undefined {
-  if (!value) return undefined
-  return value instanceof Date ? value : new Date(value)
+function toDate (value: Date | string | number | null | undefined): Date | undefined {
+  if (value == null) return undefined
+  if (value instanceof Date) return value
+  return parseValue(value) ?? undefined
 }
 
 const startMinDate = computed(() => {
