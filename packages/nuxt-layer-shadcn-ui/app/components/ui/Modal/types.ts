@@ -1,6 +1,10 @@
 import type { ButtonVariants } from '../../shadcn/button'
 import type { ModalContentProps } from '../ModalContent/types'
 
+export type ModalAction = 'confirm' | 'cancel'
+
+export type ModalBeforeClose = (action: ModalAction) => boolean | undefined | Promise<unknown>
+
 export interface ModalProps {
   visible?: boolean
   loading?: boolean
@@ -20,6 +24,7 @@ export interface ModalProps {
   cancelText?: string
   confirmVariant?: ButtonVariants['variant']
   cancelVariant?: ButtonVariants['variant']
+  beforeClose?: ModalBeforeClose
   type?: ModalContentProps['type']
   class?: ClassValue
 }

@@ -2,6 +2,10 @@ import type { ButtonVariants } from '../../shadcn/button'
 
 export type DrawerSide = 'top' | 'right' | 'bottom' | 'left'
 
+export type DrawerAction = 'confirm' | 'cancel'
+
+export type DrawerBeforeClose = (action: DrawerAction) => boolean | undefined | Promise<unknown>
+
 export interface DrawerProps {
   visible?: boolean
   loading?: boolean
@@ -20,5 +24,6 @@ export interface DrawerProps {
   cancelText?: string
   confirmVariant?: ButtonVariants['variant']
   cancelVariant?: ButtonVariants['variant']
+  beforeClose?: DrawerBeforeClose
   class?: ClassValue
 }

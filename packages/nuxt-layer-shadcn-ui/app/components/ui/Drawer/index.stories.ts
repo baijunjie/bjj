@@ -4,7 +4,7 @@ import { useArgsModel } from '#storybook/argsModel'
 import Button from '../Button/index.vue'
 import Input from '../Input/index.vue'
 import type { ButtonVariant } from '../Button/types'
-import type { DrawerSide } from './types'
+import type { DrawerAction, DrawerSide } from './types'
 import Drawer from './index.vue'
 
 const sides: DrawerSide[] = [ 'top', 'right', 'bottom', 'left' ]
@@ -253,6 +253,83 @@ export const WithTrigger: Story = {
         </template>
         <p>The trigger slot lets the consumer place the open button directly inside the Drawer, without managing visible state.</p>
       </Drawer>
+    `,
+  }),
+}
+
+export const PreventClose: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Drawer
+    v-model:visible="visible"
+    title="Type to Continue"
+    description="beforeClose intercepts the confirm action; cancel/X/ESC close normally."
+    showCancel
+    confirmText="Submit"
+    :beforeClose="onBeforeClose"
+  >
+    <Input v-model="value" placeholder="Type 'confirm' to close" />
+    <p v-if="error" class="mt-2 text-sm text-destructive">{{ error }}</p>
+  </Drawer>
+</template>
+
+<script setup lang="ts">
+import type { DrawerAction } from '#components'
+
+const visible = ref(false)
+const value = ref('')
+const error = ref('')
+
+function onBeforeClose (action: DrawerAction) {
+  if (action === 'cancel') return
+  if (value.value !== 'confirm') {
+    error.value = "Value must be 'confirm' to close."
+    return false
+  }
+  error.value = ''
+  return new Promise(resolve => setTimeout(resolve, 1000))
+}
+</script>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Drawer, Button, Input },
+    setup () {
+      const visible = ref(false)
+      const value = ref('')
+      const error = ref('')
+      function onBeforeClose (action: DrawerAction) {
+        if (action === 'cancel') return
+        if (value.value !== 'confirm') {
+          error.value = 'Value must be "confirm" to close.'
+          return false
+        }
+        error.value = ''
+        return new Promise<void>(resolve => setTimeout(resolve, 1000))
+      }
+      return { visible, value, error, onBeforeClose }
+    },
+    template: `
+      <div>
+        <Button @click="visible = true">Open Drawer</Button>
+        <Drawer
+          v-model:visible="visible"
+          title="Type to Continue"
+          description="beforeClose intercepts the confirm action; cancel/X/ESC close normally."
+          showCancel
+          confirmText="Submit"
+          :beforeClose="onBeforeClose"
+        >
+          <Input v-model="value" placeholder="Type 'confirm' to close" />
+          <p v-if="error" class="mt-2 text-sm text-destructive">{{ error }}</p>
+        </Drawer>
+      </div>
     `,
   }),
 }

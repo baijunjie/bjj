@@ -4,6 +4,7 @@ import EventLog from '#storybook/EventLog.vue'
 import { useArgsModel } from '#storybook/argsModel'
 import Button from '../Button/index.vue'
 import Input from '../Input/index.vue'
+import type { ModalAction } from './types'
 import Modal from './index.vue'
 
 const types: ModalContentType[] = [ 'default', 'success', 'info', 'help', 'warn', 'danger', 'error' ]
@@ -251,6 +252,83 @@ export const WithTrigger: Story = {
         </template>
         <p>The trigger slot lets the consumer place the open button directly inside the Modal, without managing visible state.</p>
       </Modal>
+    `,
+  }),
+}
+
+export const PreventClose: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Modal
+    v-model:visible="visible"
+    title="Type to Continue"
+    description="beforeClose intercepts the confirm action; cancel/X/ESC close normally."
+    showCancel
+    confirmText="Submit"
+    :beforeClose="onBeforeClose"
+  >
+    <Input v-model="value" placeholder="Type 'confirm' to close" />
+    <p v-if="error" class="mt-2 text-sm text-destructive">{{ error }}</p>
+  </Modal>
+</template>
+
+<script setup lang="ts">
+import type { ModalAction } from '#components'
+
+const visible = ref(false)
+const value = ref('')
+const error = ref('')
+
+function onBeforeClose (action: ModalAction) {
+  if (action === 'cancel') return
+  if (value.value !== 'confirm') {
+    error.value = "Value must be 'confirm' to close."
+    return false
+  }
+  error.value = ''
+  return new Promise(resolve => setTimeout(resolve, 1000))
+}
+</script>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Modal, Button, Input },
+    setup () {
+      const visible = ref(false)
+      const value = ref('')
+      const error = ref('')
+      function onBeforeClose (action: ModalAction) {
+        if (action === 'cancel') return
+        if (value.value !== 'confirm') {
+          error.value = 'Value must be "confirm" to close.'
+          return false
+        }
+        error.value = ''
+        return new Promise<void>(resolve => setTimeout(resolve, 1000))
+      }
+      return { visible, value, error, onBeforeClose }
+    },
+    template: `
+      <div>
+        <Button @click="visible = true">Open Modal</Button>
+        <Modal
+          v-model:visible="visible"
+          title="Type to Continue"
+          description="beforeClose intercepts the confirm action; cancel/X/ESC close normally."
+          showCancel
+          confirmText="Submit"
+          :beforeClose="onBeforeClose"
+        >
+          <Input v-model="value" placeholder="Type 'confirm' to close" />
+          <p v-if="error" class="mt-2 text-sm text-destructive">{{ error }}</p>
+        </Modal>
+      </div>
     `,
   }),
 }

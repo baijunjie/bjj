@@ -9,7 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '../../shadcn/sheet'
-import type { DrawerProps } from './types'
+import type { DrawerAction, DrawerProps } from './types'
 
 defineOptions({ inheritAttrs: false })
 
@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<DrawerProps>(), {
   cancelText: undefined,
   confirmVariant: 'default',
   cancelVariant: 'outline',
+  beforeClose: undefined,
   class: undefined,
 })
 
@@ -47,6 +48,8 @@ const resolvedCancelText = computed(
 )
 
 const sheetOpen = ref(props.visible ?? false)
+const internalLoading = ref(false)
+const isLoading = computed(() => internalLoading.value || props.loading)
 
 watch(() => props.visible, value => {
   if (value !== undefined) sheetOpen.value = value
@@ -59,18 +62,37 @@ watch(sheetOpen, value => {
 })
 
 function onOpenUpdate (value: boolean) {
-  if (!value && props.loading) return
+  if (!value && isLoading.value) return
   if (value) sheetOpen.value = true
-  else onCancel()
+  else handleClose('cancel')
 }
 
 function onConfirm () {
   emit('confirm')
-  sheetOpen.value = false
+  handleClose('confirm')
 }
 
 function onCancel () {
   emit('cancel')
+  handleClose('cancel')
+}
+
+function handleClose (action: DrawerAction) {
+  if (!props.beforeClose) {
+    sheetOpen.value = false
+    return
+  }
+  const result = props.beforeClose(action)
+  if (result === false) return
+  if (result instanceof Promise) {
+    internalLoading.value = true
+    result.then(() => {
+      sheetOpen.value = false
+    }).finally(() => {
+      internalLoading.value = false
+    })
+    return
+  }
   sheetOpen.value = false
 }
 
@@ -136,8 +158,8 @@ const contentClass = computed(() =>
         class="min-h-0 flex-1"
       >
         <div
-          :inert="loading || disabled || undefined"
-          :class="[ loading || disabled ? 'opacity-50' : undefined ]"
+          :inert="isLoading || disabled || undefined"
+          :class="[ isLoading || disabled ? 'opacity-50' : undefined ]"
           class="p-4"
         >
           <slot />
@@ -159,7 +181,7 @@ const contentClass = computed(() =>
               v-if="showCancel"
               class="min-w-24"
               :variant="cancelVariant"
-              :disabled="loading"
+              :disabled="isLoading"
               @click="onCancel"
             >
               {{ resolvedCancelText }}
@@ -167,7 +189,7 @@ const contentClass = computed(() =>
             <Button
               :class="showCancel ? 'min-w-24' : 'min-w-32'"
               :variant="confirmVariant"
-              :loading="loading"
+              :loading="isLoading"
               :disabled="disabled || confirmDisabled"
               @click="onConfirm"
             >
@@ -179,7 +201,7 @@ const contentClass = computed(() =>
 
       <SheetClose
         v-if="showClose"
-        :disabled="loading"
+        :disabled="isLoading"
         class="
           top-3 right-3 size-8 text-muted-foreground ring-offset-background
           hover:bg-accent/50 hover:text-foreground

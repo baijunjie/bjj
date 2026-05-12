@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../../shadcn/dialog'
-import type { ModalProps } from './types'
+import type { ModalAction, ModalProps } from './types'
 
 defineOptions({ inheritAttrs: false })
 
@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<ModalProps>(), {
   content: undefined,
   confirmVariant: 'default',
   cancelVariant: 'outline',
+  beforeClose: undefined,
   type: undefined,
   class: undefined,
 })
@@ -48,6 +49,8 @@ const resolvedCancelText = computed(
 )
 
 const dialogOpen = ref(props.visible ?? false)
+const internalLoading = ref(false)
+const isLoading = computed(() => internalLoading.value || props.loading)
 
 watch(() => props.visible, value => {
   if (value !== undefined) dialogOpen.value = value
@@ -60,18 +63,37 @@ watch(dialogOpen, value => {
 })
 
 function onOpenUpdate (value: boolean) {
-  if (!value && props.loading) return
+  if (!value && isLoading.value) return
   if (value) dialogOpen.value = true
-  else onCancel()
+  else handleClose('cancel')
 }
 
 function onConfirm () {
   emit('confirm')
-  dialogOpen.value = false
+  handleClose('confirm')
 }
 
 function onCancel () {
   emit('cancel')
+  handleClose('cancel')
+}
+
+function handleClose (action: ModalAction) {
+  if (!props.beforeClose) {
+    dialogOpen.value = false
+    return
+  }
+  const result = props.beforeClose(action)
+  if (result === false) return
+  if (result instanceof Promise) {
+    internalLoading.value = true
+    result.then(() => {
+      dialogOpen.value = false
+    }).finally(() => {
+      internalLoading.value = false
+    })
+    return
+  }
   dialogOpen.value = false
 }
 
@@ -143,8 +165,8 @@ const contentClass = computed(() =>
         <ModalContent
           :type="type"
           :content="content"
-          :inert="loading || disabled || undefined"
-          :class="[ loading || disabled ? 'opacity-50' : undefined ]"
+          :inert="isLoading || disabled || undefined"
+          :class="[ isLoading || disabled ? 'opacity-50' : undefined ]"
           class="p-1"
         >
           <slot />
@@ -171,7 +193,7 @@ const contentClass = computed(() =>
               v-if="showCancel"
               class="min-w-32"
               :variant="cancelVariant"
-              :disabled="loading"
+              :disabled="isLoading"
               @click="onCancel"
             >
               {{ resolvedCancelText }}
@@ -179,7 +201,7 @@ const contentClass = computed(() =>
             <Button
               :class="showCancel ? 'min-w-32' : 'min-w-48'"
               :variant="confirmVariant"
-              :loading="loading"
+              :loading="isLoading"
               :disabled="disabled || confirmDisabled"
               @click="onConfirm"
             >
@@ -191,7 +213,7 @@ const contentClass = computed(() =>
 
       <DialogClose
         v-if="showClose"
-        :disabled="loading"
+        :disabled="isLoading"
         class="
           top-3 right-3 size-8 text-muted-foreground ring-offset-background
           hover:bg-accent/50 hover:text-foreground
