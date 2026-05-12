@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import EventLog from '#storybook/EventLog.vue'
 import { useArgsModel } from '#storybook/argsModel'
+import InputCurrency from '../InputCurrency/index.vue'
 import InputRange from './index.vue'
 
 const meta = {
@@ -14,6 +15,7 @@ const meta = {
     startPlaceholder: { control: 'text' },
     endPlaceholder: { control: 'text' },
     disabled: { control: 'boolean' },
+    as: { control: false },
   },
   args: {
     start: undefined,
@@ -23,6 +25,7 @@ const meta = {
     startPlaceholder: '',
     endPlaceholder: '',
     disabled: false,
+    as: undefined,
   },
   render: args => {
     const onUpdateStart = useArgsModel('start')
@@ -66,6 +69,44 @@ export const Disabled: Story = {
   args: {
     disabled: true,
   },
+}
+
+export const CustomInput: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <InputRange
+    v-model:start="start"
+    v-model:end="end"
+    :as="InputCurrency"
+    currency="JPY"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { InputRange },
+    setup: () => ({
+      start: ref<number | undefined>(1000),
+      end: ref<number | undefined>(5000),
+      InputCurrency,
+    }),
+    template: `
+      <div class="max-w-md">
+        <InputRange
+          v-model:start="start"
+          v-model:end="end"
+          :as="InputCurrency"
+          currency="JPY"
+        />
+      </div>
+    `,
+  }),
 }
 
 export const EventHandling: Story = {

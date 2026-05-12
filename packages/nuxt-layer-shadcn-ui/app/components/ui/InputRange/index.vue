@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import InputNumber from '../InputNumber/index.vue'
 import type { InputRangeProps } from './types'
 
 defineOptions({ inheritAttrs: false })
@@ -10,7 +11,10 @@ const props = withDefaults(defineProps<InputRangeProps>(), {
   max: undefined,
   startPlaceholder: undefined,
   endPlaceholder: undefined,
+  as: undefined,
 })
+
+const inputComponent = computed(() => props.as ?? InputNumber)
 
 const emit = defineEmits<{
   'update:start': [value: number | undefined]
@@ -33,7 +37,8 @@ const end = computed({
 
 <template>
   <div class="gap-2 flex items-center">
-    <InputNumber
+    <component
+      :is="inputComponent"
       v-model="start"
       v-bind="$attrs"
       :min="min"
@@ -44,7 +49,8 @@ const end = computed({
     <span class="leading-0 text-muted-foreground">
       {{ t('common.symbols.connector') }}
     </span>
-    <InputNumber
+    <component
+      :is="inputComponent"
       v-model="end"
       v-bind="$attrs"
       :min="start ?? min"
