@@ -29,6 +29,7 @@ import {
   I18N_LIBRARIES,
   extractMessageKeys,
   findI18nUsage,
+  findI18nUsageByTextScan,
   loadMergedMessages,
   type I18nScannerConfig,
   type KeyUsageEntry,
@@ -59,6 +60,15 @@ export interface I18nUndefinedKeysCheckerOptions {
    * @default 'en'
    */
   referenceLocale?: string
+
+  /**
+   * Glob patterns for non-code files that reference keys as literal strings
+   * (e.g. layout.json). Scanned by plain-text exact match; locale source
+   * files must be excluded.
+   * @default []
+   * @example ['pages/** /layout.json']
+   */
+  textScanPatterns?: string[]
 }
 
 // ===== MAIN CLASS =====
@@ -102,6 +112,7 @@ export class I18nUndefinedKeysChecker {
   private readonly messagesDirs: string[]
   private readonly scannerConfig: I18nScannerConfig
   private readonly referenceLocale: string
+  private readonly textScanPatterns: string[]
 
   constructor (
     srcDir: string | string[],
@@ -111,6 +122,7 @@ export class I18nUndefinedKeysChecker {
     this.srcDirs = Array.isArray(srcDir) ? srcDir : [ srcDir ]
     this.messagesDirs = Array.isArray(messagesDir) ? messagesDir : [ messagesDir ]
     this.referenceLocale = options.referenceLocale ?? 'en'
+    this.textScanPatterns = options.textScanPatterns ?? []
 
     // Set custom translation factories
     const translationFactories = options.translationFactories ?? DEFAULT_TRANSLATION_FACTORIES
@@ -233,10 +245,13 @@ export class I18nUndefinedKeysChecker {
     const usage = new Map<string, KeyUsageEntry[]>()
     for (const srcDir of this.srcDirs) {
       const dirUsage = await findI18nUsage(srcDir, this.scannerConfig)
-      // Merge usage from all directories
-      for (const [ fullKey, entries ] of dirUsage.entries()) {
-        const existingEntries = usage.get(fullKey) || []
-        usage.set(fullKey, [ ...existingEntries, ...entries ])
+      const textUsage = await findI18nUsageByTextScan(srcDir, this.textScanPatterns)
+      // Merge usage from code-scan and text-scan
+      for (const partial of [ dirUsage, textUsage ]) {
+        for (const [ fullKey, entries ] of partial.entries()) {
+          const existingEntries = usage.get(fullKey) || []
+          usage.set(fullKey, [ ...existingEntries, ...entries ])
+        }
       }
     }
 
@@ -293,7 +308,10 @@ export class I18nUndefinedKeysChecker {
           && this.scannerConfig.pageMetaFields.includes(functionName.replace('definePageMeta.', ''))
 
         let usage: string
-        if (isPageMetaField) {
+        if (functionName === '<text>') {
+          // Plain-text scan usage — no enclosing function/attribute.
+          usage = key
+        } else if (isPageMetaField) {
           // For definePageMeta fields: definePageMeta.title='xxx'
           const quote = quoteType || '\''
           usage = `${functionName}=${quote}${key}${quote}`

@@ -27,7 +27,7 @@ export const I18N_LIBRARIES = {
     // Template attributes for translation keys
     keyAttributes: [ 'keypath' ],
     // Fields in definePageMeta that contain i18n keys
-    pageMetaFields: [ 'title' ],
+    pageMetaFields: [ 'title', 'description' ],
   },
 } as const
 
@@ -349,6 +349,81 @@ export async function findI18nUsage (
         config,
         content,
       )
+    })
+  }
+
+  return usage
+}
+
+// ===== PLAIN-TEXT SCANNING =====
+
+// Isolated dotted-identifier token. Boundaries prevent matching fragments
+// of longer chains (e.g. `obj.pages.charges.amount` is captured whole, not
+// leaking `pages.charges.amount`).
+const I18N_KEY_TOKEN_REGEX = /(?<![\w$.])([a-zA-Z_$][\w$]*(?:\.[a-zA-Z_$][\w$]*)+)(?![\w$.])/g
+
+/**
+ * Find i18n key references by plain-text scanning, for files that store
+ * keys as literal strings (e.g. layout.json, YAML metadata).
+ *
+ * Format-agnostic: every isolated dotted-identifier token in the raw text
+ * is emitted as a usage. The caller compares against the defined-key set
+ * by exact match — non-keys are harmlessly ignored. No wildcards.
+ *
+ * The caller must exclude locale source files: translated text could
+ * coincidentally contain a dotted-key-shaped substring.
+ *
+ * @param srcDir   - Source directory to glob from
+ * @param patterns - Glob patterns appended to `srcDir`; empty disables scanning
+ *
+ * @example
+ * findI18nUsageByTextScan('/project/app', ['** /layout.json'])
+ */
+export async function findI18nUsageByTextScan (
+  srcDir: string,
+  patterns: string[],
+): Promise<Map<string, KeyUsageEntry[]>> {
+  const usage = new Map<string, KeyUsageEntry[]>()
+  if (patterns.length === 0) return usage
+
+  const files = new Set<string>()
+  for (const pattern of patterns) {
+    const matched = await glob(`${srcDir}/${pattern}`, {
+      ignore: [ '**/node_modules/**', '**/.nuxt/**', '**/dist/**' ],
+    })
+    for (const f of matched) files.add(f)
+  }
+
+  for (const file of files) {
+    let rawText: string
+    try {
+      rawText = fs.readFileSync(file, 'utf-8')
+    } catch (err) {
+      console.error(`Failed to read ${file}:`, err instanceof Error ? err.message : String(err))
+      continue
+    }
+
+    const relativeFile = file.replace(process.cwd() + '/', '')
+    rawText.split('\n').forEach((line, lineIndex) => {
+      for (const match of line.matchAll(I18N_KEY_TOKEN_REGEX)) {
+        const key = match[1]
+        if (!key) continue
+        const entry: KeyUsageEntry = {
+          file: relativeFile,
+          line: lineIndex + 1,
+          column: match.index + 1,
+          key,
+          fullKey: key,
+          namespace: '',
+          // Sentinel for usages produced by text scan; the printer
+          // recognizes this to render as a bare key.
+          functionName: '<text>',
+          quoteType: '',
+          isDynamic: false,
+        }
+        const existing = usage.get(key) || []
+        usage.set(key, [ ...existing, entry ])
+      }
     })
   }
 
