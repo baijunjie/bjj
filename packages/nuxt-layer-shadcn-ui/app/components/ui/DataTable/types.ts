@@ -39,6 +39,8 @@ export interface DataTableProps<T = Record<string, any>> {
   columns?: DataTableColumn[]
   /** Selection mode: single or multiple */
   selectionMode?: DataTableSelectionMode
+  /** Row to highlight as active. Independent from selection; uses the same highlight style. */
+  active?: T | null
   /** Current sort field */
   sortBy?: string | null
   /** Current sort order: 1 for asc, -1 for desc */

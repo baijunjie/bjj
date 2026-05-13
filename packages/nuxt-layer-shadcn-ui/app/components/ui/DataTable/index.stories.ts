@@ -220,6 +220,49 @@ export const RowClick: Story = {
   }),
 }
 
+/** `active` highlights a specific row with the selected style. Independent from `selection` — typically paired with `@rowClick` to mark the row currently shown in a detail view. */
+export const ActiveRow: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable
+    :data="data"
+    :columns="columns"
+    :active="active"
+    clickable
+    @rowClick="row => active = row"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup () {
+      const active = ref<User | null>(sampleData[1]!)
+      return { data: sampleData, basicColumns, active }
+    },
+    template: `
+      <div class="w-full">
+        <DataTable
+          :data="data"
+          :columns="basicColumns"
+          :active="active"
+          clickable
+          @rowClick="row => active = row"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">
+          Active: {{ active?.name ?? 'none' }}
+        </div>
+      </div>
+    `,
+  }),
+}
+
 export const Loading: Story = {
   parameters: {
     ...noControls,

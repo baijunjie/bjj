@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<DataTableProps<TData>>(), {
   loading: false,
   clickable: false,
   height: undefined,
+  active: null,
 })
 
 const emit = defineEmits<{
@@ -83,6 +84,10 @@ function isRowSelected (row: TData): boolean {
     return selectedSet.value.has(toRaw(row))
   }
   return toRaw(selection.value) === toRaw(row)
+}
+
+function isRowActive (row: TData): boolean {
+  return props.active != null && toRaw(props.active) === toRaw(row)
 }
 
 function toggleRow (row: TData) {
@@ -387,7 +392,7 @@ defineExpose({
             v-for="(row, index) in data"
             :key="index"
             :class="(showSelectionColumn || clickable) && 'cursor-pointer'"
-            :data-state="isRowSelected(row) ? 'selected' : undefined"
+            :data-state="(isRowSelected(row) || isRowActive(row)) ? 'selected' : undefined"
             @click="onRowClick(row, index, $event)"
           >
             <!-- Selection cell: stop click to prevent double toggle with row click -->
@@ -520,7 +525,8 @@ defineExpose({
   --cell-bg: var(--color-card);
 }
 
-:deep(tbody tr:not([data-virtual-row]):hover) {
+:deep(tbody tr:not([data-virtual-row]):hover),
+:deep(tbody tr[data-state="selected"]) {
   --cell-bg: var(--color-muted);
 }
 
