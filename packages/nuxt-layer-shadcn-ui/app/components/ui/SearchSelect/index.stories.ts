@@ -52,6 +52,7 @@ const meta = {
     loadLimit: { control: 'number' },
     autoLoad: { control: 'boolean' },
     disabled: { control: 'boolean' },
+    invalid: { control: 'boolean' },
   },
   args: {
     modelValue: undefined,
@@ -64,6 +65,7 @@ const meta = {
     loadLimit: 20,
     autoLoad: false,
     disabled: false,
+    invalid: false,
   },
   render: args => {
     const onUpdate = useArgsModel()
@@ -179,6 +181,13 @@ export const Disabled: Story = {
   parameters: noControls,
   args: {
     disabled: true,
+  },
+}
+
+export const Invalid: Story = {
+  parameters: noControls,
+  args: {
+    invalid: true,
   },
 }
 

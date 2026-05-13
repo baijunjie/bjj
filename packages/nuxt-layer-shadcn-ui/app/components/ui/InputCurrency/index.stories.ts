@@ -11,11 +11,13 @@ const meta = {
     modelValue: { control: 'number' },
     currency: { control: 'text' },
     currencyDisplay: { control: 'select', options: currencyDisplays },
+    invalid: { control: 'boolean' },
   },
   args: {
     modelValue: 1000,
     currency: 'JPY',
     currencyDisplay: 'symbol',
+    invalid: false,
   },
   render: args => {
     const onUpdate = useArgsModel()
@@ -76,5 +78,12 @@ export const JpyNameDisplay: Story = {
   args: {
     currency: 'JPY',
     currencyDisplay: 'name',
+  },
+}
+
+export const Invalid: Story = {
+  parameters: noControls,
+  args: {
+    invalid: true,
   },
 }

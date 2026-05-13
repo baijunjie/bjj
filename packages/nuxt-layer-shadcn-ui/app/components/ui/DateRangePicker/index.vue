@@ -10,6 +10,7 @@ const props = withDefaults(defineProps<DateRangePickerProps>(), {
   showTime: false,
   disabled: false,
   readonly: false,
+  invalid: false,
   startPlaceholder: undefined,
   endPlaceholder: undefined,
   minDate: undefined,
@@ -19,6 +20,8 @@ const props = withDefaults(defineProps<DateRangePickerProps>(), {
   autoApply: true,
   class: undefined,
 })
+
+useFormItemInvalid(() => props.invalid)
 
 const emit = defineEmits<{
   'update:start': [value: Date | string | number | null]

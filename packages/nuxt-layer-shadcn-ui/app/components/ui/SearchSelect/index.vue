@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<SearchSelectProps<TValue, TMeta>>(), {
   loadLimit: 20,
   placeholder: undefined,
   disabled: false,
+  invalid: false,
   searchPlaceholder: undefined,
   emptyText: undefined,
   searchEmptyText: undefined,
@@ -191,6 +192,7 @@ defineExpose({ refresh: resetAndLoad })
     :searchPlaceholder="searchPlaceholder"
     :emptyText="computedEmptyText"
     :disabled="disabled"
+    :invalid="invalid"
     :loading="isLoading"
     @search="handleSearch"
     @open="handleOpen"

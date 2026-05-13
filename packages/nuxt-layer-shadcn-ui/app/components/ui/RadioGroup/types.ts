@@ -8,6 +8,7 @@ export interface RadioGroupProps {
   modelValue?: string
   items?: RadioGroupItem[]
   disabled?: boolean
+  invalid?: boolean
   orientation?: 'vertical' | 'horizontal'
   class?: ClassValue
 }

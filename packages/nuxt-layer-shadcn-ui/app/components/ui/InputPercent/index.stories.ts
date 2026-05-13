@@ -7,9 +7,11 @@ const meta = {
   component: InputPercent as any,
   argTypes: {
     modelValue: { control: 'number' },
+    invalid: { control: 'boolean' },
   },
   args: {
     modelValue: 0.5,
+    invalid: false,
   },
   render: args => {
     const onUpdate = useArgsModel()
@@ -29,4 +31,13 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const noControls = { controls: { disable: true }} satisfies Story['parameters']
+
 export const Default: Story = {}
+
+export const Invalid: Story = {
+  parameters: noControls,
+  args: {
+    invalid: true,
+  },
+}

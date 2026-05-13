@@ -28,26 +28,29 @@ const model = computed({
   set: value => emit('update:modelValue', value),
 })
 
+const isInvalid = useFormItemInvalid(() => props.invalid)
+
 const contentClass = computed(() =>
   cn(
     `
-      flex h-9 items-center rounded-md border border-input shadow-xs
-      transition-[color,box-shadow]
+      h-9 rounded-md border-input shadow-xs
       dark:bg-input/30
+      flex items-center border transition-[color,box-shadow]
     `,
     `
       has-[[data-slot=input]:focus-visible]:border-ring
-      has-[[data-slot=input]:focus-visible]:ring-[3px]
       has-[[data-slot=input]:focus-visible]:ring-ring/50
+      has-[[data-slot=input]:focus-visible]:ring-[3px]
     `,
-    props.invalid && `
+    isInvalid.value && `
       border-destructive ring-destructive/20
       dark:ring-destructive/40
     `,
   ),
 )
 
-const inputClass = 'flex-1 border-0 shadow-none focus-visible:ring-0 rounded-none'
+const buttonClass = 'static translate-y-0 shrink-0 cursor-pointer'
+const inputClass = 'flex-1 min-w-0 border-0 shadow-none focus-visible:ring-0 rounded-none'
 </script>
 
 <template>
@@ -61,7 +64,7 @@ const inputClass = 'flex-1 border-0 shadow-none focus-visible:ring-0 rounded-non
     <NumberFieldContent :class="contentClass">
       <NumberFieldDecrement
         v-if="showButtons"
-        class="cursor-pointer"
+        :class="buttonClass"
       />
       <NumberFieldInput
         :placeholder="placeholder"
@@ -69,7 +72,7 @@ const inputClass = 'flex-1 border-0 shadow-none focus-visible:ring-0 rounded-non
       />
       <NumberFieldIncrement
         v-if="showButtons"
-        class="cursor-pointer"
+        :class="buttonClass"
       />
     </NumberFieldContent>
   </NumberField>

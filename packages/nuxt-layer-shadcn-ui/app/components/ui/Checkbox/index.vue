@@ -2,12 +2,15 @@
 import { Checkbox as ShadcnCheckbox } from '../../shadcn/checkbox'
 import type { CheckboxProps } from './types'
 
-defineProps<CheckboxProps>()
+const props = defineProps<CheckboxProps>()
+
+const isInvalid = useFormItemInvalid(() => props.invalid)
 </script>
 
 <template>
   <ShadcnCheckbox
     v-slot="{ state }"
+    :aria-invalid="isInvalid || undefined"
     class="
       data-[state=indeterminate]:border-primary
       data-[state=indeterminate]:bg-primary

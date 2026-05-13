@@ -1,3 +1,5 @@
 import type { CheckboxRootProps } from 'reka-ui'
 
-export interface CheckboxProps extends /* @vue-ignore */ CheckboxRootProps {}
+export interface CheckboxProps extends /* @vue-ignore */ CheckboxRootProps {
+  invalid?: boolean
+}

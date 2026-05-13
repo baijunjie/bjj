@@ -9,5 +9,6 @@ export interface RadioCardGroupProps {
   modelValue?: string
   options: RadioCardGroupOption[]
   disabled?: boolean
+  invalid?: boolean
   class?: ClassValue
 }

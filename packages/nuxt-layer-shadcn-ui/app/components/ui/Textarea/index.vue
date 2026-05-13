@@ -17,6 +17,8 @@ const emit = defineEmits<{
   'change': [value: string]
 }>()
 
+const isInvalid = useFormItemInvalid(() => props.invalid)
+
 function handleInput (event: Event) {
   const target = event.target as HTMLTextAreaElement
   emit('update:modelValue', target.value)
@@ -40,7 +42,7 @@ const mergedClass = computed(() =>
     :modelValue="modelValue"
     :rows="rows"
     :class="mergedClass"
-    :aria-invalid="invalid || undefined"
+    :aria-invalid="isInvalid || undefined"
     :data-1p-ignore="autocomplete === 'off' || !autocomplete ? true : undefined"
     :autocomplete="autocomplete || 'off'"
     v-bind="$attrs"

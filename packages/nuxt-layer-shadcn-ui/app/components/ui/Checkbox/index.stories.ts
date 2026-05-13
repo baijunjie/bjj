@@ -10,6 +10,7 @@ const meta = {
     defaultValue: { control: 'select', options: [ true, false, 'indeterminate' ]},
     disabled: { control: 'boolean' },
     required: { control: 'boolean' },
+    invalid: { control: 'boolean' },
     name: { control: 'text' },
     value: { control: 'text' },
   },
@@ -18,6 +19,7 @@ const meta = {
     defaultValue: false,
     disabled: false,
     required: false,
+    invalid: false,
     name: '',
     value: '',
   },
@@ -102,6 +104,13 @@ export const Indeterminate: Story = {
       </label>
     `,
   }),
+}
+
+export const Invalid: Story = {
+  parameters: noControls,
+  args: {
+    invalid: true,
+  },
 }
 
 export const Disabled: Story = {

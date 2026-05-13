@@ -13,6 +13,7 @@ const meta = {
     showTime: { control: 'boolean' },
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
+    invalid: { control: 'boolean' },
     startPlaceholder: { control: 'text' },
     endPlaceholder: { control: 'text' },
     maxSpanDays: { control: 'number' },
@@ -28,6 +29,7 @@ const meta = {
     showTime: false,
     disabled: false,
     readonly: false,
+    invalid: false,
     startPlaceholder: '',
     endPlaceholder: '',
     maxSpanDays: undefined,
@@ -195,4 +197,11 @@ export const Readonly: Story = {
       </div>
     `,
   }),
+}
+
+export const Invalid: Story = {
+  parameters: noControls,
+  args: {
+    invalid: true,
+  },
 }

@@ -15,6 +15,7 @@ const meta = {
     startPlaceholder: { control: 'text' },
     endPlaceholder: { control: 'text' },
     disabled: { control: 'boolean' },
+    invalid: { control: 'boolean' },
     as: { control: false },
   },
   args: {
@@ -25,6 +26,7 @@ const meta = {
     startPlaceholder: '',
     endPlaceholder: '',
     disabled: false,
+    invalid: false,
     as: undefined,
   },
   render: args => {
@@ -68,6 +70,15 @@ export const Disabled: Story = {
   parameters: noControls,
   args: {
     disabled: true,
+  },
+}
+
+export const Invalid: Story = {
+  parameters: noControls,
+  args: {
+    invalid: true,
+    start: 20,
+    end: 80,
   },
 }
 

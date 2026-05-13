@@ -16,6 +16,7 @@ const meta = {
     showTime: { control: 'boolean' },
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
+    invalid: { control: 'boolean' },
     placeholder: { control: 'text' },
     minDate: { control: 'date' },
     maxDate: { control: 'date' },
@@ -29,6 +30,7 @@ const meta = {
     showTime: false,
     disabled: false,
     readonly: false,
+    invalid: false,
     placeholder: '',
     minDate: undefined,
     maxDate: undefined,
@@ -222,6 +224,13 @@ export const Readonly: Story = {
       </div>
     `,
   }),
+}
+
+export const Invalid: Story = {
+  parameters: noControls,
+  args: {
+    invalid: true,
+  },
 }
 
 export const InModal: Story = {

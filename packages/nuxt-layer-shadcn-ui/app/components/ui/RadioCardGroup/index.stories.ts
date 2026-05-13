@@ -43,11 +43,13 @@ const meta = {
     modelValue: { control: 'text' },
     options: { control: 'object' },
     disabled: { control: 'boolean' },
+    invalid: { control: 'boolean' },
   },
   args: {
     modelValue: 'current',
     options,
     disabled: false,
+    invalid: false,
   },
   render: args => {
     const onUpdate = useArgsModel()
@@ -103,6 +105,13 @@ export const Disabled: Story = {
   parameters: noControls,
   args: {
     disabled: true,
+  },
+}
+
+export const Invalid: Story = {
+  parameters: noControls,
+  args: {
+    invalid: true,
   },
 }
 

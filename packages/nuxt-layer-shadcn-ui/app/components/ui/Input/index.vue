@@ -16,6 +16,8 @@ const emit = defineEmits<{
   'change': [value: string | undefined]
 }>()
 
+const isInvalid = useFormItemInvalid(() => props.invalid)
+
 const $slots = defineSlots<{
   prefix?: () => unknown
   suffix?: () => unknown
@@ -65,7 +67,7 @@ function clearInput () {
       v-bind="$attrs"
       :readonly="readonly"
       :disabled="disabled"
-      :aria-invalid="invalid || undefined"
+      :aria-invalid="isInvalid || undefined"
       :data-1p-ignore="autocomplete === 'off' || !autocomplete ? true : undefined"
       :autocomplete="autocomplete || 'off'"
       @input="handleInput"

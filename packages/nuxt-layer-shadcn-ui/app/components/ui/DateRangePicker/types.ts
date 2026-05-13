@@ -21,6 +21,8 @@ export interface DateRangePickerProps {
   disabled?: boolean
   /** Readonly mode */
   readonly?: boolean
+  /** Mark the field as invalid (renders both inputs with destructive styling) */
+  invalid?: boolean
   /** Placeholder for start date input */
   startPlaceholder?: string
   /** Placeholder for end date input */

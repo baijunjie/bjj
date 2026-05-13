@@ -9,9 +9,12 @@ const props = withDefaults(defineProps<RadioGroupProps>(), {
   items: () => [],
   modelValue: undefined,
   disabled: false,
+  invalid: false,
   orientation: 'vertical',
   class: undefined,
 })
+
+const isInvalid = useFormItemInvalid(() => props.invalid)
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
@@ -58,6 +61,7 @@ const mergedClass = computed(() => cn(
       <ShadcnRadioGroupItem
         :value="item.value"
         :disabled="item.disabled"
+        :aria-invalid="isInvalid || undefined"
       />
       <slot
         name="label"

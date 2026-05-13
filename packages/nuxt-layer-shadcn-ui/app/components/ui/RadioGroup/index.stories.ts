@@ -23,12 +23,14 @@ const meta = {
     items: { control: 'object' },
     modelValue: { control: 'text' },
     disabled: { control: 'boolean' },
+    invalid: { control: 'boolean' },
     orientation: { control: 'inline-radio', options: [ 'vertical', 'horizontal' ]},
   },
   args: {
     items: options,
     modelValue: 'option1',
     disabled: false,
+    invalid: false,
     orientation: 'vertical',
   },
   render: args => {
@@ -67,6 +69,13 @@ export const Disabled: Story = {
   parameters: noControls,
   args: {
     disabled: true,
+  },
+}
+
+export const Invalid: Story = {
+  parameters: noControls,
+  args: {
+    invalid: true,
   },
 }
 

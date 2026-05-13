@@ -27,6 +27,7 @@ export interface SearchSelectProps<V extends string | number = string, M = unkno
   loadLimit?: number
   placeholder?: string
   disabled?: boolean
+  invalid?: boolean
   searchPlaceholder?: string
   /** Message when no options available (no search keyword) */
   emptyText?: string

@@ -10,15 +10,22 @@ import type { FormItemProps } from './types'
 
 const props = defineProps<FormItemProps>()
 
+useFormItemInvalid(() => !!props.error)
+
 const errorArray = computed(() => {
   if (!props.error) return undefined
   return [{ message: props.error }]
 })
 
 const labelClass = computed(() => {
-  if (props.orientation === 'horizontal') return 'justify-end text-right mt-2'
-  if (props.orientation === 'responsive') return '@md/field-group:justify-end @md/field-group:text-right @md/field-group:mt-2'
-  return undefined
+  const base = 'group-data-[invalid=true]/field:text-foreground'
+  if (props.orientation === 'horizontal') return cn(base, `
+    mt-2 justify-end text-right
+  `)
+  if (props.orientation === 'responsive') return cn(base, `
+    @md/field-group:justify-end @md/field-group:text-right @md/field-group:mt-2
+  `)
+  return base
 })
 </script>
 

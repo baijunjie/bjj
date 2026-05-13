@@ -6,16 +6,19 @@ import {
 } from '../../shadcn/pin-input'
 import type { InputOtpProps } from './types'
 
-withDefaults(defineProps<InputOtpProps>(), {
+const props = withDefaults(defineProps<InputOtpProps>(), {
   modelValue: '',
   length: 6,
   disabled: false,
+  invalid: false,
 })
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
   'complete': [value: string]
 }>()
+
+const isInvalid = useFormItemInvalid(() => props.invalid)
 
 function handleComplete (values: string[]) {
   emit('complete', values.join(''))
@@ -39,6 +42,7 @@ function handleUpdate (value: string[]) {
         v-for="(_, index) in length"
         :key="index"
         :index="index"
+        :aria-invalid="isInvalid || undefined"
       />
     </PinInputGroup>
   </PinInput>

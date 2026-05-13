@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import type { InputPercentProps } from './types'
+
+defineProps<InputPercentProps>()
+</script>
+
 <template>
   <InputNumber
     :formatOptions="{ style: 'percent' }"

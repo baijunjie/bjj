@@ -38,6 +38,7 @@ const meta = {
     modelValue: { control: 'text' },
     placeholder: { control: 'text' },
     disabled: { control: 'boolean' },
+    invalid: { control: 'boolean' },
     loading: { control: 'boolean' },
     filter: { control: 'boolean' },
     multiple: { control: 'boolean' },
@@ -48,6 +49,7 @@ const meta = {
     modelValue: undefined,
     placeholder: 'Select an option',
     disabled: false,
+    invalid: false,
     loading: false,
     filter: false,
     multiple: false,
@@ -287,6 +289,13 @@ export const Loading: Story = {
   args: {
     loading: true,
     placeholder: 'Loading options',
+  },
+}
+
+export const Invalid: Story = {
+  parameters: noControls,
+  args: {
+    invalid: true,
   },
 }
 

@@ -8,8 +8,11 @@ import type { RadioCardGroupProps } from './types'
 const props = withDefaults(defineProps<RadioCardGroupProps>(), {
   modelValue: undefined,
   disabled: false,
+  invalid: false,
   class: undefined,
 })
+
+const isInvalid = useFormItemInvalid(() => props.invalid)
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
@@ -47,6 +50,7 @@ const mergedClass = computed(() => cn('gap-3', props.class))
       <ShadcnRadioGroupItem
         :value="option.value"
         :disabled="option.disabled"
+        :aria-invalid="isInvalid || undefined"
       />
       <div class="gap-0.5 grid flex-1">
         <span class="text-sm font-medium">

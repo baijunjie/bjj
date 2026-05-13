@@ -20,6 +20,7 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
   showTime: false,
   disabled: false,
   readonly: false,
+  invalid: false,
   placeholder: undefined,
   minDate: undefined,
   maxDate: undefined,
@@ -27,6 +28,8 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
   autoApply: true,
   class: undefined,
 })
+
+useFormItemInvalid(() => props.invalid)
 
 const emit = defineEmits<{
   'update:modelValue': [value: Date | string | number | null]

@@ -27,6 +27,8 @@ export interface DatePickerProps {
   disabled?: boolean
   /** Readonly mode */
   readonly?: boolean
+  /** Mark the field as invalid (renders the inner Input with destructive styling) */
+  invalid?: boolean
   /** Placeholder text */
   placeholder?: string
   /** Minimum selectable date */

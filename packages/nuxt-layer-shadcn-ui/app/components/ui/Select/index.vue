@@ -29,12 +29,15 @@ const props = withDefaults(defineProps<SelectProps<TValue, TMeta>>(), {
   modelValue: undefined,
   placeholder: undefined,
   disabled: false,
+  invalid: false,
   loading: false,
   filter: false,
   searchPlaceholder: undefined,
   emptyText: undefined,
   multiple: false,
 })
+
+const isInvalid = useFormItemInvalid(() => props.invalid)
 
 const emit = defineEmits<{
   'update:modelValue': [value: TValue | TValue[]]
@@ -154,10 +157,13 @@ function handleClear (event: MouseEvent) {
         role="combobox"
         tabindex="0"
         :aria-expanded="open"
+        :aria-invalid="isInvalid || undefined"
         :data-disabled="disabled || undefined"
         :data-state="open ? 'open' : 'closed'"
         class="
           data-[state=open]:border-ring data-[state=open]:ring-ring/50
+          aria-invalid:ring-destructive/20 aria-invalid:border-destructive
+          dark:aria-invalid:ring-destructive/40
           cursor-pointer
           data-[state=open]:ring-[3px]
         "
