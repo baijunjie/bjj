@@ -164,6 +164,9 @@ function handleClear (event: MouseEvent) {
           data-[state=open]:border-ring data-[state=open]:ring-ring/50
           aria-invalid:ring-destructive/20 aria-invalid:border-destructive
           dark:aria-invalid:ring-destructive/40
+          aria-invalid:data-[state=open]:border-destructive
+          aria-invalid:data-[state=open]:ring-destructive/20
+          dark:aria-invalid:data-[state=open]:ring-destructive/40
           cursor-pointer
           data-[state=open]:ring-[3px]
         "

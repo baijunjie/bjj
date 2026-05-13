@@ -45,6 +45,9 @@ const contentClass = computed(() =>
     isInvalid.value && `
       border-destructive ring-destructive/20
       dark:ring-destructive/40
+      has-[[data-slot=input]:focus-visible]:border-destructive
+      has-[[data-slot=input]:focus-visible]:ring-destructive/20
+      dark:has-[[data-slot=input]:focus-visible]:ring-destructive/40
     `,
   ),
 )
