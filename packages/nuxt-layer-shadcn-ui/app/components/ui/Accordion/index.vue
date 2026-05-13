@@ -57,7 +57,7 @@ const rootProps = computed<AccordionRootProps>(() => {
       :value="item.value"
       :disabled="item.disabled"
     >
-      <AccordionTrigger>
+      <AccordionTrigger :class="triggerClass">
         <slot
           name="title"
           :item="item"
@@ -66,7 +66,7 @@ const rootProps = computed<AccordionRootProps>(() => {
           {{ item.title }}
         </slot>
       </AccordionTrigger>
-      <AccordionContent>
+      <AccordionContent :class="contentClass">
         <slot
           name="content"
           :item="item"

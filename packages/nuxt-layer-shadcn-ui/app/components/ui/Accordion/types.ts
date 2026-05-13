@@ -8,6 +8,8 @@ export interface AccordionItem {
 export type AccordionBaseProps = {
   items?: AccordionItem[]
   disabled?: boolean
+  triggerClass?: ClassValue
+  contentClass?: ClassValue
 }
 
 export type AccordionSingleProps = AccordionBaseProps & {
