@@ -27,8 +27,18 @@ describe('formatCurrency', () => {
     expect(formatCurrency(1000, 'JPY')).toBe('¥1,000')
   })
 
-  it('should return $0 for NaN input', () => {
+  it('should return zero formatted with the same options for NaN input', () => {
     expect(formatCurrency('abc', 'USD')).toBe('$0')
+    expect(formatCurrency('abc', 'USD', { stripTrailingZeros: false })).toBe('$0.00')
+    expect(formatCurrency('abc', 'USD', { currencyDisplay: 'name' })).toBe('0 US dollars')
+    expect(formatCurrency('abc')).toBe('0')
+  })
+
+  it('should format as plain number when currency is omitted', () => {
+    expect(formatCurrency(1)).toBe('1')
+    expect(formatCurrency(1.5)).toBe('1.5')
+    expect(formatCurrency(1000)).toBe('1,000')
+    expect(formatCurrency('2.50')).toBe('2.5')
   })
 
   it('should support currencyDisplay variants', () => {

@@ -8,22 +8,22 @@ export interface FormatCurrencyOptions {
 /**
  * Format a number or string as currency
  * @param value - The value to format (number or string)
- * @param currency - ISO 4217 currency code (e.g., 'USD', 'JPY', 'EUR')
+ * @param currency - ISO 4217 currency code (e.g., 'USD', 'JPY', 'EUR').
+ *   When omitted, the value is formatted as a plain number without a currency symbol.
  * @param options - See {@link FormatCurrencyOptions}
  */
 export function formatCurrency (
   value: number | string,
-  currency: string,
+  currency?: string,
   options: FormatCurrencyOptions = {},
 ): string {
   const { currencyDisplay = 'symbol', stripTrailingZeros = true } = options
   const num = typeof value === 'string' ? parseFloat(value) : value
-  if (Number.isNaN(num)) return '$0'
-  const formatted = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency,
-    currencyDisplay,
-  }).format(num)
+  const safeNum = Number.isNaN(num) ? 0 : num
+  const formatted = new Intl.NumberFormat('en-US', currency
+    ? { style: 'currency', currency, currencyDisplay }
+    : {},
+  ).format(safeNum)
   if (!stripTrailingZeros) return formatted
   // Strip trailing zeros within the numeric portion so it works for any
   // currencyDisplay variant (e.g. "1.00 US dollars" -> "1 US dollars").
