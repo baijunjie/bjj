@@ -16,7 +16,7 @@
       "dateTime": "YYYY-MM-DD HH:mm:ss",
       "duration": {
         "days": "h",
-        "hours": "h",
+        "hours": "j",
         "minutes": "m",
         "seconds": "d"
       }

@@ -15,14 +15,14 @@
       },
       "dateTime": "YYYY-MM-DD HH:mm:ss",
       "duration": {
-        "days": "د",
+        "days": "ي",
         "hours": "س",
         "minutes": "د",
         "seconds": "ث"
       }
     },
     "symbols": {
-      "connector": "الفاصل"
+      "connector": "～"
     }
   },
   "components": {

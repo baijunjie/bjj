@@ -24,6 +24,8 @@ run_in_background: false（禁止后台运行）
 ```
 读取以下文件，找到所有以 "__<<<" 结尾的 key（如 "title__<<<": "Dashboard"），将值翻译成{语言名称}，然后去掉 key 的 "__<<<" 后缀。用 Edit 工具替换。保留占位符如 {percent}、{count} 等。不要执行 git 操作。
 
+翻译时不要只盯着当前要翻译的文本，先通读文件中已有的翻译条目，对齐术语、用词和语言习惯，确保同一名词在整个文件中保持统一译法，避免出现同一术语有多种不同翻译的情况。
+
 文件列表：
 - packages/xxx/i18n/messages/{lang}.json
 - packages/yyy/i18n/messages/{lang}.json

@@ -56,7 +56,7 @@
       },
       "InfiniteDataTable": {
         "allLoaded": "— सभी लोड हो गए —",
-        "count": "{loaded} of {total} लोड हो गया",
+        "count": "{loaded} में से {total} लोड हो गया",
         "loadFailed": "लोड करने में विफल",
         "scrollToTop": "शीर्ष पर जाएं"
       },

@@ -52,7 +52,7 @@
         "startPlaceholder": "开始日期"
       },
       "Dropdown": {
-        "empty": "无项目"
+        "empty": "暂无项目"
       },
       "InfiniteDataTable": {
         "allLoaded": "全部已加载",
@@ -69,12 +69,12 @@
       },
       "SearchSelect": {
         "createNew": "新建",
-        "noItems": "无选项",
-        "noSearchItems": "无结果"
+        "noItems": "暂无选项",
+        "noSearchItems": "暂无结果"
       },
       "Select": {
         "itemsSelected": "已选择 {count} 项",
-        "noItems": "无选项",
+        "noItems": "暂无选项",
         "placeholder": "请选择",
         "searchPlaceholder": "搜索..."
       },
@@ -84,7 +84,7 @@
           "titleDirectory": "点击或拖动目录到此区域上传",
           "titleMultiple": "点击或拖动文件到此区域上传"
         },
-        "empty": "无文件",
+        "empty": "暂无文件",
         "error": {
           "accept": "{files} 不是支持的文件类型 ({accept})。",
           "oversize": "{files} 超过 {size} 大小限制。"

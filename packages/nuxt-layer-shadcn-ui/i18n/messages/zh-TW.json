@@ -36,7 +36,7 @@
         "copyToClipboard": "複製"
       },
       "DataTable": {
-        "empty": "無資料"
+        "empty": "暫無資料"
       },
       "DatePicker": {
         "format": {
@@ -52,11 +52,11 @@
         "startPlaceholder": "開始日期"
       },
       "Dropdown": {
-        "empty": "沒有項目"
+        "empty": "暫無項目"
       },
       "InfiniteDataTable": {
         "allLoaded": "— 全部已載入 —",
-        "count": "{loaded} 的 {total} 已載入",
+        "count": "{loaded} / {total} 已載入",
         "loadFailed": "載入失敗",
         "scrollToTop": "回到頂部"
       },
@@ -69,12 +69,12 @@
       },
       "SearchSelect": {
         "createNew": "建立新項",
-        "noItems": "無選項",
-        "noSearchItems": "無搜尋結果"
+        "noItems": "暫無選項",
+        "noSearchItems": "暫無結果"
       },
       "Select": {
         "itemsSelected": "已選擇 {count} 項",
-        "noItems": "無選項",
+        "noItems": "暫無選項",
         "placeholder": "請選擇",
         "searchPlaceholder": "搜尋..."
       },
@@ -84,7 +84,7 @@
           "titleDirectory": "在此點擊或拖曳資料夾以上傳",
           "titleMultiple": "在此點擊或拖曳檔案以上傳"
         },
-        "empty": "無檔案",
+        "empty": "暫無檔案",
         "error": {
           "accept": "{files} 不是可接受的檔案類型（{accept}）。",
           "oversize": "{files} 超過 {size} 的大小限制。"

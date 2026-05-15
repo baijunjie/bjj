@@ -65,7 +65,7 @@
         "startPlaceholder": "最小値"
       },
       "Pagination": {
-        "pageReport": "{first}〜{last}件 / 全{total}件"
+        "pageReport": "{first}～{last}件 / 全{total}件"
       },
       "SearchSelect": {
         "createNew": "新規作成",
