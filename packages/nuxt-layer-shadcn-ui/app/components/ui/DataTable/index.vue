@@ -435,7 +435,7 @@ defineExpose({
         </template>
 
         <TableRow
-          v-else-if="!loading"
+          v-else
           data-virtual-row
           class="hover:bg-transparent"
         >
