@@ -10,15 +10,16 @@ interface User {
   role: string
   status: string
   amount: number
+  views: number
   createdAt: string
 }
 
 const sampleData: User[] = [
-  { id: 1, name: 'Alice', email: 'alice@example.com', role: 'Admin', status: 'active', amount: 1234.56, createdAt: '2024-01-15T10:30:00Z' },
-  { id: 2, name: 'Bob', email: 'bob@example.com', role: 'User', status: 'active', amount: 789.0, createdAt: '2024-02-20T14:15:00Z' },
-  { id: 3, name: 'Charlie', email: 'charlie@example.com', role: 'Editor', status: 'inactive', amount: 2345.67, createdAt: '2024-03-10T09:00:00Z' },
-  { id: 4, name: 'Diana', email: 'diana@example.com', role: 'Admin', status: 'active', amount: 456.78, createdAt: '2024-04-05T16:45:00Z' },
-  { id: 5, name: 'Eve', email: 'eve@example.com', role: 'User', status: 'inactive', amount: 3456.89, createdAt: '2024-05-12T11:20:00Z' },
+  { id: 1, name: 'Alice', email: 'alice@example.com', role: 'Admin', status: 'active', amount: 1234.56, views: 12345, createdAt: '2024-01-15T10:30:00Z' },
+  { id: 2, name: 'Bob', email: 'bob@example.com', role: 'User', status: 'active', amount: 789.0, views: 678, createdAt: '2024-02-20T14:15:00Z' },
+  { id: 3, name: 'Charlie', email: 'charlie@example.com', role: 'Editor', status: 'inactive', amount: 2345.67, views: 1234567, createdAt: '2024-03-10T09:00:00Z' },
+  { id: 4, name: 'Diana', email: 'diana@example.com', role: 'Admin', status: 'active', amount: 456.78, views: 42, createdAt: '2024-04-05T16:45:00Z' },
+  { id: 5, name: 'Eve', email: 'eve@example.com', role: 'User', status: 'inactive', amount: 3456.89, views: 98765, createdAt: '2024-05-12T11:20:00Z' },
 ]
 
 const longData: User[] = Array.from({ length: 30 }, (_, i) => ({
@@ -28,6 +29,7 @@ const longData: User[] = Array.from({ length: 30 }, (_, i) => ({
   role: [ 'Admin', 'Editor', 'User' ][i % 3]!,
   status: i % 4 === 0 ? 'inactive' : 'active',
   amount: Math.round(Math.random() * 10000) / 100,
+  views: Math.round(Math.random() * 1_000_000),
   createdAt: new Date(2024, 0, 1 + i).toISOString(),
 }))
 
@@ -48,9 +50,9 @@ const sortableColumns: DataTableColumn[] = [
 
 const typeColumns: DataTableColumn[] = [
   { field: 'name', title: 'Name', width: '120px' },
+  { field: 'views', title: 'Views', width: '120px', type: 'number', align: 'right' },
   { field: 'amount', title: 'Amount', width: '120px', type: 'currency' },
   { field: 'createdAt', title: 'Date', width: '140px', type: 'date' },
-  { field: 'status', title: 'Empty', width: '100px', type: 'empty' },
 ]
 
 const slotColumns: DataTableColumn[] = [
@@ -547,13 +549,13 @@ export const CellSlotEmptyFallback: Story = {
       const data = [
         { name: 'Empty value (no slot)', email: '', status: 'active', action: 'Edit' },
         { name: 'Empty slot output', email: 'demo@example.com', status: 'pending', action: 'Edit' },
-        { name: 'Column type=\'empty\'', email: 'demo@example.com', status: 'active', action: '' },
+        { name: 'Empty value with slot', email: 'demo@example.com', status: 'active', action: '' },
       ]
       const columns: DataTableColumn[] = [
         { field: 'name', title: 'Demo case', minWidth: '200px' },
         { field: 'email', title: 'Email', minWidth: '200px' },
         { field: 'status', title: 'Status', width: '120px' },
-        { field: 'action', title: 'Action', width: '120px', type: 'empty' },
+        { field: 'action', title: 'Action', width: '120px' },
       ]
       return { data, columns }
     },

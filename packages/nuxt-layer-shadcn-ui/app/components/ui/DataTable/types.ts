@@ -1,4 +1,4 @@
-export type DataTableColumnType = 'text' | 'date' | 'unixDate' | 'currency' | 'empty'
+export type DataTableColumnType = 'text' | 'number' | 'date' | 'unixDate' | 'currency'
 export type DataTableColumnFixed = 'left' | 'right'
 export type DataTableColumnAlign = 'left' | 'center' | 'right'
 export type DataTableSelectionMode = 'single' | 'multiple'

@@ -3,4 +3,4 @@
 // Also serves as the shadcn CLI `utils` alias (see components.json).
 export { cn } from '@bjj/shared/vue/utils'
 export { safeHtml } from '@bjj/shared/utils-browser'
-export { isUrl, formatCurrency } from '@bjj/shared/utils'
+export { isUrl, formatCurrency, formatNumber } from '@bjj/shared/utils'

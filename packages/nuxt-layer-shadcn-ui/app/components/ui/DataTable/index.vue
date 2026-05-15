@@ -141,13 +141,13 @@ function formatCellValue (value: unknown, column: DataTableColumn): string {
     case 'unixDate':
       return formatDateTime((value as number) * 1000).split(' ').join('\n')
 
+    case 'number':
+      return formatNumber(value as number | string)
+
     case 'currency':
       return formatCurrency(value as number | string, column.currency, {
         currencyDisplay: column.currencyDisplay,
       })
-
-    case 'empty':
-      return ''
 
     default:
       return String(value)
@@ -421,20 +421,12 @@ defineExpose({
               <CellSlot
                 :slotFn="$slots[column.field]"
                 :scope="{ column, row, value: get(row, column.field), index }"
+                :empty="!formatCellValue(get(row, column.field), column)"
               >
                 <template #default>
-                  <span
-                    v-if="!formatCellValue(get(row, column.field), column) && column.type !== 'empty'"
-                    :class="emptyCellClass"
-                  />
-                  <template v-else>
-                    {{ formatCellValue(get(row, column.field), column) }}
-                  </template>
+                  {{ formatCellValue(get(row, column.field), column) }}
                 </template>
-                <template
-                  v-if="column.type !== 'empty'"
-                  #empty
-                >
+                <template #empty>
                   <span :class="emptyCellClass" />
                 </template>
               </CellSlot>
