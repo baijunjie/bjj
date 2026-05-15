@@ -2,11 +2,45 @@ import { describe, it, expect } from 'vitest'
 import {
   formatCurrency,
   formatDecimal,
+  formatNumber,
   formatPercent,
   formatWalletAddress,
   replaceMiddleWithDots,
   toSnakeCase,
 } from '../../src/utils/format'
+
+describe('formatNumber', () => {
+  it('should group with thousand separators by default', () => {
+    expect(formatNumber(1)).toBe('1')
+    expect(formatNumber(1000)).toBe('1,000')
+    expect(formatNumber(1234567)).toBe('1,234,567')
+  })
+
+  it('should accept string input and strip trailing zeros by default', () => {
+    expect(formatNumber('1234.50')).toBe('1,234.5')
+    expect(formatNumber('1000.00')).toBe('1,000')
+  })
+
+  it('should keep trailing zeros when stripTrailingZeros is false', () => {
+    expect(formatNumber(1.5, { minimumFractionDigits: 2, stripTrailingZeros: false }))
+      .toBe('1.50')
+    expect(formatNumber(1000, { minimumFractionDigits: 2, stripTrailingZeros: false }))
+      .toBe('1,000.00')
+  })
+
+  it('should pass through Intl.NumberFormat options', () => {
+    expect(formatNumber(0.5, { style: 'percent' })).toBe('50%')
+    expect(formatNumber(0.1234, { style: 'percent', minimumFractionDigits: 2 })).toBe('12.34%')
+    expect(formatNumber(1234, { useGrouping: false })).toBe('1234')
+    expect(formatNumber(1.23456, { maximumFractionDigits: 2 })).toBe('1.23')
+  })
+
+  it('should return zero for NaN input', () => {
+    expect(formatNumber('abc')).toBe('0')
+    expect(formatNumber('abc', { minimumFractionDigits: 2, stripTrailingZeros: false }))
+      .toBe('0.00')
+  })
+})
 
 describe('formatCurrency', () => {
   it('should format USD without trailing zeros', () => {

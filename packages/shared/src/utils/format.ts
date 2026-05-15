@@ -1,3 +1,31 @@
+export interface FormatNumberOptions extends Intl.NumberFormatOptions {
+  /** Strip trailing zeros after decimal point (e.g. 1.00 -> 1). Default: true */
+  stripTrailingZeros?: boolean
+}
+
+/**
+ * Format a number or string with `Intl.NumberFormat` ('en-US' locale).
+ * By default produces grouped output (e.g. `1,000`) with trailing zeros stripped.
+ * All `Intl.NumberFormatOptions` are passed through.
+ * @param value - The value to format (number or string)
+ * @param options - See {@link FormatNumberOptions}
+ */
+export function formatNumber (
+  value: number | string,
+  options: FormatNumberOptions = {},
+): string {
+  const { stripTrailingZeros = true, ...intlOptions } = options
+  const num = typeof value === 'string' ? parseFloat(value) : value
+  const safeNum = Number.isNaN(num) ? 0 : num
+  const formatted = new Intl.NumberFormat('en-US', intlOptions).format(safeNum)
+  if (!stripTrailingZeros) return formatted
+  // Strip trailing zeros within the numeric portion so it works for any
+  // unit/currency variant (e.g. "1.00 US dollars" -> "1 US dollars").
+  return formatted
+    .replace(/(\d+)\.0+(?=\D|$)/g, '$1')
+    .replace(/(\d+\.\d*?)0+(?=\D|$)/g, '$1')
+}
+
 export interface FormatCurrencyOptions {
   /** How to display the currency. Default: 'symbol' */
   currencyDisplay?: 'symbol' | 'narrowSymbol' | 'code' | 'name'
@@ -18,18 +46,10 @@ export function formatCurrency (
   options: FormatCurrencyOptions = {},
 ): string {
   const { currencyDisplay = 'symbol', stripTrailingZeros = true } = options
-  const num = typeof value === 'string' ? parseFloat(value) : value
-  const safeNum = Number.isNaN(num) ? 0 : num
-  const formatted = new Intl.NumberFormat('en-US', currency
-    ? { style: 'currency', currency, currencyDisplay }
-    : {},
-  ).format(safeNum)
-  if (!stripTrailingZeros) return formatted
-  // Strip trailing zeros within the numeric portion so it works for any
-  // currencyDisplay variant (e.g. "1.00 US dollars" -> "1 US dollars").
-  return formatted
-    .replace(/(\d+)\.0+(?=\D|$)/g, '$1')
-    .replace(/(\d+\.\d*?)0+(?=\D|$)/g, '$1')
+  return formatNumber(value, {
+    ...(currency ? { style: 'currency', currency, currencyDisplay } : {}),
+    stripTrailingZeros,
+  })
 }
 
 /**
