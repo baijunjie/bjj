@@ -3,7 +3,6 @@ import { cva } from 'class-variance-authority'
 import type { DropdownActionItem } from './types'
 
 const props = defineProps<{
-  /** Icon name (lucide kebab-case) or a Vue component. */
   icon: DropdownActionItem['icon']
   /** Override icon color independently of the surrounding item color. */
   iconColor?: DropdownActionItem['iconColor']
@@ -29,13 +28,8 @@ const colorClass = computed(() => iconColorVariants({ color: props.iconColor }))
 
 <template>
   <Icon
-    v-if="typeof icon === 'string'"
+    v-if="icon"
     :name="icon"
     :class="colorClass"
-  />
-  <component
-    :is="icon"
-    v-else-if="icon"
-    :class="cn('size-4', colorClass)"
   />
 </template>

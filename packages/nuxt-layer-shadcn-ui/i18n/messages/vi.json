@@ -77,6 +77,27 @@
         "noItems": "Không có tùy chọn",
         "placeholder": "Vui lòng chọn",
         "searchPlaceholder": "Tìm kiếm..."
+      },
+      "Upload": {
+        "drag": {
+          "title": "Nhấp hoặc kéo tệp vào khu vực này để tải lên",
+          "titleMultiple": "Nhấp hoặc kéo các tệp vào khu vực này để tải lên"
+        },
+        "empty": "Không có tệp",
+        "error": {
+          "oversize": "{files} vượt quá giới hạn kích thước {size}."
+        },
+        "hint": {
+          "max": "Có thể chọn tối đa {max} tệp.",
+          "maxSize": "Kích thước tối đa cho mỗi tệp: {size}.",
+          "multiple": "Có thể chọn nhiều tệp.",
+          "single": "Chỉ có thể chọn một tệp."
+        },
+        "preview": "Xem trước",
+        "remove": "Xóa",
+        "upload": "Tải lên",
+        "uploadDirectory": "Thư mục tải lên",
+        "uploading": "Đang tải lên"
       }
     }
   }

@@ -77,6 +77,27 @@
         "noItems": "无选项",
         "placeholder": "请选择",
         "searchPlaceholder": "搜索..."
+      },
+      "Upload": {
+        "drag": {
+          "title": "点击或拖动文件到此区域上传",
+          "titleMultiple": "点击或拖动文件到此区域上传"
+        },
+        "empty": "无文件",
+        "error": {
+          "oversize": "{files} 超过 {size} 大小限制。"
+        },
+        "hint": {
+          "max": "最多可选择 {max} 个文件。",
+          "maxSize": "单个文件最大大小：{size}。",
+          "multiple": "可以选择多个文件。",
+          "single": "只能选择单个文件。"
+        },
+        "preview": "预览",
+        "remove": "移除",
+        "upload": "上传",
+        "uploadDirectory": "上传目录",
+        "uploading": "上传中"
       }
     }
   }

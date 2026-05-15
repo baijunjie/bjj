@@ -77,6 +77,27 @@
         "noItems": "Sin opciones",
         "placeholder": "Por favor selecciona",
         "searchPlaceholder": "Buscar..."
+      },
+      "Upload": {
+        "drag": {
+          "title": "Haz clic o arrastra un archivo a esta área para subir",
+          "titleMultiple": "Haz clic o arrastra archivos a esta área para subir"
+        },
+        "empty": "Sin archivos",
+        "error": {
+          "oversize": "{files} excede el límite de tamaño de {size}."
+        },
+        "hint": {
+          "max": "Se pueden seleccionar hasta {max} archivos.",
+          "maxSize": "Tamaño máximo por archivo: {size}.",
+          "multiple": "Se pueden seleccionar varios archivos.",
+          "single": "Solo se puede seleccionar un archivo."
+        },
+        "preview": "Vista previa",
+        "remove": "Eliminar",
+        "upload": "Subir",
+        "uploadDirectory": "Subir carpeta",
+        "uploading": "Subiendo"
       }
     }
   }

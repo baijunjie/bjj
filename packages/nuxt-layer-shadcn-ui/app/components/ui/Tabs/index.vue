@@ -34,7 +34,7 @@ function getTriggerClass (item: TabsItem) {
   const showsOnlyIcon = !!item.icon && (props.iconOnly || !item.title)
   return cn(
     props.rounded && 'rounded-full',
-    showsOnlyIcon && 'aspect-square flex-none px-0',
+    showsOnlyIcon && 'px-0 aspect-square flex-none',
     props.triggerClass,
   )
 }
@@ -62,12 +62,8 @@ function getTriggerClass (item: TabsItem) {
           :active="activeValue === item.value"
         >
           <Icon
-            v-if="item.icon && typeof item.icon === 'string'"
+            v-if="item.icon"
             :name="item.icon"
-          />
-          <component
-            :is="item.icon"
-            v-else-if="item.icon"
           />
           <span v-if="item.title && !iconOnly">
             {{ item.title }}

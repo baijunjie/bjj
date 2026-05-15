@@ -77,6 +77,27 @@
         "noItems": "Tidak ada opsi",
         "placeholder": "Silakan pilih",
         "searchPlaceholder": "Cari..."
+      },
+      "Upload": {
+        "drag": {
+          "title": "Klik atau seret file ke area ini untuk mengunggah",
+          "titleMultiple": "Klik atau seret file ke area ini untuk mengunggah"
+        },
+        "empty": "Tidak ada file",
+        "error": {
+          "oversize": "{files} melebihi batas ukuran {size}."
+        },
+        "hint": {
+          "max": "Hingga {max} file dapat dipilih.",
+          "maxSize": "Ukuran maksimal per file: {size}.",
+          "multiple": "Beberapa file dapat dipilih.",
+          "single": "Hanya satu file yang dapat dipilih."
+        },
+        "preview": "Pratinjau",
+        "remove": "Hapus",
+        "upload": "Unggah",
+        "uploadDirectory": "Direktori Unggah",
+        "uploading": "Mengunggah"
       }
     }
   }

@@ -1,0 +1,21 @@
+{
+  "drag": {
+    "title": "Click or drag file to this area to upload",
+    "titleMultiple": "Click or drag files to this area to upload"
+  },
+  "empty": "No files",
+  "error": {
+    "oversize": "{files} exceeds the {size} size limit."
+  },
+  "hint": {
+    "max": "Up to {max} files can be selected.",
+    "maxSize": "Max size per file: {size}.",
+    "multiple": "Multiple files can be selected.",
+    "single": "Only a single file can be selected."
+  },
+  "preview": "Preview",
+  "remove": "Remove",
+  "upload": "Upload",
+  "uploadDirectory": "Upload Directory",
+  "uploading": "Uploading"
+}

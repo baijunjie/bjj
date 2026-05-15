@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import { Coffee } from 'lucide-vue-next'
 import Icon from './index.vue'
 
 const commonIcons = [
@@ -72,6 +73,30 @@ export const CommonIcons: Story = {
         </div>
       </div>
     `,
+  }),
+}
+
+export const FromComponent: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<script setup lang="ts">
+import { Coffee } from 'lucide-vue-next'
+</script>
+
+<template>
+  <Icon :name="Coffee" class="size-6" />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Icon },
+    setup: () => ({ Coffee }),
+    template: '<Icon :name="Coffee" class="size-6" />',
   }),
 }
 

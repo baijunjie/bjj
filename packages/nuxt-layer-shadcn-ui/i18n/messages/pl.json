@@ -77,6 +77,27 @@
         "noItems": "Brak opcji",
         "placeholder": "Proszę wybrać",
         "searchPlaceholder": "Wyszukaj..."
+      },
+      "Upload": {
+        "drag": {
+          "title": "Kliknij lub przeciągnij plik do tego obszaru, aby przesłać",
+          "titleMultiple": "Kliknij lub przeciągnij pliki do tego obszaru, aby przesłać"
+        },
+        "empty": "Brak plików",
+        "error": {
+          "oversize": "{files} przekracza limit wielkości {size}."
+        },
+        "hint": {
+          "max": "Można wybrać do {max} plików.",
+          "maxSize": "Maksymalna wielkość pliku: {size}.",
+          "multiple": "Można wybrać wiele plików.",
+          "single": "Można wybrać tylko jeden plik."
+        },
+        "preview": "Podgląd",
+        "remove": "Usuń",
+        "upload": "Przesłaj",
+        "uploadDirectory": "Przesłaj katalog",
+        "uploading": "Przesyłanie"
       }
     }
   }

@@ -1,8 +1,9 @@
+import type { Component } from 'vue'
 import type { DropdownItem } from '../Dropdown/types'
 
 export interface AdminLayoutSidebarMenuItem {
   label: string
-  icon?: string
+  icon?: string | Component
   href?: string
   command?: () => void
   group?: string
@@ -14,7 +15,7 @@ export interface AdminLayoutSidebarMenuItem {
 export interface AdminLayoutSidebarDropdownProfile {
   title?: string
   subtitle?: string
-  icon?: string
+  icon?: string | Component
   image?: string
 }
 

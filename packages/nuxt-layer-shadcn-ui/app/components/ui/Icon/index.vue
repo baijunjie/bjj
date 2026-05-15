@@ -14,6 +14,7 @@ function toPascalCase (str: string): string {
 }
 
 const iconComponent = computed<Component | undefined>(() => {
+  if (typeof props.name !== 'string') return props.name
   const pascalName = toPascalCase(props.name)
   return (icons as Record<string, Component>)[pascalName]
 })

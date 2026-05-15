@@ -77,6 +77,27 @@
         "noItems": "Seçenek yok",
         "placeholder": "Lütfen seçin",
         "searchPlaceholder": "Ara..."
+      },
+      "Upload": {
+        "drag": {
+          "title": "Bu alana dosya gömmek veya sürüklemek için tıklayın",
+          "titleMultiple": "Bu alana dosyaları gömmek veya sürüklemek için tıklayın"
+        },
+        "empty": "Dosya yok",
+        "error": {
+          "oversize": "{files} {size} boyutu sınırını aşıyor."
+        },
+        "hint": {
+          "max": "{max}'a kadar dosya seçilebilir.",
+          "maxSize": "Dosya başına max boyut: {size}.",
+          "multiple": "Birden çok dosya seçilebilir.",
+          "single": "Yalnızca bir dosya seçilebilir."
+        },
+        "preview": "Önizleme",
+        "remove": "Kaldır",
+        "upload": "Yükle",
+        "uploadDirectory": "Dizin Yükle",
+        "uploading": "Yükleniyor"
       }
     }
   }

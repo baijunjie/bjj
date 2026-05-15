@@ -1,5 +1,7 @@
+import type { Component } from 'vue'
+
 export interface IconProps {
-  /** Icon name in kebab-case (e.g. "mail", "arrow-left", "circle-question-mark") */
-  name: string
+  /** Lucide icon name in kebab-case (e.g. "arrow-left") or a Vue component. */
+  name: string | Component
   class?: ClassValue
 }

@@ -77,6 +77,27 @@
         "noItems": "オプションがありません",
         "placeholder": "選択してください",
         "searchPlaceholder": "検索..."
+      },
+      "Upload": {
+        "drag": {
+          "title": "ファイルをクリックまたはドラッグしてこのエリアにアップロード",
+          "titleMultiple": "ファイルをクリックまたはドラッグしてこのエリアにアップロード"
+        },
+        "empty": "ファイルなし",
+        "error": {
+          "oversize": "{files} は {size} のサイズ制限を超えています。"
+        },
+        "hint": {
+          "max": "最大 {max} 個のファイルを選択できます。",
+          "maxSize": "ファイルあたりの最大サイズ: {size}。",
+          "multiple": "複数のファイルを選択できます。",
+          "single": "1 つのファイルのみ選択できます。"
+        },
+        "preview": "プレビュー",
+        "remove": "削除",
+        "upload": "アップロード",
+        "uploadDirectory": "ディレクトリをアップロード",
+        "uploading": "アップロード中"
       }
     }
   }

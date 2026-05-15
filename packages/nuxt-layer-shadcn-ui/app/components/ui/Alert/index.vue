@@ -54,12 +54,8 @@ const hasDescription = computed(() => Boolean(slots.default || props.description
   <ShadcnAlert :class="mergedClass">
     <slot name="icon">
       <Icon
-        v-if="typeof icon === 'string' && icon"
+        v-if="icon"
         :name="icon"
-      />
-      <component
-        :is="icon"
-        v-else-if="icon"
       />
       <Icon
         v-else-if="defaultIconName"

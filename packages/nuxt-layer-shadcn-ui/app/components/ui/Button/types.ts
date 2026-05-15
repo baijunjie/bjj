@@ -1,4 +1,5 @@
 import type { ButtonVariants } from '../../shadcn/button'
+import type { Component } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 
 export type ButtonVariant = ButtonVariants['variant']
@@ -10,7 +11,7 @@ export interface ButtonProps {
   loading?: boolean
   disabled?: boolean
   rounded?: boolean
-  icon?: string
+  icon?: string | Component
   iconPosition?: 'start' | 'end'
   href?: string
   to?: RouteLocationRaw

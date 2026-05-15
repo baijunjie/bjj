@@ -77,6 +77,27 @@
         "noItems": "無選項",
         "placeholder": "請選擇",
         "searchPlaceholder": "搜尋..."
+      },
+      "Upload": {
+        "drag": {
+          "title": "在此點擊或拖曳檔案以上傳",
+          "titleMultiple": "在此點擊或拖曳檔案以上傳"
+        },
+        "empty": "無檔案",
+        "error": {
+          "oversize": "{files} 超過 {size} 的大小限制。"
+        },
+        "hint": {
+          "max": "最多可選擇 {max} 個檔案。",
+          "maxSize": "每個檔案的最大大小：{size}。",
+          "multiple": "可選擇多個檔案。",
+          "single": "只能選擇單個檔案。"
+        },
+        "preview": "預覽",
+        "remove": "移除",
+        "upload": "上傳",
+        "uploadDirectory": "上傳資料夾",
+        "uploading": "上傳中"
       }
     }
   }
