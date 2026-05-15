@@ -142,7 +142,7 @@ function formatCellValue (value: unknown, column: DataTableColumn): string {
       return formatDateTime((value as number) * 1000).split(' ').join('\n')
 
     case 'currency':
-      return formatCurrency(value as number | string, column.currency ?? 'USD', {
+      return formatCurrency(value as number | string, column.currency, {
         currencyDisplay: column.currencyDisplay,
       })
 
