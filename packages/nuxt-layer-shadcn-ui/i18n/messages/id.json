@@ -81,13 +81,19 @@
       "Upload": {
         "drag": {
           "title": "Klik atau seret file ke area ini untuk mengunggah",
+          "titleDirectory": "Klik atau seret direktori ke area ini untuk mengunggah",
           "titleMultiple": "Klik atau seret file ke area ini untuk mengunggah"
         },
         "empty": "Tidak ada file",
         "error": {
+          "accept": "{files} bukan tipe file yang didukung ({accept}).",
           "oversize": "{files} melebihi batas ukuran {size}."
         },
         "hint": {
+          "accept": "Diterima: {types}.",
+          "acceptAudio": "audio",
+          "acceptImage": "gambar",
+          "acceptVideo": "video",
           "max": "Hingga {max} file dapat dipilih.",
           "maxSize": "Ukuran maksimal per file: {size}.",
           "multiple": "Beberapa file dapat dipilih.",

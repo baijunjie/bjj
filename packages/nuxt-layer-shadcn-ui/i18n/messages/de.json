@@ -81,13 +81,19 @@
       "Upload": {
         "drag": {
           "title": "Klicken oder ziehen Sie eine Datei in diesen Bereich, um sie hochzuladen",
+          "titleDirectory": "Klicken oder ziehen Sie ein Verzeichnis in diesen Bereich, um es hochzuladen",
           "titleMultiple": "Klicken oder ziehen Sie Dateien in diesen Bereich, um sie hochzuladen"
         },
         "empty": "Keine Dateien",
         "error": {
+          "accept": "{files} ist kein akzeptierter Dateityp ({accept}).",
           "oversize": "{files} überschreitet das {size} Größenlimit."
         },
         "hint": {
+          "accept": "Akzeptiert: {types}.",
+          "acceptAudio": "Audio",
+          "acceptImage": "Bilder",
+          "acceptVideo": "Videos",
           "max": "Es können bis zu {max} Dateien ausgewählt werden.",
           "maxSize": "Maximale Dateigröße: {size}.",
           "multiple": "Es können mehrere Dateien ausgewählt werden.",

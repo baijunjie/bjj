@@ -81,13 +81,19 @@
       "Upload": {
         "drag": {
           "title": "انقر أو اسحب الملف إلى هذه المنطقة للتحميل",
+          "titleDirectory": "انقر أو اسحب مجلداً إلى هذه المنطقة للتحميل",
           "titleMultiple": "انقر أو اسحب الملفات إلى هذه المنطقة للتحميل"
         },
         "empty": "لا توجد ملفات",
         "error": {
+          "accept": "{files} ليس نوع ملف مقبول ({accept}).",
           "oversize": "{files} يتجاوز حد الحجم {size}."
         },
         "hint": {
+          "accept": "مقبول: {types}.",
+          "acceptAudio": "صوت",
+          "acceptImage": "صور",
+          "acceptVideo": "فيديوهات",
           "max": "يمكن تحديد {max} ملفات بحد أقصى.",
           "maxSize": "الحد الأقصى للحجم لكل ملف: {size}.",
           "multiple": "يمكن تحديد ملفات متعددة.",

@@ -81,13 +81,19 @@
       "Upload": {
         "drag": {
           "title": "Click or drag file to this area to upload",
+          "titleDirectory": "Click or drag a directory to this area to upload",
           "titleMultiple": "Click or drag files to this area to upload"
         },
         "empty": "No files",
         "error": {
+          "accept": "{files} is not an accepted file type ({accept}).",
           "oversize": "{files} exceeds the {size} size limit."
         },
         "hint": {
+          "accept": "Accepted: {types}.",
+          "acceptAudio": "audio",
+          "acceptImage": "images",
+          "acceptVideo": "videos",
           "max": "Up to {max} files can be selected.",
           "maxSize": "Max size per file: {size}.",
           "multiple": "Multiple files can be selected.",

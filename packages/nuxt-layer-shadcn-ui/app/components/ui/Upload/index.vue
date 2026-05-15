@@ -34,6 +34,7 @@ const inputRef = ref<HTMLInputElement | null>(null)
 const isDragOver = ref(false)
 const uploadingFiles = ref<UploadFile[]>([])
 const imageLoadErrors = ref<Set<string | number>>(new Set())
+const internalError = ref('')
 const internalFileList = ref<UploadFile[]>([])
 
 const previewVisible = ref(false)
@@ -93,6 +94,24 @@ function formatBytes (bytes: number) {
 
 const maxSizeLabel = computed(() => props.maxSize ? formatBytes(props.maxSize) : '')
 
+const acceptLabel = computed(() => {
+  if (!props.accept) return ''
+  return props.accept
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean)
+    .map(s => {
+      if (s === 'image/*') return T('hint.acceptImage')
+      if (s === 'video/*') return T('hint.acceptVideo')
+      if (s === 'audio/*') return T('hint.acceptAudio')
+      if (s.startsWith('.')) return s.slice(1).toUpperCase()
+      if (s.endsWith('/*')) return s
+      if (s.includes('/')) return s.split('/')[1]!.toUpperCase()
+      return s
+    })
+    .join(', ')
+})
+
 const allowMany = computed(() => props.multiple || props.directory)
 
 const hintLines = computed(() => {
@@ -100,17 +119,21 @@ const hintLines = computed(() => {
   if (!allowMany.value) lines.push(T('hint.single'))
   else if (props.maxCount) lines.push(T('hint.max', { max: props.maxCount }))
   else lines.push(T('hint.multiple'))
+  if (acceptLabel.value) lines.push(T('hint.accept', { types: acceptLabel.value }))
   if (maxSizeLabel.value) lines.push(T('hint.maxSize', { size: maxSizeLabel.value }))
   return lines
 })
 
-const dragTitleText = computed(() => {
-  if (props.text) return props.text
-  return allowMany.value ? T('drag.titleMultiple') : T('drag.title')
-})
+defineSlots<{
+  hint?: (props: { lines: string[] }) => unknown
+}>()
 
 const triggerLabel = computed(() => {
   if (props.text) return props.text
+  if (props.variant === 'drag') {
+    if (props.directory) return T('drag.titleDirectory')
+    return allowMany.value ? T('drag.titleMultiple') : T('drag.title')
+  }
   return props.directory ? T('uploadDirectory') : T('upload')
 })
 
@@ -197,11 +220,42 @@ function onImageError (file: UploadFile) {
   if (file.uid != null) imageLoadErrors.value.add(file.uid)
 }
 
+// Native <input accept> only filters in the file picker; drag-drop bypasses it,
+// so we mirror the same patterns in JS for both paths.
+function matchesAccept (file: File, accept: string) {
+  const patterns = accept.split(',').map(s => s.trim()).filter(Boolean)
+  if (!patterns.length) return true
+  const name = file.name.toLowerCase()
+  const type = file.type.toLowerCase()
+  return patterns.some(raw => {
+    const p = raw.toLowerCase()
+    if (p.startsWith('.')) return name.endsWith(p)
+    if (p.endsWith('/*')) return type.startsWith(p.slice(0, -1))
+    return type === p
+  })
+}
+
+function reportError (err: Error) {
+  internalError.value = err.message
+  emit('error', err)
+}
+
 async function processFiles (files: File[]) {
   if (!files.length) return
+  internalError.value = ''
 
   let candidates = files
   if (!allowMany.value && candidates.length > 1) candidates = [ candidates[0]! ]
+
+  if (props.accept) {
+    const accept = props.accept
+    const rejected = candidates.filter(f => !matchesAccept(f, accept))
+    if (rejected.length) {
+      const names = rejected.map(f => f.name).join(', ')
+      reportError(new Error(T('error.accept', { files: names, accept: acceptLabel.value })))
+      candidates = candidates.filter(f => matchesAccept(f, accept))
+    }
+  }
 
   if (props.maxCount) {
     const remaining = props.maxCount - displayList.value.length
@@ -214,7 +268,7 @@ async function processFiles (files: File[]) {
     const oversize = candidates.filter(f => f.size > limit)
     if (oversize.length) {
       const names = oversize.map(f => f.name).join(', ')
-      emit('error', new Error(T('error.oversize', { files: names, size: formatBytes(limit) })))
+      reportError(new Error(T('error.oversize', { files: names, size: formatBytes(limit) })))
       candidates = candidates.filter(f => f.size <= limit)
     }
   }
@@ -266,7 +320,7 @@ async function processFiles (files: File[]) {
     finishUpload(entries, true)
   } catch (err) {
     finishUpload(entries, false)
-    emit('error', err)
+    reportError(err instanceof Error ? err : new Error(String(err)))
   }
 }
 
@@ -326,10 +380,48 @@ function onDragLeave (e: DragEvent) {
   e.preventDefault()
   isDragOver.value = false
 }
-function onDrop (e: DragEvent) {
+
+// Recursively read a FileSystemEntry into a flat File[] so dropped directories
+// expand to their contents. readEntries returns at most ~100 children per call
+// and must be looped until it yields an empty batch.
+async function readEntry (entry: FileSystemEntry): Promise<File[]> {
+  if (entry.isFile) {
+    return new Promise(resolve => {
+      (entry as FileSystemFileEntry).file(f => resolve([ f ]), () => resolve([]))
+    })
+  }
+  if (entry.isDirectory) {
+    const reader = (entry as FileSystemDirectoryEntry).createReader()
+    const children: FileSystemEntry[] = []
+    while (true) {
+      const batch = await new Promise<FileSystemEntry[]>(resolve => {
+        reader.readEntries(entries => resolve(entries), () => resolve([]))
+      })
+      if (!batch.length) break
+      children.push(...batch)
+    }
+    const nested = await Promise.all(children.map(readEntry))
+    return nested.flat()
+  }
+  return []
+}
+
+async function onDrop (e: DragEvent) {
   e.preventDefault()
   isDragOver.value = false
   if (!canPickMore.value) return
+
+  const items = e.dataTransfer?.items
+  if (items?.length && typeof items[0]?.webkitGetAsEntry === 'function') {
+    const entries = Array.from(items)
+      .map(item => item.webkitGetAsEntry())
+      .filter((entry): entry is FileSystemEntry => !!entry)
+    const nested = await Promise.all(entries.map(readEntry))
+    const files = nested.flat()
+    if (files.length) processFiles(files)
+    return
+  }
+
   const files = e.dataTransfer?.files
   if (files?.length) processFiles(Array.from(files))
 }
@@ -363,12 +455,17 @@ function onDrop (e: DragEvent) {
         {{ triggerLabel }}
       </Button>
       <div class="text-xs text-muted-foreground py-1.5">
-        <div
-          v-for="line in hintLines"
-          :key="line"
+        <slot
+          name="hint"
+          :lines="hintLines"
         >
-          {{ line }}
-        </div>
+          <div
+            v-for="line in hintLines"
+            :key="line"
+          >
+            {{ line }}
+          </div>
+        </slot>
       </div>
     </div>
 
@@ -389,15 +486,20 @@ function onDrop (e: DragEvent) {
         :class="isInvalid && 'text-danger'"
       />
       <div class="text-foreground font-medium">
-        {{ dragTitleText }}
+        {{ triggerLabel }}
       </div>
       <div class="text-xs text-muted-foreground">
-        <div
-          v-for="line in hintLines"
-          :key="line"
+        <slot
+          name="hint"
+          :lines="hintLines"
         >
-          {{ line }}
-        </div>
+          <div
+            v-for="line in hintLines"
+            :key="line"
+          >
+            {{ line }}
+          </div>
+        </slot>
       </div>
     </div>
 
@@ -557,14 +659,26 @@ function onDrop (e: DragEvent) {
         v-if="showTrigger"
         class="mt-2 text-xs text-muted-foreground"
       >
-        <div
-          v-for="line in hintLines"
-          :key="line"
+        <slot
+          name="hint"
+          :lines="hintLines"
         >
-          {{ line }}
-        </div>
+          <div
+            v-for="line in hintLines"
+            :key="line"
+          >
+            {{ line }}
+          </div>
+        </slot>
       </div>
     </template>
+
+    <p
+      v-if="internalError"
+      class="mt-2 text-sm text-danger"
+    >
+      {{ internalError }}
+    </p>
 
     <!-- Image preview modal (box variant only) -->
     <Modal

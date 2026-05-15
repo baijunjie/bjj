@@ -81,13 +81,19 @@
       "Upload": {
         "drag": {
           "title": "Haz clic o arrastra un archivo a esta área para subir",
+          "titleDirectory": "Haz clic o arrastra una carpeta a esta área para subir",
           "titleMultiple": "Haz clic o arrastra archivos a esta área para subir"
         },
         "empty": "Sin archivos",
         "error": {
+          "accept": "{files} no es un tipo de archivo aceptado ({accept}).",
           "oversize": "{files} excede el límite de tamaño de {size}."
         },
         "hint": {
+          "accept": "Aceptado: {types}.",
+          "acceptAudio": "audio",
+          "acceptImage": "imágenes",
+          "acceptVideo": "vídeos",
           "max": "Se pueden seleccionar hasta {max} archivos.",
           "maxSize": "Tamaño máximo por archivo: {size}.",
           "multiple": "Se pueden seleccionar varios archivos.",

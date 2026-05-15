@@ -81,13 +81,19 @@
       "Upload": {
         "drag": {
           "title": "点击或拖动文件到此区域上传",
+          "titleDirectory": "点击或拖动目录到此区域上传",
           "titleMultiple": "点击或拖动文件到此区域上传"
         },
         "empty": "无文件",
         "error": {
+          "accept": "{files} 不是支持的文件类型 ({accept})。",
           "oversize": "{files} 超过 {size} 大小限制。"
         },
         "hint": {
+          "accept": "支持的格式：{types}。",
+          "acceptAudio": "音频",
+          "acceptImage": "图片",
+          "acceptVideo": "视频",
           "max": "最多可选择 {max} 个文件。",
           "maxSize": "单个文件最大大小：{size}。",
           "multiple": "可以选择多个文件。",

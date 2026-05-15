@@ -81,13 +81,19 @@
       "Upload": {
         "drag": {
           "title": "Klik of sleep bestand naar dit gebied om te uploaden",
+          "titleDirectory": "Klik of sleep een map naar dit gebied om te uploaden",
           "titleMultiple": "Klik of sleep bestanden naar dit gebied om te uploaden"
         },
         "empty": "Geen bestanden",
         "error": {
+          "accept": "{files} is geen geaccepteerd bestandstype ({accept}).",
           "oversize": "{files} overschrijdt de limiet van {size}."
         },
         "hint": {
+          "accept": "Geaccepteerd: {types}.",
+          "acceptAudio": "audio",
+          "acceptImage": "afbeeldingen",
+          "acceptVideo": "video's",
           "max": "U kunt tot {max} bestanden selecteren.",
           "maxSize": "Maximale grootte per bestand: {size}.",
           "multiple": "Meerdere bestanden kunnen worden geselecteerd.",

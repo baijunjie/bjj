@@ -81,13 +81,19 @@
       "Upload": {
         "drag": {
           "title": "Bu alana dosya gömmek veya sürüklemek için tıklayın",
+          "titleDirectory": "Bu alana bir dizin sürüklemek veya tıklamak için yükleyin",
           "titleMultiple": "Bu alana dosyaları gömmek veya sürüklemek için tıklayın"
         },
         "empty": "Dosya yok",
         "error": {
+          "accept": "{files} kabul edilen bir dosya türü değildir ({accept}).",
           "oversize": "{files} {size} boyutu sınırını aşıyor."
         },
         "hint": {
+          "accept": "Kabul edilen: {types}.",
+          "acceptAudio": "ses",
+          "acceptImage": "görseller",
+          "acceptVideo": "videolar",
           "max": "{max}'a kadar dosya seçilebilir.",
           "maxSize": "Dosya başına max boyut: {size}.",
           "multiple": "Birden çok dosya seçilebilir.",

@@ -81,13 +81,19 @@
       "Upload": {
         "drag": {
           "title": "Nhấp hoặc kéo tệp vào khu vực này để tải lên",
+          "titleDirectory": "Nhấp hoặc kéo một thư mục vào khu vực này để tải lên",
           "titleMultiple": "Nhấp hoặc kéo các tệp vào khu vực này để tải lên"
         },
         "empty": "Không có tệp",
         "error": {
+          "accept": "{files} không phải là một loại tệp được chấp nhận ({accept}).",
           "oversize": "{files} vượt quá giới hạn kích thước {size}."
         },
         "hint": {
+          "accept": "Chấp nhận: {types}.",
+          "acceptAudio": "âm thanh",
+          "acceptImage": "hình ảnh",
+          "acceptVideo": "video",
           "max": "Có thể chọn tối đa {max} tệp.",
           "maxSize": "Kích thước tối đa cho mỗi tệp: {size}.",
           "multiple": "Có thể chọn nhiều tệp.",

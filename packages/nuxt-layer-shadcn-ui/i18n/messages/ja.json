@@ -81,13 +81,19 @@
       "Upload": {
         "drag": {
           "title": "ファイルをクリックまたはドラッグしてこのエリアにアップロード",
+          "titleDirectory": "ディレクトリをクリックまたはドラッグしてこのエリアにアップロード",
           "titleMultiple": "ファイルをクリックまたはドラッグしてこのエリアにアップロード"
         },
         "empty": "ファイルなし",
         "error": {
+          "accept": "{files} は受け入れられていないファイル形式です ({accept})。",
           "oversize": "{files} は {size} のサイズ制限を超えています。"
         },
         "hint": {
+          "accept": "対応形式: {types}。",
+          "acceptAudio": "オーディオ",
+          "acceptImage": "画像",
+          "acceptVideo": "動画",
           "max": "最大 {max} 個のファイルを選択できます。",
           "maxSize": "ファイルあたりの最大サイズ: {size}。",
           "multiple": "複数のファイルを選択できます。",

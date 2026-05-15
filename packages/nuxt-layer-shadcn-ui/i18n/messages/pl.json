@@ -81,13 +81,19 @@
       "Upload": {
         "drag": {
           "title": "Kliknij lub przeciągnij plik do tego obszaru, aby przesłać",
+          "titleDirectory": "Kliknij lub przeciągnij katalog do tego obszaru, aby przesłać",
           "titleMultiple": "Kliknij lub przeciągnij pliki do tego obszaru, aby przesłać"
         },
         "empty": "Brak plików",
         "error": {
+          "accept": "{files} nie jest akceptowanym typem pliku ({accept}).",
           "oversize": "{files} przekracza limit wielkości {size}."
         },
         "hint": {
+          "accept": "Zaakceptowano: {types}.",
+          "acceptAudio": "audio",
+          "acceptImage": "obrazy",
+          "acceptVideo": "wideo",
           "max": "Można wybrać do {max} plików.",
           "maxSize": "Maksymalna wielkość pliku: {size}.",
           "multiple": "Można wybrać wiele plików.",

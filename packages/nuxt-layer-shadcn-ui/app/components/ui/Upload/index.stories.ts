@@ -103,7 +103,18 @@ export const AcceptImagesOnly: Story = {
 // --- Selection behavior (all three variants side by side) ---
 
 export const Multiple: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Upload v-model:fileList="fileList" variant="drag" multiple />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Upload },
     setup: () => ({ variants }),
@@ -116,7 +127,18 @@ export const Multiple: Story = {
 }
 
 export const MaxCount: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Upload v-model:fileList="fileList" variant="drag" multiple :maxCount="3" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Upload },
     setup: () => ({ variants }),
@@ -129,42 +151,61 @@ export const MaxCount: Story = {
 }
 
 export const MaxSize: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Upload v-model:fileList="fileList" variant="drag" multiple :maxSize="50 * 1024" />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Upload },
-    setup () {
-      const errorMessage = ref('')
-      const onError = (e: unknown) => {
-        errorMessage.value = e instanceof Error ? e.message : String(e)
-      }
-      return { variants, errorMessage, onError }
-    },
+    setup: () => ({ variants }),
     template: `
       <div class="max-w-2xl space-y-6">
-        <Upload
-          v-for="v in variants"
-          :key="v"
-          :variant="v"
-          multiple
-          :maxSize="50 * 1024"
-          @error="onError"
-        />
-        <p v-if="errorMessage" class="text-sm text-danger">
-          {{ errorMessage }}
-        </p>
+        <Upload v-for="v in variants" :key="v" :variant="v" multiple :maxSize="50 * 1024" />
       </div>
     `,
   }),
 }
 
 export const Directory: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Upload
+    v-model:fileList="fileList"
+    variant="button"
+    directory
+    accept="image/*"
+    :maxCount="5"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Upload },
     setup: () => ({ variants }),
     template: `
       <div class="max-w-2xl space-y-6">
-        <Upload v-for="v in variants" :key="v" :variant="v" directory :maxCount="5" />
+        <Upload
+          v-for="v in variants"
+          :key="v"
+          :variant="v"
+          directory
+          accept="image/*"
+          :maxCount="5"
+        />
       </div>
     `,
   }),
@@ -173,7 +214,18 @@ export const Directory: Story = {
 // --- States ---
 
 export const Disabled: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Upload v-model:fileList="fileList" variant="drag" disabled multiple />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Upload },
     setup () {
@@ -196,7 +248,18 @@ export const Disabled: Story = {
 }
 
 export const Readonly: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Upload v-model:fileList="fileList" variant="drag" readonly multiple />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Upload },
     setup () {
@@ -219,7 +282,18 @@ export const Readonly: Story = {
 }
 
 export const ReadonlyEmpty: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Upload variant="drag" readonly />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Upload },
     setup: () => ({ variants }),
@@ -358,8 +432,63 @@ async function upload (files: (File | Blob)[]) {
   }),
 }
 
+export const CustomHint: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Upload variant="drag" multiple accept="image/*" :maxSize="50 * 1024">
+    <template #hint="{ lines }">
+      <ul class="list-disc pl-5 text-primary inline-block text-left">
+        <li v-for="line in lines" :key="line">{{ line }}</li>
+      </ul>
+    </template>
+  </Upload>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Upload },
+    template: `
+      <div class="max-w-2xl">
+        <Upload variant="drag" multiple accept="image/*" :maxSize="50 * 1024">
+          <template #hint="{ lines }">
+            <ul class="list-disc pl-5 text-primary inline-block text-left">
+              <li v-for="line in lines" :key="line">{{ line }}</li>
+            </ul>
+          </template>
+        </Upload>
+      </div>
+    `,
+  }),
+}
+
 export const EventHandling: Story = {
-  parameters: noControls,
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Upload
+    v-model:fileList="fileList"
+    variant="drag"
+    multiple
+    @update:fileList="onUpdate"
+    @change="onChange"
+    @remove="onRemove"
+    @preview="onPreview"
+    @error="onError"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
   render: () => ({
     components: { Upload, EventLog },
     setup: () => ({ fileList: ref<UploadFile[]>([]) }),

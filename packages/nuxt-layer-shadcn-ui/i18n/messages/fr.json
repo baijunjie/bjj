@@ -81,13 +81,19 @@
       "Upload": {
         "drag": {
           "title": "Cliquez ou glissez un fichier dans cette zone pour télécharger",
+          "titleDirectory": "Cliquez ou glissez un répertoire dans cette zone pour télécharger",
           "titleMultiple": "Cliquez ou glissez des fichiers dans cette zone pour télécharger"
         },
         "empty": "Aucun fichier",
         "error": {
+          "accept": "{files} n'est pas un type de fichier accepté ({accept}).",
           "oversize": "{files} dépasse la limite de taille {size}."
         },
         "hint": {
+          "accept": "Accepté : {types}.",
+          "acceptAudio": "audio",
+          "acceptImage": "images",
+          "acceptVideo": "vidéos",
           "max": "Jusqu'à {max} fichiers peuvent être sélectionnés.",
           "maxSize": "Taille maximale par fichier : {size}.",
           "multiple": "Plusieurs fichiers peuvent être sélectionnés.",

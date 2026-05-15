@@ -81,13 +81,19 @@
       "Upload": {
         "drag": {
           "title": "在此點擊或拖曳檔案以上傳",
+          "titleDirectory": "在此點擊或拖曳資料夾以上傳",
           "titleMultiple": "在此點擊或拖曳檔案以上傳"
         },
         "empty": "無檔案",
         "error": {
+          "accept": "{files} 不是可接受的檔案類型（{accept}）。",
           "oversize": "{files} 超過 {size} 的大小限制。"
         },
         "hint": {
+          "accept": "接受：{types}。",
+          "acceptAudio": "音訊",
+          "acceptImage": "圖片",
+          "acceptVideo": "影片",
           "max": "最多可選擇 {max} 個檔案。",
           "maxSize": "每個檔案的最大大小：{size}。",
           "multiple": "可選擇多個檔案。",
