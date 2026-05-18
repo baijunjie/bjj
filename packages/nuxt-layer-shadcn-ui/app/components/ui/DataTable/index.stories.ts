@@ -270,7 +270,7 @@ export const Loading: Story = {
     ...noControls,
     docs: {
       source: {
-        code: '<DataTable :data="data" :columns="columns" loading />',
+        code: '<DataTable :data="[]" :columns="columns" loading />',
       },
     },
   },
@@ -279,7 +279,7 @@ export const Loading: Story = {
     setup: () => ({ data: sampleData, basicColumns }),
     template: `
       <div class="w-full">
-        <DataTable :data="data" :columns="basicColumns" loading />
+        <DataTable :data="[]" :columns="basicColumns" loading />
       </div>
     `,
   }),

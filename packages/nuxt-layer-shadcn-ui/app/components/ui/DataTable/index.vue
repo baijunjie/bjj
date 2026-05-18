@@ -468,6 +468,17 @@ defineExpose({
             <slot name="bodyEnd" />
           </TableCell>
         </TableRow>
+
+        <!-- Filler: absorbs leftover height so data rows aren't stretched -->
+        <TableRow
+          v-if="height"
+          data-virtual-row
+          aria-hidden="true"
+          class="hover:bg-transparent"
+          style="height: 100%"
+        >
+          <TableCell :colspan="totalColumns" />
+        </TableRow>
       </TableBody>
 
       <TableFooter
@@ -524,6 +535,10 @@ defineExpose({
 
 :deep(tbody td) {
   background: var(--cell-bg);
+}
+
+:deep(tbody tr:has(+ tr[aria-hidden="true"])) {
+  border-bottom: 0;
 }
 
 /* Frozen column shadow via ::before — ::after is reserved for header divider */
