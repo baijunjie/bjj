@@ -40,4 +40,5 @@ export interface AdminLayoutProps {
   footerDropdown?: AdminLayoutSidebarDropdownConfig
   variant?: 'sidebar' | 'floating' | 'inset'
   collapsible?: 'offcanvas' | 'icon' | 'none'
+  contentClass?: ClassValue
 }

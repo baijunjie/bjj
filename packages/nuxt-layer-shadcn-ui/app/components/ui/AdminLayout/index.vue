@@ -13,12 +13,17 @@ import {
   SidebarRail,
 } from '../../shadcn/sidebar'
 
-withDefaults(defineProps<AdminLayoutProps>(), {
+const props = withDefaults(defineProps<AdminLayoutProps>(), {
   headerDropdown: undefined,
   footerDropdown: undefined,
   variant: 'sidebar',
   collapsible: 'icon',
+  contentClass: undefined,
 })
+
+const mergedContentClass = computed(() =>
+  cn('flex-1 overflow-auto', props.contentClass),
+)
 </script>
 
 <template>
@@ -64,7 +69,7 @@ withDefaults(defineProps<AdminLayoutProps>(), {
         </div>
       </Navbar>
 
-      <div class="flex-1 overflow-auto">
+      <div :class="mergedContentClass">
         <slot />
       </div>
     </SidebarInset>
