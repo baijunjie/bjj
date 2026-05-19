@@ -488,13 +488,16 @@ defineExpose({
 
         <!-- Filler: absorbs leftover height so data rows aren't stretched -->
         <TableRow
-          v-if="height"
+          v-if="height && data?.length"
           data-virtual-row
           aria-hidden="true"
           class="hover:bg-transparent"
           style="height: 100%"
         >
-          <TableCell :colspan="totalColumns" />
+          <TableCell
+            :colspan="totalColumns"
+            class="p-0!"
+          />
         </TableRow>
       </TableBody>
 
