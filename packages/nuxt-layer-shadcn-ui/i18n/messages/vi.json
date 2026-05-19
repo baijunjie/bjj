@@ -78,6 +78,9 @@
         "placeholder": "Vui lòng chọn",
         "searchPlaceholder": "Tìm kiếm..."
       },
+      "StaticDataTable": {
+        "actions": "Hành động"
+      },
       "Upload": {
         "drag": {
           "title": "Nhấp hoặc kéo tệp vào khu vực này để tải lên",

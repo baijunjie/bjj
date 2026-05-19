@@ -1,31 +1,21 @@
 import type { DataTableColumn } from '../DataTable/types'
 import type { DropdownActionItem, DropdownLabelItem, DropdownSeparatorItem } from '../Dropdown/types'
 
-export type AsyncDataTableBatchAction<T = Record<string, any>>
+export type StaticDataTableBatchAction<T = Record<string, any>>
   = | (Omit<DropdownActionItem, 'command'> & { action?: (selectedItems: T[]) => void })
     | DropdownSeparatorItem
     | DropdownLabelItem
 
-export interface AsyncDataTableFetchParams {
-  offset: number
-  limit: number
-  [key: string]: any
-}
+export type StaticDataTableSortMethod<T = Record<string, any>>
+  = (items: T[], sortBy: string, sortOrder: 1 | -1) => T[]
 
-export interface AsyncDataTableFetchResult<T = Record<string, any>> {
-  items: T[]
-  total: number
-}
-
-export interface AsyncDataTableProps<T = Record<string, any>> {
-  /** Async function to fetch data */
-  fetchMethod: (params: AsyncDataTableFetchParams) => Promise<AsyncDataTableFetchResult<T>>
-  /** Whether to auto fetch data on mount (default: true) */
-  autoFetch?: boolean
+export interface StaticDataTableProps<T = Record<string, any>> {
+  /** Static data array. Pre-filter externally before passing in. */
+  data?: T[]
   /** Column definitions */
   columns?: DataTableColumn[]
-  /** External filter state */
-  filters?: Record<string, any>
+  /** Custom sort implementation. Receives the data and the current sort state; should return sorted items. Defaults to a generic comparator on `row[sortBy]`. */
+  sortMethod?: StaticDataTableSortMethod<T>
   /** Whether to show top toolbar (undefined = auto when page size >= 50) */
   showTopToolbar?: boolean
   /** Whether to show bottom toolbar (default: true) */
@@ -39,7 +29,7 @@ export interface AsyncDataTableProps<T = Record<string, any>> {
   /** Whether rows are clickable (shows pointer cursor and pairs with `@rowClick`) */
   clickable?: boolean
   /** Batch action definitions for selected rows */
-  batchActions?: AsyncDataTableBatchAction<T>[]
+  batchActions?: StaticDataTableBatchAction<T>[]
   /** Selected rows (v-model:selection) */
   selection?: T[]
 }

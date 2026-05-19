@@ -78,6 +78,9 @@
         "placeholder": "Lütfen seçin",
         "searchPlaceholder": "Ara..."
       },
+      "StaticDataTable": {
+        "actions": "İşlemler"
+      },
       "Upload": {
         "drag": {
           "title": "Bu alana dosya gömmek veya sürüklemek için tıklayın",

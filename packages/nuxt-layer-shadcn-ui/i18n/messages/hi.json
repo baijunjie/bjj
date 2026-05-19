@@ -78,6 +78,9 @@
         "placeholder": "कृपया चुनें",
         "searchPlaceholder": "खोजें..."
       },
+      "StaticDataTable": {
+        "actions": "क्रियाएं"
+      },
       "Upload": {
         "drag": {
           "title": "इस क्षेत्र में फ़ाइल को क्लिक करें या खींचें और अपलोड करें",

@@ -78,6 +78,9 @@
         "placeholder": "Please select",
         "searchPlaceholder": "Search..."
       },
+      "StaticDataTable": {
+        "actions": "Actions"
+      },
       "Upload": {
         "drag": {
           "title": "Click or drag file to this area to upload",

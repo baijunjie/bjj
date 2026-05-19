@@ -225,7 +225,11 @@ function buildColumnClass (column: DataTableColumn, headerIndex?: number): strin
   return cn(
     column.align === 'center' && 'text-center',
     column.align === 'right' && 'text-right',
-    isDateType ? 'whitespace-pre' : !column.wrap && 'whitespace-nowrap',
+    isDateType
+      ? 'whitespace-pre'
+      : column.wrap
+        ? 'whitespace-normal'
+        : 'whitespace-nowrap',
     // Header-specific
     isHeader && column.sortable && `
       hover:text-foreground

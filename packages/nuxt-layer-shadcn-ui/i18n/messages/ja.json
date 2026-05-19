@@ -78,6 +78,9 @@
         "placeholder": "選択してください",
         "searchPlaceholder": "検索..."
       },
+      "StaticDataTable": {
+        "actions": "アクション"
+      },
       "Upload": {
         "drag": {
           "title": "ファイルをクリックまたはドラッグしてこのエリアにアップロード",

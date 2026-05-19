@@ -78,6 +78,9 @@
         "placeholder": "Silakan pilih",
         "searchPlaceholder": "Cari..."
       },
+      "StaticDataTable": {
+        "actions": "Tindakan"
+      },
       "Upload": {
         "drag": {
           "title": "Klik atau seret file ke area ini untuk mengunggah",

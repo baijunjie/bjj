@@ -78,6 +78,9 @@
         "placeholder": "Bitte wählen",
         "searchPlaceholder": "Suchen..."
       },
+      "StaticDataTable": {
+        "actions": "Aktionen"
+      },
       "Upload": {
         "drag": {
           "title": "Klicken oder ziehen Sie eine Datei in diesen Bereich, um sie hochzuladen",

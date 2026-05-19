@@ -78,6 +78,9 @@
         "placeholder": "請選擇",
         "searchPlaceholder": "搜尋..."
       },
+      "StaticDataTable": {
+        "actions": "操作"
+      },
       "Upload": {
         "drag": {
           "title": "在此點擊或拖曳檔案以上傳",

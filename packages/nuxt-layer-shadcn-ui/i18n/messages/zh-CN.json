@@ -78,6 +78,9 @@
         "placeholder": "请选择",
         "searchPlaceholder": "搜索..."
       },
+      "StaticDataTable": {
+        "actions": "操作"
+      },
       "Upload": {
         "drag": {
           "title": "点击或拖动文件到此区域上传",

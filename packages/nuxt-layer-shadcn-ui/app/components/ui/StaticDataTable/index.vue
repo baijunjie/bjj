@@ -1,19 +1,15 @@
 <script setup lang="ts" generic="TData extends Record<string, any>">
-import type {
-  AsyncDataTableFetchParams,
-  AsyncDataTableProps,
-} from './types'
+import type { StaticDataTableProps, StaticDataTableSortMethod } from './types'
 
-interface AsyncDataTablePagination {
+interface StaticDataTablePagination {
   page: number
   size: number
-  total: number
 }
 
-const props = withDefaults(defineProps<AsyncDataTableProps<TData>>(), {
-  autoFetch: true,
+const props = withDefaults(defineProps<StaticDataTableProps<TData>>(), {
+  data: () => [],
   columns: () => [],
-  filters: undefined,
+  sortMethod: undefined,
   showTopToolbar: undefined,
   showBottomToolbar: true,
   pageSizeOptions: () => [ 10, 20, 50, 100 ],
@@ -25,13 +21,11 @@ const props = withDefaults(defineProps<AsyncDataTableProps<TData>>(), {
 })
 
 const emit = defineEmits<{
-  'update:filters': [filters: Record<string, any>]
   'update:selection': [value: TData[]]
   'rowClick': [row: TData, index: number, event: MouseEvent]
 }>()
 
-const { t } = useI18n()
-const T = useTranslations('components.ui.AsyncDataTable')
+const T = useTranslations('components.ui.StaticDataTable')
 const { isMobile } = useDevice()
 
 // -- Selection --
@@ -44,30 +38,64 @@ function onSelectionChange (value: TData | TData[] | null) {
 
 // -- Internal state --
 
-const loading = ref(false)
-const internalData = ref<TData[]>([]) as Ref<TData[]>
-const errored = ref(false)
-const requestVersion = ref(0)
-
-const pagination = ref<AsyncDataTablePagination>({
-  page: Number(props.filters?.page) || 1,
-  size: Number(props.filters?.size) || props.pageSizeOptions[0] || 10,
-  total: 0,
+const pagination = ref<StaticDataTablePagination>({
+  page: 1,
+  size: props.pageSizeOptions[0] || 10,
 })
 
-const sortState = ref<{ sortBy: string | null, sortOrder: number | null }>({
-  sortBy: props.filters?.sortBy ? String(props.filters.sortBy) : null,
-  sortOrder: props.filters?.sortOrder ? Number(props.filters.sortOrder) : null,
+const sortState = ref<{ sortBy: string | null, sortOrder: 1 | -1 | null }>({
+  sortBy: null,
+  sortOrder: null,
 })
 
-// -- Computed --
+// -- Sorting + pagination --
+
+const defaultSort: StaticDataTableSortMethod<TData> = (items, sortBy, sortOrder) => {
+  return [ ...items ].sort((a, b) => {
+    const av = a[sortBy]
+    const bv = b[sortBy]
+    if (av == null && bv == null) return 0
+    if (av == null) return 1
+    if (bv == null) return -1
+    if (typeof av === 'number' && typeof bv === 'number') {
+      return (av - bv) * sortOrder
+    }
+    return String(av).localeCompare(String(bv)) * sortOrder
+  })
+}
+
+const sortedData = computed<TData[]>(() => {
+  const { sortBy, sortOrder } = sortState.value
+  if (!sortBy || !sortOrder) return props.data
+  const sortFn = props.sortMethod ?? defaultSort
+  return sortFn(props.data, sortBy, sortOrder)
+})
+
+const totalCount = computed(() => sortedData.value.length)
+
+const tableData = computed<TData[]>(() => {
+  if (!props.showPagination) return sortedData.value
+  const start = (pagination.value.page - 1) * pagination.value.size
+  return sortedData.value.slice(start, start + pagination.value.size)
+})
+
+// Reset to page 1 when the underlying data shape or sort changes so the
+// pagination state stays consistent with what's actually shown.
+watch(
+  [ () => props.data, () => sortState.value.sortBy, () => sortState.value.sortOrder ],
+  () => {
+    pagination.value.page = 1
+  },
+)
+
+// -- Toolbar / batch actions --
 
 const showSelectionColumn = computed(() => props.selectable || props.batchActions.length > 0)
 const selectedCount = computed(() => props.selection?.length ?? 0)
 const hasBatchActions = computed(() => props.batchActions.length > 0)
 const batchActionsDisabled = computed(() => selectedCount.value === 0)
 
-const hasPaginationData = computed(() => pagination.value.total > 0)
+const hasPaginationData = computed(() => totalCount.value > 0)
 
 const shouldShowTopToolbar = computed(() => {
   if (props.showTopToolbar !== undefined) return props.showTopToolbar
@@ -90,125 +118,26 @@ const batchMenuItems = computed<DropdownItem[]>(() =>
   }),
 )
 
-// -- Data fetching --
-
-async function fetchData (page?: number, forceRefresh = false) {
-  if (loading.value && !forceRefresh) return
-
-  const currentVersion = ++requestVersion.value
-
-  if (page !== undefined) {
-    pagination.value.page = page
-  }
-
-  errored.value = false
-  loading.value = true
-  try {
-    const result = await props.fetchMethod(buildFetchParams())
-    if (currentVersion !== requestVersion.value) return
-
-    internalData.value = result.items as TData[]
-    pagination.value.total = result.total
-  } catch (error) {
-    if (currentVersion !== requestVersion.value) return
-    console.error('AsyncDataTable fetchData failed:', error)
-    // Surface the failure via the empty-state slot rather than leaving the
-    // previous page's rows on screen while the pagination already moved on.
-    errored.value = true
-    internalData.value = []
-  } finally {
-    if (currentVersion === requestVersion.value) {
-      loading.value = false
-    }
-  }
-}
-
-function resetPagination (overrides?: Record<string, any>) {
-  pagination.value.page = 1
-  pagination.value.total = 0
-  emit('update:filters', getFilters(overrides))
-  fetchData(undefined, true)
-}
-
-// -- Internal helpers --
-
-function getFilters (overrides?: Record<string, any>): Record<string, any> {
-  return {
-    ...(props.filters ?? {}),
-    ...overrides,
-    page: pagination.value.page,
-    size: pagination.value.size,
-    sortBy: sortState.value.sortBy,
-    sortOrder: sortState.value.sortOrder,
-  }
-}
-
-function buildFetchParams (): AsyncDataTableFetchParams {
-  const filters = getFilters()
-  const { page, size, ...rest } = filters
-  return {
-    offset: (Number(page) - 1) * Number(size),
-    limit: Number(size),
-    ...rest,
-  }
-}
-
 // -- Event handlers --
 
 function onPageChange (newPage: number) {
   if (newPage === pagination.value.page) return
   pagination.value.page = newPage
-  emit('update:filters', getFilters())
-  fetchData()
 }
 
 function onPageSizeChange (newSize: number) {
   if (newSize === pagination.value.size) return
   pagination.value.size = newSize
   pagination.value.page = 1
-  emit('update:filters', getFilters())
-  fetchData(undefined, true)
 }
-
-// Batch sort updates: DataTable emits sortBy and sortOrder separately but synchronously
-let sortUpdatePending = false
 
 function onSortByUpdate (value: string | null) {
   sortState.value.sortBy = value
-  scheduleAfterSort()
 }
 
 function onSortOrderUpdate (value: number | null) {
-  sortState.value.sortOrder = value
-  scheduleAfterSort()
+  sortState.value.sortOrder = value as 1 | -1 | null
 }
-
-function scheduleAfterSort () {
-  if (sortUpdatePending) return
-  sortUpdatePending = true
-  nextTick(() => {
-    sortUpdatePending = false
-    pagination.value.page = 1
-    emit('update:filters', getFilters())
-    fetchData(1, true)
-  })
-}
-
-// -- Expose --
-
-defineExpose({
-  fetchData,
-  resetPagination,
-})
-
-// -- Lifecycle --
-
-onMounted(() => {
-  emit('update:filters', getFilters())
-  if (props.autoFetch) {
-    fetchData()
-  }
-})
 </script>
 
 <template>
@@ -242,7 +171,7 @@ onMounted(() => {
       <Pagination
         v-if="showPagination"
         :page="pagination.page"
-        :total="pagination.total"
+        :total="totalCount"
         :pageSize="pagination.size"
         :pageSizeOptions="pageSizeOptions"
         :simple="isMobile"
@@ -255,9 +184,8 @@ onMounted(() => {
     <!-- DataTable -->
     <DataTable
       :selection="selectionValue"
-      :data="internalData"
+      :data="tableData"
       :columns="columns"
-      :loading="loading"
       :selectionMode="showSelectionColumn ? 'multiple' : undefined"
       :clickable="clickable"
       :sortBy="sortState.sortBy"
@@ -268,7 +196,7 @@ onMounted(() => {
       @rowClick="(row: TData, index: number, event: MouseEvent) => emit('rowClick', row, index, event)"
     >
       <template
-        v-for="name in Object.keys($slots).filter(n => n !== 'toolbar' && n !== 'empty')"
+        v-for="name in Object.keys($slots).filter(n => n !== 'toolbar')"
         :key="name"
         #[name]="slotData"
       >
@@ -276,34 +204,6 @@ onMounted(() => {
           :name="name"
           v-bind="slotData ?? {}"
         />
-      </template>
-
-      <template
-        v-if="errored"
-        #empty
-      >
-        <div class="gap-2 text-muted-foreground flex flex-col items-center">
-          <Icon
-            name="circle-alert"
-            class="size-8"
-          />
-          <span class="text-sm">
-            {{ T('loadFailed') }}
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
-            @click="() => fetchData(undefined, true)"
-          >
-            {{ t('common.actions.retry') }}
-          </Button>
-        </div>
-      </template>
-      <template
-        v-else-if="$slots.empty"
-        #empty
-      >
-        <slot name="empty" />
       </template>
     </DataTable>
 
@@ -336,7 +236,7 @@ onMounted(() => {
       <Pagination
         v-if="showPagination"
         :page="pagination.page"
-        :total="pagination.total"
+        :total="totalCount"
         :pageSize="pagination.size"
         :pageSizeOptions="pageSizeOptions"
         :simple="isMobile"

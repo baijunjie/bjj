@@ -78,6 +78,9 @@
         "placeholder": "Selecteer alstublieft",
         "searchPlaceholder": "Zoeken..."
       },
+      "StaticDataTable": {
+        "actions": "Acties"
+      },
       "Upload": {
         "drag": {
           "title": "Klik of sleep bestand naar dit gebied om te uploaden",

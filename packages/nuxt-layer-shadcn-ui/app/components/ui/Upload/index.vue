@@ -119,8 +119,8 @@ const hintLines = computed(() => {
   if (!allowMany.value) lines.push(T('hint.single'))
   else if (props.maxCount) lines.push(T('hint.max', { max: props.maxCount }))
   else lines.push(T('hint.multiple'))
-  if (acceptLabel.value) lines.push(T('hint.accept', { types: acceptLabel.value }))
   if (maxSizeLabel.value) lines.push(T('hint.maxSize', { size: maxSizeLabel.value }))
+  if (acceptLabel.value) lines.push(T('hint.accept', { types: acceptLabel.value }))
   return lines
 })
 
