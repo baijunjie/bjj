@@ -14,9 +14,11 @@ export interface DataTableColumn {
   width?: string
   /** Minimum column width (e.g., '100px', '10rem') */
   minWidth?: string
+  /** Maximum column width (e.g., '200px', '20rem') */
+  maxWidth?: string
   /** Fixed column position: left or right */
   fixed?: DataTableColumnFixed
-  /** Whether text can wrap. Default: false (no wrap) */
+  /** Whether text can wrap. Default: false (truncate with ellipsis) */
   wrap?: boolean
   /** Text alignment. Default: 'left' */
   align?: DataTableColumnAlign

@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<AsyncDataTableProps<TData>>(), {
   columns: () => [],
   filters: undefined,
   showTopToolbar: undefined,
+  topToolbarThreshold: 50,
   showBottomToolbar: true,
   pageSizeOptions: () => [ 10, 20, 50, 100 ],
   showPagination: true,
@@ -71,7 +72,7 @@ const hasPaginationData = computed(() => pagination.value.total > 0)
 
 const shouldShowTopToolbar = computed(() => {
   if (props.showTopToolbar !== undefined) return props.showTopToolbar
-  return pagination.value.size >= 50
+  return pagination.value.size >= props.topToolbarThreshold
 })
 
 const shouldShowBottomToolbar = computed(() => props.showBottomToolbar)

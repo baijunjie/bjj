@@ -16,8 +16,10 @@ export interface StaticDataTableProps<T = Record<string, any>> {
   columns?: DataTableColumn[]
   /** Custom sort implementation. Receives the data and the current sort state; should return sorted items. Defaults to a generic comparator on `row[sortBy]`. */
   sortMethod?: StaticDataTableSortMethod<T>
-  /** Whether to show top toolbar (undefined = auto when page size >= 50) */
+  /** Whether to show top toolbar (undefined = auto when page size >= `topToolbarThreshold`) */
   showTopToolbar?: boolean
+  /** Page-size threshold that triggers the top toolbar when `showTopToolbar` is undefined (default: 50) */
+  topToolbarThreshold?: number
   /** Whether to show bottom toolbar (default: true) */
   showBottomToolbar?: boolean
   /** Available page size options */

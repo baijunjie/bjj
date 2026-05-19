@@ -26,8 +26,10 @@ export interface AsyncDataTableProps<T = Record<string, any>> {
   columns?: DataTableColumn[]
   /** External filter state */
   filters?: Record<string, any>
-  /** Whether to show top toolbar (undefined = auto when page size >= 50) */
+  /** Whether to show top toolbar (undefined = auto when page size >= `topToolbarThreshold`) */
   showTopToolbar?: boolean
+  /** Page-size threshold that triggers the top toolbar when `showTopToolbar` is undefined (default: 50) */
+  topToolbarThreshold?: number
   /** Whether to show bottom toolbar (default: true) */
   showBottomToolbar?: boolean
   /** Available page size options */

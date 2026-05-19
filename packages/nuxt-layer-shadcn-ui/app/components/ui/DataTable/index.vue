@@ -243,6 +243,14 @@ function buildColumnClass (column: DataTableColumn, headerIndex?: number): strin
   )
 }
 
+// Applied to an inner div, not the cell — keeps the cell `overflow: visible`
+// so the frozen-column shadow ::before isn't clipped.
+function buildCellContentClass (column: DataTableColumn): string | null {
+  if (column.wrap) return null
+  if (column.type === 'date' || column.type === 'unixDate') return null
+  return 'truncate'
+}
+
 function buildFrozenShadow (column: DataTableColumn): FrozenShadow | undefined {
   if (column.field === lastLeftFrozenField.value && !atStart.value) return 'left'
   if (column.field === firstRightFrozenField.value && !atEnd.value) return 'right'
@@ -253,6 +261,7 @@ function buildColumnStyle (column: DataTableColumn): Record<string, string> {
   const style: Record<string, string> = {}
   if (column.width) style.width = column.width
   if (column.minWidth) style.minWidth = column.minWidth
+  if (column.maxWidth) style.maxWidth = column.maxWidth
 
   // Frozen column offset
   const offset = frozenOffsets.value.get(column.field)
@@ -357,7 +366,9 @@ defineExpose({
                   column.align === 'right' && 'justify-end',
                 )"
               >
-                <span>{{ column.title }}</span>
+                <span :class="!column.wrap && 'min-w-0 truncate'">
+                  {{ column.title }}
+                </span>
                 <Icon
                   v-if="getSortIcon(column)"
                   :name="getSortIcon(column)!"
@@ -428,7 +439,9 @@ defineExpose({
                 :empty="!formatCellValue(get(row, column.field), column)"
               >
                 <template #default>
-                  {{ formatCellValue(get(row, column.field), column) }}
+                  <div :class="buildCellContentClass(column)">
+                    {{ formatCellValue(get(row, column.field), column) }}
+                  </div>
                 </template>
                 <template #empty>
                   <span :class="emptyCellClass" />

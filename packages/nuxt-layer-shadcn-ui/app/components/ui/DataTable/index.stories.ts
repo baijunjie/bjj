@@ -182,6 +182,51 @@ export const ColumnTypes: Story = {
   }),
 }
 
+/** `maxWidth` caps a column's width. With the default `wrap: false`, overflowing text is truncated with an ellipsis; `wrap: true` lets it wrap onto multiple lines instead. */
+export const ColumnMaxWidth: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable :data="data" :columns="columns" />
+</template>
+
+<script setup>
+const columns = [
+  { field: 'name', title: 'Name', width: '120px' },
+  { field: 'bio', title: 'Truncated bio (maxWidth)', maxWidth: '240px' },
+  { field: 'bio', title: 'Wrapped bio (maxWidth + wrap)', maxWidth: '240px', wrap: true },
+]
+</script>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup () {
+      const data = [
+        { name: 'Alice', bio: 'Staff engineer focused on developer tooling, build performance, and design systems at scale.' },
+        { name: 'Bob', bio: 'Short bio.' },
+        { name: 'Charlie', bio: 'Product designer who likes long, descriptive paragraphs that absolutely will not fit in one row.' },
+      ]
+      const columns: DataTableColumn[] = [
+        { field: 'name', title: 'Name', width: '120px' },
+        { field: 'bio', title: 'Truncated bio (maxWidth)', maxWidth: '240px' },
+        { field: 'bio', title: 'Wrapped bio (maxWidth + wrap)', maxWidth: '240px', wrap: true },
+      ]
+      return { data, columns }
+    },
+    template: `
+      <div class="w-full">
+        <DataTable :data="data" :columns="columns" />
+      </div>
+    `,
+  }),
+}
+
 export const RowClick: Story = {
   parameters: {
     ...noControls,
