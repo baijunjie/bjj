@@ -6,7 +6,6 @@ import {
   formatPercent,
   formatWalletAddress,
   replaceMiddleWithDots,
-  toSnakeCase,
 } from '../../src/utils/format'
 
 describe('formatNumber', () => {
@@ -134,26 +133,5 @@ describe('formatWalletAddress', () => {
 
   it('should return original when address is short', () => {
     expect(formatWalletAddress('0x123')).toBe('0x123')
-  })
-})
-
-describe('toSnakeCase', () => {
-  it('should convert camelCase to snake_case', () => {
-    expect(toSnakeCase('ExampleApp')).toBe('example_app')
-    expect(toSnakeCase('exampleApp')).toBe('example_app')
-  })
-
-  it('should convert spaces to underscores', () => {
-    expect(toSnakeCase('My App')).toBe('my_app')
-    expect(toSnakeCase('My   App')).toBe('my_app')
-  })
-
-  it('should convert hyphens to underscores', () => {
-    expect(toSnakeCase('my-app')).toBe('my_app')
-    expect(toSnakeCase('my--app')).toBe('my_app')
-  })
-
-  it('should handle digits between letters', () => {
-    expect(toSnakeCase('App2Version')).toBe('app2_version')
   })
 })

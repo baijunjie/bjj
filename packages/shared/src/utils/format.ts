@@ -97,18 +97,3 @@ export function replaceMiddleWithDots (
     '$1...$2',
   )
 }
-
-/**
- * Convert a camelCase / space-separated / hyphen-separated string into
- * lower snake_case.
- * e.g.
- *   "ExampleApp" → "example_app"
- *   "My App" → "my_app"
- *   "my-app" → "my_app"
- */
-export function toSnakeCase (value: string): string {
-  return value
-    .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
-    .replace(/[\s-]+/g, '_')
-    .toLowerCase()
-}
