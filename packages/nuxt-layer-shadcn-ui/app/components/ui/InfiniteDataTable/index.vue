@@ -209,7 +209,7 @@ onMounted(() => {
     </template>
 
     <template
-      v-if="hasMore || internalData.length > 0"
+      v-if="!isInitialLoad && (hasMore || internalData.length > 0)"
       #bodyEnd
     >
       <div
