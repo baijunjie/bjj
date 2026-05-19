@@ -19,13 +19,14 @@ const iconComponent = computed<Component | undefined>(() => {
   return (icons as Record<string, Component>)[pascalName]
 })
 
-const mergedClass = computed(() => cn('size-4', props.class))
+const mergedClass = computed(() => cn(props.size === undefined && 'size-4', props.class))
 </script>
 
 <template>
   <component
     :is="iconComponent"
     v-if="iconComponent"
+    :size="size"
     :class="mergedClass"
   />
 </template>

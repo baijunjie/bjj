@@ -16,10 +16,16 @@ const meta = {
   component: Icon,
   argTypes: {
     name: { control: 'text' },
+    size: { control: 'number' },
+    strokeWidth: { control: 'number' },
+    absoluteStrokeWidth: { control: 'boolean' },
     class: { control: 'text' },
   },
   args: {
     name: 'house',
+    size: undefined,
+    strokeWidth: undefined,
+    absoluteStrokeWidth: false,
     class: '',
   },
   render: args => ({
@@ -108,11 +114,11 @@ export const Sizes: Story = {
         code: `
 <template>
   <div class="flex items-end gap-4">
-    <Icon name="star" class="size-3" />
-    <Icon name="star" class="size-4" />
-    <Icon name="star" class="size-5" />
-    <Icon name="star" class="size-6" />
-    <Icon name="star" class="size-8" />
+    <Icon name="star" :size="12" />
+    <Icon name="star" :size="16" />
+    <Icon name="star" :size="20" />
+    <Icon name="star" :size="24" />
+    <Icon name="star" :size="32" />
   </div>
 </template>
 `.trim(),
@@ -123,11 +129,44 @@ export const Sizes: Story = {
     components: { Icon },
     template: `
       <div class="flex items-end gap-4">
-        <Icon name="star" class="size-3" />
-        <Icon name="star" class="size-4" />
-        <Icon name="star" class="size-5" />
-        <Icon name="star" class="size-6" />
-        <Icon name="star" class="size-8" />
+        <Icon name="star" :size="12" />
+        <Icon name="star" :size="16" />
+        <Icon name="star" :size="20" />
+        <Icon name="star" :size="24" />
+        <Icon name="star" :size="32" />
+      </div>
+    `,
+  }),
+}
+
+export const StrokeWidth: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex items-end gap-4">
+    <Icon name="heart" class="size-6" :stroke-width="1" />
+    <Icon name="heart" class="size-6" :stroke-width="1.5" />
+    <Icon name="heart" class="size-6" :stroke-width="2" />
+    <Icon name="heart" class="size-6" :stroke-width="2.5" />
+    <Icon name="heart" class="size-6" :stroke-width="3" />
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Icon },
+    template: `
+      <div class="flex items-end gap-4">
+        <Icon name="heart" class="size-6" :stroke-width="1" />
+        <Icon name="heart" class="size-6" :stroke-width="1.5" />
+        <Icon name="heart" class="size-6" :stroke-width="2" />
+        <Icon name="heart" class="size-6" :stroke-width="2.5" />
+        <Icon name="heart" class="size-6" :stroke-width="3" />
       </div>
     `,
   }),
