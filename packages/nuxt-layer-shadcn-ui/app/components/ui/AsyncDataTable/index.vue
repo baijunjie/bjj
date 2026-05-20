@@ -34,7 +34,7 @@ const emit = defineEmits<{
 defineSlots<{
   toolbar?: () => any
   empty?: () => any
-  [key: string]: ((props?: any) => any) | undefined
+  [key: string]: ((props: any) => any) | undefined
 }>()
 
 const { t } = useI18n()

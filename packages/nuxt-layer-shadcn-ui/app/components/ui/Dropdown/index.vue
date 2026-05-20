@@ -26,7 +26,7 @@ const slots = defineSlots<{
   default?: () => any
   popup?: (props: { hide: () => void }) => any
   empty?: () => any
-  [key: string]: ((props?: any) => any) | undefined
+  [key: string]: ((props: any) => any) | undefined
 }>()
 
 const T = useTranslations('components.ui.Dropdown')
@@ -116,7 +116,7 @@ onBeforeUnmount(() => {
 
       <!-- Default menu dropdown -->
       <MenuItems
-        v-else-if="menus.length"
+        v-else-if="menus?.length"
         :menus="menus"
       />
 

@@ -184,6 +184,7 @@ const model = computed({
 - **默认 slot 也要写进 `defineSlots`**，键名为 `default`
 - **slot props** 通过函数参数声明类型
 - **动态 slot 名**用对象内索引签名（不要写成 `Record<string, ...> & { ... }` 形式）
+- **slot 函数的 props 参数不要加 `?` 修饰符**——若 props 有具体类型，可选参数会让消费方解构时 `props` 推断为 `T | undefined`，访问属性报错。索引签名里 `any` 类型的 props 也建议不加 `?`，保持一致
 
 ```ts
 // 静态命名 slot
@@ -204,7 +205,7 @@ defineSlots<{
   default?: () => any
   empty?: () => any
   footer?: () => any
-  [key: string]: ((props?: any) => any) | undefined
+  [key: string]: ((props: any) => any) | undefined
 }>()
 ```
 

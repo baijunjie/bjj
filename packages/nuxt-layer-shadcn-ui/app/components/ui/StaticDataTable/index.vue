@@ -28,7 +28,7 @@ const emit = defineEmits<{
 
 defineSlots<{
   toolbar?: () => any
-  [key: string]: ((props?: any) => any) | undefined
+  [key: string]: ((props: any) => any) | undefined
 }>()
 
 const T = useTranslations('components.ui.StaticDataTable')

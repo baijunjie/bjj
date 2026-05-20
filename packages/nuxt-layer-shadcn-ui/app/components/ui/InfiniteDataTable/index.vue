@@ -20,7 +20,7 @@ const emit = defineEmits<{
 defineSlots<{
   footer?: () => any
   bodyEnd?: () => any
-  [key: string]: ((props?: any) => any) | undefined
+  [key: string]: ((props: any) => any) | undefined
 }>()
 
 const { t } = useI18n()

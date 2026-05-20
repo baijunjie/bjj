@@ -43,7 +43,7 @@ defineSlots<{
   footer?: () => any
   bodyStart?: () => any
   bodyEnd?: () => any
-  [key: string]: ((props?: any) => any) | undefined
+  [key: string]: ((props: any) => any) | undefined
 }>()
 
 const T = useTranslations('components.ui.DataTable')
