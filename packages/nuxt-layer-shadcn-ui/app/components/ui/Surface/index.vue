@@ -212,6 +212,10 @@ const props = withDefaults(defineProps<SurfaceProps>(), {
   class: undefined,
 })
 
+defineSlots<{
+  default?: () => any
+}>()
+
 const mergedClass = computed(() =>
   cn(
     surfaceVariants({

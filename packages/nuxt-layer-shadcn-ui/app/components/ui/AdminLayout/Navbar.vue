@@ -5,6 +5,10 @@ const props = defineProps<{
   class?: ClassValue
 }>()
 
+defineSlots<{
+  default?: () => any
+}>()
+
 const mergedClass = computed(() =>
   cn(
     `

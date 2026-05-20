@@ -17,6 +17,12 @@ const emit = defineEmits<{
   'rowClick': [row: TData, index: number, event: MouseEvent]
 }>()
 
+defineSlots<{
+  footer?: () => any
+  bodyEnd?: () => any
+  [key: string]: ((props?: any) => any) | undefined
+}>()
+
 const { t } = useI18n()
 const T = useTranslations('components.ui.InfiniteDataTable')
 

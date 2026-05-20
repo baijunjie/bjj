@@ -38,6 +38,14 @@ const emit = defineEmits<{
   'cancel': []
 }>()
 
+defineSlots<{
+  default?: () => any
+  trigger?: () => any
+  header?: () => any
+  footer?: () => any
+  footerLeft?: () => any
+}>()
+
 const { t } = useI18n()
 
 const resolvedConfirmText = computed(

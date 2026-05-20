@@ -18,9 +18,9 @@ const emit = defineEmits<{
 
 const isInvalid = useFormItemInvalid(() => props.invalid)
 
-const $slots = defineSlots<{
-  prefix?: () => unknown
-  suffix?: () => unknown
+const slots = defineSlots<{
+  prefix?: () => any
+  suffix?: () => any
 }>()
 
 // Internal value tracks the actual input content, independent of parent's modelValue
@@ -57,7 +57,7 @@ function clearInput () {
     :data-disabled="disabled || undefined"
   >
     <InputGroupAddon
-      v-if="$slots.prefix"
+      v-if="slots.prefix"
       align="inline-start"
     >
       <slot name="prefix" />
@@ -86,7 +86,7 @@ function clearInput () {
       </InputGroupButton>
     </InputGroupAddon>
     <InputGroupAddon
-      v-if="$slots.suffix"
+      v-if="slots.suffix"
       align="inline-end"
     >
       <slot name="suffix" />

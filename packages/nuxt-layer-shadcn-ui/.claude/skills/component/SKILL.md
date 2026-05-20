@@ -170,12 +170,47 @@ const model = computed({
 
 ---
 
-## Slots 透传
+## Slots
 
-| 场景 | 处理方式 |
-|---|---|
-| 单 slot 组件 | 直接 `<slot />` |
-| 多 slots 组件 | 动态透传 |
+### 自定义 slot 必须 `defineSlots`
+
+只要组件模板里写了具名的 `<slot>`，或写了默认 `<slot />` 作为自身契约的一部分，就必须通过 `defineSlots` 显式声明 slot 类型——这是封装层对外的契约，能让消费方在 IDE 里拿到补全和 props 类型。
+
+仅在"纯透传"场景下可以省略（见下一节）。
+
+#### 类型规则
+
+- **slot 函数返回类型一律使用 `any`**（Vue 官方文档约定。`unknown` 不能赋给 `VNode[]`，会在 `useSlots()` / `provide` slots 等场景报错）
+- **默认 slot 也要写进 `defineSlots`**，键名为 `default`
+- **slot props** 通过函数参数声明类型
+- **动态 slot 名**用对象内索引签名（不要写成 `Record<string, ...> & { ... }` 形式）
+
+```ts
+// 静态命名 slot
+defineSlots<{
+  default?: () => any
+  title?: () => any
+  icon?: () => any
+}>()
+
+// 带 slot props
+defineSlots<{
+  default?: () => any
+  item?: (props: { row: TData, index: number }) => any
+}>()
+
+// 含动态 slot 名（例如 DataTable 按列名生成的 slot）
+defineSlots<{
+  default?: () => any
+  empty?: () => any
+  footer?: () => any
+  [key: string]: ((props?: any) => any) | undefined
+}>()
+```
+
+### 纯透传场景
+
+下游 slot 原样转发给上游、本组件**不引入新的 slot 契约**时，不需要 `defineSlots`：
 
 ```vue
 <template>

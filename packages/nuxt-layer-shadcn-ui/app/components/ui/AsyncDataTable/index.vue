@@ -31,6 +31,12 @@ const emit = defineEmits<{
   'rowClick': [row: TData, index: number, event: MouseEvent]
 }>()
 
+defineSlots<{
+  toolbar?: () => any
+  empty?: () => any
+  [key: string]: ((props?: any) => any) | undefined
+}>()
+
 const { t } = useI18n()
 const T = useTranslations('components.ui.AsyncDataTable')
 const { isMobile } = useDevice()

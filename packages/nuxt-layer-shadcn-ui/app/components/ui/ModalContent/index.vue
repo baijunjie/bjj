@@ -27,6 +27,10 @@ const props = withDefaults(defineProps<ModalContentProps>(), {
   content: undefined,
 })
 
+defineSlots<{
+  default?: () => any
+}>()
+
 const iconName = computed(() => {
   if (props.icon) return props.icon
   if (props.type) return typeIconNameMap[props.type]
@@ -44,7 +48,7 @@ function isHTMLElement (value: unknown): value is HTMLElement {
 </script>
 
 <template>
-  <div class="flex w-full items-center gap-4">
+  <div class="gap-4 flex w-full items-center">
     <!-- Icon -->
     <Icon
       v-if="iconName"

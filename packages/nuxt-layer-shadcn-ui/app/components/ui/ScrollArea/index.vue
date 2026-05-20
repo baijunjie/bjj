@@ -7,6 +7,10 @@ import type { ScrollAreaProps } from './types'
 
 const props = defineProps<ScrollAreaProps>()
 
+defineSlots<{
+  default?: () => any
+}>()
+
 const rootRef = ref<InstanceType<typeof ShadcnScrollArea>>()
 const viewportEl = ref<HTMLElement>()
 

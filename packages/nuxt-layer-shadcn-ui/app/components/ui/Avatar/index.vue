@@ -15,6 +15,10 @@ const props = withDefaults(defineProps<AvatarProps>(), {
   class: undefined,
 })
 
+defineSlots<{
+  default?: () => any
+}>()
+
 // Map our size names to shadcn avatar variant sizes
 const sizeClasses: Record<string, string> = {
   small: 'size-8 text-xs',

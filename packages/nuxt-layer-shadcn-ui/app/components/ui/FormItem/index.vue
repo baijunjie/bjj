@@ -10,6 +10,11 @@ import type { FormItemProps } from './types'
 
 const props = defineProps<FormItemProps>()
 
+defineSlots<{
+  default?: () => any
+  description?: () => any
+}>()
+
 useFormItemInvalid(() => !!props.error)
 
 const errorArray = computed(() => {

@@ -5,6 +5,10 @@ defineOptions({ inheritAttrs: false })
 
 const props = defineProps<CopyButtonProps>()
 
+defineSlots<{
+  default?: () => any
+}>()
+
 const T = useTranslations('components.ui.CopyButton')
 
 const isCopied = ref(false)

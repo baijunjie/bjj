@@ -125,7 +125,7 @@ const hintLines = computed(() => {
 })
 
 defineSlots<{
-  hint?: (props: { lines: string[] }) => unknown
+  hint?: (props: { lines: string[] }) => any
 }>()
 
 const triggerLabel = computed(() => {

@@ -13,6 +13,11 @@ const props = withDefaults(defineProps<PopoverProps>(), {
   class: undefined,
 })
 
+defineSlots<{
+  default?: () => any
+  trigger?: () => any
+}>()
+
 const { isMobile } = useDevice()
 
 // Force click trigger on mobile devices for better touch experience

@@ -22,8 +22,8 @@ const emit = defineEmits<{
 }>()
 
 defineSlots<{
-  title?: (props: { item: TabsItem, active: boolean }) => unknown
-  content?: (props: { item: TabsItem, active: boolean }) => unknown
+  title?: (props: { item: TabsItem, active: boolean }) => any
+  content?: (props: { item: TabsItem, active: boolean }) => any
 }>()
 
 const hasItemContent = computed(() => props.items.some(item => !!item.content))

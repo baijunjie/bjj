@@ -26,6 +26,11 @@ const emit = defineEmits<{
   'rowClick': [row: TData, index: number, event: MouseEvent]
 }>()
 
+defineSlots<{
+  toolbar?: () => any
+  [key: string]: ((props?: any) => any) | undefined
+}>()
+
 const T = useTranslations('components.ui.StaticDataTable')
 const { isMobile } = useDevice()
 

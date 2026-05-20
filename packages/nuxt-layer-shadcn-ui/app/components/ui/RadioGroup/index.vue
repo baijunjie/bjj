@@ -21,7 +21,7 @@ const emit = defineEmits<{
 }>()
 
 defineSlots<{
-  label?: (props: { item: RadioGroupItem, checked: boolean }) => unknown
+  label?: (props: { item: RadioGroupItem, checked: boolean }) => any
 }>()
 
 const model = computed({

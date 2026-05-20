@@ -38,19 +38,13 @@ const emit = defineEmits<{
 
 const selection = defineModel<TData | TData[] | null>('selection', { default: null })
 
-defineSlots<
-  Record<string, (_: {
-    column: DataTableColumn
-    row: TData
-    value: unknown
-    index: number
-  }) => any> & {
-    empty?: () => any
-    footer?: () => any
-    bodyStart?: () => any
-    bodyEnd?: () => any
-  } & Record<`header-${string}`, (_: { column: DataTableColumn }) => any>
->()
+defineSlots<{
+  empty?: () => any
+  footer?: () => any
+  bodyStart?: () => any
+  bodyEnd?: () => any
+  [key: string]: ((props?: any) => any) | undefined
+}>()
 
 const T = useTranslations('components.ui.DataTable')
 const { formatDateTime } = useDate()

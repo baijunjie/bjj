@@ -31,9 +31,9 @@ const mergedClass = computed(() => cn(
 ))
 
 const isLink = computed(() => !!props.href || !!props.to)
-const hasIcon = computed(() => !!$slots.icon || !!props.icon)
+const hasIcon = computed(() => !!slots.icon || !!props.icon)
 const isIconEnd = computed(() => props.iconPosition === 'end')
-const $slots = defineSlots<{
+const slots = defineSlots<{
   default?: () => any
   icon?: () => any
 }>()

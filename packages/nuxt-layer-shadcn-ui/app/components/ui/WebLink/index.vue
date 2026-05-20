@@ -10,6 +10,10 @@ const props = withDefaults(defineProps<WebLinkProps>(), {
   class: undefined,
 })
 
+defineSlots<{
+  default?: () => any
+}>()
+
 const localePath = useLocalePath()
 
 const isExternal = computed(() => props.href ? isUrl(props.href) : false)

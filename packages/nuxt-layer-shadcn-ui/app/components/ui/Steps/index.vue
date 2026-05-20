@@ -24,8 +24,8 @@ const emit = defineEmits<{
 }>()
 
 defineSlots<{
-  title?: (props: { item: StepsItem, step: number, state: StepsState }) => unknown
-  description?: (props: { item: StepsItem, step: number, state: StepsState }) => unknown
+  title?: (props: { item: StepsItem, step: number, state: StepsState }) => any
+  description?: (props: { item: StepsItem, step: number, state: StepsState }) => any
 }>()
 
 const isVertical = computed(() => props.orientation === 'vertical')

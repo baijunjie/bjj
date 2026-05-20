@@ -28,6 +28,12 @@ const emit = defineEmits<{
   'update:modelValue': [value: TValue | undefined]
 }>()
 
+defineSlots<{
+  value?: (props: { option?: Option, options?: Option[] }) => any
+  option?: (props: { option: Option, selected: boolean }) => any
+  footer?: () => any
+}>()
+
 const model = computed({
   get: () => props.modelValue,
   set: value => emit('update:modelValue', value),

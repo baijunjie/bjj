@@ -21,6 +21,14 @@ const props = withDefaults(defineProps<AdminLayoutProps>(), {
   contentClass: undefined,
 })
 
+defineSlots<{
+  'default'?: () => any
+  'header'?: () => any
+  'footer'?: () => any
+  'navbar-left'?: () => any
+  'navbar-right'?: () => any
+}>()
+
 const mergedContentClass = computed(() =>
   cn('flex-1 overflow-auto', props.contentClass),
 )

@@ -7,11 +7,16 @@ const props = withDefaults(defineProps<HelpProps>(), {
   class: undefined,
 })
 
+defineSlots<{
+  default?: () => any
+}>()
+
 const mergedClass = computed(() =>
   cn(
     `
-      flex items-center justify-center text-muted-foreground transition-colors
+      text-muted-foreground
       hover:text-foreground
+      flex items-center justify-center transition-colors
     `,
     props.class,
   ),

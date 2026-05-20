@@ -46,6 +46,13 @@ const emit = defineEmits<{
   'close': []
 }>()
 
+defineSlots<{
+  value?: (props: { option?: Option, options?: Option[] }) => any
+  option?: (props: { option: Option, selected: boolean }) => any
+  listEnd?: () => any
+  footer?: () => any
+}>()
+
 const open = ref(false)
 
 watch(open, value => {

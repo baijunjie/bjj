@@ -10,6 +10,14 @@ const props = withDefaults(defineProps<PageCardProps>(), {
   class: undefined,
 })
 
+defineSlots<{
+  default?: () => any
+  title?: () => any
+  subtitle?: () => any
+  actions?: () => any
+  footer?: () => any
+}>()
+
 const route = useRoute()
 const router = useRouter()
 const { isMobile } = useDevice()
@@ -52,8 +60,9 @@ const hasTitle = computed(() => !!props.title)
       <div
         v-else
         class="
-          flex items-center gap-2
+          gap-2
           sm:gap-3
+          flex items-center
         "
       >
         <Button
@@ -66,7 +75,7 @@ const hasTitle = computed(() => !!props.title)
         <div class="flex-1">
           <h3
             v-if="!!$slots.title || !!title"
-            class="text-lg leading-none font-semibold tracking-tight"
+            class="text-lg font-semibold tracking-tight leading-none"
           >
             <slot name="title">
               {{ title }}
@@ -84,8 +93,9 @@ const hasTitle = computed(() => !!props.title)
         <div
           v-if="!!$slots.actions"
           class="
-            flex items-center gap-2
+            gap-2
             sm:gap-3
+            flex items-center
           "
         >
           <slot name="actions" />
@@ -96,7 +106,7 @@ const hasTitle = computed(() => !!props.title)
     <!-- Skeleton content -->
     <div
       v-if="!ready"
-      class="flex flex-col gap-2"
+      class="gap-2 flex flex-col"
     >
       <Skeleton height="1rem" />
       <Skeleton
@@ -116,7 +126,7 @@ const hasTitle = computed(() => !!props.title)
     >
       <div
         v-if="loading"
-        class="absolute inset-0 z-50 flex items-center justify-center"
+        class="inset-0 absolute z-50 flex items-center justify-center"
       >
         <Loading class="size-8" />
       </div>

@@ -2,6 +2,10 @@
 import type { MarkdownProps } from './types'
 
 defineProps<MarkdownProps>()
+
+defineSlots<{
+  default?: () => any
+}>()
 </script>
 
 <template>

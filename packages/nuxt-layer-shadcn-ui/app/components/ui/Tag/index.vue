@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority'
 import type { TagProps } from './types'
 
 const tagVariants = cva(
-  'inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium',
+  'gap-1 rounded-md px-2 py-1 text-xs font-medium inline-flex items-center',
   {
     variants: {
       variant: {
@@ -25,7 +25,7 @@ const tagVariants = cva(
     compoundVariants: [
       // solid — full color background
       { variant: 'solid', color: 'default', class: `
-        border-transparent bg-accent text-accent-foreground
+        bg-accent text-accent-foreground border-transparent
       ` },
       { variant: 'solid', color: 'primary', class: `
         border-primary bg-primary text-primary-foreground
@@ -106,6 +106,10 @@ const props = withDefaults(defineProps<TagProps>(), {
   variant: 'soft',
   class: undefined,
 })
+
+defineSlots<{
+  default?: () => any
+}>()
 
 const mergedClass = computed(() =>
   cn(tagVariants({ color: props.color, variant: props.variant }), props.class),

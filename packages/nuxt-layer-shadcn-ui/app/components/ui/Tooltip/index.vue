@@ -16,6 +16,10 @@ const props = withDefaults(defineProps<TooltipProps>(), {
 
 const emit = defineEmits<{ open: [], close: []}>()
 
+defineSlots<{
+  default?: () => any
+}>()
+
 const { isMobile } = useDevice()
 
 const sanitizedText = computed(() => props.text ? safeHtml(props.text) : '')

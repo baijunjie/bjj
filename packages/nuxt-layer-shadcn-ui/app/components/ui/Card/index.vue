@@ -9,6 +9,12 @@ import {
 import type { CardProps } from './types'
 
 defineProps<CardProps>()
+
+defineSlots<{
+  default?: () => any
+  header?: () => any
+  footer?: () => any
+}>()
 </script>
 
 <template>

@@ -22,8 +22,8 @@ const emit = defineEmits<{
 }>()
 
 defineSlots<{
-  title?: (props: { item: AccordionItem, open: boolean }) => unknown
-  content?: (props: { item: AccordionItem, open: boolean }) => unknown
+  title?: (props: { item: AccordionItem, open: boolean }) => any
+  content?: (props: { item: AccordionItem, open: boolean }) => any
 }>()
 
 const rootProps = computed<AccordionRootProps>(() => {

@@ -5,6 +5,10 @@ import type { DividerProps } from './types'
 withDefaults(defineProps<DividerProps>(), {
   type: 'horizontal',
 })
+
+defineSlots<{
+  default?: () => any
+}>()
 </script>
 
 <template>
