@@ -34,6 +34,9 @@ const hasMore = ref(true)
 const errored = ref(false)
 const total = ref<number | undefined>(undefined)
 const requestVersion = ref(0)
+// Tracks whether a fetch has ever been initiated. Gates the IntersectionChecker
+// so `autoFetch=false` doesn't get bypassed by the observer firing on mount.
+const started = ref(false)
 
 const sortState = ref<{ sortBy: string | null, sortOrder: number | null }>({
   sortBy: props.filters?.sortBy ? String(props.filters.sortBy) : null,
@@ -101,6 +104,7 @@ function resetState () {
 async function loadMore () {
   if (loading.value || !hasMore.value) return
 
+  started.value = true
   // Calling loadMore is the retry path; the IntersectionChecker is hidden
   // while errored, so it can't trigger this branch on its own.
   errored.value = false
@@ -238,7 +242,7 @@ onMounted(() => {
         </Button>
       </div>
       <EffectIntersectionChecker
-        v-else-if="!isInitialLoad"
+        v-else-if="started"
         :disabled="loading"
         :options="intersectionOptions"
         class="flex items-center justify-center"
