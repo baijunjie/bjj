@@ -45,6 +45,16 @@ const sortState = ref<{ sortBy: string | null, sortOrder: number | null }>({
 
 const isInitialLoad = computed(() => loading.value && internalData.value.length === 0)
 
+// Precise gate for the bodyEnd slot. Without this, the slot's outer v-if can
+// be true while every inner branch is false, leaving Vue to register an empty
+// slot — DataTable's `$slots.bodyEnd` check then renders a blank trailing row.
+const showBodyEnd = computed(() => {
+  if (isInitialLoad.value) return false
+  if (errored.value) return true
+  if (!hasMore.value) return internalData.value.length > 0
+  return started.value
+})
+
 // -- IntersectionObserver root: only when internal scroll is active --
 
 const dataTableRef = ref<{ scrollEl?: HTMLElement } | null>(null)
@@ -217,7 +227,7 @@ onMounted(() => {
     </template>
 
     <template
-      v-if="!isInitialLoad && (hasMore || internalData.length > 0)"
+      v-if="showBodyEnd"
       #bodyEnd
     >
       <div

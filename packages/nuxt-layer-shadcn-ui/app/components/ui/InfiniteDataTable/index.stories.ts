@@ -164,6 +164,12 @@ export const PageScroll: Story = {
   args: { height: undefined },
 }
 
+/** `autoFetch=false` keeps the table idle on mount — click the refresh button in the footer (or call `refresh()` via the exposed ref) to load the first page. */
+export const NoAutoFetch: Story = {
+  parameters: noControls,
+  args: { autoFetch: false },
+}
+
 /** First page loads, but every subsequent `loadMore` call rejects — the bottom loader is replaced by a retry prompt. */
 export const Errored: Story = {
   parameters: {
