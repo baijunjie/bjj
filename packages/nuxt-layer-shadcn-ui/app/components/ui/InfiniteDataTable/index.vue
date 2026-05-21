@@ -4,7 +4,6 @@ import { useEventListener } from '@vueuse/core'
 
 const props = withDefaults(defineProps<InfiniteDataTableProps<TData>>(), {
   columns: () => [],
-  fetchMethod: undefined,
   autoFetch: true,
   filters: undefined,
   pageSize: 30,
@@ -100,7 +99,6 @@ function resetState () {
 // -- Loading --
 
 async function loadMore () {
-  if (!props.fetchMethod) return
   if (loading.value || !hasMore.value) return
 
   // Calling loadMore is the retry path; the IntersectionChecker is hidden

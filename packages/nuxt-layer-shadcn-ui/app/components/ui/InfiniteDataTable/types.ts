@@ -18,10 +18,10 @@ export interface InfiniteDataTableFetchResult<T = Record<string, any>> {
 }
 
 export interface InfiniteDataTableProps<T = Record<string, any>> {
+  /** Async function to fetch a page of rows */
+  fetchMethod: (params: InfiniteDataTableFetchParams) => Promise<InfiniteDataTableFetchResult<T>>
   /** Column definitions */
   columns?: DataTableColumn[]
-  /** Async function to fetch a page of rows */
-  fetchMethod?: (params: InfiniteDataTableFetchParams) => Promise<InfiniteDataTableFetchResult<T>>
   /** Whether to fetch the first page on mount (default: true) */
   autoFetch?: boolean
   /** External filter state — changing this resets and reloads */
