@@ -168,7 +168,7 @@ function makeTriggerClass (base: string, idleHover: string) {
     base,
     isInvalid.value ? 'border-danger' : idleHover,
     isDragOver.value && !isInvalid.value && 'border-primary bg-primary/5',
-    props.disabled && disabledClass,
+    (props.disabled || reachedMax.value) && disabledClass,
   )
 }
 
@@ -474,7 +474,7 @@ async function onDrop (e: DragEvent) {
       v-else-if="variant === 'drag' && showTrigger"
       :class="dragAreaClass"
       role="button"
-      :aria-disabled="disabled || undefined"
+      :aria-disabled="disabled || reachedMax || undefined"
       @click="triggerSelect"
       @dragover="onDragOver"
       @dragleave="onDragLeave"
@@ -631,10 +631,10 @@ async function onDrop (e: DragEvent) {
         </div>
 
         <button
-          v-if="showTrigger && !reachedMax"
+          v-if="showTrigger"
           type="button"
           :class="boxTriggerClass"
-          :disabled="disabled"
+          :disabled="disabled || reachedMax"
           @click="triggerSelect"
           @dragover="onDragOver"
           @dragleave="onDragLeave"
