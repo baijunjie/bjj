@@ -34,8 +34,7 @@ const hasMore = ref(true)
 const errored = ref(false)
 const total = ref<number | undefined>(undefined)
 const requestVersion = ref(0)
-// Tracks whether a fetch has ever been initiated. Gates the IntersectionChecker
-// so `autoFetch=false` doesn't get bypassed by the observer firing on mount.
+// Gates the IntersectionChecker and filters watcher so `autoFetch=false` isn't bypassed.
 const started = ref(false)
 
 const sortState = ref<{ sortBy: string | null, sortOrder: number | null }>({
@@ -88,6 +87,13 @@ function getFilters (): Record<string, any> {
     sortBy: sortState.value.sortBy,
     sortOrder: sortState.value.sortOrder,
   }
+}
+
+// Strip component-owned fields so v-model:filters round-trips don't refire the watcher.
+function getExternalFilters (filters: Record<string, any> | undefined) {
+  if (!filters) return {}
+  const { sortBy, sortOrder, ...rest } = filters
+  return rest
 }
 
 function buildFetchParams (): InfiniteDataTableFetchParams {
@@ -173,16 +179,17 @@ function scheduleAfterSort () {
   sortUpdatePending = true
   nextTick(() => {
     sortUpdatePending = false
+    if (!started.value) return
     refresh()
   })
 }
 
 // -- External filters: any change resets and reloads --
 
-watch(() => props.filters, (newVal, oldVal) => {
-  if (JSON.stringify(newVal) === JSON.stringify(oldVal)) return
+watch(() => JSON.stringify(getExternalFilters(props.filters)), () => {
+  if (!started.value) return
   refresh()
-}, { deep: true })
+})
 
 // -- Expose --
 

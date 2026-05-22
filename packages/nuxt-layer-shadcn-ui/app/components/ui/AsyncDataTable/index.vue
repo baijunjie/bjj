@@ -1,8 +1,5 @@
 <script setup lang="ts" generic="TData extends Record<string, any>">
-import type {
-  AsyncDataTableFetchParams,
-  AsyncDataTableProps,
-} from './types'
+import type { AsyncDataTableFetchParams, AsyncDataTableProps } from './types'
 
 interface AsyncDataTablePagination {
   page: number
@@ -55,6 +52,8 @@ const loading = ref(false)
 const internalData = ref<TData[]>([]) as Ref<TData[]>
 const errored = ref(false)
 const requestVersion = ref(0)
+// Gates the filters watcher so `autoFetch=false` isn't bypassed.
+const started = ref(false)
 
 const pagination = ref<AsyncDataTablePagination>({
   page: Number(props.filters?.page) || 1,
@@ -97,11 +96,42 @@ const batchMenuItems = computed<DropdownItem[]>(() =>
   }),
 )
 
-// -- Data fetching --
+// -- Helpers --
+
+function getFilters (overrides?: Record<string, any>): Record<string, any> {
+  return {
+    ...(props.filters ?? {}),
+    ...overrides,
+    page: pagination.value.page,
+    size: pagination.value.size,
+    sortBy: sortState.value.sortBy,
+    sortOrder: sortState.value.sortOrder,
+  }
+}
+
+// Strip component-owned fields so v-model:filters round-trips don't refire the watcher.
+function getExternalFilters (filters: Record<string, any> | undefined) {
+  if (!filters) return {}
+  const { page, size, sortBy, sortOrder, ...rest } = filters
+  return rest
+}
+
+function buildFetchParams (): AsyncDataTableFetchParams {
+  const filters = getFilters()
+  const { page, size, ...rest } = filters
+  return {
+    offset: (Number(page) - 1) * Number(size),
+    limit: Number(size),
+    ...rest,
+  }
+}
+
+// -- Loading --
 
 async function fetchData (page?: number, forceRefresh = false) {
   if (loading.value && !forceRefresh) return
 
+  started.value = true
   const currentVersion = ++requestVersion.value
 
   if (page !== undefined) {
@@ -124,9 +154,7 @@ async function fetchData (page?: number, forceRefresh = false) {
     errored.value = true
     internalData.value = []
   } finally {
-    if (currentVersion === requestVersion.value) {
-      loading.value = false
-    }
+    if (currentVersion === requestVersion.value) loading.value = false
   }
 }
 
@@ -135,29 +163,6 @@ function resetPagination (overrides?: Record<string, any>) {
   pagination.value.total = 0
   emit('update:filters', getFilters(overrides))
   fetchData(undefined, true)
-}
-
-// -- Internal helpers --
-
-function getFilters (overrides?: Record<string, any>): Record<string, any> {
-  return {
-    ...(props.filters ?? {}),
-    ...overrides,
-    page: pagination.value.page,
-    size: pagination.value.size,
-    sortBy: sortState.value.sortBy,
-    sortOrder: sortState.value.sortOrder,
-  }
-}
-
-function buildFetchParams (): AsyncDataTableFetchParams {
-  const filters = getFilters()
-  const { page, size, ...rest } = filters
-  return {
-    offset: (Number(page) - 1) * Number(size),
-    limit: Number(size),
-    ...rest,
-  }
 }
 
 // -- Event handlers --
@@ -197,13 +202,22 @@ function scheduleAfterSort () {
     sortUpdatePending = false
     pagination.value.page = 1
     emit('update:filters', getFilters())
+    if (!started.value) return
     fetchData(1, true)
   })
 }
 
+// -- External filters: any change resets to page 1 and reloads --
+
+watch(() => JSON.stringify(getExternalFilters(props.filters)), () => {
+  if (!started.value) return
+  resetPagination()
+})
+
 // -- Expose --
 
 defineExpose({
+  data: internalData,
   fetchData,
   resetPagination,
 })
@@ -212,9 +226,7 @@ defineExpose({
 
 onMounted(() => {
   emit('update:filters', getFilters())
-  if (props.autoFetch) {
-    fetchData()
-  }
+  if (props.autoFetch) fetchData()
 })
 </script>
 
@@ -251,7 +263,7 @@ onMounted(() => {
         :page="pagination.page"
         :total="pagination.total"
         :pageSize="pagination.size"
-        :pageSizeOptions="pageSizeOptions"
+        :pageSizeOptions
         :simple="isMobile"
         :size="isMobile ? 'sm' : 'default'"
         @update:page="onPageChange"
@@ -263,16 +275,16 @@ onMounted(() => {
     <DataTable
       :selection="selectionValue"
       :data="internalData"
-      :columns="columns"
-      :loading="loading"
+      :columns
+      :loading
       :selectionMode="showSelectionColumn ? 'multiple' : undefined"
-      :clickable="clickable"
+      :clickable
       :sortBy="sortState.sortBy"
       :sortOrder="sortState.sortOrder"
       @update:selection="onSelectionChange"
       @update:sortBy="onSortByUpdate"
       @update:sortOrder="onSortOrderUpdate"
-      @rowClick="(row: TData, index: number, event: MouseEvent) => emit('rowClick', row, index, event)"
+      @rowClick="(row, i, e) => emit('rowClick', row as TData, i, e)"
     >
       <template
         v-for="name in Object.keys($slots).filter(n => n !== 'toolbar' && n !== 'empty')"
@@ -345,7 +357,7 @@ onMounted(() => {
         :page="pagination.page"
         :total="pagination.total"
         :pageSize="pagination.size"
-        :pageSizeOptions="pageSizeOptions"
+        :pageSizeOptions
         :simple="isMobile"
         :size="isMobile ? 'sm' : 'default'"
         @update:page="onPageChange"
