@@ -291,7 +291,7 @@ defineExpose({
 <template>
   <div
     :class="cn(
-      'rounded-lg bg-border px-1 text-foreground relative',
+      'rounded-lg bg-border px-1 text-foreground relative overflow-hidden',
       !$slots.footer && 'pb-1',
       height && 'has-sticky-bounds',
     )"

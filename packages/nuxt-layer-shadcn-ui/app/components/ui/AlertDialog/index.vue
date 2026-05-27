@@ -22,6 +22,7 @@ const isDestructive = computed(() => {
     :confirmVariant="isDestructive ? 'destructive' : 'default'"
     @confirm="close(true)"
     @cancel="close(false)"
+    @close="close(false)"
     @closed="onClosed"
   />
 </template>
