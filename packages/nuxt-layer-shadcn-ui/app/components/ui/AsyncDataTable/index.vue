@@ -168,7 +168,6 @@ function resetPagination (overrides?: Record<string, any>) {
 // -- Event handlers --
 
 function onPageChange (newPage: number) {
-  if (newPage === pagination.value.page) return
   pagination.value.page = newPage
   emit('update:filters', getFilters())
   fetchData()
