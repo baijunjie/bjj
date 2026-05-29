@@ -150,6 +150,66 @@ async function handleDestroy () {
   }),
 }
 
+export const BeforeClose: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<script setup lang="ts">
+const { destroy } = useDialog()
+const result = ref('')
+
+async function handleDelete () {
+  const ok = await destroy({
+    title: 'Delete Item',
+    message: 'This will call the API before closing.',
+    beforeClose: async (action) => {
+      // Only intercept confirm; cancel / close stay instant.
+      if (action !== 'confirm') return
+      // Returning a Promise keeps the dialog open and shows loading until it settles.
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+    },
+  })
+  result.value = \`destroy → \${ok}\`
+}
+</script>
+
+<template>
+  <Button variant="destructive" @click="handleDelete">Delete with async</Button>
+  <div v-if="result">Result: {{ result }}</div>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Button },
+    setup () {
+      const { destroy } = useDialog()
+      const result = ref('')
+      async function handleDelete () {
+        const ok = await destroy({
+          title: 'Delete Item',
+          message: 'This will call the API before closing.',
+          beforeClose: async action => {
+            if (action !== 'confirm') return
+            await new Promise(resolve => setTimeout(resolve, 1500))
+          },
+        })
+        result.value = `destroy → ${ok}`
+      }
+      return { handleDelete, result }
+    },
+    template: `
+      <div class="space-y-4">
+        <Button variant="destructive" @click="handleDelete">Delete with async</Button>
+        <div v-if="result" class="rounded-md bg-muted p-4 text-sm">Result: {{ result }}</div>
+      </div>
+    `,
+  }),
+}
+
 export const MultiDialog: Story = {
   parameters: {
     ...noControls,

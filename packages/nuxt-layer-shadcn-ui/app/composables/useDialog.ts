@@ -1,14 +1,13 @@
-import type { ModalContentProps } from '../components/ui/ModalContent/types'
+import type { ModalProps } from '../components/ui/Modal/types'
 
-export type DialogType = NonNullable<ModalContentProps['type']>
-export type DialogMessageContent = NonNullable<ModalContentProps['content']>
-
-export interface DialogOptions {
-  type?: DialogType
-  title?: string
-  message?: DialogMessageContent
-  acceptLabel?: string
-  rejectLabel?: string
+/**
+ * Imperative dialog options, aligned with `<Modal>` props (minus `visible`,
+ * which the queue manages). Anything Modal accepts — `beforeClose`, `loading`,
+ * `confirmVariant`, `class`, … — works here too.
+ */
+export interface DialogOptions extends Omit<ModalProps, 'visible'> {
+  /** Plain-text body shorthand. Overridden by `content` when both are set. */
+  message?: string
 }
 
 interface DialogQueueItem {
@@ -16,7 +15,11 @@ interface DialogQueueItem {
   resolve: (value: boolean) => void
 }
 
-const dialogQueue = reactive<DialogQueueItem[]>([])
+// shallowReactive (not reactive): aligning DialogOptions with ModalProps pulls in
+// recursive types (ClassValue) and VNode, which blow past TS's depth limit under
+// deep ref-unwrapping. Queue items are written once and read whole, so array-level
+// reactivity is all we need.
+const dialogQueue = shallowReactive<DialogQueueItem[]>([])
 const isOpen = ref(false)
 const mountedInstances = ref<symbol[]>([])
 
@@ -41,7 +44,7 @@ export function useDialog () {
   }
 
   const alert = (options: DialogOptions): Promise<void> => {
-    return showDialog({ ...options, rejectLabel: '' }).then(() => {})
+    return showDialog({ ...options, showCancel: false }).then(() => {})
   }
 
   const destroy = (options: DialogOptions): Promise<boolean> => {
