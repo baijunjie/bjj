@@ -16,6 +16,7 @@ const meta = {
   argTypes: {
     visible: { control: 'boolean' },
     loading: { control: 'boolean' },
+    confirmLoading: { control: 'boolean' },
     disabled: { control: 'boolean' },
     confirmDisabled: { control: 'boolean' },
     modal: { control: 'boolean' },
@@ -36,6 +37,7 @@ const meta = {
   args: {
     visible: false,
     loading: false,
+    confirmLoading: false,
     disabled: false,
     confirmDisabled: false,
     modal: true,

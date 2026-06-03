@@ -8,6 +8,7 @@ export type ModalBeforeClose = (action: ModalAction) => boolean | undefined | Pr
 export interface ModalProps {
   visible?: boolean
   loading?: boolean
+  confirmLoading?: boolean
   disabled?: boolean
   confirmDisabled?: boolean
   modal?: boolean

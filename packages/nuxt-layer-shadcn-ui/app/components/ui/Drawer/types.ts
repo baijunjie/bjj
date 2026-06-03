@@ -9,6 +9,7 @@ export type DrawerBeforeClose = (action: DrawerAction) => boolean | undefined | 
 export interface DrawerProps {
   visible?: boolean
   loading?: boolean
+  confirmLoading?: boolean
   disabled?: boolean
   confirmDisabled?: boolean
   modal?: boolean

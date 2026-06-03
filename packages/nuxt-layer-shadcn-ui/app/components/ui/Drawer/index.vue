@@ -57,7 +57,11 @@ const resolvedCancelText = computed(
 
 const sheetOpen = ref(props.visible ?? false)
 const internalLoading = ref(false)
-const isLoading = computed(() => internalLoading.value || props.loading)
+// The confirm action is in progress: either the consumer-driven `confirmLoading`
+// prop or an internal async `beforeClose`. This blocks closing and disables the
+// footer/close controls. The `loading` prop is separate — it only dims the
+// content behind a translucent overlay.
+const confirmInProgress = computed(() => internalLoading.value || props.confirmLoading)
 
 watch(() => props.visible, value => {
   if (value !== undefined) sheetOpen.value = value
@@ -70,7 +74,7 @@ watch(sheetOpen, value => {
 })
 
 function onOpenUpdate (value: boolean) {
-  if (!value && isLoading.value) return
+  if (!value && confirmInProgress.value) return
   if (value) sheetOpen.value = true
   else handleClose('cancel')
 }
@@ -161,18 +165,41 @@ const contentClass = computed(() =>
       </template>
 
       <!-- Content -->
-      <ScrollArea
-        fadeMask
-        class="min-h-0 flex-1"
-      >
-        <div
-          :inert="isLoading || disabled || undefined"
-          :class="[ isLoading || disabled ? 'opacity-50' : undefined ]"
-          class="p-4"
+      <div class="min-h-0 relative flex-1">
+        <ScrollArea
+          fadeMask
+          class="h-full"
         >
-          <slot />
-        </div>
-      </ScrollArea>
+          <div
+            :inert="loading || disabled || confirmInProgress || undefined"
+            :class="[ disabled ? 'opacity-50' : undefined ]"
+            class="p-4"
+          >
+            <slot />
+          </div>
+        </ScrollArea>
+
+        <!-- Content loading overlay -->
+        <Transition
+          enterActiveClass="transition-opacity duration-200"
+          leaveActiveClass="transition-opacity duration-200"
+          enterFromClass="opacity-0"
+          leaveToClass="opacity-0"
+        >
+          <div
+            v-if="loading"
+            class="
+              inset-0 bg-popover/60 absolute z-30 flex items-center
+              justify-center
+            "
+          >
+            <Icon
+              name="loader-circle"
+              class="size-6 animate-spin text-muted-foreground"
+            />
+          </div>
+        </Transition>
+      </div>
 
       <!-- Footer -->
       <SheetFooter
@@ -189,7 +216,7 @@ const contentClass = computed(() =>
               v-if="showCancel"
               class="min-w-24"
               :variant="cancelVariant"
-              :disabled="isLoading"
+              :disabled="confirmInProgress"
               @click="onCancel"
             >
               {{ resolvedCancelText }}
@@ -197,7 +224,7 @@ const contentClass = computed(() =>
             <Button
               :class="showCancel ? 'min-w-24' : 'min-w-32'"
               :variant="confirmVariant"
-              :loading="isLoading"
+              :loading="confirmInProgress"
               :disabled="disabled || confirmDisabled"
               @click="onConfirm"
             >
@@ -209,7 +236,7 @@ const contentClass = computed(() =>
 
       <SheetClose
         v-if="showClose"
-        :disabled="isLoading"
+        :disabled="confirmInProgress"
         class="
           top-3 right-3 size-8 text-muted-foreground ring-offset-background
           hover:bg-accent/50 hover:text-foreground
