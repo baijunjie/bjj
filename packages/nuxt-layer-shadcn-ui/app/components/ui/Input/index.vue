@@ -4,6 +4,7 @@ import {
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
+  InputGroupText,
 } from '../../shadcn/input-group'
 import type { InputProps } from './types'
 
@@ -32,6 +33,11 @@ watch(() => props.modelValue, value => {
 })
 
 const showClearButton = computed(() => !!internalValue.value && !props.readonly && !props.disabled)
+
+const countText = computed(() => {
+  const length = internalValue.value?.length ?? 0
+  return props.maxlength === undefined ? `${length}` : `${length} / ${props.maxlength}`
+})
 
 function handleChange (event: Event) {
   const target = event.target as HTMLInputElement
@@ -67,6 +73,7 @@ function clearInput () {
       v-bind="$attrs"
       :readonly="readonly"
       :disabled="disabled"
+      :maxlength="maxlength"
       :aria-invalid="isInvalid || undefined"
       :data-1p-ignore="autocomplete === 'off' || !autocomplete ? true : undefined"
       :autocomplete="autocomplete || 'off'"
@@ -84,6 +91,12 @@ function clearInput () {
       >
         <Icon name="x" />
       </InputGroupButton>
+    </InputGroupAddon>
+    <InputGroupAddon
+      v-if="showCount"
+      align="inline-end"
+    >
+      <InputGroupText>{{ countText }}</InputGroupText>
     </InputGroupAddon>
     <InputGroupAddon
       v-if="slots.suffix"

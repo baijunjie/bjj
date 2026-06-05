@@ -8,6 +8,8 @@ const props = withDefaults(defineProps<TextareaProps>(), {
   modelValue: undefined,
   autocomplete: undefined,
   rows: undefined,
+  maxlength: undefined,
+  showCount: false,
   invalid: false,
   class: undefined,
 })
@@ -19,8 +21,22 @@ const emit = defineEmits<{
 
 const isInvalid = useFormItemInvalid(() => props.invalid)
 
+// Internal value tracks the actual textarea content, independent of parent's modelValue
+const internalValue = ref(props.modelValue)
+
+// Sync internal value when parent updates modelValue
+watch(() => props.modelValue, value => {
+  internalValue.value = value
+})
+
+const countText = computed(() => {
+  const length = internalValue.value?.length ?? 0
+  return props.maxlength === undefined ? `${length}` : `${length} / ${props.maxlength}`
+})
+
 function handleInput (event: Event) {
   const target = event.target as HTMLTextAreaElement
+  internalValue.value = target.value
   emit('update:modelValue', target.value)
 }
 
@@ -41,6 +57,7 @@ const mergedClass = computed(() =>
   <ShadcnTextarea
     :modelValue="modelValue"
     :rows="rows"
+    :maxlength="maxlength"
     :class="mergedClass"
     :aria-invalid="isInvalid || undefined"
     :data-1p-ignore="autocomplete === 'off' || !autocomplete ? true : undefined"
@@ -49,4 +66,10 @@ const mergedClass = computed(() =>
     @input="handleInput"
     @change="handleChange"
   />
+  <div
+    v-if="showCount"
+    class="mt-1 text-sm text-muted-foreground text-right"
+  >
+    {{ countText }}
+  </div>
 </template>

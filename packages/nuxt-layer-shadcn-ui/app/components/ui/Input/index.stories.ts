@@ -10,6 +10,8 @@ const meta = {
   argTypes: {
     modelValue: { control: 'text' },
     autocomplete: { control: 'text' },
+    maxlength: { control: 'number' },
+    showCount: { control: 'boolean' },
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -18,6 +20,8 @@ const meta = {
   args: {
     modelValue: '',
     autocomplete: 'off',
+    maxlength: undefined,
+    showCount: false,
     disabled: false,
     readonly: false,
     invalid: false,
