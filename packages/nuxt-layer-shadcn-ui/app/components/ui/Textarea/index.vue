@@ -54,22 +54,24 @@ const mergedClass = computed(() =>
 </script>
 
 <template>
-  <ShadcnTextarea
-    :modelValue="modelValue"
-    :rows="rows"
-    :maxlength="maxlength"
-    :class="mergedClass"
-    :aria-invalid="isInvalid || undefined"
-    :data-1p-ignore="autocomplete === 'off' || !autocomplete ? true : undefined"
-    :autocomplete="autocomplete || 'off'"
-    v-bind="$attrs"
-    @input="handleInput"
-    @change="handleChange"
-  />
-  <div
-    v-if="showCount"
-    class="mt-1 text-sm text-muted-foreground text-right"
-  >
-    {{ countText }}
+  <div>
+    <ShadcnTextarea
+      :modelValue="modelValue"
+      :rows="rows"
+      :maxlength="maxlength"
+      :class="mergedClass"
+      :aria-invalid="isInvalid || undefined"
+      :data-1p-ignore="autocomplete === 'off' || !autocomplete ? true : undefined"
+      :autocomplete="autocomplete || 'off'"
+      v-bind="$attrs"
+      @input="handleInput"
+      @change="handleChange"
+    />
+    <div
+      v-if="showCount"
+      class="mt-1 text-sm text-muted-foreground text-right"
+    >
+      {{ countText }}
+    </div>
   </div>
 </template>
