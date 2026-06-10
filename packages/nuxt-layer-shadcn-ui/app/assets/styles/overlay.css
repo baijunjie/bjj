@@ -9,8 +9,7 @@
 [data-slot='dialog-overlay'],
 [data-slot='sheet-overlay'] {
   background-color: rgba(252, 252, 252, 0.3);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
 }
 
 .dark [data-slot='dialog-overlay'],
