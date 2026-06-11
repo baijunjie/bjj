@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<UploadProps>(), {
   maxSize: undefined,
   text: undefined,
   icon: undefined,
+  hideTriggerOnMax: false,
   directory: false,
   class: undefined,
 })
@@ -74,7 +75,9 @@ const canPickMore = computed(() =>
 
 const canRemove = computed(() => !props.disabled && !props.readonly)
 
-const showTrigger = computed(() => !props.readonly)
+const showTrigger = computed(() =>
+  !props.readonly && !(props.hideTriggerOnMax && reachedMax.value),
+)
 
 const emptyStateClass = 'py-2 text-xs text-muted-foreground'
 

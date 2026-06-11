@@ -31,6 +31,8 @@ export interface UploadProps {
   maxSize?: number
   text?: string
   icon?: string | Component
+  /** Hide the upload trigger instead of disabling it when maxCount is reached */
+  hideTriggerOnMax?: boolean
   directory?: boolean
   class?: ClassValue
 }
