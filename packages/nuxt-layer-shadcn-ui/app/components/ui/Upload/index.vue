@@ -652,7 +652,7 @@ async function onDrop (e: DragEvent) {
         >
           <Icon
             :name="iconName"
-            class="size-5"
+            class="size-6"
           />
           <span>{{ triggerLabel }}</span>
         </button>
