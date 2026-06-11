@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<UploadProps>(), {
   text: undefined,
   icon: undefined,
   hideTriggerOnMax: false,
+  hideHint: false,
   directory: false,
   class: undefined,
 })
@@ -457,7 +458,10 @@ async function onDrop (e: DragEvent) {
         <Icon :name="iconName" />
         {{ triggerLabel }}
       </Button>
-      <div class="text-xs text-muted-foreground py-1.5">
+      <div
+        v-if="!hideHint"
+        class="text-xs text-muted-foreground py-1.5"
+      >
         <slot
           name="hint"
           :lines="hintLines"
@@ -491,7 +495,10 @@ async function onDrop (e: DragEvent) {
       <div class="text-foreground font-medium">
         {{ triggerLabel }}
       </div>
-      <div class="text-xs text-muted-foreground">
+      <div
+        v-if="!hideHint"
+        class="text-xs text-muted-foreground"
+      >
         <slot
           name="hint"
           :lines="hintLines"
@@ -659,7 +666,7 @@ async function onDrop (e: DragEvent) {
       </div>
 
       <div
-        v-if="showTrigger"
+        v-if="showTrigger && !hideHint"
         class="mt-2 text-xs text-muted-foreground"
       >
         <slot
