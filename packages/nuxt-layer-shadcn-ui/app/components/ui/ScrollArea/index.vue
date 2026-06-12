@@ -42,6 +42,14 @@ watchEffect(() => {
   el.setAttribute('tabindex', isOverflowing.value ? '0' : '-1')
 })
 
+// The viewport sizes itself with `height: 100%`, which cannot resolve against
+// a root that only has `max-height` — the viewport would grow with its content
+// and never scroll. Forward the root's max-height to the viewport so a
+// `max-h-*` class on ScrollArea clamps the scroll container itself.
+const mergedClass = computed(() =>
+  cn('*:data-[slot=scroll-area-viewport]:max-h-[inherit]', props.class),
+)
+
 const FADE_SIZE = '1.25rem'
 
 const maskStyle = computed(() => {
@@ -61,6 +69,7 @@ const maskStyle = computed(() => {
 <template>
   <ShadcnScrollArea
     ref="rootRef"
+    :class="mergedClass"
     :style="maskStyle"
   >
     <slot />
