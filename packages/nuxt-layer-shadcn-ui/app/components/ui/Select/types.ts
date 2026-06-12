@@ -16,6 +16,8 @@ export type SelectBaseProps<V extends string | number = string, M = unknown> = {
   invalid?: boolean
   /** Show a spinner in place of the chevron */
   loading?: boolean
+  /** Show a clear button when a value is selected */
+  clearable?: boolean
   /** true: enable client-side label filter; function: custom filter (disables internal filter) */
   filter?: boolean | SelectFilterFunction
   /** Search input placeholder */

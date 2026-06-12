@@ -26,6 +26,21 @@ const model = computed({
 })
 
 const mergedClass = computed(() => cn('gap-3', props.class))
+
+const cardClass = (optionDisabled?: boolean) =>
+  cn(
+    `
+      gap-3 rounded-lg border-border px-4 py-3
+      has-data-[state=checked]:border-primary
+      flex cursor-pointer items-center border transition-colors
+      has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50
+    `,
+    optionDisabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-accent/50',
+    isInvalid.value && `
+      border-destructive
+      has-data-[state=checked]:border-destructive
+    `,
+  )
 </script>
 
 <template>
@@ -37,15 +52,7 @@ const mergedClass = computed(() => cn('gap-3', props.class))
     <label
       v-for="option in options"
       :key="option.value"
-      class="
-        gap-3 rounded-lg border-border px-4 py-3
-        has-data-[state=checked]:border-primary
-        flex cursor-pointer items-center border transition-colors
-        has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50
-      "
-      :class="[
-        option.disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-accent/50',
-      ]"
+      :class="cardClass(option.disabled)"
     >
       <ShadcnRadioGroupItem
         :value="option.value"

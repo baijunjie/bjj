@@ -31,6 +31,7 @@ const props = withDefaults(defineProps<SelectProps<TValue, TMeta>>(), {
   disabled: false,
   invalid: false,
   loading: false,
+  clearable: true,
   filter: false,
   searchPlaceholder: undefined,
   emptyText: undefined,
@@ -145,7 +146,7 @@ const hasValue = computed(() => {
   return props.modelValue !== undefined && props.modelValue !== null
 })
 
-const showClearButton = computed(() => hasValue.value && !props.disabled)
+const showClearButton = computed(() => props.clearable && hasValue.value && !props.disabled)
 
 function handleClear (event: MouseEvent) {
   event.stopPropagation()
