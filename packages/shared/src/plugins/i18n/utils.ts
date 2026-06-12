@@ -26,6 +26,8 @@ export const I18N_LIBRARIES = {
     globalMethods: [ '$t', '$te', '$tm', '$rt' ],
     // Template attributes for translation keys
     keyAttributes: [ 'keypath' ],
+    // Object properties for translation keys, e.g. h(I18nT, { keypath: 'full.key' })
+    keyProperties: [ 'keypath' ],
     // Fields in definePageMeta that contain i18n keys
     pageMetaFields: [ 'title', 'description' ],
   },
@@ -76,6 +78,7 @@ export interface I18nScannerConfig {
   i18nMethods: readonly string[]
   i18nGlobalMethods: readonly string[]
   keyAttributes: readonly string[]
+  keyProperties: readonly string[]
   pageMetaFields: readonly string[]
 }
 
@@ -338,6 +341,18 @@ export async function findI18nUsage (
         content,
       )
 
+      // Extract keys from object properties
+      const propertyMatches = extractPropertyKeys(line, config.keyProperties)
+      processKeyMatches(
+        propertyMatches,
+        lineIndex,
+        relativeFile,
+        declarations,
+        usage,
+        config,
+        content,
+      )
+
       // Extract keys from definePageMeta fields
       const pageMetaMatches = extractPageMetaFieldKeys(line, config.pageMetaFields)
       processKeyMatches(
@@ -486,13 +501,14 @@ export function extractMessageKeys (messages: Record<string, any>, parentKey = '
 export function extractStringVariables (content: string): Map<string, string> {
   const namespaceVars = new Map<string, string>()
   // Match: const variableName = 'namespace.value'
-  const regex = /const\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=\s*['"`]([a-zA-Z][a-zA-Z0-9_.]*?)['"`]/g
+  // Hyphens are allowed since namespace segments may come from kebab-case directory names
+  const regex = /const\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=\s*['"`]([a-zA-Z][a-zA-Z0-9_.-]*?)['"`]/g
 
   for (const match of content.matchAll(regex)) {
     const varName = match[1]!
     const value = match[2]!
     // Only store if the value looks like a namespace (contains dots or is a valid identifier)
-    if (value.includes('.') || /^[a-zA-Z][a-zA-Z0-9_]*$/.test(value)) {
+    if (value.includes('.') || /^[a-zA-Z][a-zA-Z0-9_-]*$/.test(value)) {
       namespaceVars.set(varName, value)
     }
   }
@@ -683,13 +699,7 @@ function extractVariableDeclarations (
 
   // First pass: Build a map of string variable assignments
   // Example: const namespace = 'common'
-  const stringVariables = new Map<string, string>()
-  const stringVarRegex = /const\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=\s*['"`]([^'"`]+)['"`]/g
-
-  content.replace(stringVarRegex, (match, varName, value) => {
-    stringVariables.set(varName, value)
-    return match
-  })
+  const stringVariables = extractStringVariables(content)
 
   lines.forEach((line, lineIndex) => {
     // Pattern 1: Translation factory assignments (support namespace)
@@ -901,6 +911,39 @@ function extractAttributeKeys (line: string, keyAttributes: readonly string[]): 
 }
 
 /**
+ * Extract all key matches from object properties
+ *
+ * Covers translation keys passed as plain object properties, e.g.
+ * `h(I18nT, { keypath: 'full.key' })` or JSX `<i18n-t keypath="..." />`
+ * compiled forms. Keys are always full paths (no namespace support).
+ */
+function extractPropertyKeys (line: string, keyProperties: readonly string[]): KeyMatch[] {
+  const matches: KeyMatch[] = []
+
+  for (const propName of keyProperties) {
+    // Match object property: propName: 'key' or propName: "key" or propName: `key`
+    const propRegex = new RegExp(`\\b${propName}\\s*:\\s*(['"\`])([^'"\`]+?)\\1`, 'g')
+
+    for (const match of line.matchAll(propRegex)) {
+      const quoteType = match[1]!
+      const key = match[2]!
+
+      // Only consider keys that look like i18n keys (contain dots)
+      if (key.includes('.')) {
+        matches.push({
+          key,
+          quoteType,
+          functionName: propName,
+          match,
+        })
+      }
+    }
+  }
+
+  return matches
+}
+
+/**
  * Resolve namespace for a given function name and variable
  */
 function resolveNamespaceForKey (
@@ -917,9 +960,9 @@ function resolveNamespaceForKey (
     }
   }
 
-  // Template attributes don't support namespace
+  // Template attributes and object properties don't support namespace
   const cleanFunctionName = functionName.startsWith(':') ? functionName.slice(1) : functionName
-  if (config.keyAttributes.includes(cleanFunctionName)) {
+  if (config.keyAttributes.includes(cleanFunctionName) || config.keyProperties.includes(cleanFunctionName)) {
     return ''
   }
 

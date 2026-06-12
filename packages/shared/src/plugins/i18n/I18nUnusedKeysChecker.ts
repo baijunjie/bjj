@@ -186,6 +186,7 @@ export class I18nUnusedKeysChecker {
       i18nMethods: libraryConfig.methods,
       i18nGlobalMethods: libraryConfig.globalMethods,
       keyAttributes: libraryConfig.keyAttributes,
+      keyProperties: libraryConfig.keyProperties,
       pageMetaFields: libraryConfig.pageMetaFields,
     }
   }
