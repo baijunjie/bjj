@@ -18,8 +18,6 @@ const localePath = useLocalePath()
 
 const isExternal = computed(() => props.href ? isUrl(props.href) : false)
 
-const showExternalIcon = computed(() => props.externalIcon && isExternal.value)
-
 // Compute the final destination (supports both href string and to route object)
 const finalTo = computed<RouteLocationRaw | undefined>(() => {
   if (props.to) return props.to
@@ -38,6 +36,8 @@ const finalRel = computed(() => {
   // Add security attrs for external links opening in new tab
   return finalTarget.value === '_blank' ? 'noopener noreferrer' : undefined
 })
+
+const showExternalIcon = computed(() => props.externalIcon && finalTarget.value === '_blank')
 
 // Merge default class with external class
 const mergedClass = computed(() => {
