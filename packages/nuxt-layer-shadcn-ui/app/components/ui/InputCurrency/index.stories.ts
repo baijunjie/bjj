@@ -11,12 +11,16 @@ const meta = {
     modelValue: { control: 'number' },
     currency: { control: 'text' },
     currencyDisplay: { control: 'select', options: currencyDisplays },
+    readonly: { control: 'boolean' },
+    disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
   },
   args: {
     modelValue: 1000,
     currency: 'JPY',
     currencyDisplay: 'symbol',
+    readonly: false,
+    disabled: false,
     invalid: false,
   },
   render: args => {

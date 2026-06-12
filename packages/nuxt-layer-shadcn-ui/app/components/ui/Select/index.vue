@@ -28,6 +28,7 @@ const props = withDefaults(defineProps<SelectProps<TValue, TMeta>>(), {
   options: () => [],
   modelValue: undefined,
   placeholder: undefined,
+  readonly: false,
   disabled: false,
   invalid: false,
   loading: false,
@@ -39,6 +40,10 @@ const props = withDefaults(defineProps<SelectProps<TValue, TMeta>>(), {
 })
 
 const isInvalid = useFormItemInvalid(() => props.invalid)
+
+// Alias the readonly prop: in this generic component vue-tsc resolves a bare
+// `readonly` in the template to Vue's auto-imported readonly() instead
+const readonlyActive = computed(() => props.readonly)
 
 const emit = defineEmits<{
   'update:modelValue': [value: TValue | TValue[]]
@@ -57,12 +62,19 @@ defineSlots<{
 const open = ref(false)
 
 watch(open, value => {
-  if (value && props.disabled) {
+  if (value && (props.disabled || readonlyActive.value)) {
     open.value = false
     return
   }
   value ? emit('open') : emit('close')
 })
+
+function handleTriggerClickCapture (event: Event) {
+  if (readonlyActive.value) {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+}
 
 // -- Filter --
 
@@ -146,7 +158,7 @@ const hasValue = computed(() => {
   return props.modelValue !== undefined && props.modelValue !== null
 })
 
-const showClearButton = computed(() => props.clearable && hasValue.value && !props.disabled)
+const showClearButton = computed(() => props.clearable && hasValue.value && !readonlyActive.value && !props.disabled)
 
 function handleClear (event: MouseEvent) {
   event.stopPropagation()
@@ -166,18 +178,22 @@ function handleClear (event: MouseEvent) {
         tabindex="0"
         :aria-expanded="open"
         :aria-invalid="isInvalid || undefined"
+        :aria-readonly="readonlyActive || undefined"
         :data-disabled="disabled || undefined"
         :data-state="open ? 'open' : 'closed'"
-        class="
-          data-[state=open]:border-ring data-[state=open]:ring-ring/50
-          aria-invalid:ring-destructive/20 aria-invalid:border-destructive
-          dark:aria-invalid:ring-destructive/40
-          aria-invalid:data-[state=open]:border-destructive
-          aria-invalid:data-[state=open]:ring-destructive/20
-          dark:aria-invalid:data-[state=open]:ring-destructive/40
-          cursor-pointer
-          data-[state=open]:ring-[3px]
-        "
+        :class="cn(
+          `
+            data-[state=open]:border-ring data-[state=open]:ring-ring/50
+            aria-invalid:ring-destructive/20 aria-invalid:border-destructive
+            dark:aria-invalid:ring-destructive/40
+            aria-invalid:data-[state=open]:border-destructive
+            aria-invalid:data-[state=open]:ring-destructive/20
+            dark:aria-invalid:data-[state=open]:ring-destructive/40
+            data-[state=open]:ring-[3px]
+          `,
+          readonlyActive ? 'cursor-default' : 'cursor-pointer',
+        )"
+        @click.capture="handleTriggerClickCapture"
       >
         <span
           class="

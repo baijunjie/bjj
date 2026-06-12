@@ -10,6 +10,8 @@ const props = withDefaults(defineProps<TextareaProps>(), {
   rows: undefined,
   maxlength: undefined,
   showCount: false,
+  readonly: false,
+  disabled: false,
   invalid: false,
   class: undefined,
 })
@@ -59,6 +61,8 @@ const mergedClass = computed(() =>
       :modelValue="modelValue"
       :rows="rows"
       :maxlength="maxlength"
+      :readonly="readonly"
+      :disabled="disabled"
       :class="mergedClass"
       :aria-invalid="isInvalid || undefined"
       :data-1p-ignore="autocomplete === 'off' || !autocomplete ? true : undefined"

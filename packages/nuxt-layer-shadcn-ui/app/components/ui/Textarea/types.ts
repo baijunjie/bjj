@@ -7,6 +7,8 @@ export interface TextareaProps {
   maxlength?: number
   /** Show character count below the textarea (rendered as `count / maxlength` when maxlength is set) */
   showCount?: boolean
+  readonly?: boolean
+  disabled?: boolean
   invalid?: boolean
   class?: ClassValue
 }

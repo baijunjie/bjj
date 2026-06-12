@@ -37,6 +37,7 @@ const meta = {
   argTypes: {
     modelValue: { control: 'text' },
     placeholder: { control: 'text' },
+    readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
     loading: { control: 'boolean' },
@@ -49,6 +50,7 @@ const meta = {
   args: {
     modelValue: undefined,
     placeholder: 'Select an option',
+    readonly: false,
     disabled: false,
     invalid: false,
     loading: false,

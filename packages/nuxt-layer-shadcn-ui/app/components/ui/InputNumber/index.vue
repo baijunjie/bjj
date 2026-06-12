@@ -13,6 +13,7 @@ const props = withDefaults(defineProps<InputNumberProps>(), {
   min: undefined,
   max: undefined,
   step: 1,
+  readonly: false,
   disabled: false,
   showButtons: true,
   placeholder: undefined,
@@ -62,6 +63,7 @@ const inputClass = 'flex-1 min-w-0 border-0 shadow-none focus-visible:ring-0 rou
     :min="min"
     :max="max"
     :step="step"
+    :readonly="readonly"
     :disabled="disabled"
   >
     <NumberFieldContent :class="contentClass">

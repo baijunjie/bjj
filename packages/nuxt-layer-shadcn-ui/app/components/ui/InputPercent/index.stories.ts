@@ -7,10 +7,14 @@ const meta = {
   component: InputPercent as any,
   argTypes: {
     modelValue: { control: 'number' },
+    readonly: { control: 'boolean' },
+    disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
   },
   args: {
     modelValue: 0.5,
+    readonly: false,
+    disabled: false,
     invalid: false,
   },
   render: args => {

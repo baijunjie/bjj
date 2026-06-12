@@ -22,6 +22,7 @@ const meta = {
   argTypes: {
     items: { control: 'object' },
     modelValue: { control: 'text' },
+    readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
     orientation: { control: 'inline-radio', options: [ 'vertical', 'horizontal' ]},
@@ -29,6 +30,7 @@ const meta = {
   args: {
     items: options,
     modelValue: 'option1',
+    readonly: false,
     disabled: false,
     invalid: false,
     orientation: 'vertical',

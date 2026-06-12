@@ -8,10 +8,12 @@ const meta = {
   component: Switch,
   argTypes: {
     modelValue: { control: 'boolean' },
+    readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
   },
   args: {
     modelValue: true,
+    readonly: false,
     disabled: false,
   },
   render: args => {

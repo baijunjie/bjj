@@ -9,12 +9,14 @@ const meta = {
   argTypes: {
     modelValue: { control: 'text' },
     length: { control: 'number' },
+    readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
   },
   args: {
     modelValue: '',
     length: 6,
+    readonly: false,
     disabled: false,
     invalid: false,
   },

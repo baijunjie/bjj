@@ -3,6 +3,7 @@ export interface InputNumberProps {
   min?: number
   max?: number
   step?: number
+  readonly?: boolean
   disabled?: boolean
   showButtons?: boolean
   placeholder?: string

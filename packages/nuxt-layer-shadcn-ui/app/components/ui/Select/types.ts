@@ -12,6 +12,8 @@ export type SelectFilterFunction = (items: string[], keyword: string) => string[
 export type SelectBaseProps<V extends string | number = string, M = unknown> = {
   options?: SelectOption<V, M>[]
   placeholder?: string
+  /** Keep the value visible and focusable but prevent changing it */
+  readonly?: boolean
   disabled?: boolean
   invalid?: boolean
   /** Show a spinner in place of the chevron */

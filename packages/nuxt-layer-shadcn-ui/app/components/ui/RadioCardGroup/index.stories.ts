@@ -42,12 +42,14 @@ const meta = {
   argTypes: {
     modelValue: { control: 'text' },
     options: { control: 'object' },
+    readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
   },
   args: {
     modelValue: 'current',
     options,
+    readonly: false,
     disabled: false,
     invalid: false,
   },

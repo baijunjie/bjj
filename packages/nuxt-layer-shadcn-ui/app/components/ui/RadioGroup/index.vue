@@ -8,6 +8,7 @@ import type { RadioGroupItem, RadioGroupProps } from './types'
 const props = withDefaults(defineProps<RadioGroupProps>(), {
   items: () => [],
   modelValue: undefined,
+  readonly: false,
   disabled: false,
   invalid: false,
   orientation: 'vertical',
@@ -31,6 +32,22 @@ const model = computed({
   },
 })
 
+// Items select on click (labels forward clicks to them) and arrow keys move
+// the roving selection, so guard both at the group root when readonly
+function handleClickCapture (event: Event) {
+  if (props.readonly) {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+}
+
+function handleKeydownCapture (event: KeyboardEvent) {
+  if (props.readonly && event.key.startsWith('Arrow')) {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+}
+
 const orientationClass = {
   horizontal: 'flex-row flex-wrap items-center',
   vertical: 'flex-col',
@@ -49,14 +66,20 @@ const mergedClass = computed(() => cn(
     :disabled="disabled"
     :orientation="orientation"
     :class="mergedClass"
+    :aria-readonly="readonly || undefined"
+    @click.capture="handleClickCapture"
+    @keydown.capture="handleKeydownCapture"
   >
     <label
       v-for="item in items"
       :key="item.value"
-      class="
-        gap-2 flex cursor-pointer items-center
-        has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50
-      "
+      :class="cn(
+        `
+          gap-2 flex items-center
+          has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50
+        `,
+        readonly ? 'cursor-default' : 'cursor-pointer',
+      )"
     >
       <ShadcnRadioGroupItem
         :value="item.value"

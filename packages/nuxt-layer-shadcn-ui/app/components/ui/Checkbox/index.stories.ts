@@ -8,6 +8,7 @@ const meta = {
   argTypes: {
     modelValue: { control: 'select', options: [ true, false, 'indeterminate' ]},
     defaultValue: { control: 'select', options: [ true, false, 'indeterminate' ]},
+    readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     required: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -17,6 +18,7 @@ const meta = {
   args: {
     modelValue: false,
     defaultValue: false,
+    readonly: false,
     disabled: false,
     required: false,
     invalid: false,

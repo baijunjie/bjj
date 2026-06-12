@@ -26,6 +26,8 @@ export interface SearchSelectProps<V extends string | number = string, M = unkno
   /** Items per request (default: 20) */
   loadLimit?: number
   placeholder?: string
+  /** Keep the value visible and focusable but prevent changing it */
+  readonly?: boolean
   disabled?: boolean
   invalid?: boolean
   searchPlaceholder?: string
