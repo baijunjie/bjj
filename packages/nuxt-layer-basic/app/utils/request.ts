@@ -42,9 +42,9 @@ export interface RequestFn<TOptions extends RequestOptions = RequestOptions> {
 export interface CreateRequestOptions<TOptions extends RequestOptions = RequestOptions> {
   /** Default TTL (ms) for GET memory cache when caller doesn't override. */
   defaultCacheTtl?: number
-  retry?: number
-  retryDelay?: number
-  retryStatusCodes?: number[]
+  retry?: FetchOptions['retry']
+  retryDelay?: FetchOptions['retryDelay']
+  retryStatusCodes?: FetchOptions['retryStatusCodes']
   /** Forwarded to `$fetch`'s `onRequest` hook. */
   onRequest?: FetchOptions['onRequest']
   /** Forwarded to `$fetch`'s `onResponseError` hook. */
