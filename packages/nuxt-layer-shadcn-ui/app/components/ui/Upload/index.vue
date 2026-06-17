@@ -712,11 +712,11 @@ async function onDrop (e: DragEvent) {
 <style scoped>
 @keyframes upload-progress-anim {
   0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  100% { transform: translateX(200%); }
 }
 
 .upload-progress {
-  width: 60%;
+  width: 50%;
   animation: upload-progress-anim 1.2s ease-in-out infinite;
 }
 </style>
