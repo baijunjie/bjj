@@ -129,7 +129,13 @@ const hintLines = computed(() => {
 })
 
 defineSlots<{
-  hint?: (props: { lines: string[] }) => any
+  hint?: (props: {
+    lines: string[]
+    maxSizeLabel: string
+    acceptLabel: string
+    maxCount?: number
+    allowMany: boolean
+  }) => any
 }>()
 
 const triggerLabel = computed(() => {
@@ -465,6 +471,10 @@ async function onDrop (e: DragEvent) {
         <slot
           name="hint"
           :lines="hintLines"
+          :maxSizeLabel="maxSizeLabel"
+          :acceptLabel="acceptLabel"
+          :maxCount="maxCount"
+          :allowMany="allowMany"
         >
           <div
             v-for="line in hintLines"
@@ -502,6 +512,10 @@ async function onDrop (e: DragEvent) {
         <slot
           name="hint"
           :lines="hintLines"
+          :maxSizeLabel="maxSizeLabel"
+          :acceptLabel="acceptLabel"
+          :maxCount="maxCount"
+          :allowMany="allowMany"
         >
           <div
             v-for="line in hintLines"
@@ -672,6 +686,10 @@ async function onDrop (e: DragEvent) {
         <slot
           name="hint"
           :lines="hintLines"
+          :maxSizeLabel="maxSizeLabel"
+          :acceptLabel="acceptLabel"
+          :maxCount="maxCount"
+          :allowMany="allowMany"
         >
           <div
             v-for="line in hintLines"
