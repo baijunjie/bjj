@@ -1,9 +1,7 @@
 <script setup lang="ts" generic="TValue extends string | number = string, TMeta = unknown">
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
   CommandSeparator,
@@ -18,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '../../shadcn/popover'
+import { ListboxFilter } from 'reka-ui'
 import type { SelectOption, SelectProps } from './types'
 
 type Option = SelectOption<TValue, TMeta>
@@ -77,9 +76,39 @@ function handleTriggerClickCapture (event: Event) {
 }
 
 // -- Filter --
+//
+// We render our own ListboxFilter search box instead of shadcn's CommandInput:
+// CommandInput only writes into Command's internal filterState (client-side
+// filtering) and reka's ListboxRoot never emits `update:searchTerm`, so the
+// typed term can't be observed for server-side search. Driving our own term
+// surfaces it via `@search` and keeps filterState idle (no double filtering).
+//
+// `filter === true` matches option labels; a `filter` function is a custom
+// matcher (server search passes `items => items` to show everything and filter
+// on the server instead).
 
-const commandFilterFunction = computed(() => {
-  return typeof props.filter === 'function' ? props.filter : undefined
+const searchTerm = ref('')
+
+function handleSearchInput (value: string) {
+  searchTerm.value = value
+  emit('search', value)
+}
+
+// Clear the local term when the popover closes so a reopen starts fresh.
+watch(open, value => {
+  if (!value) searchTerm.value = ''
+})
+
+const visibleOptions = computed<Option[]>(() => {
+  const options = props.options ?? []
+  const keyword = searchTerm.value
+  if (!props.filter || !keyword) return options
+  if (typeof props.filter === 'function') {
+    const kept = new Set(props.filter(options.map(opt => opt.label), keyword))
+    return options.filter(opt => kept.has(opt.label))
+  }
+  const lower = keyword.toLowerCase()
+  return options.filter(opt => opt.label.toLowerCase().includes(lower))
 })
 
 // -- Selection --
@@ -126,7 +155,7 @@ const groupedOptions = computed<OptionGroupEntry[]>(() => {
   const groups: OptionGroupEntry[] = []
   const map = new Map<string | undefined, OptionGroupEntry>()
 
-  for (const opt of props.options ?? []) {
+  for (const opt of visibleOptions.value) {
     const key = opt.group
     let group = map.get(key)
     if (!group) {
@@ -254,19 +283,36 @@ function handleClear (event: MouseEvent) {
     <PopoverContent class="p-0 w-(--reka-popover-trigger-width)">
       <Command
         :modelValue="commandModelValue"
-        :filterFunction="commandFilterFunction"
         :multiple="multiple"
         highlightOnHover
-        @update:searchTerm="(value: string) => emit('search', value)"
       >
-        <CommandInput
+        <div
           v-if="!!filter"
-          :placeholder="searchPlaceholder || T('searchPlaceholder')"
-        />
+          class="gap-2 px-3 h-9 flex items-center border-b"
+        >
+          <Icon
+            name="search"
+            class="size-4 shrink-0 opacity-50"
+          />
+          <ListboxFilter
+            :modelValue="searchTerm"
+            autoFocus
+            :placeholder="searchPlaceholder || T('searchPlaceholder')"
+            class="
+              py-3 text-sm
+              placeholder:text-muted-foreground
+              h-10 flex w-full bg-transparent outline-hidden
+            "
+            @update:modelValue="handleSearchInput"
+          />
+        </div>
         <CommandList>
-          <CommandEmpty>
+          <div
+            v-if="!loading && groupedOptions.length === 0"
+            class="py-6 text-sm text-muted-foreground text-center"
+          >
             {{ emptyText || T('noItems') }}
-          </CommandEmpty>
+          </div>
 
           <template
             v-for="(group, index) in groupedOptions"
