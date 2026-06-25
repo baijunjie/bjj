@@ -10,5 +10,6 @@ defineProps<InputPercentProps>()
     :step="0.01"
     :min="0"
     :max="1"
+    @beforeinput="guardSymbolDeletion"
   />
 </template>
