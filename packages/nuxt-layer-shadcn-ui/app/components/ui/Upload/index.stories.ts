@@ -28,6 +28,7 @@ const meta = {
     hideTriggerOnMax: { control: 'boolean' },
     hideHint: { control: 'boolean' },
     directory: { control: 'boolean' },
+    sortable: { control: 'boolean' },
     text: { control: 'text' },
     icon: { control: 'text' },
   },
@@ -43,6 +44,7 @@ const meta = {
     hideTriggerOnMax: false,
     hideHint: false,
     directory: false,
+    sortable: false,
     text: '',
     icon: '',
   },
@@ -210,6 +212,35 @@ export const Directory: Story = {
           accept="image/*"
           :maxCount="5"
         />
+      </div>
+    `,
+  }),
+}
+
+export const Sortable: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Upload v-model:fileList="fileList" variant="box" sortable multiple accept="image/*" />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Upload },
+    setup () {
+      const boxList = ref<UploadFile[]>([ ...sampleImages ])
+      const rowList = ref<UploadFile[]>([ ...sampleImages ])
+      return { boxList, rowList }
+    },
+    template: `
+      <div class="max-w-2xl space-y-6">
+        <Upload v-model:fileList="boxList" variant="box" sortable multiple accept="image/*" />
+        <Upload v-model:fileList="rowList" variant="drag" sortable multiple accept="image/*" />
       </div>
     `,
   }),

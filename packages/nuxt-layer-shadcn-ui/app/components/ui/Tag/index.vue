@@ -3,9 +3,13 @@ import { cva } from 'class-variance-authority'
 import type { TagProps } from './types'
 
 const tagVariants = cva(
-  'gap-1 rounded-md px-2 py-1 text-xs font-medium inline-flex items-center',
+  'font-medium inline-flex items-center',
   {
     variants: {
+      size: {
+        sm: 'gap-0.5 rounded-sm px-1.5 py-0.5 text-[10px]',
+        md: 'gap-1 rounded-md px-2 py-1 text-xs',
+      },
       variant: {
         solid: 'border',
         soft: 'border',
@@ -97,6 +101,7 @@ const tagVariants = cva(
     defaultVariants: {
       variant: 'soft',
       color: 'default',
+      size: 'md',
     },
   },
 )
@@ -104,6 +109,7 @@ const tagVariants = cva(
 const props = withDefaults(defineProps<TagProps>(), {
   color: 'default',
   variant: 'soft',
+  size: 'md',
   class: undefined,
 })
 
@@ -112,7 +118,7 @@ defineSlots<{
 }>()
 
 const mergedClass = computed(() =>
-  cn(tagVariants({ color: props.color, variant: props.variant }), props.class),
+  cn(tagVariants({ color: props.color, variant: props.variant, size: props.size }), props.class),
 )
 </script>
 

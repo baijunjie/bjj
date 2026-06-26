@@ -18,6 +18,7 @@ const props = withDefaults(defineProps<UploadProps>(), {
   hideTriggerOnMax: false,
   hideHint: false,
   directory: false,
+  sortable: false,
   class: undefined,
 })
 
@@ -41,6 +42,12 @@ const internalFileList = ref<UploadFile[]>([])
 
 const previewVisible = ref(false)
 const previewFileItem = ref<UploadFile | null>(null)
+
+const draggingUid = ref<string | number | null>(null)
+// Items are draggable only while the grip handle is pressed, so a drag can
+// only begin from the handle and not from the whole row/thumb.
+const dragHandleArmed = ref(false)
+const didReorder = ref(false)
 
 const objectUrls = new Set<string>()
 function trackObjectUrl (url: string | undefined) {
@@ -75,6 +82,13 @@ const canPickMore = computed(() =>
 )
 
 const canRemove = computed(() => !props.disabled && !props.readonly)
+
+const canSort = computed(() => props.sortable && !props.disabled && !props.readonly)
+
+// Uploading entries are transient and stay pinned; only committed files sort.
+function isSortable (file: UploadFile) {
+  return canSort.value && file.status !== 'uploading'
+}
 
 const showTrigger = computed(() =>
   !props.readonly && !(props.hideTriggerOnMax && reachedMax.value),
@@ -212,12 +226,20 @@ const rowItemBase = `
 
 function thumbClass (file: UploadFile) {
   const isError = file.status === 'error' || isInvalid.value
-  return cn(thumbBase, isError ? 'border-danger' : 'border-border')
+  return cn(
+    thumbBase,
+    isError ? 'border-danger' : 'border-border',
+    draggingUid.value === file.uid && 'opacity-50',
+  )
 }
 
 function rowItemClass (file: UploadFile) {
   const isError = file.status === 'error' || isInvalid.value
-  return cn(rowItemBase, isError && 'text-danger')
+  return cn(
+    rowItemBase,
+    isError && 'text-danger',
+    draggingUid.value === file.uid && 'opacity-50',
+  )
 }
 
 function isImageFile (file: UploadFile) {
@@ -334,6 +356,12 @@ async function processFiles (files: File[]) {
   }
 }
 
+function setFileList (next: UploadFile[], emitChange = true) {
+  if (!isControlled.value) internalFileList.value = next
+  emit('update:fileList', next)
+  if (emitChange) emit('change', next)
+}
+
 function finishUpload (entries: UploadFile[], ok: boolean) {
   const entryUids = new Set(entries.map(e => e.uid))
   uploadingFiles.value = uploadingFiles.value.filter(e => !entryUids.has(e.uid))
@@ -344,10 +372,7 @@ function finishUpload (entries: UploadFile[], ok: boolean) {
   }
 
   const done = entries.map(e => ({ ...e, status: 'done' as const }))
-  const next = [ ...effectiveFileList.value, ...done ]
-  if (!isControlled.value) internalFileList.value = next
-  emit('update:fileList', next)
-  emit('change', next)
+  setFileList([ ...effectiveFileList.value, ...done ])
 }
 
 function onInputChange (e: Event) {
@@ -366,12 +391,46 @@ function removeFile (file: UploadFile) {
   if (inUploading) {
     uploadingFiles.value = uploadingFiles.value.filter(f => f.uid !== file.uid)
   } else {
-    const next = effectiveFileList.value.filter(f => f.uid !== file.uid)
-    if (!isControlled.value) internalFileList.value = next
-    emit('update:fileList', next)
-    emit('change', next)
+    setFileList(effectiveFileList.value.filter(f => f.uid !== file.uid))
   }
   emit('remove', file)
+}
+
+function onItemDragStart (e: DragEvent, file: UploadFile) {
+  if (!isSortable(file) || !dragHandleArmed.value) {
+    e.preventDefault()
+    return
+  }
+  draggingUid.value = file.uid ?? null
+  didReorder.value = false
+  // Firefox only initiates a drag once data is set.
+  if (e.dataTransfer) {
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/plain', String(file.uid ?? ''))
+  }
+}
+
+// Reorder live while hovering, moving the dragged file into the hovered file's
+// slot. Tracking by uid keeps it identified as positions shift mid-drag.
+function onItemDragOver (e: DragEvent, file: UploadFile) {
+  const from = draggingUid.value
+  if (from == null || !isSortable(file)) return
+  e.preventDefault()
+  if (from === file.uid) return
+  const next = [ ...effectiveFileList.value ]
+  const fromIdx = next.findIndex(f => f.uid === from)
+  const toIdx = next.findIndex(f => f.uid === file.uid)
+  if (fromIdx === -1 || toIdx === -1) return
+  next.splice(toIdx, 0, ...next.splice(fromIdx, 1))
+  didReorder.value = true
+  setFileList(next, false)
+}
+
+function onItemDragEnd () {
+  if (didReorder.value) emit('change', effectiveFileList.value)
+  draggingUid.value = null
+  dragHandleArmed.value = false
+  didReorder.value = false
 }
 
 function previewFile (file: UploadFile) {
@@ -537,7 +596,26 @@ async function onDrop (e: DragEvent) {
           v-for="file in displayList"
           :key="file.uid"
           :class="rowItemClass(file)"
+          :draggable="isSortable(file) && dragHandleArmed"
+          @dragstart="onItemDragStart($event, file)"
+          @dragover="onItemDragOver($event, file)"
+          @dragend="onItemDragEnd"
         >
+          <span
+            v-if="isSortable(file)"
+            class="
+              text-muted-foreground shrink-0 cursor-grab
+              active:cursor-grabbing
+            "
+            :aria-label="T('sort')"
+            @mousedown="dragHandleArmed = true"
+            @mouseup="dragHandleArmed = false"
+          >
+            <Icon
+              name="grip-vertical"
+              class="size-4"
+            />
+          </span>
           <Icon
             name="paperclip"
             class="size-4 shrink-0"
@@ -584,12 +662,34 @@ async function onDrop (e: DragEvent) {
           v-for="file in displayList"
           :key="file.uid"
           :class="thumbClass(file)"
+          :draggable="isSortable(file) && dragHandleArmed"
+          @dragstart="onItemDragStart($event, file)"
+          @dragover="onItemDragOver($event, file)"
+          @dragend="onItemDragEnd"
         >
+          <div
+            v-if="isSortable(file)"
+            class="
+              left-1 top-1 rounded-sm bg-black/50 p-0.5 text-white/90 absolute
+              z-10 cursor-grab opacity-0 transition
+              group-hover/thumb:opacity-100
+              active:cursor-grabbing
+            "
+            :aria-label="T('sort')"
+            @mousedown="dragHandleArmed = true"
+            @mouseup="dragHandleArmed = false"
+          >
+            <Icon
+              name="grip-vertical"
+              class="size-3.5"
+            />
+          </div>
           <img
             v-if="isImageFile(file) && file.url"
             :src="file.url"
             :alt="file.name"
             class="size-full object-cover"
+            :draggable="false"
             @error="onImageError(file)"
           >
           <div

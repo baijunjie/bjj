@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import type { TagColor, TagVariant } from './types'
+import type { TagColor, TagSize, TagVariant } from './types'
 import Tag from './index.vue'
 
 const colors: TagColor[] = [ 'default', 'primary', 'success', 'info', 'help', 'warn', 'danger' ]
 const variants: TagVariant[] = [ 'solid', 'soft', 'bordered', 'flat' ]
+const sizes: TagSize[] = [ 'sm', 'md' ]
 
 const meta = {
   title: 'UI/Tag',
@@ -11,10 +12,12 @@ const meta = {
   argTypes: {
     color: { control: 'select', options: colors },
     variant: { control: 'select', options: variants },
+    size: { control: 'select', options: sizes },
   },
   args: {
     color: 'default',
     variant: 'soft',
+    size: 'md',
   },
   render: args => ({
     components: { Tag },
@@ -77,6 +80,32 @@ export const Variants: Story = {
     template: `
       <div class="flex flex-wrap items-center gap-3">
         <Tag v-for="v in variants" :key="v" :variant="v">{{ v }}</Tag>
+      </div>
+    `,
+  }),
+}
+
+export const Sizes: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex flex-wrap items-center gap-3">
+    <Tag v-for="s in sizes" :key="s" :size="s">{{ s }}</Tag>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Tag },
+    setup: () => ({ sizes }),
+    template: `
+      <div class="flex flex-wrap items-center gap-3">
+        <Tag v-for="s in sizes" :key="s" :size="s">{{ s }}</Tag>
       </div>
     `,
   }),

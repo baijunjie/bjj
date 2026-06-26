@@ -50,6 +50,8 @@ export interface UploadProps {
   hideHint?: boolean
   /** Allow selecting a directory and upload its contents */
   directory?: boolean
+  /** Allow reordering the file list by drag and drop */
+  sortable?: boolean
   /** Class of the root element */
   class?: ClassValue
 }

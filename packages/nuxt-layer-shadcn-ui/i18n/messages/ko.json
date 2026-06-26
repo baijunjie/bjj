@@ -104,6 +104,7 @@
         },
         "preview": "미리보기",
         "remove": "제거",
+        "sort": "드래그하여 다시 정렬하세요",
         "upload": "업로드",
         "uploadDirectory": "디렉토리 업로드",
         "uploading": "업로드 중"
