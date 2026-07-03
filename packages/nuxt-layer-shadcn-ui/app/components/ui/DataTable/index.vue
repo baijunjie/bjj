@@ -275,6 +275,7 @@ const headerCellClass = 'h-auto bg-border px-4 py-3 text-xs font-normal text-for
 const headerDividerClass = 'relative after:absolute after:top-1/2 after:right-0 after:h-4 after:w-px after:-translate-y-1/2 after:bg-muted-foreground/25'
 const stickyLeftClass = 'sticky left-0 z-10'
 const emptyCellClass = 'h-0.5 w-2.5 bg-muted-foreground/50 inline-block rounded-full align-middle'
+const footerViewportClass = 'sticky left-0 box-border w-[100cqw] px-4 py-2'
 
 const selectionColumnClass = '[&:has([role=checkbox])]:pr-4'
 const selectionColumnStyle = { width: '1%' }
@@ -291,7 +292,10 @@ defineExpose({
 <template>
   <div
     :class="cn(
-      'rounded-lg bg-border px-1 text-foreground relative overflow-hidden',
+      `
+        rounded-lg bg-border px-1 text-foreground @container relative
+        overflow-hidden
+      `,
       !$slots.footer && 'pb-1',
       height && 'has-sticky-bounds',
     )"
@@ -505,9 +509,11 @@ defineExpose({
         <TableRow>
           <TableCell
             :colspan="totalColumns"
-            class="bg-border"
+            class="bg-border p-0!"
           >
-            <slot name="footer" />
+            <div :class="footerViewportClass">
+              <slot name="footer" />
+            </div>
           </TableCell>
         </TableRow>
       </TableFooter>
