@@ -1,32 +1,21 @@
 /**
- * Composable for syncing filters with URL query parameters.
- *
- * Each entry of the `types` argument declares a filter's runtime
- * type — same shape as Vue's runtime `defineProps({ x: String })`.
- * Serialization is type-driven:
+ * Syncs filters with URL query parameters. Each entry of `types`
+ * declares a filter's runtime type (same shape as Vue's
+ * `defineProps({ x: String })`); serialization is type-driven:
  *
  *   - `String`  → passthrough
  *   - `Number`  → `String(...)` / `Number(...)`
  *   - `Boolean` → `'true'` / `'false'`
- *   - `Array`   → repeated keys (`?k=a&k=b`); URL elements are strings
+ *   - `Array`   → repeated keys (`?k=a&k=b`), string elements
  *   - `Object`  → JSON-encoded
  *
- * Each type has a natural empty (`''` / `0` / `false` / `[]` / `{}`)
- * which acts as the URL-strip sentinel. Use the advanced form
- * `{ type, default }` when a field must always carry a default —
- * clearing reverts to it instead of disappearing.
+ * Each type's empty value (`''` / `0` / `false` / `[]` / `{}`) is the
+ * URL-strip sentinel; "empty" is recursive, so an object whose values
+ * are all empty matches `{}`. Use `{ type, default }` when a field must
+ * always carry a default — clearing reverts to it instead of stripping.
  *
- * "Empty" is recursive: an object whose own values are all empty
- * matches `{}`, so a partially-cleared structured value cleanly
- * strips itself from the URL.
- *
- * `initialValues` seeds keys absent from the URL on first load. The
- * route watcher never re-applies it, so the user can clear a value
- * and it stays cleared (URL wins on subsequent navigations).
- *
- * Local override of `@elepay-io/frontend-shared`'s `useFilters`.
- * Drop this file and re-export upstream once the upstream version
- * supports the same surface.
+ * `initialValues` seeds keys absent from the URL on first load only;
+ * the route watcher never re-applies it, so a cleared value stays cleared.
  *
  * @example
  * const filters = useFilters({
@@ -110,9 +99,7 @@ export function useFilters<T extends Record<string, FilterType>> (
     return query
   }
 
-  // Seed `initialValues` only for keys absent from the URL — first-
-  // load semantic. The route watcher below never re-applies them,
-  // so a user-cleared filter stays cleared.
+  // First load only: seed keys absent from the URL.
   const initial: Record<string, unknown> = readFromQuery(route.query)
   for (const [ key, value ] of Object.entries(initialValues ?? {})) {
     if (value !== undefined && route.query[key] == null) initial[key] = value
@@ -130,9 +117,8 @@ export function useFilters<T extends Record<string, FilterType>> (
   watch(
     () => route.query,
     newQuery => {
-      // `readFromQuery` always returns fresh array / object references,
-      // so guard each key with `isEqual` to avoid spurious reactive
-      // notifications when the content is unchanged.
+      // readFromQuery returns fresh refs each time; guard with `isEqual`
+      // so unchanged content doesn't trigger spurious reactive updates.
       const next = readFromQuery(newQuery) as Record<string, unknown>
       const target = filters as Record<string, unknown>
       for (const key of Object.keys(next)) {
@@ -201,16 +187,15 @@ function serializeValue (value: unknown): string | string[] | undefined {
   return String(value)
 }
 
-/** Two values both being `isEmpty` count as equal — that's how an
- *  all-empty object collapses to `{}`. */
+/** Two `isEmpty` values count as equal, so an all-empty object collapses to `{}`. */
 function isEqual (a: unknown, b: unknown): boolean {
   if (a === b) return true
   if (isEmpty(a) && isEmpty(b)) return true
   return JSON.stringify(a) === JSON.stringify(b)
 }
 
-/** `null` / `undefined` / `''` / `[]` / `{}` and objects whose own
- *  values are all (recursively) empty. `0` and `false` are values. */
+/** `null` / `undefined` / `''` / `[]` / `{}` and objects whose values are
+ *  all (recursively) empty. `0` and `false` count as values, not empty. */
 function isEmpty (v: unknown): boolean {
   if (v == null) return true
   if (typeof v === 'string') return v === ''
