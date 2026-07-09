@@ -18,6 +18,7 @@ import {
   unref,
   watch,
   type ComputedRef,
+  type DeepReadonly,
   type Ref,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -42,14 +43,14 @@ export interface UseFormOptions {
 }
 
 export interface UseFormReturn<TData> {
-  /** Default values captured at initialization (nested object) */
-  defaultValues: Ref<TData>
+  /** Default values captured at initialization (nested object). Read-only snapshot; restore via `resetToDefault`. */
+  defaultValues: DeepReadonly<Ref<TData>>
   /** Current form values as nested object */
   current: ComputedRef<TData>
-  /** Original values from server (nested object) */
+  /** Original values from server (nested object). Assign to re-baseline; the setter deep-clones. */
   origin: Ref<TData>
-  /** Whether form has unsaved changes */
-  changed: Ref<boolean>
+  /** Whether form has unsaved changes (derived; read-only) */
+  changed: Readonly<Ref<boolean>>
   /** Current validation errors */
   validationResult: Readonly<Ref<ValidationResult>>
   /** Validate form and scroll to first error if validation fails, returns nested object */
@@ -102,8 +103,23 @@ export function useForm<TState extends object, TData extends object = TState> (f
   // Store default values at initialization
   const defaultValues = ref(cloneDeep(current.value)) as Ref<TData>
 
-  // Origin data from server (nested object)
-  const origin = ref(cloneDeep(current.value)) as Ref<TData>
+  // Origin data from server (nested object).
+  //
+  // Exposed as a writable computed whose setter deep-clones the assigned value.
+  // Callers re-baseline via `origin.value = current.value`, and `current` (via
+  // `nonFlatObject`) copies top-level keys by reference, so it shares the
+  // reactive nested objects with `state`. Assigning that raw would make `origin`
+  // alias live form state; the deep `watch(origin)` below would then re-fire on
+  // every nested `state` mutation and sync stale origin values back into
+  // `state`, wiping sibling fields. Cloning on assignment keeps `origin` an
+  // independent snapshot regardless of what is assigned.
+  const originRef = ref(cloneDeep(current.value)) as Ref<TData>
+  const origin = computed<TData>({
+    get: () => originRef.value,
+    set: value => {
+      originRef.value = cloneDeep(value)
+    },
+  })
 
   // Track if form has changed from origin
   const changed = ref(false)
@@ -285,10 +301,10 @@ export function useForm<TState extends object, TData extends object = TState> (f
   }
 
   return {
-    defaultValues,
+    defaultValues: readonly(defaultValues),
     current,
     origin,
-    changed,
+    changed: readonly(changed),
     validationResult: readonly(validationResult),
     validate,
     validateField,
