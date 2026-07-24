@@ -15,13 +15,16 @@ const props = defineProps<{
 
 const { isMobile } = useSidebar()
 
-// Transform 'profile' items to Dropdown's custom-label items with slot 'profile'.
-// Other items pass through unchanged.
+// Render 'profile' items via the 'profile' slot. A profile with a `command`
+// becomes a clickable item (`custom-action`, padding reset so the slot owns it);
+// otherwise it stays a static label. Other items pass through unchanged.
 const dropdownItems = computed<DropdownItem[]>(() =>
   (props.menuItems ?? []).map(item => {
     if (item.type === 'profile') {
-      const { type: _, ...rest } = item
-      return { type: 'custom-label', slot: 'profile', ...rest }
+      const { type: _, command, ...rest } = item
+      return command
+        ? { type: 'custom-action', slot: 'profile', command, ...rest, class: 'p-0' }
+        : { type: 'custom-label', slot: 'profile', ...rest }
     }
     return item
   }),
@@ -58,19 +61,19 @@ const dropdownItems = computed<DropdownItem[]>(() =>
               class="size-4"
             />
           </Avatar>
-          <div class="grid flex-1 text-left text-sm/tight">
-            <span class="truncate font-medium">
+          <div class="text-sm/tight grid flex-1 text-left">
+            <span class="font-medium truncate">
               {{ profile?.title }}
             </span>
-            <span class="truncate text-xs">
+            <span class="text-xs truncate">
               {{ profile?.subtitle }}
             </span>
           </div>
-          <ChevronsUpDown class="ml-auto size-4" />
+          <ChevronsUpDown class="size-4 ml-auto" />
         </SidebarMenuButton>
 
         <template #profile="{ item }">
-          <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+          <div class="gap-2 px-1 py-1.5 text-sm flex items-center text-left">
             <Avatar
               :image="item.icon ? undefined : (item.image || undefined)"
               :fallbackLabel="item.icon ? undefined : item.title?.charAt(0)?.toUpperCase()"
@@ -83,17 +86,21 @@ const dropdownItems = computed<DropdownItem[]>(() =>
                 class="size-4"
               />
             </Avatar>
-            <div class="grid flex-1 text-left text-sm/tight">
-              <span class="truncate font-semibold">
+            <div class="text-sm/tight grid flex-1 text-left">
+              <span class="font-semibold truncate">
                 {{ item.title }}
               </span>
               <span
                 v-if="item.subtitle"
-                class="truncate text-xs"
+                class="text-xs truncate"
               >
                 {{ item.subtitle }}
               </span>
             </div>
+            <ChevronsUpDown
+              v-if="item.command"
+              class="size-4 text-muted-foreground ml-auto shrink-0"
+            />
           </div>
         </template>
       </Dropdown>

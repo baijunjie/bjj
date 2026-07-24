@@ -23,11 +23,13 @@ export interface AdminLayoutSidebarDropdownProfile {
  * Menu item for the SidebarDropdown.
  *
  * Union of Dropdown's DropdownItem with an extra 'profile' variant that renders
- * a profile header (avatar + title + subtitle) as a label inside the menu.
+ * a profile header (avatar + title + subtitle) inside the menu. Without a
+ * `command` it is a static label; with one it becomes a clickable item (the
+ * profile is rendered with a trailing switch affordance).
  */
 export type AdminLayoutSidebarDropdownMenuItem
   = | DropdownItem
-    | ({ type: 'profile' } & AdminLayoutSidebarDropdownProfile)
+    | ({ type: 'profile', command?: () => void } & AdminLayoutSidebarDropdownProfile)
 
 export interface AdminLayoutSidebarDropdownConfig {
   profile?: AdminLayoutSidebarDropdownProfile | null

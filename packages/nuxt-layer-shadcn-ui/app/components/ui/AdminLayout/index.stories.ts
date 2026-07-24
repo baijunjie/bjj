@@ -75,12 +75,11 @@ const menus: AdminLayoutSidebarMenuItem[] = [
 ]
 
 // Footer dropdown: the trigger shows the signed-in user; the workspace/org info
-// and preference sub-menus live inside the menu.
+// and preference sub-menus live inside the menu. The profile item carries a
+// `command`, so it is clickable (opens a workspace switcher).
 const menuItems: AdminLayoutSidebarDropdownMenuItem[] = [
-  { type: 'profile', icon: 'building-2', title: 'Acme Inc.', subtitle: 'Owner' },
-  { type: 'action', label: 'Switch Workspace', icon: 'arrow-left-right', command: () => {} },
+  { type: 'profile', icon: 'building-2', title: 'Acme Inc.', subtitle: 'Owner', command: () => {} },
   { type: 'separator' },
-  { type: 'label', label: 'Account' },
   { type: 'action', label: 'Change Password', icon: 'lock-keyhole', command: () => {} },
   { type: 'separator' },
   {
