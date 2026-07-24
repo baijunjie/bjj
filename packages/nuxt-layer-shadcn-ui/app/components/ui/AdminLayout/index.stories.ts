@@ -74,9 +74,7 @@ const menus: AdminLayoutSidebarMenuItem[] = [
   },
 ]
 
-// Footer dropdown: the trigger shows the signed-in user; the workspace/org info
-// and preference sub-menus live inside the menu. The profile item carries a
-// `command`, so it is clickable (opens a workspace switcher).
+// Footer dropdown menu: the profile carries a `command`, so it is clickable.
 const menuItems: AdminLayoutSidebarDropdownMenuItem[] = [
   { type: 'profile', icon: 'building-2', title: 'Acme Inc.', subtitle: 'Owner', command: () => {}, actionIcon: 'arrow-left-right' },
   { type: 'separator' },
@@ -219,8 +217,7 @@ export const Inset: Story = {
   },
 }
 
-// Pins the canvas to a phone viewport so the sidebar collapses into the mobile
-// drawer and the floating trigger (top-left) becomes the way to open it.
+// Phone viewport: the sidebar collapses into the drawer opened by the floating trigger.
 export const Mobile: Story = {
   parameters: {
     ...noControls,
