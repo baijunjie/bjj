@@ -27,6 +27,10 @@
   },
   "components": {
     "ui": {
+      "AdminLayout": {
+        "collapseSidebar": "折叠侧边栏",
+        "expandSidebar": "展开侧边栏"
+      },
       "AsyncDataTable": {
         "actions": "操作",
         "loadFailed": "加载失败"

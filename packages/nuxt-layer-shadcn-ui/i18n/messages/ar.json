@@ -27,6 +27,10 @@
   },
   "components": {
     "ui": {
+      "AdminLayout": {
+        "collapseSidebar": "طي الشريط الجانبي",
+        "expandSidebar": "توسيع الشريط الجانبي"
+      },
       "AsyncDataTable": {
         "actions": "الإجراءات",
         "loadFailed": "فشل التحميل"

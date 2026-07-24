@@ -36,7 +36,8 @@ export interface AdminLayoutSidebarDropdownConfig {
 
 export interface AdminLayoutProps {
   menus: AdminLayoutSidebarMenuItem[]
-  headerDropdown?: AdminLayoutSidebarDropdownConfig
+  /** Brand name shown next to the logo in the sidebar header (hidden when collapsed). */
+  brandName?: string
   footerDropdown?: AdminLayoutSidebarDropdownConfig
   variant?: 'sidebar' | 'floating' | 'inset'
   collapsible?: 'offcanvas' | 'icon' | 'none'

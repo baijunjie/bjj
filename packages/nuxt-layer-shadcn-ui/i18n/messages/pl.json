@@ -27,6 +27,10 @@
   },
   "components": {
     "ui": {
+      "AdminLayout": {
+        "collapseSidebar": "Zwiń pasek boczny",
+        "expandSidebar": "Rozwiń pasek boczny"
+      },
       "AsyncDataTable": {
         "actions": "Akcje",
         "loadFailed": "Nie udało się załadować"

@@ -27,6 +27,10 @@
   },
   "components": {
     "ui": {
+      "AdminLayout": {
+        "collapseSidebar": "साइडबार को संक्षिप्त करें",
+        "expandSidebar": "साइडबार को विस्तार करें"
+      },
       "AsyncDataTable": {
         "actions": "क्रियाएं",
         "loadFailed": "लोड करने में विफल"

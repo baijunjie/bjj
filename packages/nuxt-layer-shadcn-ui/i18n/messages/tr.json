@@ -27,6 +27,10 @@
   },
   "components": {
     "ui": {
+      "AdminLayout": {
+        "collapseSidebar": "Kenar çubuğunu daralt",
+        "expandSidebar": "Kenar çubuğunu genişlet"
+      },
       "AsyncDataTable": {
         "actions": "İşlemler",
         "loadFailed": "Yüklenemedi"

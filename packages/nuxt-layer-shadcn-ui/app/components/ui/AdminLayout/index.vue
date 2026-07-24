@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AdminLayoutProps } from './types'
-import Navbar from './Navbar.vue'
+import SidebarBrand from './SidebarBrand.vue'
 import SidebarDropdown from './SidebarDropdown.vue'
 import SidebarMenus from './SidebarMenus.vue'
 import {
@@ -11,10 +11,11 @@ import {
   SidebarInset,
   SidebarProvider,
   SidebarRail,
+  SidebarTrigger,
 } from '../../shadcn/sidebar'
 
 const props = withDefaults(defineProps<AdminLayoutProps>(), {
-  headerDropdown: undefined,
+  brandName: undefined,
   footerDropdown: undefined,
   variant: 'sidebar',
   collapsible: 'icon',
@@ -22,11 +23,10 @@ const props = withDefaults(defineProps<AdminLayoutProps>(), {
 })
 
 defineSlots<{
-  'default'?: () => any
-  'header'?: () => any
-  'footer'?: () => any
-  'navbar-left'?: () => any
-  'navbar-right'?: () => any
+  default?: () => any
+  header?: () => any
+  footer?: () => any
+  logo?: () => any
 }>()
 
 const mergedContentClass = computed(() =>
@@ -42,11 +42,11 @@ const mergedContentClass = computed(() =>
     >
       <SidebarHeader>
         <slot name="header">
-          <SidebarDropdown
-            v-if="headerDropdown"
-            :profile="headerDropdown.profile"
-            :menuItems="headerDropdown.menuItems"
-          />
+          <SidebarBrand :brandName="brandName">
+            <template #logo>
+              <slot name="logo" />
+            </template>
+          </SidebarBrand>
         </slot>
       </SidebarHeader>
 
@@ -67,15 +67,22 @@ const mergedContentClass = computed(() =>
       <SidebarRail />
     </Sidebar>
 
-    <SidebarInset class="min-w-0">
-      <Navbar>
-        <div class="gap-3 flex flex-1 items-center">
-          <slot name="navbar-left" />
-        </div>
-        <div class="gap-3 flex items-center">
-          <slot name="navbar-right" />
-        </div>
-      </Navbar>
+    <!-- Top padding on mobile reserves a safe area for the floating trigger. -->
+    <SidebarInset
+      class="
+        min-w-0 pt-14
+        md:pt-0
+      "
+    >
+      <!-- Mobile-only trigger: the desktop toggle lives in the sidebar header. -->
+      <SidebarTrigger
+        class="
+          left-3 top-3 size-9 rounded-md bg-background/80 shadow-sm
+          backdrop-blur-sm
+          md:hidden
+          absolute z-30 cursor-pointer border
+        "
+      />
 
       <div :class="mergedContentClass">
         <slot />

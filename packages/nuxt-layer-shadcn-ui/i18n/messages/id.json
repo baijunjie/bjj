@@ -27,6 +27,10 @@
   },
   "components": {
     "ui": {
+      "AdminLayout": {
+        "collapseSidebar": "Sembunyikan bilah samping",
+        "expandSidebar": "Tampilkan bilah samping"
+      },
       "AsyncDataTable": {
         "actions": "Tindakan",
         "loadFailed": "Gagal memuat"

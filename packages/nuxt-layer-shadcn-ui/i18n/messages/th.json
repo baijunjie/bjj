@@ -27,6 +27,10 @@
   },
   "components": {
     "ui": {
+      "AdminLayout": {
+        "collapseSidebar": "ยุบแถบด้านข้าง",
+        "expandSidebar": "ขยายแถบด้านข้าง"
+      },
       "AsyncDataTable": {
         "actions": "การกระทำ",
         "loadFailed": "ไม่สามารถโหลดได้"

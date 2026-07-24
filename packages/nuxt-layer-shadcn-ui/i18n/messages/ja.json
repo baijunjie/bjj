@@ -27,6 +27,10 @@
   },
   "components": {
     "ui": {
+      "AdminLayout": {
+        "collapseSidebar": "サイドバーを閉じる",
+        "expandSidebar": "サイドバーを開く"
+      },
       "AsyncDataTable": {
         "actions": "アクション",
         "loadFailed": "読み込みに失敗しました"

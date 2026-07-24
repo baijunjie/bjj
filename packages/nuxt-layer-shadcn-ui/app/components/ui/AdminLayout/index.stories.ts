@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import type { AdminLayoutSidebarDropdownProfile, AdminLayoutSidebarMenuItem, AdminLayoutSidebarDropdownMenuItem } from './types'
 import AdminLayout from './index.vue'
-import Avatar from '../Avatar/index.vue'
-import Breadcrumb from '../Breadcrumb/index.vue'
 import Button from '../Button/index.vue'
 import Card from '../Card/index.vue'
 
@@ -76,11 +74,34 @@ const menus: AdminLayoutSidebarMenuItem[] = [
   },
 ]
 
+// Footer dropdown: the trigger shows the signed-in user; the workspace/org info
+// and preference sub-menus live inside the menu.
 const menuItems: AdminLayoutSidebarDropdownMenuItem[] = [
-  { type: 'profile', title: 'Demo User', subtitle: 'demo@example.com' },
-  { type: 'action', label: 'Account', icon: 'badge-check', command: () => {} },
-  { type: 'action', label: 'Billing', icon: 'credit-card', command: () => {} },
-  { type: 'action', label: 'Notifications', icon: 'bell', command: () => {} },
+  { type: 'profile', icon: 'building-2', title: 'Acme Inc.', subtitle: 'Owner' },
+  { type: 'action', label: 'Switch Workspace', icon: 'arrow-left-right', command: () => {} },
+  { type: 'separator' },
+  { type: 'label', label: 'Account' },
+  { type: 'action', label: 'Change Password', icon: 'lock-keyhole', command: () => {} },
+  { type: 'separator' },
+  {
+    type: 'action',
+    label: 'Language',
+    icon: 'languages',
+    subMenus: [
+      { label: 'English', active: true, command: () => {} },
+      { label: '日本語', command: () => {} },
+    ],
+  },
+  {
+    type: 'action',
+    label: 'Theme',
+    icon: 'sun-moon',
+    subMenus: [
+      { label: 'Light', icon: 'sun', active: true, command: () => {} },
+      { label: 'System', icon: 'monitor', command: () => {} },
+      { label: 'Dark', icon: 'moon', command: () => {} },
+    ],
+  },
   { type: 'separator' },
   { type: 'action', label: 'Sign Out', icon: 'log-out', command: () => {} },
 ]
@@ -91,13 +112,8 @@ const profile: AdminLayoutSidebarDropdownProfile = {
 }
 
 const layoutContent = `
-  <template #navbar-left>
-    <Breadcrumb :model="breadcrumb" />
-  </template>
-  <template #navbar-right>
-    <Button variant="ghost" size="icon" icon="search" aria-label="Search" />
-    <Button variant="ghost" size="icon" icon="bell" aria-label="Notifications" />
-    <Avatar label="DU" size="small" />
+  <template #logo>
+    <div class="flex size-7 items-center justify-center rounded-md bg-primary text-sm font-bold text-primary-foreground">A</div>
   </template>
 
   <div class="space-y-6 p-6">
@@ -148,26 +164,22 @@ const meta = {
   component: AdminLayout,
   argTypes: {
     menus: { control: 'object' },
-    headerDropdown: { control: 'object' },
+    brandName: { control: 'text' },
     footerDropdown: { control: 'object' },
     variant: { control: 'select', options: variants },
     collapsible: { control: 'select', options: collapsibles },
   },
   args: {
     menus,
-    headerDropdown: undefined,
+    brandName: 'Acme Inc.',
     footerDropdown: { profile, menuItems },
     variant: 'sidebar',
     collapsible: 'icon',
   },
   render: args => ({
-    components: { AdminLayout, Avatar, Breadcrumb, Button, Card },
+    components: { AdminLayout, Button, Card },
     setup () {
-      const breadcrumb = [
-        { label: 'Dashboard', href: '#' },
-        { label: 'Overview' },
-      ]
-      return { args, breadcrumb }
+      return { args }
     },
     template: `<AdminLayout v-bind="args">${layoutContent}</AdminLayout>`,
   }),
@@ -204,5 +216,25 @@ export const Inset: Story = {
   parameters: noControls,
   args: {
     variant: 'inset',
+  },
+}
+
+// Pins the canvas to a phone viewport so the sidebar collapses into the mobile
+// drawer and the floating trigger (top-left) becomes the way to open it.
+export const Mobile: Story = {
+  parameters: {
+    ...noControls,
+    viewport: {
+      options: {
+        mobile: {
+          name: 'Mobile',
+          styles: { width: '390px', height: '844px' },
+          type: 'mobile',
+        },
+      },
+    },
+  },
+  globals: {
+    viewport: { value: 'mobile', isRotated: false },
   },
 }

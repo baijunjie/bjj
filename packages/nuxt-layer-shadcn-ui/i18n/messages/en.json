@@ -27,6 +27,10 @@
   },
   "components": {
     "ui": {
+      "AdminLayout": {
+        "collapseSidebar": "Collapse sidebar",
+        "expandSidebar": "Expand sidebar"
+      },
       "AsyncDataTable": {
         "actions": "Actions",
         "loadFailed": "Failed to load"

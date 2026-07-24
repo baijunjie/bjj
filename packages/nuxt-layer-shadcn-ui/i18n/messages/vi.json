@@ -27,6 +27,10 @@
   },
   "components": {
     "ui": {
+      "AdminLayout": {
+        "collapseSidebar": "Thu gọn thanh bên",
+        "expandSidebar": "Mở rộng thanh bên"
+      },
       "AsyncDataTable": {
         "actions": "Hành động",
         "loadFailed": "Không thể tải"

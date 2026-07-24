@@ -27,6 +27,10 @@
   },
   "components": {
     "ui": {
+      "AdminLayout": {
+        "collapseSidebar": "Seitenleiste einklappen",
+        "expandSidebar": "Seitenleiste aufklappen"
+      },
       "AsyncDataTable": {
         "actions": "Aktionen",
         "loadFailed": "Fehler beim Laden"

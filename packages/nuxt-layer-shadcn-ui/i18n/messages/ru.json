@@ -27,6 +27,10 @@
   },
   "components": {
     "ui": {
+      "AdminLayout": {
+        "collapseSidebar": "Свернуть боковую панель",
+        "expandSidebar": "Развернуть боковую панель"
+      },
       "AsyncDataTable": {
         "actions": "Действия",
         "loadFailed": "Ошибка загрузки"
