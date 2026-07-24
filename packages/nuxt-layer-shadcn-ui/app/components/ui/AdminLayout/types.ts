@@ -17,15 +17,14 @@ export interface AdminLayoutSidebarDropdownProfile {
   subtitle?: string
   icon?: string | Component
   image?: string
+  /** Trailing affordance icon (lucide name or component). Omitted → not rendered. */
+  actionIcon?: string | Component
 }
 
 /**
- * Menu item for the SidebarDropdown.
- *
- * Union of Dropdown's DropdownItem with an extra 'profile' variant that renders
- * a profile header (avatar + title + subtitle) inside the menu. Without a
- * `command` it is a static label; with one it becomes a clickable item (the
- * profile is rendered with a trailing switch affordance).
+ * A DropdownItem, or a 'profile' variant rendering an avatar + title + subtitle.
+ * With a `command` the profile is clickable (shows its `actionIcon`); without,
+ * it is a static label.
  */
 export type AdminLayoutSidebarDropdownMenuItem
   = | DropdownItem

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { AdminLayoutSidebarDropdownProfile, AdminLayoutSidebarDropdownMenuItem } from './types'
-import { ChevronsUpDown } from 'lucide-vue-next'
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -15,9 +14,8 @@ const props = defineProps<{
 
 const { isMobile } = useSidebar()
 
-// Render 'profile' items via the 'profile' slot. A profile with a `command`
-// becomes a clickable item (`custom-action`, padding reset so the slot owns it);
-// otherwise it stays a static label. Other items pass through unchanged.
+// 'profile' items render through the 'profile' slot: clickable (`custom-action`,
+// padding reset so the slot owns it) when it has a `command`, else a label.
 const dropdownItems = computed<DropdownItem[]>(() =>
   (props.menuItems ?? []).map(item => {
     if (item.type === 'profile') {
@@ -69,11 +67,17 @@ const dropdownItems = computed<DropdownItem[]>(() =>
               {{ profile?.subtitle }}
             </span>
           </div>
-          <ChevronsUpDown class="size-4 ml-auto" />
+          <Icon
+            v-if="profile?.actionIcon"
+            :name="profile.actionIcon"
+            class="size-4 ml-auto shrink-0"
+          />
         </SidebarMenuButton>
 
         <template #profile="{ item }">
-          <div class="gap-2 px-1 py-1.5 text-sm flex items-center text-left">
+          <div
+            class="gap-2 px-1 py-1.5 text-sm flex w-full items-center text-left"
+          >
             <Avatar
               :image="item.icon ? undefined : (item.image || undefined)"
               :fallbackLabel="item.icon ? undefined : item.title?.charAt(0)?.toUpperCase()"
@@ -97,8 +101,9 @@ const dropdownItems = computed<DropdownItem[]>(() =>
                 {{ item.subtitle }}
               </span>
             </div>
-            <ChevronsUpDown
-              v-if="item.command"
+            <Icon
+              v-if="item.command && item.actionIcon"
+              :name="item.actionIcon"
               class="size-4 text-muted-foreground ml-auto shrink-0"
             />
           </div>

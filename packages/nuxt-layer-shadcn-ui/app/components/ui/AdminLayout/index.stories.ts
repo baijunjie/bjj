@@ -78,7 +78,7 @@ const menus: AdminLayoutSidebarMenuItem[] = [
 // and preference sub-menus live inside the menu. The profile item carries a
 // `command`, so it is clickable (opens a workspace switcher).
 const menuItems: AdminLayoutSidebarDropdownMenuItem[] = [
-  { type: 'profile', icon: 'building-2', title: 'Acme Inc.', subtitle: 'Owner', command: () => {} },
+  { type: 'profile', icon: 'building-2', title: 'Acme Inc.', subtitle: 'Owner', command: () => {}, actionIcon: 'arrow-left-right' },
   { type: 'separator' },
   { type: 'action', label: 'Change Password', icon: 'lock-keyhole', command: () => {} },
   { type: 'separator' },
@@ -108,6 +108,7 @@ const menuItems: AdminLayoutSidebarDropdownMenuItem[] = [
 const profile: AdminLayoutSidebarDropdownProfile = {
   title: 'Demo User',
   subtitle: 'demo@example.com',
+  actionIcon: 'chevrons-up-down',
 }
 
 const layoutContent = `

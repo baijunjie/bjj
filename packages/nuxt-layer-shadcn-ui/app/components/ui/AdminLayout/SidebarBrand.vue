@@ -7,8 +7,7 @@ defineProps<{
 }>()
 
 defineSlots<{
-  /** Brand logo/mark. Shown in every state; on a collapsed sidebar it is
-      replaced by the collapse toggle on hover. */
+  /** Brand logo/mark. */
   logo?: () => any
 }>()
 
@@ -22,13 +21,8 @@ const toggleLabel = computed(() =>
 </script>
 
 <template>
-  <!--
-    Brand row. Expanded: [logo + name] on the left, collapse toggle on the right.
-    Collapsed (`data-collapsible=icon` on the sidebar root): only the logo shows,
-    centered; hovering the row swaps it for the toggle so the sidebar can be
-    re-expanded. The toggle keeps capturing clicks even while transparent, so a
-    click anywhere on the collapsed brand expands the sidebar.
-  -->
+  <!-- Collapsed: only the logo shows; hovering swaps it for the toggle (which
+       stays clickable while transparent, so the whole row re-expands). -->
   <div
     class="
       group/brand h-8 gap-2 relative flex items-center
