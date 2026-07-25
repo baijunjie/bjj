@@ -76,7 +76,7 @@ const dropdownItems = computed<DropdownItem[]>(() =>
 
         <template #profile="{ item }">
           <div
-            class="gap-2 px-1 py-1.5 text-sm flex w-full items-center text-left"
+            class="gap-2 px-2 py-1.5 text-sm flex w-full items-center text-left"
           >
             <Avatar
               :image="item.icon ? undefined : (item.image || undefined)"
