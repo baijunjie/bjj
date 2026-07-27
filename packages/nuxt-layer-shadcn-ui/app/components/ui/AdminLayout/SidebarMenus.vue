@@ -105,9 +105,16 @@ function hasActiveChild (item: AdminLayoutSidebarMenuItem): boolean {
                   v-for="child in item.children"
                   :key="child.label"
                 >
+                  <!-- The vendored sub-button renders `data-active=""` when active while its
+                       built-in styles only match `data-active="true"`, so the active styles
+                       are re-applied here via an attribute-presence selector. -->
                   <SidebarMenuSubButton
                     :asChild="isLink(child)"
                     :isActive="isActive(child.href)"
+                    class="
+                      data-active:bg-sidebar-accent
+                      data-active:text-sidebar-accent-foreground
+                    "
                   >
                     <WebLink
                       v-if="isLink(child)"
@@ -150,7 +157,7 @@ function hasActiveChild (item: AdminLayoutSidebarMenuItem): boolean {
               <Icon
                 v-if="isExternal(item.href!)"
                 name="external-link"
-                class="ml-auto size-3.5 text-sidebar-foreground/50"
+                class="size-3.5 text-sidebar-foreground/50 ml-auto"
               />
             </WebLink>
             <template v-else>
@@ -181,7 +188,7 @@ function hasActiveChild (item: AdminLayoutSidebarMenuItem): boolean {
                   v-if="isLink(action)"
                   :href="action.href"
                   unstyled
-                  class="flex items-center gap-2"
+                  class="gap-2 flex items-center"
                 >
                   <Icon
                     v-if="action.icon"
@@ -224,7 +231,7 @@ function hasActiveChild (item: AdminLayoutSidebarMenuItem): boolean {
               <Icon
                 v-if="isExternal(item.href!)"
                 name="external-link"
-                class="ml-auto size-3.5 text-sidebar-foreground/50"
+                class="size-3.5 text-sidebar-foreground/50 ml-auto"
               />
             </WebLink>
             <template v-else>
