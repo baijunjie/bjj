@@ -4,15 +4,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from '../../shadcn/sidebar'
 
 const props = defineProps<{
   profile?: AdminLayoutSidebarDropdownProfile | null
   menuItems?: AdminLayoutSidebarDropdownMenuItem[]
 }>()
-
-const { isMobile } = useSidebar()
 
 // 'profile' items render through the 'profile' slot: clickable (`custom-action`,
 // padding reset so the slot owns it) when it has a `command`, else a label.
@@ -35,8 +32,7 @@ const dropdownItems = computed<DropdownItem[]>(() =>
       <Dropdown
         :menus="dropdownItems"
         trigger="click"
-        :side="isMobile ? 'bottom' : 'right'"
-        align="start"
+        align="end"
         :sideOffset="4"
         class="min-w-56 rounded-lg"
       >
