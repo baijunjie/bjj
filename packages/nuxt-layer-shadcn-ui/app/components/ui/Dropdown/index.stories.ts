@@ -112,6 +112,7 @@ const meta = {
     side: { control: 'select', options: sides },
     align: { control: 'select', options: aligns },
     sideOffset: { control: 'number' },
+    collisionPadding: { control: 'number' },
     minWidth: { control: 'text' },
   },
   args: {
@@ -120,6 +121,7 @@ const meta = {
     side: undefined,
     align: undefined,
     sideOffset: undefined,
+    collisionPadding: undefined,
     minWidth: undefined,
   },
   render: args => ({

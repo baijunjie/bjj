@@ -12,6 +12,7 @@ defineOptions({ inheritAttrs: false })
 const props = withDefaults(defineProps<DropdownProps>(), {
   menus: () => [],
   trigger: 'hover',
+  collisionPadding: 8,
   class: undefined,
   minWidth: undefined,
 })
@@ -80,6 +81,7 @@ provide(dropdownContextKey, {
   hide,
   slots,
   contentStyle,
+  collisionPadding: computed(() => props.collisionPadding),
 })
 
 onBeforeUnmount(() => {
@@ -103,6 +105,7 @@ onBeforeUnmount(() => {
       v-bind="$attrs"
       :class="props.class"
       :style="contentStyle"
+      :collisionPadding="collisionPadding"
       @mouseenter="handleMenuEnter"
       @mouseleave="handleMenuLeave"
     >

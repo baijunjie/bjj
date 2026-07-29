@@ -10,6 +10,7 @@ defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<PopoverProps>(), {
   trigger: 'click',
+  collisionPadding: 8,
   class: undefined,
 })
 
@@ -80,6 +81,7 @@ onBeforeUnmount(() => {
     <PopoverContent
       v-bind="$attrs"
       :class="props.class"
+      :collisionPadding="collisionPadding"
       @mouseenter="handleContentEnter"
       @mouseleave="handleContentLeave"
     >

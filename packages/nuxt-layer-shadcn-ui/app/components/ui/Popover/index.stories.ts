@@ -11,12 +11,14 @@ const meta = {
     side: { control: 'select', options: [ 'top', 'bottom', 'left', 'right' ]},
     align: { control: 'select', options: [ 'start', 'center', 'end' ]},
     sideOffset: { control: 'number' },
+    collisionPadding: { control: 'number' },
   },
   args: {
     trigger: 'click',
     side: undefined,
     align: undefined,
     sideOffset: undefined,
+    collisionPadding: undefined,
   },
   render: args => ({
     components: { Popover, Button },

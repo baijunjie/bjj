@@ -104,6 +104,8 @@ export interface DropdownProps extends /* @vue-ignore */ DropdownMenuContentProp
   menus?: DropdownItem[]
   /** Trigger mode for showing the dropdown. Defaults to 'hover'. */
   trigger?: 'click' | 'hover'
+  /** Gap kept from the viewport edges when repositioning on collision. Applies to the root content and all sub-menus. Defaults to 8. */
+  collisionPadding?: DropdownMenuContentProps['collisionPadding']
   /** Extra class for the dropdown content container. */
   class?: ClassValue
   /** Min-width applied to the root content and all sub-menus. Numbers are treated as px. */
@@ -118,6 +120,8 @@ export interface DropdownContext {
   slots: Slots
   /** Inline style applied to root content and all sub-menus (currently min-width). */
   contentStyle: ComputedRef<{ minWidth?: string } | undefined>
+  /** Collision padding applied to root content and all sub-menus. */
+  collisionPadding: ComputedRef<DropdownMenuContentProps['collisionPadding']>
 }
 
 /** Provide/inject key for the shared DropdownContext. */

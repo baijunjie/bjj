@@ -123,7 +123,10 @@ const handleItemAction = (
       >
         <ItemContent :item="menu" />
       </DropdownMenuSubTrigger>
-      <DropdownMenuSubContent :style="ctx?.contentStyle.value">
+      <DropdownMenuSubContent
+        :style="ctx?.contentStyle.value"
+        :collisionPadding="ctx?.collisionPadding.value"
+      >
         <MenuItems :menus="menu.subMenus" />
       </DropdownMenuSubContent>
     </DropdownMenuSub>
