@@ -33,6 +33,7 @@ const mergedListClass = computed(() => cn(props.rounded && 'rounded-full', props
 function getTriggerClass (item: TabsItem) {
   const showsOnlyIcon = !!item.icon && (props.iconOnly || !item.title)
   return cn(
+    'data-[state=active]:bg-card',
     props.rounded && 'rounded-full',
     showsOnlyIcon && 'px-0 aspect-square flex-none',
     props.triggerClass,
