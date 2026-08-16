@@ -62,18 +62,21 @@ background: var(--color-muted);
 
 > 仅供了解映射关系，不直接在组件中引用。
 
-### Background — 4 级色阶
+### Background — 抬升 3 级 + 交互 2 级
 
-分两条轴：**抬升轴**（底面 → 抬升面）负责元素的层级/高度，**交互轴**（muted / accent）负责去强调或 hover/active 等交互态。两者独立，不共享前后关系。
+分两条轴：**抬升轴**（页面 → 卡片 → 浮层）是不透明色，负责元素的层级/高度；**交互轴**（muted / accent）是**半透明墨色**（亮色叠黑、暗色叠白），负责去强调或 hover/active 等交互态。两者独立、可组合。
 
 | 轴 | 变量 | 语义 | 映射的语义类 |
 |---|------|------|---|
-| 抬升轴 | `--background` | 底面：页面底色 / 侧边栏 | `bg-background` / `bg-sidebar` |
-| 抬升轴 | `--background-surface` | 抬升面：卡片、panel、modal、popover、dropdown | `bg-card` / `bg-popover` |
-| 交互轴 | `--background-muted` | 去强调区域 / secondary | `bg-muted` / `bg-secondary` |
-| 交互轴 | `--background-accent` | hover / 交互高亮 | `bg-accent` / `bg-sidebar-accent` |
+| 抬升轴 | `--background` | 页面底色 / 侧边栏 | `bg-background` / `bg-sidebar` |
+| 抬升轴 | `--background-surface` | 页面内容器：卡片、panel | `bg-card` |
+| 抬升轴 | `--background-elevated` | 浮层：modal、drawer、popover、dropdown、menu | `bg-popover` |
+| 交互轴 | `--background-muted` | 去强调区域 / secondary（半透明） | `bg-muted` / `bg-secondary` |
+| 交互轴 | `--background-accent` | hover / 交互高亮（半透明） | `bg-accent` / `bg-sidebar-accent` |
 
-> **注意**：dark 模式下 `--background-muted` 与 `--background-accent` 的亮度可能**高于** `--background-surface`（底色偏黑，交互色只能往亮处叠）。这是预期 —— 不要把它们当作"更抬升的一层"使用。`bg-muted` 直接套在 card 内可能视觉错乱，需要时用 `bg-muted/50` 或 `border` 替代。
+> 抬升轴亮色下 surface 与 elevated 同为纯白（层级差异靠阴影），暗色下逐级变亮。交互轴因为是半透明叠加，`bg-muted` / `bg-accent` 可以直接用在任意抬升面（页面、card、popover）上，深浅会随所在表面自适应。
+>
+> ⚠️ 半透明颜色（muted / accent / secondary / border / input）**不具备遮挡性**。sticky / frozen 元素的背景若需要遮住从下面滚过的内容，必须合成不透明底：`background: linear-gradient(var(--color-muted), var(--color-muted)) var(--color-card)`（参考 DataTable 的表头与冻结列实现）。
 
 ### Foreground — 3 级色阶
 
@@ -88,7 +91,7 @@ background: var(--color-muted);
 | 变量 | 说明 |
 |------|------|
 | `--primary` / `--primary-foreground` | 品牌主色及其上的文字色 |
-| `--border` / `--ring` | 边框色 / 焦点环色 |
+| `--border` / `--ring` | 边框色（半透明墨色，随表面自适应）/ 焦点环色（不透明） |
 | `--status-foreground` | 语义状态色的统一前景色 |
 | `--success` / `--info` / `--help` / `--warn` / `--danger` | 5 种语义状态色 |
 

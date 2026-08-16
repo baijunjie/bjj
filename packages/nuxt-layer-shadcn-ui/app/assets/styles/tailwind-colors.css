@@ -2,11 +2,18 @@
 /* Reference: https://www.shadcn-vue.com/themes */
 
 :root {
-  /* Background */
+  /* Background elevation axis: page -> card -> overlay, opaque colors.
+     In light mode card and overlay are both pure white; elevation is
+     expressed by shadows instead of lightness. */
   --background: oklch(0.98 0 0);
   --background-surface: oklch(1 0 0);
-  --background-muted: oklch(0.95 0 0);
-  --background-accent: oklch(0.93 0 0);
+  --background-elevated: oklch(1 0 0);
+
+  /* Background interaction axis: translucent "ink" overlays (black in light
+     mode, white in dark mode) that compose on any elevation surface, so
+     muted/hover states look consistent on page, card and overlay alike. */
+  --background-muted: oklch(0 0 0 / 5%);
+  --background-accent: oklch(0 0 0 / 8%);
 
   /* Foreground */
   --foreground: oklch(0.145 0 0);
@@ -17,9 +24,9 @@
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
 
-  /* Border */
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  /* Border: translucent ink like the interaction axis, adapts to the surface beneath */
+  --border: oklch(0 0 0 / 10%);
+  --input: oklch(0 0 0 / 10%);
   --ring: oklch(0.708 0 0);
 
   /* Status */
@@ -32,12 +39,15 @@
 }
 
 .dark {
-  /* Background — muted/accent go brighter than surface here; they're an
-     interaction axis, not a deeper elevation level than cards. */
-  --background: oklch(0.12 0 0);
-  --background-surface: oklch(0.18 0 0);
-  --background-muted: oklch(0.25 0 0);
-  --background-accent: oklch(0.3 0 0);
+  /* Background elevation axis: in dark mode overlay sits above card, card
+     above page; steps are kept narrow for a calm ladder */
+  --background: oklch(0.145 0 0);
+  --background-surface: oklch(0.205 0 0);
+  --background-elevated: oklch(0.25 0 0);
+
+  /* Background interaction axis: white ink in dark mode */
+  --background-muted: oklch(1 0 0 / 6%);
+  --background-accent: oklch(1 0 0 / 10%);
 
   /* Foreground */
   --foreground: oklch(0.985 0 0);
@@ -49,7 +59,7 @@
   --primary-foreground: oklch(0.205 0 0);
 
   /* Border */
-  --border: oklch(0.269 0 0);
+  --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.439 0 0);
 
@@ -71,7 +81,7 @@
   /* Components */
   --color-card: var(--background-surface);
   --color-card-foreground: var(--foreground);
-  --color-popover: var(--background-surface);
+  --color-popover: var(--background-elevated);
   --color-popover-foreground: var(--foreground);
 
   /* Brand */

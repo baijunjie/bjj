@@ -271,7 +271,7 @@ function buildColumnStyle (column: DataTableColumn): Record<string, string> {
 const heightStyle = computed(() => props.height ? { '--data-table-height': props.height } : undefined)
 
 // Reusable class fragments
-const headerCellClass = 'h-auto bg-border px-4 py-3 text-xs font-normal text-foreground'
+const headerCellClass = 'h-auto px-4 py-3 text-xs font-normal text-foreground'
 const headerDividerClass = 'relative after:absolute after:top-1/2 after:right-0 after:h-4 after:w-px after:-translate-y-1/2 after:bg-muted-foreground/25'
 const stickyLeftClass = 'sticky left-0 z-10'
 const emptyCellClass = 'h-0.5 w-2.5 bg-muted-foreground/50 inline-block rounded-full align-middle'
@@ -293,7 +293,7 @@ defineExpose({
   <div
     :class="cn(
       `
-        rounded-lg bg-border px-1 text-foreground @container relative
+        data-table-frame rounded-lg px-1 text-foreground @container relative
         overflow-hidden
       `,
       !$slots.footer && 'pb-1',
@@ -509,7 +509,7 @@ defineExpose({
         <TableRow>
           <TableCell
             :colspan="totalColumns"
-            class="bg-border p-0!"
+            class="p-0!"
           >
             <div :class="footerViewportClass">
               <slot name="footer" />
@@ -522,6 +522,17 @@ defineExpose({
 </template>
 
 <style scoped>
+/* Frame, sticky header and sticky footer share one opaque paint: the
+   translucent border tint composited over the card surface. They must stay
+   opaque so rows scrolling beneath sticky cells can't show through. */
+.data-table-frame,
+.data-table-frame :deep(thead th),
+.data-table-frame :deep(tfoot td) {
+  background:
+    linear-gradient(var(--color-border), var(--color-border))
+    var(--color-card);
+}
+
 :deep([data-slot="table-container"]) {
   height: var(--data-table-height, auto);
 }
@@ -545,16 +556,20 @@ defineExpose({
 }
 
 :deep(tbody tr) {
-  --cell-bg: var(--color-card);
+  --cell-overlay: transparent;
 }
 
 :deep(tbody tr:not([data-virtual-row]):hover),
 :deep(tbody tr[data-state="selected"]) {
-  --cell-bg: var(--color-muted);
+  --cell-overlay: var(--color-muted);
 }
 
+/* Opaque card base under a translucent state overlay: frozen (sticky) cells
+   must fully occlude columns scrolling beneath them. */
 :deep(tbody td) {
-  background: var(--cell-bg);
+  background:
+    linear-gradient(var(--cell-overlay), var(--cell-overlay))
+    var(--color-card);
 }
 
 :deep(tbody tr:has(+ tr[aria-hidden="true"])) {

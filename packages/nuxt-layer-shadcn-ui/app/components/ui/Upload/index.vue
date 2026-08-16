@@ -175,14 +175,12 @@ const dragAreaBase = `
   flex cursor-pointer flex-col items-center justify-center gap-2
   rounded-md border border-dashed bg-muted/40 px-6 py-10
   text-center transition-colors
-  dark:bg-muted/20
 `
 
 const boxTriggerBase = `
   flex size-24 shrink-0 cursor-pointer flex-col items-center justify-center
   gap-1 rounded-md border border-dashed bg-muted/40 text-xs
   text-muted-foreground transition-colors
-  dark:bg-muted/20
 `
 
 const disabledClass = 'pointer-events-none cursor-not-allowed opacity-60'
@@ -215,7 +213,6 @@ const boxTriggerClass = computed(() => makeTriggerClass(
 const thumbBase = `
   group/thumb
   relative size-24 shrink-0 overflow-hidden rounded-md border bg-muted/40
-  dark:bg-muted/20
 `
 
 const rowItemBase = `
