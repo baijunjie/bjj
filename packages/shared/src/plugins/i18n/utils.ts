@@ -372,21 +372,24 @@ export async function findI18nUsage (
 
 // ===== PLAIN-TEXT SCANNING =====
 
-// Isolated dotted-identifier token. Boundaries prevent matching fragments
-// of longer chains (e.g. `obj.pages.charges.amount` is captured whole, not
-// leaking `pages.charges.amount`).
-const I18N_KEY_TOKEN_REGEX = /(?<![\w$.])([a-zA-Z_$][\w$]*(?:\.[a-zA-Z_$][\w$]*)+)(?![\w$.])/g
+// Isolated dotted-identifier token. Segments may contain hyphens because
+// namespaces derive from kebab-case directory names. Boundaries prevent
+// matching fragments of longer chains (e.g. `obj.pages.charges.amount` is
+// captured whole, not leaking `pages.charges.amount`).
+const I18N_KEY_TOKEN_REGEX = /(?<![\w$.-])([a-zA-Z_$][\w$-]*(?:\.[a-zA-Z_$][\w$-]*)+)(?![\w$.-])/g
 
 /**
  * Find i18n key references by plain-text scanning, for files that store
  * keys as literal strings (e.g. layout.json, YAML metadata).
  *
  * Format-agnostic: every isolated dotted-identifier token in the raw text
- * is emitted as a usage. The caller compares against the defined-key set
- * by exact match — non-keys are harmlessly ignored. No wildcards.
+ * is emitted as a usage, compared against the defined-key set by exact
+ * match. No wildcards.
  *
- * The caller must exclude locale source files: translated text could
- * coincidentally contain a dotted-key-shaped substring.
+ * Patterns must target files whose dotted tokens are all i18n keys, because
+ * the undefined-keys checker reports every emitted token that has no matching
+ * definition. Locale source files in particular must be excluded: translated
+ * text could coincidentally contain a dotted-key-shaped substring.
  *
  * @param srcDir   - Source directory to glob from
  * @param patterns - Glob patterns appended to `srcDir`; empty disables scanning

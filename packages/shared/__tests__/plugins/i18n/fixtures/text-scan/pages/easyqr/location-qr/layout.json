@@ -1,0 +1,7 @@
+{
+  "columns": [
+    { "key": "pages.easyqr.location-qr.columns.label" },
+    { "key": "pages.easyqr.location-qr.columns.created-at" },
+    { "key": "pages.charges.amount" }
+  ]
+}
