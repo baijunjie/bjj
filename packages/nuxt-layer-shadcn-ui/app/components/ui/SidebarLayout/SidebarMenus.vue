@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { AdminLayoutSidebarMenuItem } from './types'
+import type { SidebarLayoutMenuItem } from './types'
+import { sidebarMenuItemKey } from './utils'
 import {
   Collapsible,
   CollapsibleContent,
@@ -24,7 +25,14 @@ import {
 } from '../../shadcn/sidebar'
 
 const props = defineProps<{
-  menus: AdminLayoutSidebarMenuItem[]
+  menus: SidebarLayoutMenuItem[]
+  /** Key of the selected item. Omitted → the active item is matched by route. */
+  active?: string
+  emptyText?: string
+}>()
+
+const emit = defineEmits<{
+  select: [item: SidebarLayoutMenuItem]
 }>()
 
 const route = useRoute()
@@ -32,13 +40,13 @@ const route = useRoute()
 const isExternal = (href: string) => /^https?:\/\//.test(href)
 
 const navGroups = computed(() => {
-  const groups: { label?: string, items: AdminLayoutSidebarMenuItem[] }[] = []
-  const groupMap = new Map<string | undefined, AdminLayoutSidebarMenuItem[]>()
+  const groups: { label?: string, items: SidebarLayoutMenuItem[] }[] = []
+  const groupMap = new Map<string | undefined, SidebarLayoutMenuItem[]>()
 
   for (const item of props.menus) {
     const key = item.group
     if (!groupMap.has(key)) {
-      const items: AdminLayoutSidebarMenuItem[] = []
+      const items: SidebarLayoutMenuItem[] = []
       groupMap.set(key, items)
       groups.push({ label: key, items })
     }
@@ -48,17 +56,25 @@ const navGroups = computed(() => {
   return groups
 })
 
-function isActive (href?: string): boolean {
+function isActive (item: SidebarLayoutMenuItem): boolean {
+  if (props.active !== undefined) return sidebarMenuItemKey(item) === props.active
+  const href = item.href
   if (!href || isExternal(href)) return false
   return route.path.startsWith(href)
 }
 
-function isLink (item: AdminLayoutSidebarMenuItem): boolean {
+function isLink (item: SidebarLayoutMenuItem): boolean {
   return !!item.href
 }
 
-function hasActiveChild (item: AdminLayoutSidebarMenuItem): boolean {
-  return item.children?.some(child => isActive(child.href)) ?? false
+function hasActiveChild (item: SidebarLayoutMenuItem): boolean {
+  return item.children?.some(isActive) ?? false
+}
+
+// A linked item navigates through its `WebLink`, so `command` is for the rest.
+function handleSelect (item: SidebarLayoutMenuItem) {
+  emit('select', item)
+  if (!isLink(item)) item.command?.()
 }
 </script>
 
@@ -73,11 +89,11 @@ function hasActiveChild (item: AdminLayoutSidebarMenuItem): boolean {
     <SidebarMenu>
       <template
         v-for="item in group.items"
-        :key="item.label"
+        :key="sidebarMenuItemKey(item)"
       >
         <!-- Collapsible item with children -->
         <Collapsible
-          v-if="item.children"
+          v-if="item.children?.length"
           asChild
           :defaultOpen="item.expanded ?? hasActiveChild(item)"
           class="group/collapsible"
@@ -103,18 +119,20 @@ function hasActiveChild (item: AdminLayoutSidebarMenuItem): boolean {
               <SidebarMenuSub>
                 <SidebarMenuSubItem
                   v-for="child in item.children"
-                  :key="child.label"
+                  :key="sidebarMenuItemKey(child)"
                 >
                   <!-- The vendored sub-button renders `data-active=""` when active while its
                        built-in styles only match `data-active="true"`, so the active styles
                        are re-applied here via an attribute-presence selector. -->
                   <SidebarMenuSubButton
                     :asChild="isLink(child)"
-                    :isActive="isActive(child.href)"
+                    :isActive="isActive(child)"
                     class="
                       data-active:bg-sidebar-accent
                       data-active:text-sidebar-accent-foreground
+                      cursor-pointer
                     "
+                    @click="handleSelect(child)"
                   >
                     <WebLink
                       v-if="isLink(child)"
@@ -123,10 +141,7 @@ function hasActiveChild (item: AdminLayoutSidebarMenuItem): boolean {
                     >
                       <span>{{ child.label }}</span>
                     </WebLink>
-                    <span
-                      v-else
-                      @click="child.command?.()"
-                    >
+                    <span v-else>
                       {{ child.label }}
                     </span>
                   </SidebarMenuSubButton>
@@ -136,13 +151,14 @@ function hasActiveChild (item: AdminLayoutSidebarMenuItem): boolean {
           </SidebarMenuItem>
         </Collapsible>
 
-        <!-- Item with actions dropdown -->
-        <SidebarMenuItem v-else-if="item.actions">
+        <!-- Leaf item, optionally with an actions dropdown -->
+        <SidebarMenuItem v-else>
           <SidebarMenuButton
             :asChild="isLink(item)"
-            :isActive="isActive(item.href)"
+            :isActive="isActive(item)"
             :tooltip="item.label"
-            @click="!isLink(item) ? item.command?.() : undefined"
+            class="cursor-pointer"
+            @click="handleSelect(item)"
           >
             <WebLink
               v-if="isLink(item)"
@@ -168,7 +184,8 @@ function hasActiveChild (item: AdminLayoutSidebarMenuItem): boolean {
               <span>{{ item.label }}</span>
             </template>
           </SidebarMenuButton>
-          <DropdownMenu>
+
+          <DropdownMenu v-if="item.actions">
             <DropdownMenuTrigger asChild>
               <SidebarMenuAction showOnHover>
                 <Icon name="ellipsis" />
@@ -209,41 +226,14 @@ function hasActiveChild (item: AdminLayoutSidebarMenuItem): boolean {
             </DropdownMenuContent>
           </DropdownMenu>
         </SidebarMenuItem>
-
-        <!-- Simple item -->
-        <SidebarMenuItem v-else>
-          <SidebarMenuButton
-            :asChild="isLink(item)"
-            :isActive="isActive(item.href)"
-            :tooltip="item.label"
-            @click="!isLink(item) ? item.command?.() : undefined"
-          >
-            <WebLink
-              v-if="isLink(item)"
-              :href="item.href"
-              unstyled
-            >
-              <Icon
-                v-if="item.icon"
-                :name="item.icon"
-              />
-              <span>{{ item.label }}</span>
-              <Icon
-                v-if="isExternal(item.href!)"
-                name="external-link"
-                class="size-3.5 text-sidebar-foreground/50 ml-auto"
-              />
-            </WebLink>
-            <template v-else>
-              <Icon
-                v-if="item.icon"
-                :name="item.icon"
-              />
-              <span>{{ item.label }}</span>
-            </template>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
       </template>
     </SidebarMenu>
   </SidebarGroup>
+
+  <div
+    v-if="emptyText && !navGroups.length"
+    class="px-2 py-6 text-sm text-muted-foreground text-center"
+  >
+    {{ emptyText }}
+  </div>
 </template>

@@ -1,16 +1,8 @@
 import type { Component } from 'vue'
 import type { DropdownItem } from '../Dropdown/types'
+import type { SidebarLayoutMenuItem } from '../SidebarLayout/types'
 
-export interface AdminLayoutSidebarMenuItem {
-  label: string
-  icon?: string | Component
-  href?: string
-  command?: () => void
-  group?: string
-  expanded?: boolean
-  children?: AdminLayoutSidebarMenuItem[]
-  actions?: AdminLayoutSidebarMenuItem[]
-}
+export type AdminLayoutSidebarMenuItem = SidebarLayoutMenuItem
 
 export interface AdminLayoutSidebarDropdownProfile {
   title?: string

@@ -82,6 +82,10 @@
         "placeholder": "请选择",
         "searchPlaceholder": "搜索..."
       },
+      "SidebarModal": {
+        "noResults": "暂无结果",
+        "searchPlaceholder": "搜索"
+      },
       "StaticDataTable": {
         "actions": "操作"
       },

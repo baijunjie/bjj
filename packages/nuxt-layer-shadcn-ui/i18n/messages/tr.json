@@ -82,6 +82,10 @@
         "placeholder": "Lütfen seçin",
         "searchPlaceholder": "Ara..."
       },
+      "SidebarModal": {
+        "noResults": "Sonuç bulunamadı",
+        "searchPlaceholder": "Ara"
+      },
       "StaticDataTable": {
         "actions": "İşlemler"
       },

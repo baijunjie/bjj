@@ -82,6 +82,10 @@
         "placeholder": "Selecteer alstublieft",
         "searchPlaceholder": "Zoeken..."
       },
+      "SidebarModal": {
+        "noResults": "Geen resultaten",
+        "searchPlaceholder": "Zoeken"
+      },
       "StaticDataTable": {
         "actions": "Acties"
       },

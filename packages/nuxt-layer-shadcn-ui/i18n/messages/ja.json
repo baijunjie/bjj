@@ -82,6 +82,10 @@
         "placeholder": "選択してください",
         "searchPlaceholder": "検索..."
       },
+      "SidebarModal": {
+        "noResults": "結果がありません",
+        "searchPlaceholder": "検索"
+      },
       "StaticDataTable": {
         "actions": "アクション"
       },

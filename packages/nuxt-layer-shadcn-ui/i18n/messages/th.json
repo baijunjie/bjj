@@ -82,6 +82,10 @@
         "placeholder": "กรุณาเลือก",
         "searchPlaceholder": "ค้นหา..."
       },
+      "SidebarModal": {
+        "noResults": "ไม่มีผลลัพธ์",
+        "searchPlaceholder": "ค้นหา"
+      },
       "StaticDataTable": {
         "actions": "การกระทำ"
       },

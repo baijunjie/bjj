@@ -82,6 +82,10 @@
         "placeholder": "請選擇",
         "searchPlaceholder": "搜尋..."
       },
+      "SidebarModal": {
+        "noResults": "暫無結果",
+        "searchPlaceholder": "搜尋"
+      },
       "StaticDataTable": {
         "actions": "操作"
       },

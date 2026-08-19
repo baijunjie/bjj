@@ -82,6 +82,10 @@
         "placeholder": "कृपया चुनें",
         "searchPlaceholder": "खोजें..."
       },
+      "SidebarModal": {
+        "noResults": "कोई परिणाम नहीं",
+        "searchPlaceholder": "खोजें"
+      },
       "StaticDataTable": {
         "actions": "क्रियाएं"
       },

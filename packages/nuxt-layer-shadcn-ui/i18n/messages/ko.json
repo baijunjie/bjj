@@ -82,6 +82,10 @@
         "placeholder": "선택하세요",
         "searchPlaceholder": "검색..."
       },
+      "SidebarModal": {
+        "noResults": "결과 없음",
+        "searchPlaceholder": "검색"
+      },
       "StaticDataTable": {
         "actions": "작업"
       },

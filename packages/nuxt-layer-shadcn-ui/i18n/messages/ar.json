@@ -82,6 +82,10 @@
         "placeholder": "يرجى اختيار",
         "searchPlaceholder": "البحث..."
       },
+      "SidebarModal": {
+        "noResults": "لا توجد نتائج",
+        "searchPlaceholder": "البحث"
+      },
       "StaticDataTable": {
         "actions": "الإجراءات"
       },

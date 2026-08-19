@@ -82,6 +82,10 @@
         "placeholder": "Por favor, selecione",
         "searchPlaceholder": "Pesquisar..."
       },
+      "SidebarModal": {
+        "noResults": "Nenhum resultado",
+        "searchPlaceholder": "Pesquisar"
+      },
       "StaticDataTable": {
         "actions": "Ações"
       },

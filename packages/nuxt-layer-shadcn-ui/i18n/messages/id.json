@@ -82,6 +82,10 @@
         "placeholder": "Silakan pilih",
         "searchPlaceholder": "Cari..."
       },
+      "SidebarModal": {
+        "noResults": "Tidak ada hasil",
+        "searchPlaceholder": "Cari"
+      },
       "StaticDataTable": {
         "actions": "Tindakan"
       },

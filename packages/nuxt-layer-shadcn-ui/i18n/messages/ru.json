@@ -82,6 +82,10 @@
         "placeholder": "Пожалуйста, выберите",
         "searchPlaceholder": "Поиск..."
       },
+      "SidebarModal": {
+        "noResults": "Нет результатов",
+        "searchPlaceholder": "Поиск"
+      },
       "StaticDataTable": {
         "actions": "Действия"
       },
