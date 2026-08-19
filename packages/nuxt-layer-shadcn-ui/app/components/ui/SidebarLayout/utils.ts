@@ -17,13 +17,18 @@ export function findSidebarMenuItem (
   return undefined
 }
 
+/** Selectable (childless) items in listing order, with grouping flattened away. */
+export function flattenSidebarMenuItems (
+  menus: SidebarLayoutMenuItem[],
+): SidebarLayoutMenuItem[] {
+  return menus.flatMap(item =>
+    item.children?.length ? flattenSidebarMenuItems(item.children) : [ item ],
+  )
+}
+
 export function firstSidebarMenuItemKey (
   menus: SidebarLayoutMenuItem[],
 ): string | undefined {
-  for (const item of menus) {
-    if (!item.children?.length) return sidebarMenuItemKey(item)
-    const key = firstSidebarMenuItemKey(item.children)
-    if (key) return key
-  }
-  return undefined
+  const [ first ] = flattenSidebarMenuItems(menus)
+  return first && sidebarMenuItemKey(first)
 }

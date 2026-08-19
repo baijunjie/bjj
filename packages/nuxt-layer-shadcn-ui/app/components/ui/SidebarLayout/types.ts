@@ -19,8 +19,13 @@ export interface SidebarLayoutProps {
   active?: string
   /** Placeholder shown when `menus` is empty. */
   emptyText?: string
-  /** Fill the parent instead of the viewport: never collapses, no rail or mobile trigger. */
+  /** Fill the parent instead of the viewport: never collapses, no rail. */
   embedded?: boolean
+  /**
+   * Stack the nav above the content as a scrollable strip instead of placing it
+   * in a column. The caller decides when — the layout holds no breakpoint.
+   */
+  stacked?: boolean
   variant?: 'sidebar' | 'floating' | 'inset'
   /** Collapse behaviour of the sidebar. Ignored while `embedded`. */
   collapsible?: 'offcanvas' | 'icon' | 'none'

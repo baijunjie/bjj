@@ -160,6 +160,28 @@ export const Embedded: Story = {
   },
 }
 
+// Embedded on a phone viewport: the nav stacks above the content as a strip.
+export const Stacked: Story = {
+  parameters: {
+    ...noControls,
+    viewport: {
+      options: {
+        mobile: {
+          name: 'Mobile',
+          styles: { width: '390px', height: '844px' },
+          type: 'mobile',
+        },
+      },
+    },
+  },
+  globals: {
+    viewport: { value: 'mobile', isRotated: false },
+  },
+  args: {
+    embedded: true,
+  },
+}
+
 export const SidebarWidth: Story = {
   parameters: noControls,
   args: {

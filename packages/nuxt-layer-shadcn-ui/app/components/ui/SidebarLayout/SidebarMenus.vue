@@ -71,10 +71,8 @@ function hasActiveChild (item: SidebarLayoutMenuItem): boolean {
   return item.children?.some(isActive) ?? false
 }
 
-// A linked item navigates through its `WebLink`, so `command` is for the rest.
 function handleSelect (item: SidebarLayoutMenuItem) {
   emit('select', item)
-  if (!isLink(item)) item.command?.()
 }
 </script>
 

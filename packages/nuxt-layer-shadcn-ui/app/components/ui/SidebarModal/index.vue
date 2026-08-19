@@ -76,14 +76,19 @@ const dialogClass = computed(() =>
   cn(
     `
       gap-0 bg-popover p-0
-      sm:max-w-4xl
-      flex h-[min(80vh,42rem)] flex-col overflow-hidden
+      md:max-w-4xl md:h-[min(80vh,42rem)]
+      flex h-[85vh] flex-col overflow-hidden
     `,
     props.class,
   ),
 )
 
-const paneClass = computed(() => cn('px-6 py-5', props.contentClass))
+const paneClass = computed(() =>
+  cn(`
+    px-4 py-4
+    md:px-6 md:py-5
+  `, props.contentClass),
+)
 
 watch(() => props.visible, value => {
   if (value !== undefined) dialogOpen.value = value
@@ -167,7 +172,13 @@ function onPointerDownOutside (event: Event) {
       @closeAutoFocus="emit('closed')"
     >
       <!-- A11y: reka-ui requires a title and a description inside the dialog. -->
-      <DialogTitle class="sr-only">
+      <DialogTitle
+        class="
+          px-4 pt-4 text-base font-semibold
+          md:sr-only md:p-0
+          shrink-0
+        "
+      >
         {{ title }}
       </DialogTitle>
       <DialogDescription class="sr-only" />

@@ -361,6 +361,25 @@ export const Scrolling: Story = {
   }),
 }
 
+// Phone viewport: the menu becomes a scrollable strip under a visible title row.
+export const Mobile: Story = {
+  parameters: {
+    ...noControls,
+    viewport: {
+      options: {
+        mobile: {
+          name: 'Mobile',
+          styles: { width: '390px', height: '844px' },
+          type: 'mobile',
+        },
+      },
+    },
+  },
+  globals: {
+    viewport: { value: 'mobile', isRotated: false },
+  },
+}
+
 export const ClickOutsideToClose: Story = {
   parameters: noControls,
   args: {

@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import type { TabsItem } from '../Tabs/types'
 import type { SidebarLayoutMenuItem, SidebarLayoutProps } from './types'
 import SidebarMenus from './SidebarMenus.vue'
-import { sidebarMenuItemKey } from './utils'
+import {
+  findSidebarMenuItem,
+  flattenSidebarMenuItems,
+  sidebarMenuItemKey,
+} from './utils'
 import {
   Sidebar,
   SidebarContent,
@@ -50,17 +55,42 @@ provideSidebarContext({
   toggleSidebar: noop,
 })
 
+const { isMobile } = useDevice()
+
+// A 16rem column would eat a phone's width, so an embedded layout stacks its nav
+// above the content there. Page mode keeps the vendored drawer instead.
+const stacked = computed(() => props.embedded && isMobile.value)
+
+const tabItems = computed<TabsItem[]>(() =>
+  flattenSidebarMenuItems(props.menus).map(item => ({
+    value: sidebarMenuItemKey(item),
+    title: item.label,
+    icon: item.icon,
+  })),
+)
+
 const rootComponent = computed(() => props.embedded ? 'div' : SidebarProvider)
 
 const rootStyle = computed(() => ({ '--sidebar-width': props.sidebarWidth }))
 
 const rootClass = computed(() =>
-  cn(props.embedded && 'min-h-0 flex size-full overflow-hidden', props.class),
+  cn(
+    props.embedded && 'min-h-0 flex size-full overflow-hidden',
+    stacked.value && 'flex-col',
+    props.class,
+  ),
 )
 
+// A linked item navigates through its `WebLink`, so `command` is for the rest.
 function onSelect (item: SidebarLayoutMenuItem) {
   emit('select', item)
   emit('update:active', sidebarMenuItemKey(item))
+  if (!item.href) item.command?.()
+}
+
+function onTabSelect (key: string) {
+  const item = findSidebarMenuItem(props.menus, key)
+  if (item) onSelect(item)
 }
 </script>
 
@@ -72,8 +102,41 @@ function onSelect (item: SidebarLayoutMenuItem) {
   >
     <!-- Menu-button tooltips need a provider, which embedded mode has none of. -->
     <TooltipProvider>
+      <!-- Stacked: the menu becomes a scrollable strip, groups flattened away. -->
+      <template v-if="stacked">
+        <div
+          v-if="$slots.header"
+          class="gap-2 p-2 flex flex-col"
+        >
+          <slot name="header" />
+        </div>
+
+        <div
+          v-if="emptyText && !menus.length"
+          class="px-4 py-3 text-sm text-muted-foreground border-b text-center"
+        >
+          {{ emptyText }}
+        </div>
+        <Tabs
+          v-else
+          :items="tabItems"
+          :modelValue="active"
+          listClass="
+            h-auto w-full gap-1 rounded-none border-b bg-transparent p-2
+            justify-start overflow-x-auto
+          "
+          triggerClass="
+            data-[state=active]:bg-accent
+            data-[state=active]:shadow-none
+            flex-none
+          "
+          @update:modelValue="onTabSelect"
+        />
+      </template>
+
       <!-- `shrink-0`: wide pane content scrolls instead of squeezing the menu. -->
       <Sidebar
+        v-else
         :variant="variant"
         :collapsible="embedded ? 'none' : collapsible"
         :class="embedded ? 'shrink-0 border-r' : undefined"
@@ -108,7 +171,7 @@ function onSelect (item: SidebarLayoutMenuItem) {
            Top padding on mobile reserves a safe area for the floating trigger. -->
       <SidebarInset
         :class="[
-          'min-w-0',
+          'min-w-0 min-h-0',
           embedded ? 'bg-transparent' : 'bg-card',
           !embedded && `
             pt-14
