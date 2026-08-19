@@ -6,13 +6,28 @@ export interface SidebarModalPaneSlotProps {
   item?: SidebarLayoutMenuItem
 }
 
+/**
+ * Menus to list for the current keyword. Receives the keyword as typed (trimmed),
+ * so a business search can look beyond labels — pane content, a remote index —
+ * and return whatever entries should show.
+ */
+export type SidebarModalFilter = (
+  menus: SidebarLayoutMenuItem[],
+  keyword: string,
+) => SidebarLayoutMenuItem[]
+
 export interface SidebarModalProps {
   menus: SidebarLayoutMenuItem[]
   visible?: boolean
   /** Key of the selected menu item. Omitted → the first selectable item. */
   active?: string
-  /** Render a search field above the menu, filtering items by label and group. */
-  searchable?: boolean
+  /**
+   * Render a search field between `#header` and the menu. `true`: filter menus by
+   * label and group; function: custom filter (replaces the built-in one).
+   */
+  searchable?: boolean | SidebarModalFilter
+  /** Search keyword. Use `v-model:search` to read or drive it from the outside. */
+  search?: string
   searchPlaceholder?: string
   /** Accessible name of the dialog, rendered for screen readers only. */
   title?: string

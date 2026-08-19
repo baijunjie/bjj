@@ -16,6 +16,7 @@ defineOptions({ inheritAttrs: false })
 const props = withDefaults(defineProps<SidebarModalProps>(), {
   visible: undefined,
   active: undefined,
+  search: undefined,
   searchPlaceholder: undefined,
   title: undefined,
   modal: true,
@@ -29,6 +30,7 @@ const props = withDefaults(defineProps<SidebarModalProps>(), {
 const emit = defineEmits<{
   'update:visible': [value: boolean]
   'update:active': [key: string]
+  'update:search': [keyword: string]
   'select': [item: SidebarLayoutMenuItem]
   'open': []
   'close': []
@@ -49,7 +51,7 @@ const T = useTranslations('components.ui.SidebarModal')
 
 const dialogOpen = ref(props.visible ?? false)
 const activeKey = ref(props.active ?? '')
-const searchQuery = ref<string>()
+const searchQuery = ref(props.search)
 
 const activeItem = computed(() => findSidebarMenuItem(props.menus, activeKey.value))
 
@@ -58,11 +60,17 @@ const paneSlotProps = computed<SidebarModalPaneSlotProps>(() => ({
   item: activeItem.value,
 }))
 
-const searchKeyword = computed(() => searchQuery.value?.trim().toLowerCase() ?? '')
+const searchKeyword = computed(() => searchQuery.value?.trim() ?? '')
 
-const filteredMenus = computed(() =>
-  searchKeyword.value ? filterMenus(props.menus, searchKeyword.value) : props.menus,
-)
+const filteredMenus = computed(() => {
+  // A custom filter runs for every keyword, empty included, so it fully owns the
+  // listing; reading its own reactive state in there also covers async results.
+  if (typeof props.searchable === 'function') {
+    return props.searchable(props.menus, searchKeyword.value)
+  }
+  if (!searchKeyword.value) return props.menus
+  return filterMenus(props.menus, searchKeyword.value.toLowerCase())
+})
 
 const dialogClass = computed(() =>
   cn(
@@ -91,6 +99,12 @@ watch(dialogOpen, value => {
   // Drop the filter so a stale search does not greet the next open.
   searchQuery.value = undefined
 })
+
+watch(() => props.search, keyword => {
+  if (keyword !== undefined) searchQuery.value = keyword
+})
+
+watch(searchQuery, keyword => emit('update:search', keyword ?? ''))
 
 watch(() => props.active, key => {
   if (key !== undefined) activeKey.value = key
@@ -171,16 +185,17 @@ function onPointerDownOutside (event: Event) {
           v-if="searchable || $slots.header"
           #header
         >
-          <slot name="header">
-            <Input
-              v-model="searchQuery"
-              :placeholder="searchPlaceholder || T('searchPlaceholder')"
-            >
-              <template #prefix>
-                <Icon name="search" />
-              </template>
-            </Input>
-          </slot>
+          <slot name="header" />
+
+          <Input
+            v-if="searchable"
+            v-model="searchQuery"
+            :placeholder="searchPlaceholder || T('searchPlaceholder')"
+          >
+            <template #prefix>
+              <Icon name="search" />
+            </template>
+          </Input>
         </template>
 
         <template

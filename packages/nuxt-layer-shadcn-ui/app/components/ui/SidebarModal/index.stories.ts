@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import type { SidebarLayoutMenuItem } from '../SidebarLayout/types'
+import type { SidebarModalFilter } from './types'
 import EventLog from '#storybook/EventLog.vue'
 import { useArgsModel } from '#storybook/argsModel'
 import Button from '../Button/index.vue'
@@ -42,6 +43,31 @@ const scrollingMenus: SidebarLayoutMenuItem[] = [
     group: 'Plugins',
   })),
 ]
+
+// The rows each pane renders, doubling as the index a business search would hit.
+const paneContent: Record<string, string[]> = {
+  general: [ 'full name', 'email', 'notifications' ],
+  account: [ 'password', 'two-factor', 'sessions' ],
+  usage: [ 'quota', 'billing period' ],
+  capabilities: [ 'beta features' ],
+  appearance: [ 'theme', 'dark mode', 'font size' ],
+  extensions: [ 'browser extension' ],
+  developer: [ 'api key', 'webhooks' ],
+  skills: [ 'custom instructions' ],
+  connectors: [ 'google drive', 'slack' ],
+}
+
+const searchByContent: SidebarModalFilter = (items, keyword) => {
+  if (!keyword) return items
+  const needle = keyword.toLowerCase()
+  return items.filter(item => {
+    const key = item.key ?? item.label
+    return [ item.label, item.group, ...(paneContent[key] ?? []) ]
+      .join(' ')
+      .toLowerCase()
+      .includes(needle)
+  })
+}
 
 const generalPane = `
   <template #general>
@@ -110,6 +136,7 @@ const meta = {
     visible: { control: 'boolean' },
     active: { control: 'text' },
     searchable: { control: 'boolean' },
+    search: { control: 'text' },
     searchPlaceholder: { control: 'text' },
     title: { control: 'text' },
     modal: { control: 'boolean' },
@@ -123,6 +150,7 @@ const meta = {
     visible: false,
     active: 'general',
     searchable: true,
+    search: '',
     searchPlaceholder: '',
     title: 'Settings',
     modal: true,
@@ -134,9 +162,10 @@ const meta = {
   render: args => {
     const onUpdateVisible = useArgsModel('visible')
     const onUpdateActive = useArgsModel('active')
+    const onUpdateSearch = useArgsModel('search')
     return {
       components: { SidebarModal, Button, Input, Switch },
-      setup: () => ({ args, onUpdateVisible, onUpdateActive }),
+      setup: () => ({ args, onUpdateVisible, onUpdateActive, onUpdateSearch }),
       // Opening through `#trigger` keeps the demo alive on the Docs page, where
       // only the primary story's args round-trip; the emits still sync Controls.
       template: `
@@ -144,6 +173,7 @@ const meta = {
           v-bind="args"
           @update:visible="onUpdateVisible"
           @update:active="onUpdateActive"
+          @update:search="onUpdateSearch"
         >
           <template #trigger>
             <Button>Open Settings</Button>
@@ -180,6 +210,85 @@ export const SearchPlaceholder: Story = {
 }
 
 // A search flattens matched children so none stays hidden behind a closed parent.
+// A `searchable` function owns the listing, so the keyword can be matched against
+// pane content: "dark" surfaces Appearance even though no label contains it.
+export const CustomSearch: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <SidebarModal
+    :menus="menus"
+    :searchable="searchByContent"
+    title="Settings"
+  >
+    <template #trigger>
+      <Button>Open Settings</Button>
+    </template>
+
+    <template #default="{ active, item }">
+      <h2 class="text-lg font-semibold">{{ item?.label }}</h2>
+      <div
+        v-for="row in paneContent[active]"
+        :key="row"
+        class="py-3 text-sm"
+      >
+        {{ row }}
+      </div>
+    </template>
+  </SidebarModal>
+</template>
+
+<script setup lang="ts">
+// One source of truth: the rows a pane renders are the rows search matches.
+const searchByContent: SidebarModalFilter = (items, keyword) => {
+  if (!keyword) return items
+  const needle = keyword.toLowerCase()
+  return items.filter(item => [ item.label, item.group, ...paneContent[item.key] ?? [] ]
+    .join(' ')
+    .toLowerCase()
+    .includes(needle))
+}
+</script>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { SidebarModal, Button },
+    setup: () => ({ menus, searchByContent, paneContent }),
+    template: `
+      <SidebarModal
+        :menus="menus"
+        :searchable="searchByContent"
+        title="Settings"
+        searchPlaceholder="Search settings or content"
+      >
+        <template #trigger>
+          <Button>Open Settings</Button>
+        </template>
+
+        <template #default="{ active, item }">
+          <div class="space-y-4">
+            <h2 class="text-lg font-semibold">{{ item?.label }}</h2>
+            <div class="divide-y divide-border">
+              <div
+                v-for="row in paneContent[active] || []"
+                :key="row"
+                class="py-3 text-sm capitalize"
+              >
+                {{ row }}
+              </div>
+            </div>
+          </div>
+        </template>
+      </SidebarModal>
+    `,
+  }),
+}
+
 export const NestedMenus: Story = {
   parameters: noControls,
   args: {
@@ -267,6 +376,7 @@ export const NonModal: Story = {
   },
 }
 
+// The `#header` slot sits above the built-in search field rather than replacing it.
 export const CustomHeader: Story = {
   parameters: {
     ...noControls,
@@ -278,6 +388,7 @@ export const CustomHeader: Story = {
     v-model:visible="visible"
     :menus="menus"
     title="Settings"
+    searchable
   >
     <template #header>
       <div class="flex items-center gap-2 px-2 py-1">
@@ -314,7 +425,7 @@ export const CustomHeader: Story = {
     template: `
       <div>
         <Button @click="visible = true">Open Settings</Button>
-        <SidebarModal v-model:visible="visible" :menus="menus" title="Settings">
+        <SidebarModal v-model:visible="visible" :menus="menus" title="Settings" searchable>
           <template #header>
             <div class="flex items-center gap-2 px-2 py-1">
               <Icon name="building-2" />
