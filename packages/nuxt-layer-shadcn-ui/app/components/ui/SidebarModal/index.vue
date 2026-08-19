@@ -171,13 +171,12 @@ function onPointerDownOutside (event: Event) {
       @pointerDownOutside="onPointerDownOutside"
       @closeAutoFocus="emit('closed')"
     >
-      <!-- A11y: reka-ui requires a title and a description inside the dialog. -->
+      <!-- A11y: reka-ui requires a title and a description inside the dialog. The
+           visible title doubles as the accessible name, so this one steps in
+           whenever that one is not rendered. -->
       <DialogTitle
-        class="
-          px-4 pt-4 text-base font-semibold
-          md:sr-only md:p-0
-          shrink-0
-        "
+        v-if="$slots.header || !title"
+        class="sr-only"
       >
         {{ title }}
       </DialogTitle>
@@ -193,10 +192,17 @@ function onPointerDownOutside (event: Event) {
         @select="emit('select', $event)"
       >
         <template
-          v-if="searchable || $slots.header"
+          v-if="title || searchable || $slots.header"
           #header
         >
-          <slot name="header" />
+          <slot name="header">
+            <DialogTitle
+              v-if="title"
+              class="px-2 py-1 text-base font-semibold"
+            >
+              {{ title }}
+            </DialogTitle>
+          </slot>
 
           <Input
             v-if="searchable"

@@ -29,7 +29,10 @@ export interface SidebarModalProps {
   /** Search keyword. Use `v-model:search` to read or drive it from the outside. */
   search?: string
   searchPlaceholder?: string
-  /** Accessible name of the dialog, rendered for screen readers only. */
+  /**
+   * Accessible name of the dialog, and the default content of `#header`. A
+   * `#header` slot replaces it there and leaves it to screen readers.
+   */
   title?: string
   modal?: boolean
   showClose?: boolean
