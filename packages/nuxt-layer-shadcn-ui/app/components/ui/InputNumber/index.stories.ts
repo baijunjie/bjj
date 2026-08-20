@@ -3,6 +3,8 @@ import EventLog from '#storybook/EventLog.vue'
 import { useArgsModel } from '#storybook/argsModel'
 import InputNumber from './index.vue'
 
+const aligns = [ 'left', 'center', 'right' ] as const
+
 const meta = {
   title: 'UI/InputNumber',
   component: InputNumber,
@@ -13,9 +15,11 @@ const meta = {
     step: { control: 'number' },
     placeholder: { control: 'text' },
     showButtons: { control: 'boolean' },
+    align: { control: 'select', options: aligns },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
+    class: { control: 'text' },
   },
   args: {
     modelValue: 0,
@@ -24,9 +28,11 @@ const meta = {
     step: 1,
     placeholder: '',
     showButtons: true,
+    align: 'center',
     readonly: false,
     disabled: false,
     invalid: false,
+    class: 'max-w-xs',
   },
   render: args => {
     const onUpdate = useArgsModel()
@@ -34,9 +40,9 @@ const meta = {
       components: { InputNumber },
       setup: () => ({ args, onUpdate }),
       template: `
-        <div class="max-w-xs">
+        <div class="space-y-2">
           <InputNumber v-bind="args" @update:modelValue="onUpdate" />
-          <div class="mt-2 text-sm text-muted-foreground">Value: {{ args.modelValue }}</div>
+          <div class="text-sm text-muted-foreground">Value: {{ args.modelValue }}</div>
         </div>
       `,
     }
@@ -65,10 +71,111 @@ export const CustomStep: Story = {
   },
 }
 
+export const Placeholder: Story = {
+  parameters: noControls,
+  args: {
+    modelValue: undefined,
+    placeholder: 'Enter a number',
+  },
+}
+
 export const WithoutButtons: Story = {
   parameters: noControls,
   args: {
     showButtons: false,
+  },
+}
+
+export const Alignments: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <InputNumber v-model="value" align="right" />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { InputNumber },
+    setup: () => ({ aligns, value: ref(1234) }),
+    template: `
+      <div class="max-w-xs space-y-3">
+        <div v-for="a in aligns" :key="a" class="flex items-center gap-3">
+          <span class="w-14 text-sm text-muted-foreground">{{ a }}</span>
+          <InputNumber v-model="value" :align="a" class="flex-1" />
+        </div>
+      </div>
+    `,
+  }),
+}
+
+export const WithPrefix: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <InputNumber v-model="value" align="left">
+    <template #prefix>¥</template>
+  </InputNumber>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { InputNumber },
+    setup: () => ({ value: ref(1000) }),
+    template: `
+      <div class="max-w-xs space-y-2">
+        <InputNumber v-model="value" align="left">
+          <template #prefix>¥</template>
+        </InputNumber>
+        <div class="text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
+}
+
+export const WithSuffix: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <InputNumber v-model="value" :showButtons="false" align="right">
+    <template #suffix>kg</template>
+  </InputNumber>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { InputNumber },
+    setup: () => ({ value: ref(65) }),
+    template: `
+      <div class="max-w-xs space-y-2">
+        <InputNumber v-model="value" :showButtons="false" align="right">
+          <template #suffix>kg</template>
+        </InputNumber>
+        <div class="text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
+}
+
+export const Readonly: Story = {
+  parameters: noControls,
+  args: {
+    readonly: true,
+    modelValue: 42,
   },
 }
 
