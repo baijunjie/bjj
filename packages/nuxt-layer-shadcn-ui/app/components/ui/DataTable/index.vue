@@ -550,6 +550,16 @@ defineExpose({
   z-index: 20;
 }
 
+/* Separated border model: row-level borders are ignored here, so the row
+   divider lives on the cell, where it paints above the cell's opaque
+   background — collapsed borders land beneath it in WebKit once the row group
+   is clipped. The header's tinted band is its own boundary, so it carries no
+   divider. */
+:deep([data-slot="table"]) {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
 /* clip-path is reliable on table-row-group, unlike overflow:hidden */
 :deep(tbody) {
   clip-path: inset(0 round 8px);
@@ -567,12 +577,15 @@ defineExpose({
 /* Opaque card base under a translucent state overlay: frozen (sticky) cells
    must fully occlude columns scrolling beneath them. */
 :deep(tbody td) {
+  border-bottom: 1px solid var(--color-border);
   background:
     linear-gradient(var(--cell-overlay), var(--cell-overlay))
     var(--color-card);
 }
 
-:deep(tbody tr:has(+ tr[aria-hidden="true"])) {
+/* The row that ends the body carries no divider — the filler row when present */
+:deep(tbody tr:last-child td),
+:deep(tbody tr:has(+ tr[aria-hidden="true"]) td) {
   border-bottom: 0;
 }
 
