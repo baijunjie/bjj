@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import type { AsyncDataTableBatchAction, AsyncDataTableFetchParams, AsyncDataTableFetchResult } from './types'
 import type { DataTableColumn } from '../DataTable/types'
+import { useArgsModel } from '#storybook/argsModel'
 import AsyncDataTable from './index.vue'
 
 interface User {
@@ -33,11 +34,17 @@ const columns: DataTableColumn[] = [
   { field: 'createdAt', title: 'Created', width: '140px', type: 'date' },
 ]
 
-/** Simulated async fetch with sorting support */
+const sortableFields = columns.filter(column => column.sortable).map(column => column.field)
+
+/** Simulated async fetch with filtering and sorting support */
 function mockFetch (params: AsyncDataTableFetchParams): Promise<AsyncDataTableFetchResult<User>> {
   return new Promise(resolve => {
     setTimeout(() => {
       const data = [ ...allUsers ]
+
+      if (params.role) {
+        data.splice(0, data.length, ...data.filter(u => u.role === params.role))
+      }
 
       if (params.sortBy) {
         const order = params.sortOrder ?? 1
@@ -103,11 +110,14 @@ const meta = {
     batchActions: [],
     selection: [],
   },
-  render: args => ({
-    components: { AsyncDataTable },
-    setup: () => ({ args }),
-    template: '<AsyncDataTable v-bind="args" />',
-  }),
+  render: args => {
+    const onUpdateFilters = useArgsModel('filters')
+    return {
+      components: { AsyncDataTable },
+      setup: () => ({ args, onUpdateFilters }),
+      template: '<AsyncDataTable v-bind="args" @update:filters="onUpdateFilters" />',
+    }
+  },
 } satisfies Meta<typeof AsyncDataTable>
 
 export default meta
@@ -154,6 +164,107 @@ export const WithBatchActions: Story = {
       />
       <div class="mt-2 text-sm text-muted-foreground">
         Selected: {{ selection.length > 0 ? selection.map(r => r.name).join(', ') : 'none' }}
+      </div>
+    `,
+  }),
+}
+
+/** `v-model:filters` holds the whole query state: `page` / `size` / `sortBy` / `sortOrder` live in the same bag as the caller's own filters, so an external panel drives sorting while the table writes its paging and header sorting back. */
+export const FiltersModel: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <select v-model="filters.role">
+    <option value="">All</option>
+    <option value="Admin">Admin</option>
+    <option value="Editor">Editor</option>
+    <option value="User">User</option>
+  </select>
+  <select v-model="filters.sortBy">
+    <option :value="null">none</option>
+    <option v-for="f in sortableFields" :key="f" :value="f">{{ f }}</option>
+  </select>
+  <select v-model="filters.sortOrder">
+    <option :value="null">none</option>
+    <option :value="1">asc</option>
+    <option :value="-1">desc</option>
+  </select>
+  <input v-model="filters.page" type="number" min="1">
+  <AsyncDataTable
+    :columns="columns"
+    :fetchMethod="mockFetch"
+    v-model:filters="filters"
+  />
+</template>
+
+<script setup>
+const filters = ref({ role: '', sortBy: null, sortOrder: null })
+</script>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { AsyncDataTable },
+    setup () {
+      const filters = ref<Record<string, any>>({ role: '', sortBy: null, sortOrder: null })
+      return { columns, mockFetch, sortableFields, filters }
+    },
+    template: `
+      <div class="space-y-3">
+        <div class="gap-3 text-sm flex flex-wrap items-center">
+          <label class="gap-2 flex items-center">
+            Role:
+            <select
+              v-model="filters.role"
+              class="px-2 py-1 border rounded"
+            >
+              <option value="">All</option>
+              <option value="Admin">Admin</option>
+              <option value="Editor">Editor</option>
+              <option value="User">User</option>
+            </select>
+          </label>
+          <label class="gap-2 flex items-center">
+            Sort by:
+            <select
+              v-model="filters.sortBy"
+              class="px-2 py-1 border rounded"
+            >
+              <option :value="null">none</option>
+              <option v-for="f in sortableFields" :key="f" :value="f">{{ f }}</option>
+            </select>
+          </label>
+          <label class="gap-2 flex items-center">
+            Order:
+            <select
+              v-model="filters.sortOrder"
+              class="px-2 py-1 border rounded"
+            >
+              <option :value="null">none</option>
+              <option :value="1">asc</option>
+              <option :value="-1">desc</option>
+            </select>
+          </label>
+          <label class="gap-2 flex items-center">
+            Page:
+            <input
+              v-model="filters.page"
+              type="number"
+              min="1"
+              class="px-2 py-1 w-16 border rounded"
+            >
+          </label>
+        </div>
+        <AsyncDataTable
+          :columns="columns"
+          :fetchMethod="mockFetch"
+          v-model:filters="filters"
+        />
+        <pre class="text-xs text-muted-foreground">{{ filters }}</pre>
       </div>
     `,
   }),

@@ -24,7 +24,13 @@ export interface AsyncDataTableProps<T = Record<string, any>> {
   autoFetch?: boolean
   /** Column definitions */
   columns?: DataTableColumn[]
-  /** External filter state */
+  /**
+   * Whole query state (v-model:filters): the caller's own filter fields plus the
+   * component-owned `page` / `size` / `sortBy` / `sortOrder`. Incoming changes to
+   * the owned keys are adopted too, so an external panel can drive sorting and
+   * paging. An absent owned key keeps the current value; `sortBy: null` clears
+   * the sort. Changing anything else restarts at page 1.
+   */
   filters?: Record<string, any>
   /** Whether to show top toolbar (undefined = auto when page size >= `topToolbarThreshold`) */
   showTopToolbar?: boolean

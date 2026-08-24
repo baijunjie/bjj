@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import type { DataTableColumn } from '../DataTable/types'
 import type { InfiniteDataTableFetchParams, InfiniteDataTableFetchResult } from './types'
+import { useArgsModel } from '#storybook/argsModel'
 import InfiniteDataTable from './index.vue'
 
 interface User {
@@ -31,6 +32,8 @@ const columns: DataTableColumn[] = [
   { field: 'amount', title: 'Amount', width: '120px', type: 'currency', sortable: true },
   { field: 'createdAt', title: 'Created', width: '140px', type: 'date' },
 ]
+
+const sortableFields = columns.filter(column => column.sortable).map(column => column.field)
 
 /** Mock fetch using offset as the opaque cursor */
 function mockFetch (params: InfiniteDataTableFetchParams): Promise<InfiniteDataTableFetchResult<User>> {
@@ -86,11 +89,14 @@ const meta = {
     height: '360px',
     clickable: false,
   },
-  render: args => ({
-    components: { InfiniteDataTable: InfiniteDataTable as any },
-    setup: () => ({ args }),
-    template: '<InfiniteDataTable v-bind="args" />',
-  }),
+  render: args => {
+    const onUpdateFilters = useArgsModel('filters')
+    return {
+      components: { InfiniteDataTable: InfiniteDataTable as any },
+      setup: () => ({ args, onUpdateFilters }),
+      template: '<InfiniteDataTable v-bind="args" @update:filters="onUpdateFilters" />',
+    }
+  },
 } satisfies Meta<typeof InfiniteDataTable>
 
 export default meta
@@ -153,6 +159,81 @@ export const WithFilters: Story = {
           :filters="filters"
           height="360px"
         />
+      </div>
+    `,
+  }),
+}
+
+/** `v-model:filters` holds the whole query state: `sortBy` / `sortOrder` live in the same bag as the caller's own filters, so an external panel drives sorting while the table writes its header sorting back. */
+export const FiltersModel: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <select v-model="filters.sortBy">
+    <option :value="null">none</option>
+    <option v-for="f in sortableFields" :key="f" :value="f">{{ f }}</option>
+  </select>
+  <select v-model="filters.sortOrder">
+    <option :value="null">none</option>
+    <option :value="1">asc</option>
+    <option :value="-1">desc</option>
+  </select>
+  <InfiniteDataTable
+    :columns="columns"
+    :fetchMethod="mockFetch"
+    v-model:filters="filters"
+    height="360px"
+  />
+</template>
+
+<script setup>
+const filters = ref({ sortBy: null, sortOrder: null })
+</script>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { InfiniteDataTable: InfiniteDataTable as any },
+    setup () {
+      const filters = ref<Record<string, any>>({ sortBy: null, sortOrder: null })
+      return { columns, mockFetch, sortableFields, filters }
+    },
+    template: `
+      <div class="space-y-3">
+        <div class="gap-3 text-sm flex flex-wrap items-center">
+          <label class="gap-2 flex items-center">
+            Sort by:
+            <select
+              v-model="filters.sortBy"
+              class="px-2 py-1 border rounded"
+            >
+              <option :value="null">none</option>
+              <option v-for="f in sortableFields" :key="f" :value="f">{{ f }}</option>
+            </select>
+          </label>
+          <label class="gap-2 flex items-center">
+            Order:
+            <select
+              v-model="filters.sortOrder"
+              class="px-2 py-1 border rounded"
+            >
+              <option :value="null">none</option>
+              <option :value="1">asc</option>
+              <option :value="-1">desc</option>
+            </select>
+          </label>
+        </div>
+        <InfiniteDataTable
+          :columns="columns"
+          :fetchMethod="mockFetch"
+          v-model:filters="filters"
+          height="360px"
+        />
+        <pre class="text-xs text-muted-foreground">{{ filters }}</pre>
       </div>
     `,
   }),

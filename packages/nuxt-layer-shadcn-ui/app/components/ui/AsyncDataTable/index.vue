@@ -62,8 +62,8 @@ const pagination = ref<AsyncDataTablePagination>({
 })
 
 const sortState = ref<{ sortBy: string | null, sortOrder: number | null }>({
-  sortBy: props.filters?.sortBy ? String(props.filters.sortBy) : null,
-  sortOrder: props.filters?.sortOrder ? Number(props.filters.sortOrder) : null,
+  sortBy: normalizeSortBy(props.filters?.sortBy),
+  sortOrder: normalizeSortOrder(props.filters?.sortOrder),
 })
 
 // -- Computed --
@@ -109,11 +109,36 @@ function getFilters (overrides?: Record<string, any>): Record<string, any> {
   }
 }
 
-// Strip component-owned fields so v-model:filters round-trips don't refire the watcher.
+// Isolate the caller-owned part of `filters`; the component-owned keys are
+// compared by value instead (see the filters watcher).
 function getExternalFilters (filters: Record<string, any> | undefined) {
   if (!filters) return {}
   const { page, size, sortBy, sortOrder, ...rest } = filters
   return rest
+}
+
+function normalizeSortBy (value: unknown): string | null {
+  return value ? String(value) : null
+}
+
+function normalizeSortOrder (value: unknown): number | null {
+  return value ? Number(value) : null
+}
+
+// Incoming shape of the component-owned keys. A query string hands numbers back
+// as strings and drops null keys, so values are coerced before they're compared:
+// that's what keeps our own emits inert when they return through v-model.
+// An absent key means "unspecified — keep what we have"; `sortBy: null` clears
+// the sort, while a missing `page` / `size` has no such meaning.
+function normalizeFilters (filters: Record<string, any> | undefined) {
+  const bag = filters ?? {}
+  return {
+    page: bag.page == null ? pagination.value.page : Number(bag.page) || 1,
+    size: bag.size == null ? pagination.value.size : Number(bag.size) || pagination.value.size,
+    sortBy: bag.sortBy === undefined ? sortState.value.sortBy : normalizeSortBy(bag.sortBy),
+    sortOrder: bag.sortOrder === undefined ? sortState.value.sortOrder : normalizeSortOrder(bag.sortOrder),
+    external: JSON.stringify(getExternalFilters(bag)),
+  }
 }
 
 function buildFetchParams (): AsyncDataTableFetchParams {
@@ -206,11 +231,34 @@ function scheduleAfterSort () {
   })
 }
 
-// -- External filters: any change resets to page 1 and reloads --
+// -- External filters --
+// `filters` carries the whole query state, so incoming page / size / sort are
+// adopted as well — that's what lets a toolbar panel drive sorting or paging.
 
-watch(() => JSON.stringify(getExternalFilters(props.filters)), () => {
+let lastExternalFilters = JSON.stringify(getExternalFilters(props.filters))
+
+watch(() => normalizeFilters(props.filters), incoming => {
+  const externalChanged = incoming.external !== lastExternalFilters
+  lastExternalFilters = incoming.external
+
+  const pageChanged = incoming.page !== pagination.value.page
+  const sizeChanged = incoming.size !== pagination.value.size
+  const sortChanged = incoming.sortBy !== sortState.value.sortBy
+    || incoming.sortOrder !== sortState.value.sortOrder
+  if (!externalChanged && !pageChanged && !sizeChanged && !sortChanged) return
+
+  // A different row set restarts at page 1, unless the same change also asked
+  // for a specific page — restoring a bookmarked query, say.
+  const rowSetChanged = externalChanged || sizeChanged || sortChanged
+  if (sortChanged) sortState.value = { sortBy: incoming.sortBy, sortOrder: incoming.sortOrder }
+  if (sizeChanged) pagination.value.size = incoming.size
+  if (pageChanged) pagination.value.page = incoming.page
+  else if (rowSetChanged) pagination.value.page = 1
+  if (rowSetChanged) pagination.value.total = 0
+
+  emit('update:filters', getFilters())
   if (!started.value) return
-  resetPagination()
+  fetchData(undefined, true)
 })
 
 // -- Expose --

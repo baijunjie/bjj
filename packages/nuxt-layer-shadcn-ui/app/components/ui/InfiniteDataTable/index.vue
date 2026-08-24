@@ -38,8 +38,8 @@ const requestVersion = ref(0)
 const started = ref(false)
 
 const sortState = ref<{ sortBy: string | null, sortOrder: number | null }>({
-  sortBy: props.filters?.sortBy ? String(props.filters.sortBy) : null,
-  sortOrder: props.filters?.sortOrder ? Number(props.filters.sortOrder) : null,
+  sortBy: normalizeSortBy(props.filters?.sortBy),
+  sortOrder: normalizeSortOrder(props.filters?.sortOrder),
 })
 
 const isInitialLoad = computed(() => loading.value && internalData.value.length === 0)
@@ -89,11 +89,34 @@ function getFilters (): Record<string, any> {
   }
 }
 
-// Strip component-owned fields so v-model:filters round-trips don't refire the watcher.
+// Isolate the caller-owned part of `filters`; the component-owned keys are
+// compared by value instead (see the filters watcher).
 function getExternalFilters (filters: Record<string, any> | undefined) {
   if (!filters) return {}
   const { sortBy, sortOrder, ...rest } = filters
   return rest
+}
+
+function normalizeSortBy (value: unknown): string | null {
+  return value ? String(value) : null
+}
+
+function normalizeSortOrder (value: unknown): number | null {
+  return value ? Number(value) : null
+}
+
+// Incoming shape of the component-owned keys. A query string hands numbers back
+// as strings and drops null keys, so values are coerced before they're compared:
+// that's what keeps our own emits inert when they return through v-model.
+// An absent key means "unspecified — keep what we have"; `sortBy: null` clears
+// the sort.
+function normalizeFilters (filters: Record<string, any> | undefined) {
+  const bag = filters ?? {}
+  return {
+    sortBy: bag.sortBy === undefined ? sortState.value.sortBy : normalizeSortBy(bag.sortBy),
+    sortOrder: bag.sortOrder === undefined ? sortState.value.sortOrder : normalizeSortOrder(bag.sortOrder),
+    external: JSON.stringify(getExternalFilters(bag)),
+  }
 }
 
 function buildFetchParams (): InfiniteDataTableFetchParams {
@@ -184,10 +207,25 @@ function scheduleAfterSort () {
   })
 }
 
-// -- External filters: any change resets and reloads --
+// -- External filters --
+// `filters` carries the whole query state, so an incoming sort is adopted as
+// well — that's what lets a toolbar panel drive sorting.
 
-watch(() => JSON.stringify(getExternalFilters(props.filters)), () => {
-  if (!started.value) return
+let lastExternalFilters = JSON.stringify(getExternalFilters(props.filters))
+
+watch(() => normalizeFilters(props.filters), incoming => {
+  const externalChanged = incoming.external !== lastExternalFilters
+  lastExternalFilters = incoming.external
+
+  const sortChanged = incoming.sortBy !== sortState.value.sortBy
+    || incoming.sortOrder !== sortState.value.sortOrder
+  if (!externalChanged && !sortChanged) return
+
+  if (sortChanged) sortState.value = { sortBy: incoming.sortBy, sortOrder: incoming.sortOrder }
+  if (!started.value) {
+    emit('update:filters', getFilters())
+    return
+  }
   refresh()
 })
 

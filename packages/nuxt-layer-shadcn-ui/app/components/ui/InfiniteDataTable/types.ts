@@ -24,7 +24,13 @@ export interface InfiniteDataTableProps<T = Record<string, any>> {
   columns?: DataTableColumn[]
   /** Whether to fetch the first page on mount (default: true) */
   autoFetch?: boolean
-  /** External filter state — changing this resets and reloads */
+  /**
+   * Whole query state (v-model:filters): the caller's own filter fields plus the
+   * component-owned `sortBy` / `sortOrder`. Incoming changes to the owned keys
+   * are adopted too, so an external panel can drive sorting. An absent owned key
+   * keeps the current value; `sortBy: null` clears the sort. Any change resets
+   * and reloads.
+   */
   filters?: Record<string, any>
   /** Number of rows per page (default: 30) */
   pageSize?: number
