@@ -32,6 +32,6 @@ export interface StaticDataTableProps<T = Record<string, any>> {
   clickable?: boolean
   /** Batch action definitions for selected rows */
   batchActions?: StaticDataTableBatchAction<T>[]
-  /** Selected rows (v-model:selection) */
+  /** Selected rows (v-model:selection). Cleared whenever the visible rows are swapped — paging, sorting, new data. */
   selection?: T[]
 }

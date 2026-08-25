@@ -59,13 +59,15 @@ const selectedSet = computed(() => {
   return new Set(selection.value.map(r => toRaw(r) as TData))
 })
 
-// Header "select all" checkbox
+// Header "select all" checkbox. Derived from the rows on screen rather than
+// from the selection size, so a selection still holding rows from elsewhere
+// can't read as "all selected".
 const allChecked = computed({
   get () {
     if (!props.data?.length) return false
-    const size = selectedSet.value.size
-    if (size === props.data.length) return true
-    if (size > 0) return 'indeterminate' as const
+    const selectedOnPage = props.data.filter(row => selectedSet.value.has(toRaw(row) as TData)).length
+    if (selectedOnPage === props.data.length) return true
+    if (selectedOnPage > 0) return 'indeterminate' as const
     return false
   },
   set (val: boolean | 'indeterminate') {

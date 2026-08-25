@@ -46,6 +46,14 @@ function onSelectionChange (value: TData | TData[] | null) {
   emit('update:selection', Array.isArray(value) ? value : value ? [ value ] : [])
 }
 
+// A fetch replaces the rows on screen — a different page, a different filter,
+// or fresh objects for the same records — so nothing picked before it can
+// still be pointed at. Cleared alongside the rows, in the same tick, so the
+// checkboxes and the batch-action count never disagree about what's selected.
+function clearSelection () {
+  if (selectionValue.value.length) emit('update:selection', [])
+}
+
 // -- Internal state --
 
 const loading = ref(false)
@@ -171,6 +179,7 @@ async function fetchData (page?: number, forceRefresh = false) {
 
     internalData.value = result.items as TData[]
     pagination.value.total = result.total
+    clearSelection()
   } catch (error) {
     if (currentVersion !== requestVersion.value) return
     console.error('AsyncDataTable fetchData failed:', error)
@@ -178,6 +187,7 @@ async function fetchData (page?: number, forceRefresh = false) {
     // previous page's rows on screen while the pagination already moved on.
     errored.value = true
     internalData.value = []
+    clearSelection()
   } finally {
     if (currentVersion === requestVersion.value) loading.value = false
   }

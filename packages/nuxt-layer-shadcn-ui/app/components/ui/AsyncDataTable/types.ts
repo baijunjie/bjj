@@ -48,6 +48,6 @@ export interface AsyncDataTableProps<T = Record<string, any>> {
   clickable?: boolean
   /** Batch action definitions for selected rows */
   batchActions?: AsyncDataTableBatchAction<T>[]
-  /** Selected rows (v-model:selection) */
+  /** Selected rows (v-model:selection). Cleared whenever a fetch replaces the rows — paging, sorting, filtering, refresh. */
   selection?: T[]
 }

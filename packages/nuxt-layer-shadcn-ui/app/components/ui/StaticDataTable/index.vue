@@ -42,6 +42,12 @@ function onSelectionChange (value: TData | TData[] | null) {
   emit('update:selection', Array.isArray(value) ? value : value ? [ value ] : [])
 }
 
+// Whatever swaps the visible rows also drops what was picked from them, so the
+// checkboxes and the batch-action count never disagree about what's selected.
+function clearSelection () {
+  if (selectionValue.value.length) emit('update:selection', [])
+}
+
 // -- Internal state --
 
 const pagination = ref<StaticDataTablePagination>({
@@ -91,6 +97,7 @@ watch(
   [ () => props.data, () => sortState.value.sortBy, () => sortState.value.sortOrder ],
   () => {
     pagination.value.page = 1
+    clearSelection()
   },
 )
 
@@ -129,12 +136,14 @@ const batchMenuItems = computed<DropdownItem[]>(() =>
 function onPageChange (newPage: number) {
   if (newPage === pagination.value.page) return
   pagination.value.page = newPage
+  clearSelection()
 }
 
 function onPageSizeChange (newSize: number) {
   if (newSize === pagination.value.size) return
   pagination.value.size = newSize
   pagination.value.page = 1
+  clearSelection()
 }
 
 function onSortByUpdate (value: string | null) {
