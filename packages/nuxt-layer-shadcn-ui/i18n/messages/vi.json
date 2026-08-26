@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "Hành động"
       },
+      "Textarea": {
+        "lines": "{count} dòng"
+      },
       "Upload": {
         "drag": {
           "title": "Nhấp hoặc kéo tệp vào khu vực này để tải lên",

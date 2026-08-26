@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "작업"
       },
+      "Textarea": {
+        "lines": "{count}줄"
+      },
       "Upload": {
         "drag": {
           "title": "이 영역에 파일을 클릭하거나 드래그하여 업로드하세요",

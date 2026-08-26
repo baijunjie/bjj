@@ -5,7 +5,12 @@ export interface TextareaProps {
   rows?: number
   /** Maximum number of characters allowed */
   maxlength?: number
-  /** Show character count below the textarea (rendered as `count / maxlength` when maxlength is set) */
+  /** Maximum number of lines allowed: extra line breaks are blocked and pasted overflow is trimmed */
+  maxLines?: number
+  /**
+   * Show line and character count below the textarea, rendered as `lines · count`.
+   * Each part gains a ` / limit` suffix when `maxLines` / `maxlength` is set.
+   */
   showCount?: boolean
   readonly?: boolean
   disabled?: boolean

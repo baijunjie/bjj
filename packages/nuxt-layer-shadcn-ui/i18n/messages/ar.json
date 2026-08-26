@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "الإجراءات"
       },
+      "Textarea": {
+        "lines": "{count} أسطر"
+      },
       "Upload": {
         "drag": {
           "title": "انقر أو اسحب الملف إلى هذه المنطقة للتحميل",

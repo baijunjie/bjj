@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "İşlemler"
       },
+      "Textarea": {
+        "lines": "{count} satır"
+      },
       "Upload": {
         "drag": {
           "title": "Bu alana dosya gömmek veya sürüklemek için tıklayın",

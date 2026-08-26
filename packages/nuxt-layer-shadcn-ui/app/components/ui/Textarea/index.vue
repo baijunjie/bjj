@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<TextareaProps>(), {
   autocomplete: undefined,
   rows: undefined,
   maxlength: undefined,
+  maxLines: undefined,
   showCount: false,
   readonly: false,
   disabled: false,
@@ -21,6 +22,8 @@ const emit = defineEmits<{
   'change': [value: string]
 }>()
 
+const { t } = useI18n()
+
 const isInvalid = useFormItemInvalid(() => props.invalid)
 
 // Internal value tracks the actual textarea content, independent of parent's modelValue
@@ -31,15 +34,53 @@ watch(() => props.modelValue, value => {
   internalValue.value = value
 })
 
+// A limit below one line would leave no room for content at all
+const lineLimit = computed(() =>
+  props.maxLines !== undefined && props.maxLines >= 1 ? props.maxLines : undefined,
+)
+
+function countLines (value: string) {
+  return value === '' ? 0 : value.split('\n').length
+}
+
+/** Keep the leading lines and drop everything past the line limit */
+function clampLines (value: string) {
+  const limit = lineLimit.value
+  if (limit === undefined || countLines(value) <= limit) return value
+  return value.split('\n').slice(0, limit).join('\n')
+}
+
 const countText = computed(() => {
-  const length = internalValue.value?.length ?? 0
-  return props.maxlength === undefined ? `${length}` : `${length} / ${props.maxlength}`
+  const value = internalValue.value ?? ''
+  const lines = countLines(value)
+  const linesPart = lineLimit.value === undefined ? `${lines}` : `${lines} / ${lineLimit.value}`
+  const charsPart = props.maxlength === undefined ? `${value.length}` : `${value.length} / ${props.maxlength}`
+  return `${t('components.ui.Textarea.lines', { count: linesPart })} · ${charsPart}`
 })
 
 function handleInput (event: Event) {
   const target = event.target as HTMLTextAreaElement
-  internalValue.value = target.value
-  emit('update:modelValue', target.value)
+  const value = clampLines(target.value)
+  if (value !== target.value) {
+    const caret = Math.min(target.selectionStart, value.length)
+    target.value = value
+    target.setSelectionRange(caret, caret)
+    // Re-dispatch so the inner textarea's own v-model state follows the trimmed value
+    target.dispatchEvent(new Event('input', { bubbles: true }))
+    return
+  }
+  internalValue.value = value
+  emit('update:modelValue', value)
+}
+
+// Reject line breaks beyond the line limit; overflow from pasting is trimmed in handleInput
+function handleKeydown (event: KeyboardEvent) {
+  const limit = lineLimit.value
+  // While composing, Enter commits the IME candidate instead of inserting a line break
+  if (limit === undefined || event.key !== 'Enter' || event.isComposing) return
+  const { value, selectionStart, selectionEnd } = event.target as HTMLTextAreaElement
+  const next = `${value.slice(0, selectionStart)}\n${value.slice(selectionEnd)}`
+  if (countLines(next) > limit) event.preventDefault()
 }
 
 function handleChange (event: Event) {
@@ -69,6 +110,7 @@ const mergedClass = computed(() =>
       :autocomplete="autocomplete || 'off'"
       v-bind="$attrs"
       @input="handleInput"
+      @keydown="handleKeydown"
       @change="handleChange"
     />
     <div

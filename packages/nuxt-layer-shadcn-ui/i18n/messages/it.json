@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "Azioni"
       },
+      "Textarea": {
+        "lines": "{count} righe"
+      },
       "Upload": {
         "drag": {
           "title": "Fai clic o trascina il file in quest'area per caricarlo",

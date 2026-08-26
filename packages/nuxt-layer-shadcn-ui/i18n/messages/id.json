@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "Tindakan"
       },
+      "Textarea": {
+        "lines": "{count} baris"
+      },
       "Upload": {
         "drag": {
           "title": "Klik atau seret file ke area ini untuk mengunggah",

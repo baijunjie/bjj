@@ -11,6 +11,7 @@ const meta = {
     autocomplete: { control: 'text' },
     rows: { control: 'number' },
     maxlength: { control: 'number' },
+    maxLines: { control: 'number' },
     showCount: { control: 'boolean' },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
@@ -22,6 +23,7 @@ const meta = {
     autocomplete: '',
     rows: undefined,
     maxlength: undefined,
+    maxLines: undefined,
     showCount: false,
     readonly: false,
     disabled: false,
@@ -70,6 +72,23 @@ export const WithRows: Story = {
       </div>
     `,
   }),
+}
+
+export const WithCount: Story = {
+  parameters: noControls,
+  args: {
+    showCount: true,
+    maxlength: 200,
+  },
+}
+
+export const WithMaxLines: Story = {
+  parameters: noControls,
+  args: {
+    showCount: true,
+    maxLines: 3,
+    modelValue: 'Line 1\nLine 2',
+  },
 }
 
 export const Invalid: Story = {

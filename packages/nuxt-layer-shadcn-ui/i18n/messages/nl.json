@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "Acties"
       },
+      "Textarea": {
+        "lines": "{count} regels"
+      },
       "Upload": {
         "drag": {
           "title": "Klik of sleep bestand naar dit gebied om te uploaden",
