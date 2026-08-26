@@ -22,6 +22,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from '../../shadcn/sidebar'
 
 const props = defineProps<{
@@ -36,6 +37,12 @@ const emit = defineEmits<{
 }>()
 
 const route = useRoute()
+
+// In page mode this is the real provider's live state; the embedded fallback
+// context pins it to 'expanded'. On mobile the sidebar renders as a full-width
+// sheet, so the inline sub-menu stays regardless of the collapsed state.
+const { state, isMobile } = useSidebar()
+const iconCollapsed = computed(() => state.value === 'collapsed' && !isMobile.value)
 
 const isExternal = (href: string) => /^https?:\/\//.test(href)
 
@@ -74,6 +81,21 @@ function hasActiveChild (item: SidebarLayoutMenuItem): boolean {
 function handleSelect (item: SidebarLayoutMenuItem) {
   emit('select', item)
 }
+
+// Fly-out items for an icon-collapsed parent: the leading label stands in for
+// the parent's text, which only shows its icon in that state.
+function toDropdownItems (item: SidebarLayoutMenuItem): DropdownItem[] {
+  return [
+    { type: 'label', label: item.label },
+    ...(item.children ?? []).map(child => ({
+      label: child.label,
+      icon: child.icon,
+      href: child.href,
+      active: isActive(child),
+      command: () => handleSelect(child),
+    })),
+  ]
+}
 </script>
 
 <template>
@@ -81,7 +103,13 @@ function handleSelect (item: SidebarLayoutMenuItem) {
     v-for="(group, groupIndex) in navGroups"
     :key="groupIndex"
   >
-    <SidebarGroupLabel v-if="group.label">
+    <!-- While icon-collapsed the vendored label hides via `opacity-0`, which
+         creates a stacking context that keeps hit-testing above the menu row
+         it overlaps, so clicks must fall through it. -->
+    <SidebarGroupLabel
+      v-if="group.label"
+      class="group-data-[collapsible=icon]:pointer-events-none"
+    >
       {{ group.label }}
     </SidebarGroupLabel>
     <SidebarMenu>
@@ -89,9 +117,31 @@ function handleSelect (item: SidebarLayoutMenuItem) {
         v-for="item in group.items"
         :key="sidebarMenuItemKey(item)"
       >
+        <!-- Icon-collapsed parent: the inline sub-menu is hidden in that
+             state, so the children fly out as a dropdown at the side. -->
+        <SidebarMenuItem v-if="item.children?.length && iconCollapsed">
+          <Dropdown
+            :menus="toDropdownItems(item)"
+            side="right"
+            align="start"
+            class="min-w-48 rounded-lg"
+          >
+            <SidebarMenuButton
+              :isActive="hasActiveChild(item)"
+              class="cursor-pointer"
+            >
+              <Icon
+                v-if="item.icon"
+                :name="item.icon"
+              />
+              <span>{{ item.label }}</span>
+            </SidebarMenuButton>
+          </Dropdown>
+        </SidebarMenuItem>
+
         <!-- Collapsible item with children -->
         <Collapsible
-          v-if="item.children?.length"
+          v-else-if="item.children?.length"
           asChild
           :defaultOpen="item.expanded ?? hasActiveChild(item)"
           class="group/collapsible"

@@ -199,6 +199,52 @@ export const NestedMenus: Story = {
   },
 }
 
+// Page mode starting icon-collapsed (`defaultOpen` falls through to the
+// provider): parents with children show them in a fly-out dropdown at the side.
+export const CollapsedNestedMenus: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <SidebarLayout
+    v-model:active="active"
+    :menus="menus"
+    :defaultOpen="false"
+    contentClass="p-6"
+  >
+    <template #header>
+      <div class="truncate px-2 py-1 text-base font-semibold group-data-[collapsible=icon]:hidden">Acme Inc.</div>
+    </template>
+
+    <div class="text-sm text-muted-foreground">Pane for {{ active }}</div>
+  </SidebarLayout>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { SidebarLayout },
+    setup () {
+      const active = ref('intro')
+      return { active, nestedMenus }
+    },
+    template: `
+      <SidebarLayout
+        v-model:active="active"
+        :menus="nestedMenus"
+        :defaultOpen="false"
+        contentClass="p-6"
+      >
+        ${brandTemplate}
+        <div class="text-sm text-muted-foreground">Pane for {{ active }}</div>
+      </SidebarLayout>
+    `,
+  }),
+}
+
 export const EmptyText: Story = {
   parameters: noControls,
   args: {
