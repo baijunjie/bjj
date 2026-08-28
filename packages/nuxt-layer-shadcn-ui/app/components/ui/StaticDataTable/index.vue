@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<StaticDataTableProps<TData>>(), {
   pageSizeOptions: () => [ 10, 20, 50, 100 ],
   showPagination: true,
   selectable: false,
+  rowSelectable: undefined,
   clickable: false,
   batchActions: () => [],
   selection: () => [],
@@ -202,6 +203,7 @@ function onSortOrderUpdate (value: number | null) {
       :data="tableData"
       :columns="columns"
       :selectionMode="showSelectionColumn ? 'multiple' : undefined"
+      :rowSelectable="rowSelectable"
       :clickable="clickable"
       :sortBy="sortState.sortBy"
       :sortOrder="sortState.sortOrder"

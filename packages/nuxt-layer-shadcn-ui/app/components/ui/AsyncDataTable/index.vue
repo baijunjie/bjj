@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<AsyncDataTableProps<TData>>(), {
   pageSizeOptions: () => [ 10, 20, 50, 100 ],
   showPagination: true,
   selectable: false,
+  rowSelectable: undefined,
   clickable: false,
   batchActions: () => [],
   selection: () => [],
@@ -335,6 +336,7 @@ onMounted(() => {
       :columns
       :loading
       :selectionMode="showSelectionColumn ? 'multiple' : undefined"
+      :rowSelectable
       :clickable
       :sortBy="sortState.sortBy"
       :sortOrder="sortState.sortOrder"

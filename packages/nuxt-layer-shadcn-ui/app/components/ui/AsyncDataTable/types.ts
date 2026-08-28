@@ -1,4 +1,4 @@
-import type { DataTableColumn } from '../DataTable/types'
+import type { DataTableColumn, DataTableRowSelectable } from '../DataTable/types'
 import type { DropdownActionItem, DropdownLabelItem, DropdownSeparatorItem } from '../Dropdown/types'
 
 export type AsyncDataTableBatchAction<T = Record<string, any>>
@@ -44,6 +44,8 @@ export interface AsyncDataTableProps<T = Record<string, any>> {
   showPagination?: boolean
   /** Whether rows are selectable */
   selectable?: boolean
+  /** Per-row selection gate; `index` is relative to the current page. Rows returning false get a disabled checkbox and are skipped by "select all". */
+  rowSelectable?: DataTableRowSelectable<T>
   /** Whether rows are clickable (shows pointer cursor and pairs with `@rowClick`) */
   clickable?: boolean
   /** Batch action definitions for selected rows */

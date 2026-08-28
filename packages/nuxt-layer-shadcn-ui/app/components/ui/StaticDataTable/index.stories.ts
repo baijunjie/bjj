@@ -77,6 +77,7 @@ const meta = {
     pageSizeOptions: { control: 'object' },
     showPagination: { control: 'boolean' },
     selectable: { control: 'boolean' },
+    rowSelectable: { control: false },
     clickable: { control: 'boolean' },
     batchActions: { control: 'object' },
     selection: { control: 'object' },
@@ -91,6 +92,7 @@ const meta = {
     pageSizeOptions: [ 10, 20, 50 ],
     showPagination: true,
     selectable: false,
+    rowSelectable: undefined,
     clickable: false,
     batchActions: [],
     selection: [],
@@ -143,6 +145,48 @@ export const WithBatchActions: Story = {
         :batchActions="batchActions"
         v-model:selection="selection"
         showTopToolbar
+      />
+      <div class="mt-2 text-sm text-muted-foreground">
+        Selected: {{ selection.length > 0 ? selection.map(r => r.name).join(', ') : 'none' }}
+      </div>
+    `,
+  }),
+}
+
+/** `rowSelectable` locks individual rows out of selection: their checkbox is disabled and "select all" skips them. */
+export const DisabledRows: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <StaticDataTable
+    :data="users"
+    :columns="columns"
+    :rowSelectable="row => row.status === 'active'"
+    v-model:selection="selection"
+    selectable
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { StaticDataTable },
+    setup () {
+      const selection = ref<User[]>([])
+      const rowSelectable = (row: User) => row.status === 'active'
+      return { users: allUsers, columns, selection, rowSelectable }
+    },
+    template: `
+      <StaticDataTable
+        :data="users"
+        :columns="columns"
+        :rowSelectable="rowSelectable"
+        v-model:selection="selection"
+        selectable
       />
       <div class="mt-2 text-sm text-muted-foreground">
         Selected: {{ selection.length > 0 ? selection.map(r => r.name).join(', ') : 'none' }}

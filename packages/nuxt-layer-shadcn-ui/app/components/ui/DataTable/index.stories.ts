@@ -77,12 +77,14 @@ const meta = {
   component: DataTable as any,
   argTypes: {
     selectionMode: { control: 'select', options: [ undefined, 'single', 'multiple' ]},
+    rowSelectable: { control: false },
     loading: { control: 'boolean' },
     clickable: { control: 'boolean' },
     height: { control: 'text' },
   },
   args: {
     selectionMode: undefined,
+    rowSelectable: undefined,
     loading: false,
     clickable: false,
     height: undefined,
@@ -424,6 +426,50 @@ export const MultipleSelection: Story = {
         />
         <div class="mt-2 text-sm text-muted-foreground">
           Selected: {{ selection.length > 0 ? selection.map(r => r.name).join(', ') : 'none' }}
+        </div>
+      </div>
+    `,
+  }),
+}
+
+export const DisabledRows: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable
+    :data="data"
+    :columns="columns"
+    selectionMode="multiple"
+    :rowSelectable="row => row.status === 'active'"
+    v-model:selection="selection"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup () {
+      const selection = ref<User[]>([])
+      const rowSelectable = (row: User) => row.status === 'active'
+      return { data: sampleData, basicColumns, selection, rowSelectable }
+    },
+    template: `
+      <div class="w-full">
+        <DataTable
+          :data="data"
+          :columns="basicColumns"
+          selectionMode="multiple"
+          :rowSelectable="rowSelectable"
+          v-model:selection="selection"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">
+          Inactive rows are locked out of selection — Selected:
+          {{ selection.length > 0 ? selection.map(r => r.name).join(', ') : 'none' }}
         </div>
       </div>
     `,

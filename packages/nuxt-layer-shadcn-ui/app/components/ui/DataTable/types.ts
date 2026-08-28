@@ -3,6 +3,9 @@ export type DataTableColumnFixed = 'left' | 'right'
 export type DataTableColumnAlign = 'left' | 'center' | 'right'
 export type DataTableSelectionMode = 'single' | 'multiple'
 
+/** Per-row selection gate: return false to lock a row out of selection */
+export type DataTableRowSelectable<T = Record<string, any>> = (row: T, index: number) => boolean
+
 export interface DataTableColumn {
   /** Column identifier - used for field binding and slot naming */
   field: string
@@ -41,6 +44,8 @@ export interface DataTableProps<T = Record<string, any>> {
   columns?: DataTableColumn[]
   /** Selection mode: single or multiple */
   selectionMode?: DataTableSelectionMode
+  /** Per-row selection gate. Rows returning false get a disabled checkbox and ignore row-click selection; a selection they already hold is left untouched. */
+  rowSelectable?: DataTableRowSelectable<T>
   /** Row to highlight as active. Independent from selection; uses the same highlight style. */
   active?: T | null
   /** Current sort field */

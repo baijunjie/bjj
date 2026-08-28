@@ -22,6 +22,7 @@ const props = withDefaults(defineProps<DataTableProps<TData>>(), {
   data: () => [],
   columns: () => [],
   selectionMode: undefined,
+  rowSelectable: undefined,
   sortBy: undefined,
   sortOrder: undefined,
   loading: false,
@@ -53,25 +54,41 @@ const { formatDateTime } = useDate()
 
 const showSelectionColumn = computed(() => !!props.selectionMode)
 
+function isRowSelectable (row: TData, index: number): boolean {
+  return props.rowSelectable ? props.rowSelectable(row, index) : true
+}
+
+// Rows the user is allowed to toggle. A locked row is out of the running for
+// both the header checkbox and "select all".
+const selectableRows = computed(() =>
+  props.rowSelectable ? props.data.filter(isRowSelectable) : props.data,
+)
+
 // Set of raw references for O(1) lookup, centralizes toRaw conversion
 const selectedSet = computed(() => {
   if (!Array.isArray(selection.value)) return new Set<TData>()
   return new Set(selection.value.map(r => toRaw(r) as TData))
 })
 
-// Header "select all" checkbox. Derived from the rows on screen rather than
-// from the selection size, so a selection still holding rows from elsewhere
-// can't read as "all selected".
+// Header "select all" checkbox. Derived from the selectable rows on screen
+// rather than from the selection size, so a selection still holding rows from
+// elsewhere can't read as "all selected".
 const allChecked = computed({
   get () {
-    if (!props.data?.length) return false
-    const selectedOnPage = props.data.filter(row => selectedSet.value.has(toRaw(row) as TData)).length
-    if (selectedOnPage === props.data.length) return true
+    const rows = selectableRows.value
+    if (!rows.length) return false
+    const selectedOnPage = rows.filter(row => selectedSet.value.has(toRaw(row) as TData)).length
+    if (selectedOnPage === rows.length) return true
     if (selectedOnPage > 0) return 'indeterminate' as const
     return false
   },
   set (val: boolean | 'indeterminate') {
-    selection.value = val === true ? [ ...props.data ] : []
+    // What the user can't toggle one by one, "select all" doesn't touch either:
+    // a locked row keeps whatever selection state it arrived with.
+    const locked = props.data.filter((row, index) =>
+      !isRowSelectable(row, index) && selectedSet.value.has(toRaw(row) as TData),
+    )
+    selection.value = val === true ? [ ...locked, ...selectableRows.value ] : locked
   },
 })
 
@@ -82,11 +99,18 @@ function isRowSelected (row: TData): boolean {
   return toRaw(selection.value) === toRaw(row)
 }
 
+// Both selection and the `clickable` contract make a row respond to a click.
+function isRowClickable (row: TData, index: number): boolean {
+  return props.clickable || (showSelectionColumn.value && isRowSelectable(row, index))
+}
+
 function isRowActive (row: TData): boolean {
   return props.active != null && toRaw(props.active) === toRaw(row)
 }
 
-function toggleRow (row: TData) {
+function toggleRow (row: TData, index: number) {
+  if (!isRowSelectable(row, index)) return
+
   const rawRow = toRaw(row) as TData
   if (props.selectionMode === 'single') {
     selection.value = isRowSelected(row) ? null : rawRow
@@ -99,7 +123,7 @@ function toggleRow (row: TData) {
 
 function onRowClick (row: TData, index: number, event: MouseEvent) {
   emit('rowClick', row, index, event)
-  if (showSelectionColumn.value) toggleRow(row)
+  if (showSelectionColumn.value) toggleRow(row, index)
 }
 
 // -- Sorting --
@@ -342,6 +366,7 @@ defineExpose({
             <Checkbox
               v-if="selectionMode === 'multiple'"
               v-model="allChecked"
+              :disabled="!selectableRows.length"
               class="bg-background"
             />
           </TableHead>
@@ -406,7 +431,7 @@ defineExpose({
           <TableRow
             v-for="(row, index) in data"
             :key="index"
-            :class="(showSelectionColumn || clickable) && 'cursor-pointer'"
+            :class="isRowClickable(row, index) && 'cursor-pointer'"
             :data-state="(isRowSelected(row) || isRowActive(row)) ? 'selected' : undefined"
             @click="onRowClick(row, index, $event)"
           >
@@ -420,8 +445,9 @@ defineExpose({
             >
               <Checkbox
                 :modelValue="isRowSelected(row)"
+                :disabled="!isRowSelectable(row, index)"
                 class="bg-muted-foreground/15"
-                @update:modelValue="toggleRow(row)"
+                @update:modelValue="toggleRow(row, index)"
               />
             </TableCell>
 

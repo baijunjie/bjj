@@ -91,6 +91,7 @@ const meta = {
     pageSizeOptions: { control: 'object' },
     showPagination: { control: 'boolean' },
     selectable: { control: 'boolean' },
+    rowSelectable: { control: false },
     clickable: { control: 'boolean' },
     batchActions: { control: 'object' },
     selection: { control: 'object' },
@@ -106,6 +107,7 @@ const meta = {
     pageSizeOptions: [ 10, 20, 50 ],
     showPagination: true,
     selectable: false,
+    rowSelectable: undefined,
     clickable: false,
     batchActions: [],
     selection: [],
@@ -161,6 +163,48 @@ export const WithBatchActions: Story = {
         :batchActions="batchActions"
         v-model:selection="selection"
         showTopToolbar
+      />
+      <div class="mt-2 text-sm text-muted-foreground">
+        Selected: {{ selection.length > 0 ? selection.map(r => r.name).join(', ') : 'none' }}
+      </div>
+    `,
+  }),
+}
+
+/** `rowSelectable` locks individual rows out of selection: their checkbox is disabled and "select all" skips them. */
+export const DisabledRows: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <AsyncDataTable
+    :columns="columns"
+    :fetchMethod="mockFetch"
+    :rowSelectable="row => row.status === 'active'"
+    v-model:selection="selection"
+    selectable
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { AsyncDataTable },
+    setup () {
+      const selection = ref<User[]>([])
+      const rowSelectable = (row: User) => row.status === 'active'
+      return { columns, mockFetch, selection, rowSelectable }
+    },
+    template: `
+      <AsyncDataTable
+        :columns="columns"
+        :fetchMethod="mockFetch"
+        :rowSelectable="rowSelectable"
+        v-model:selection="selection"
+        selectable
       />
       <div class="mt-2 text-sm text-muted-foreground">
         Selected: {{ selection.length > 0 ? selection.map(r => r.name).join(', ') : 'none' }}
