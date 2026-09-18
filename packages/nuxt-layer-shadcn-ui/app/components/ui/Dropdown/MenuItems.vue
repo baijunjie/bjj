@@ -14,6 +14,7 @@ import type {
   DropdownActionItem,
   DropdownCustomActionItem,
   DropdownItem,
+  DropdownItemColor,
 } from './types'
 
 const actionColorVariants = cva('', {
@@ -59,6 +60,11 @@ defineProps<{
   menus: DropdownItem[]
 }>()
 
+// Marks rows the stylesheet must leave alone, so their icons keep following
+// the label's status color instead of taking the muted step.
+const statusColor = (color?: DropdownItemColor) =>
+  color && color !== 'default' ? color : undefined
+
 const ctx = inject(dropdownContextKey)
 
 const handleItemAction = (
@@ -102,6 +108,7 @@ const handleItemAction = (
     <DropdownMenuItem
       v-else-if="menu.type === 'custom-action'"
       :disabled="menu.disabled"
+      :data-status-color="statusColor(menu.color)"
       :class="cn(actionColorVariants({ color: menu.color }), menu.class)"
       @click="handleItemAction(menu, $event)"
     >
@@ -119,6 +126,7 @@ const handleItemAction = (
     <DropdownMenuSub v-else-if="menu.subMenus?.length">
       <DropdownMenuSubTrigger
         :disabled="menu.disabled"
+        :data-status-color="statusColor(menu.color)"
         :class="cn(actionColorVariants({ color: menu.color }), menu.class)"
       >
         <ItemContent :item="menu" />
@@ -137,6 +145,7 @@ const handleItemAction = (
       v-else
       :disabled="menu.disabled"
       :asChild="!!menu.href"
+      :data-status-color="statusColor(menu.color)"
       :class="cn(actionColorVariants({ color: menu.color }), menu.class)"
       @click="handleItemAction(menu, $event)"
     >

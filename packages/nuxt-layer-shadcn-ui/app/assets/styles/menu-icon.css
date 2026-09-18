@@ -1,0 +1,40 @@
+/* =========================================================================
+ * Menu row icons — foreground step
+ * -------------------------------------------------------------------------
+ * An icon inside a menu row is muted relative to the row's own label:
+ * label `--foreground`, icon `--foreground-muted` — the step the trailing
+ * icons already used.
+ *
+ * The vendored shadcn rows declare this themselves, but through a class name
+ * whose quoting survives neither Tailwind's scanner nor the DOM, so the rule
+ * never matches; those files are regenerated rather than edited, so the step
+ * is restored here instead.
+ *
+ * Unlayered CSS outranks the whole Tailwind utilities layer, which is what
+ * makes this win without `!important` — and also means no utility can
+ * override it: the only way out is the `:not()` guard below, or another
+ * unlayered rule.
+ *
+ * A row that carries a status color opts its icons back out, so they follow
+ * the label the way they do without any rule at all.
+ *
+ * Two consequences worth knowing before touching a menu row:
+ * - The rule takes over every svg in the row, including icons inside nested
+ *   components that would otherwise inherit their own color. Such an icon
+ *   needs an explicit `text-*` class to keep it.
+ * - `[class*='text-']` matches a substring, so `text-xs` and the like opt an
+ *   icon out just as `text-primary` does.
+ * ========================================================================= */
+
+[data-slot='dropdown-menu-item'] svg:not([class*='text-']),
+[data-slot='dropdown-menu-checkbox-item'] svg:not([class*='text-']),
+[data-slot='dropdown-menu-radio-item'] svg:not([class*='text-']),
+[data-slot='dropdown-menu-sub-trigger'] svg:not([class*='text-']),
+[data-slot='dropdown-menu-label'] svg:not([class*='text-']) {
+  color: var(--foreground-muted);
+}
+
+[data-slot='dropdown-menu-item'][data-status-color] svg:not([class*='text-']),
+[data-slot='dropdown-menu-sub-trigger'][data-status-color] svg:not([class*='text-']) {
+  color: inherit;
+}
