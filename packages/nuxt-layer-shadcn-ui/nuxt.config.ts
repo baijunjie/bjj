@@ -44,7 +44,11 @@ export default defineNuxtConfig({
       { code: 'vi', file: 'vi.json' },
       { code: 'zh-CN', file: 'zh-CN.json' },
       { code: 'zh-TW', file: 'zh-TW.json' },
-    ],
+      // Handed over untyped on purpose: `@nuxtjs/i18n` narrows `code` to the
+      // consuming app's own locale union, and this layer ships translations
+      // for more languages than any one consumer declares — without this the
+      // list fails to type-check in every app that declares fewer.
+    ] as never,
   },
 
   // Register the layer's global stylesheet. Consumers extending this layer
@@ -76,9 +80,12 @@ export default defineNuxtConfig({
     // `.vue` files must not export types per project convention; exported
     // types live in a co-located `types.ts` that gets scanned here.
     'imports:extend': async (imports: unknown[]) => {
-      // @ts-expect-error fast-glob has no types in this project scope
+      // `ts-ignore`, not `ts-expect-error`: both packages are untyped here but
+      // resolve fine from a consuming app, where `expect-error` would itself
+      // become the error.
+      // @ts-ignore fast-glob has no types in this project scope
       const { default: fg } = await import('fast-glob')
-      // @ts-expect-error unimport has no types in this project scope
+      // @ts-ignore unimport has no types in this project scope
       const { scanExports } = await import('unimport')
       const files = await fg('**/types.ts', {
         cwd: join(currentDir, 'app/components'),
