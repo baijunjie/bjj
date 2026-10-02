@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<DataTableProps<TData>>(), {
   sortOrder: undefined,
   loading: false,
   clickable: false,
+  hoverable: true,
   height: undefined,
   active: null,
 })
@@ -324,6 +325,7 @@ defineExpose({
       `,
       !$slots.footer && 'pb-1',
       height && 'has-sticky-bounds',
+      !hoverable && 'no-hover',
     )"
     :style="heightStyle"
   >
@@ -600,6 +602,13 @@ defineExpose({
 :deep(tbody tr:not([data-virtual-row]):hover),
 :deep(tbody tr[data-state="selected"]) {
   --cell-overlay: var(--color-muted);
+}
+
+/* Drops the hover tint only, so a selected or active row still stands out.
+   Consumers cannot do this from the outside: the tint is painted by the cell's
+   `background` shorthand, which a `bg-*` utility on the row never reaches. */
+.no-hover :deep(tbody tr:not([data-state="selected"]):hover) {
+  --cell-overlay: transparent;
 }
 
 /* Opaque card base under a translucent state overlay: frozen (sticky) cells

@@ -56,6 +56,8 @@ export interface DataTableProps<T = Record<string, any>> {
   loading?: boolean
   /** Whether rows are clickable (shows pointer cursor and pairs with `@rowClick`) */
   clickable?: boolean
+  /** Whether rows take a hover highlight. Default: true — turn it off where the cells hold form controls, as a tinted row reads as "not editable" there. Selected and active rows keep their highlight either way. */
+  hoverable?: boolean
   /** Fixed height for the inner scroll container (e.g. '400px'). Enables internal vertical scroll, with sticky header and footer. */
   height?: string
 }

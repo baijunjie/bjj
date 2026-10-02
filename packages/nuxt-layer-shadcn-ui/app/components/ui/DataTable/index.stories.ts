@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import Input from '../Input/index.vue'
 import Tag from '../Tag/index.vue'
 import type { DataTableColumn } from './types'
 import DataTable from './index.vue'
@@ -80,6 +81,7 @@ const meta = {
     rowSelectable: { control: false },
     loading: { control: 'boolean' },
     clickable: { control: 'boolean' },
+    hoverable: { control: 'boolean' },
     height: { control: 'text' },
   },
   args: {
@@ -87,6 +89,7 @@ const meta = {
     rowSelectable: undefined,
     loading: false,
     clickable: false,
+    hoverable: true,
     height: undefined,
   },
   render: args => ({
@@ -307,6 +310,39 @@ export const ActiveRow: Story = {
         <div class="mt-2 text-sm text-muted-foreground">
           Active: {{ active?.name ?? 'none' }}
         </div>
+      </div>
+    `,
+  }),
+}
+
+/** A form grid: the hover tint would read as "this row is not editable", so it is turned off. The selected row keeps its highlight. */
+export const NoHover: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable :data="data" :columns="columns" :hoverable="false">
+    <template #name="{ row }">
+      <Input v-model="row.name" />
+    </template>
+  </DataTable>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { DataTable: DataTable as any, Input },
+    setup: () => ({ data: sampleData, basicColumns }),
+    template: `
+      <div class="w-full">
+        <DataTable :data="data" :columns="basicColumns" :hoverable="false">
+          <template #name="{ row }">
+            <Input v-model="row.name" />
+          </template>
+        </DataTable>
       </div>
     `,
   }),
