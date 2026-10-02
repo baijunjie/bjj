@@ -6,13 +6,12 @@
  * here so Modal and Drawer keep a consistent translucent blur backdrop.
  * ========================================================================= */
 
+/* One dark scrim for both themes: a light tint reads as a blurred page rather
+   than a page put behind the dialog, and in dark mode it would have to be dark
+   anyway. Kept shallow — the dialog sits on an opaque card, so the scrim only
+   has to push the page back, not hide it. */
 [data-slot='dialog-overlay'],
 [data-slot='sheet-overlay'] {
-  background-color: rgba(252, 252, 252, 0.3);
-  backdrop-filter: blur(4px);
-}
-
-.dark [data-slot='dialog-overlay'],
-.dark [data-slot='sheet-overlay'] {
-  background-color: rgba(25, 25, 25, 0.3);
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(2px);
 }
