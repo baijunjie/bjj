@@ -38,4 +38,6 @@ export interface InfiniteDataTableProps<T = Record<string, any>> {
   height?: string
   /** Whether rows are clickable (shows pointer cursor and pairs with `@rowClick`) */
   clickable?: boolean
+  /** Row hover highlight. Default: true. Turn it off where the cells hold form controls — a tinted row reads as "not editable" there. Selected and active rows keep their highlight either way. */
+  hoverable?: boolean
 }

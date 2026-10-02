@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<InfiniteDataTableProps<TData>>(), {
   pageSize: 30,
   height: undefined,
   clickable: false,
+  hoverable: true,
 })
 
 const emit = defineEmits<{
@@ -254,6 +255,7 @@ onMounted(() => {
     :height
     :loading="isInitialLoad"
     :clickable
+    :hoverable
     :sortBy="sortState.sortBy"
     :sortOrder="sortState.sortOrder"
     @update:sortBy="onSortByUpdate"

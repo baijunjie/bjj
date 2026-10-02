@@ -18,6 +18,7 @@ const props = withDefaults(defineProps<StaticDataTableProps<TData>>(), {
   selectable: false,
   rowSelectable: undefined,
   clickable: false,
+  hoverable: true,
   batchActions: () => [],
   selection: () => [],
 })
@@ -205,6 +206,7 @@ function onSortOrderUpdate (value: number | null) {
       :selectionMode="showSelectionColumn ? 'multiple' : undefined"
       :rowSelectable="rowSelectable"
       :clickable="clickable"
+      :hoverable="hoverable"
       :sortBy="sortState.sortBy"
       :sortOrder="sortState.sortOrder"
       @update:selection="onSelectionChange"

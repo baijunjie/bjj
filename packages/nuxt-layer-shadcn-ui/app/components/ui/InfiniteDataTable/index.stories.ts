@@ -79,6 +79,7 @@ const meta = {
     pageSize: { control: 'number' },
     height: { control: 'text' },
     clickable: { control: 'boolean' },
+    hoverable: { control: 'boolean' },
   },
   args: {
     columns,
@@ -88,6 +89,7 @@ const meta = {
     pageSize: 30,
     height: '360px',
     clickable: false,
+    hoverable: true,
   },
   render: args => {
     const onUpdateFilters = useArgsModel('filters')

@@ -315,7 +315,7 @@ export const ActiveRow: Story = {
   }),
 }
 
-/** A form grid: the hover tint would read as "this row is not editable", so it is turned off. The selected row keeps its highlight. */
+/** A form grid: the hover tint would read as "this row is not editable", so it is turned off. Hover any row — only the selected one stays tinted. */
 export const NoHover: Story = {
   parameters: {
     ...noControls,
@@ -323,7 +323,13 @@ export const NoHover: Story = {
       source: {
         code: `
 <template>
-  <DataTable :data="data" :columns="columns" :hoverable="false">
+  <DataTable
+    v-model:selection="selection"
+    :data="data"
+    :columns="columns"
+    selectionMode="single"
+    :hoverable="false"
+  >
     <template #name="{ row }">
       <Input v-model="row.name" />
     </template>
@@ -335,10 +341,22 @@ export const NoHover: Story = {
   },
   render: () => ({
     components: { DataTable: DataTable as any, Input },
-    setup: () => ({ data: sampleData, basicColumns }),
+    setup () {
+      // Own copy: the inputs write straight into the row objects, and
+      // `sampleData` is shared with every other story in this file.
+      const data = reactive(sampleData.map(row => ({ ...row })))
+      const selection = ref(data[1])
+      return { data, basicColumns, selection }
+    },
     template: `
       <div class="w-full">
-        <DataTable :data="data" :columns="basicColumns" :hoverable="false">
+        <DataTable
+          v-model:selection="selection"
+          :data="data"
+          :columns="basicColumns"
+          selectionMode="single"
+          :hoverable="false"
+        >
           <template #name="{ row }">
             <Input v-model="row.name" />
           </template>

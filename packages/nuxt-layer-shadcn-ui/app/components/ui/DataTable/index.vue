@@ -606,9 +606,13 @@ defineExpose({
 
 /* Drops the hover tint only, so a selected or active row still stands out.
    Consumers cannot do this from the outside: the tint is painted by the cell's
-   `background` shorthand, which a `bg-*` utility on the row never reaches. */
+   `background` shorthand, which a `bg-*` utility on the row never reaches.
+   `TableRow` carries its own `hover:bg-muted/50`, invisible here only because
+   the cells paint an opaque base over it — clearing it too keeps this working
+   if a cell ever stops being opaque. */
 .no-hover :deep(tbody tr:not([data-state="selected"]):hover) {
   --cell-overlay: transparent;
+  background-color: transparent;
 }
 
 /* Opaque card base under a translucent state overlay: frozen (sticky) cells

@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<AsyncDataTableProps<TData>>(), {
   selectable: false,
   rowSelectable: undefined,
   clickable: false,
+  hoverable: true,
   batchActions: () => [],
   selection: () => [],
 })
@@ -338,6 +339,7 @@ onMounted(() => {
       :selectionMode="showSelectionColumn ? 'multiple' : undefined"
       :rowSelectable
       :clickable
+      :hoverable
       :sortBy="sortState.sortBy"
       :sortOrder="sortState.sortOrder"
       @update:selection="onSelectionChange"

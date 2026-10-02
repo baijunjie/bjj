@@ -32,6 +32,8 @@ export interface StaticDataTableProps<T = Record<string, any>> {
   rowSelectable?: DataTableRowSelectable<T>
   /** Whether rows are clickable (shows pointer cursor and pairs with `@rowClick`) */
   clickable?: boolean
+  /** Row hover highlight. Default: true. Turn it off where the cells hold form controls — a tinted row reads as "not editable" there. Selected and active rows keep their highlight either way. */
+  hoverable?: boolean
   /** Batch action definitions for selected rows */
   batchActions?: StaticDataTableBatchAction<T>[]
   /** Selected rows (v-model:selection). Cleared whenever the visible rows are swapped — paging, sorting, new data. */

@@ -48,6 +48,8 @@ export interface AsyncDataTableProps<T = Record<string, any>> {
   rowSelectable?: DataTableRowSelectable<T>
   /** Whether rows are clickable (shows pointer cursor and pairs with `@rowClick`) */
   clickable?: boolean
+  /** Row hover highlight. Default: true. Turn it off where the cells hold form controls — a tinted row reads as "not editable" there. Selected and active rows keep their highlight either way. */
+  hoverable?: boolean
   /** Batch action definitions for selected rows */
   batchActions?: AsyncDataTableBatchAction<T>[]
   /** Selected rows (v-model:selection). Cleared whenever a fetch replaces the rows — paging, sorting, filtering, refresh. */
