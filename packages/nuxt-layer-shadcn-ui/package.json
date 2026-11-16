@@ -26,9 +26,8 @@
     "i18n:check:unused": "tsx scripts/i18n/checkUnusedKeys",
     "i18n:fix:unused": "tsx scripts/i18n/checkUnusedKeys --fix && pnpm i18n:build",
     "i18n:fix:alignment": "tsx scripts/i18n/checkI18nAlignment --fix",
-    "release": "npm run release:bjj && npm run release:polymarbot && npm run release:elepay",
+    "release": "npm run release:bjj && npm run release:elepay",
     "release:bjj": "tsx ../../scripts/publish.ts --name @bjj/nuxt-layer-shadcn-ui --token BJJ_NPM_TOKEN",
-    "release:polymarbot": "tsx ../../scripts/publish.ts --name @polymarbot/nuxt-layer-shadcn-ui --token POLYMARBOT_NPM_TOKEN --rewrite '@bjj/nuxt-layer-shadcn-ui=@polymarbot/nuxt-layer-shadcn-ui' --rewrite '@bjj/nuxt-layer-basic=@polymarbot/nuxt-layer-basic' --rewrite '@bjj/shared=@polymarbot/uitls-shared'",
     "release:elepay": "tsx ../../scripts/publish.ts --name @elepay-io/nuxt-layer-shadcn-ui --token ELEPAY_IO_NPM_TOKEN --registry https://npm.pkg.github.com/ --rewrite '@bjj/nuxt-layer-shadcn-ui=@elepay-io/nuxt-layer-shadcn-ui' --rewrite '@bjj/nuxt-layer-basic=@elepay-io/nuxt-layer-basic' --rewrite '@bjj/shared=@elepay-io/frontend-shared'"
   },
   "publishConfig": {

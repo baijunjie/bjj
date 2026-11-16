@@ -20,9 +20,8 @@
     "format": "git add . && lint-staged --config ../../.lintstagedrc.json",
     "storybook": "cd .playground && storybook dev -p 6007",
     "storybook:build": "cd .playground && storybook build",
-    "release": "npm run release:bjj && npm run release:polymarbot && npm run release:elepay",
+    "release": "npm run release:bjj && npm run release:elepay",
     "release:bjj": "tsx ../../scripts/publish.ts --name @bjj/nuxt-layer-basic --token BJJ_NPM_TOKEN",
-    "release:polymarbot": "tsx ../../scripts/publish.ts --name @polymarbot/nuxt-layer-basic --token POLYMARBOT_NPM_TOKEN --rewrite '@bjj/nuxt-layer-basic=@polymarbot/nuxt-layer-basic'",
     "release:elepay": "tsx ../../scripts/publish.ts --name @elepay-io/nuxt-layer-basic --token ELEPAY_IO_NPM_TOKEN --registry https://npm.pkg.github.com/ --rewrite '@bjj/nuxt-layer-basic=@elepay-io/nuxt-layer-basic'"
   },
   "publishConfig": {

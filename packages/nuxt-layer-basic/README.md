@@ -52,6 +52,5 @@ pnpm typecheck
 ```bash
 pnpm release            # Publish to all registries
 pnpm release:bjj        # Publish @bjj/nuxt-layer-basic only
-pnpm release:polymarbot # Publish @polymarbot/nuxt-layer-basic only
 pnpm release:elepay     # Publish @elepay-io/nuxt-layer-basic only
 ```

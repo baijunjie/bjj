@@ -13,7 +13,7 @@
  *   --registry <url>       自定义 registry
  *   --rewrite <from=to>    字符串替换规则（可重复），对复制后的源码及生成的
  *                          package.json 应用；用于在不同 scope 发布时改写包名
- *                          例：--rewrite '@bjj/shared=@polymarbot/uitls-shared'
+ *                          例：--rewrite '@bjj/shared=@elepay-io/frontend-shared'
  *   --dry-run              仅演练 npm publish
  *
  * 约定：
@@ -22,10 +22,10 @@
  *
  * 示例:
  *   tsx scripts/publish.ts --name @bjj/shared --token BJJ_NPM_TOKEN
- *   tsx scripts/publish.ts --name @polymarbot/nuxt-layer-shadcn-ui \
- *       --token POLYMARBOT_NPM_TOKEN \
- *       --rewrite '@bjj/nuxt-layer-shadcn-ui=@polymarbot/nuxt-layer-shadcn-ui' \
- *       --rewrite '@bjj/shared=@polymarbot/uitls-shared'
+ *   tsx scripts/publish.ts --name @elepay-io/nuxt-layer-shadcn-ui \
+ *       --token ELEPAY_IO_NPM_TOKEN --registry https://npm.pkg.github.com/ \
+ *       --rewrite '@bjj/nuxt-layer-shadcn-ui=@elepay-io/nuxt-layer-shadcn-ui' \
+ *       --rewrite '@bjj/shared=@elepay-io/frontend-shared'
  */
 import fs from 'node:fs'
 import path from 'node:path'
