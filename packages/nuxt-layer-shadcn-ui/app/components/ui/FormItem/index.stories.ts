@@ -20,6 +20,8 @@ import RadioGroup from '../RadioGroup/index.vue'
 import SearchSelect from '../SearchSelect/index.vue'
 import Select from '../Select/index.vue'
 import Textarea from '../Textarea/index.vue'
+import Help from '../Help/index.vue'
+import Icon from '../Icon/index.vue'
 import FormItem from './index.vue'
 
 const orientations = [ 'vertical', 'horizontal', 'responsive' ] as const
@@ -85,6 +87,131 @@ export const Horizontal: Story = {
     label: 'Display Name',
     orientation: 'horizontal',
   },
+}
+
+export const LabelSlot: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      description: {
+        story: 'The `#label` slot replaces the label text (defaults to the `label` prop). The required asterisk is still appended, and the slot alone is enough to render the label row.',
+      },
+      source: {
+        code: `
+<template>
+  <FormItem required>
+    <template #label>
+      Nickname <span class="text-muted-foreground font-normal">(optional display)</span>
+    </template>
+    <Input placeholder="Enter value" />
+  </FormItem>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { FormItem, Input },
+    template: `
+      <div class="max-w-md">
+        <FormItem required>
+          <template #label>
+            Nickname <span class="text-muted-foreground font-normal">(optional display)</span>
+          </template>
+          <Input placeholder="Enter value" />
+        </FormItem>
+      </div>
+    `,
+  }),
+}
+
+export const LabelSuffix: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      description: {
+        story: 'The `#labelSuffix` slot appends inline content after the label text and the required asterisk.',
+      },
+      source: {
+        code: `
+<template>
+  <FormItem required label="API Key">
+    <template #labelSuffix>
+      <Help text="Find it under Settings → Developers" />
+    </template>
+    <Input placeholder="Enter value" />
+  </FormItem>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { FormItem, Input, Help },
+    template: `
+      <div class="max-w-md space-y-6">
+        <FormItem required label="API Key">
+          <template #labelSuffix>
+            <Help text="Find it under Settings → Developers" />
+          </template>
+          <Input placeholder="Enter value" />
+        </FormItem>
+        <FormItem label="Webhook URL">
+          <template #labelSuffix>
+            <span class="text-muted-foreground font-normal">(optional)</span>
+          </template>
+          <Input placeholder="Enter value" />
+        </FormItem>
+      </div>
+    `,
+  }),
+}
+
+export const LabelExtra: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      description: {
+        story: 'The `#labelExtra` slot puts extra content on the label row, aligned to the trailing edge. In `horizontal` orientation it sits right after the label in the label column.',
+      },
+      source: {
+        code: `
+<template>
+  <FormItem required label="English">
+    <template #labelExtra>
+      <span class="inline-flex items-center gap-1 text-success">
+        <Icon name="check" class="size-3.5" /> Filled
+      </span>
+    </template>
+    <Input placeholder="Enter value" />
+  </FormItem>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { FormItem, Input, Icon },
+    setup: () => ({ orientations }),
+    template: `
+      <div class="max-w-md space-y-6">
+        <FormItem
+          v-for="o in orientations"
+          :key="o"
+          required
+          :label="o"
+          :orientation="o"
+        >
+          <template #labelExtra>
+            <span class="inline-flex items-center gap-1 text-success">
+              <Icon name="check" class="size-3.5" /> Filled
+            </span>
+          </template>
+          <Input placeholder="Enter value" />
+        </FormItem>
+      </div>
+    `,
+  }),
 }
 
 const selectOptions: SelectOption[] = [
