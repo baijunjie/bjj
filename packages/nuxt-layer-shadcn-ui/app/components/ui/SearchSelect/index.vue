@@ -50,7 +50,7 @@ const pagination = usePagination<Option>([], { limit: props.loadLimit })
 async function fetchOptions (offset: number, limit: number) {
   if (!props.loadMethod) return
   const result = await props.loadMethod({ keyword: keyword.value, offset, limit })
-  pagination.update(result.items, { total: result.total })
+  pagination.update(result.items, { total: result.total, offset })
 }
 
 async function loadMore () {

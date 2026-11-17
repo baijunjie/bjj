@@ -78,6 +78,17 @@ describe('usePagination', () => {
     expect(p.total.value).toBe(3)
   })
 
+  it('should append a short last page when offset is passed explicitly', () => {
+    const p = runInScope(() => usePagination<number>([], { limit: 20 }))
+    const all = Array.from({ length: 23 }, (_, i) => i)
+    p.update(all.slice(0, 20), { total: 23, offset: 0 })
+    expect(p.next.value).toEqual({ limit: 20, offset: 20 })
+    p.update(all.slice(20), { total: 23, offset: 20 })
+    expect(p.items.value).toEqual(all)
+    expect(p.offset.value).toBe(20)
+    expect(p.next.value).toBeNull()
+  })
+
   it('should reset pagination state', () => {
     const p = runInScope(() => usePagination([ 1, 2, 3 ], { limit: 2, offset: 1, total: 5 }))
     p.reset([ 9 ], { limit: 1 })
