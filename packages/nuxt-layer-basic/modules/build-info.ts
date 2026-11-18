@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { addPluginTemplate, defineNuxtModule } from 'nuxt/kit'
+import { addImports, addPluginTemplate, addTemplate, defineNuxtModule } from 'nuxt/kit'
 
 const SHORT_SHA_LENGTH = 7
 
@@ -30,25 +30,33 @@ function resolvePackageName (rootDir: string): string {
 }
 
 export default defineNuxtModule({
-  meta: { name: 'bjj:build-info' },
+  meta: { name: 'nuxt-layer-basic:build-info' },
   setup (_, nuxt) {
     const { rootDir } = nuxt.options
+    const buildCommit = resolveCommit(rootDir)
     const buildInfo = {
       packageName: resolvePackageName(rootDir),
-      commit: resolveCommit(rootDir),
       builtAt: new Date().toISOString(),
     }
 
+    const commitTemplate = addTemplate({
+      filename: 'nuxt-layer-basic-build-info.ts',
+      write: true,
+      getContents: () => `export const buildCommit: string = ${JSON.stringify(buildCommit)}\n`,
+    })
+    addImports({ name: 'buildCommit', from: commitTemplate.dst })
+
     addPluginTemplate({
-      filename: 'bjj-build-info.client.mjs',
+      filename: 'nuxt-layer-basic-build-info.client.mjs',
       mode: 'client',
       getContents: () => `import { defineNuxtPlugin } from '#app'
+import { buildCommit } from '#imports'
 
-const { packageName, commit, builtAt } = ${JSON.stringify(buildInfo)}
+const { packageName, builtAt } = ${JSON.stringify(buildInfo)}
 
 export default defineNuxtPlugin(() => {
   const segments = [
-    [commit, '#1a7f37'],
+    [buildCommit, '#1a7f37'],
     [new Date(builtAt).toLocaleString(), '#9a5400'],
   ]
   if (packageName) segments.unshift([packageName, '#555555'])

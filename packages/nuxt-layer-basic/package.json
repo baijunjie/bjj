@@ -1,6 +1,6 @@
 {
   "name": "@bjj/nuxt-layer-basic",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Nuxt layer providing shared utilities and UI-agnostic components",
   "type": "module",
   "main": "./nuxt.config.ts",
