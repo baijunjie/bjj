@@ -292,7 +292,7 @@ onMounted(() => {
         </span>
         <Button
           variant="ghost"
-          size="sm"
+          size="md"
           @click="loadMore"
         >
           {{ t('common.actions.retry') }}
@@ -327,7 +327,7 @@ onMounted(() => {
             <Tooltip :text="T('scrollToTop')">
               <Button
                 variant="ghost"
-                size="icon-sm"
+                size="icon-md"
                 icon="arrow-up-to-line"
                 :disabled="loading || internalData.length === 0 || isAtTop"
                 @click="scrollToTop"
@@ -336,7 +336,7 @@ onMounted(() => {
             <Tooltip :text="t('common.actions.refresh')">
               <Button
                 variant="ghost"
-                size="icon-sm"
+                size="icon-md"
                 icon="rotate-cw"
                 :disabled="loading"
                 @click="refresh"

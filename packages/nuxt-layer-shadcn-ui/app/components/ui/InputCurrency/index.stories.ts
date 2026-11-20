@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import { useArgsModel } from '#storybook/argsModel'
 import InputCurrency from './index.vue'
 
-const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+const sizes = [ 'xs', 'sm', 'md', 'default', 'lg' ] as const
 
 const currencyDisplays = [ 'symbol', 'narrowSymbol', 'code', 'name' ] as const
 

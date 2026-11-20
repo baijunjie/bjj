@@ -4,7 +4,7 @@ import { useArgsModel } from '#storybook/argsModel'
 import type { SearchSelectLoadMethodParams, SearchSelectLoadMethodResult } from './types'
 import SearchSelect from './index.vue'
 
-const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+const sizes = [ 'xs', 'sm', 'md', 'default', 'lg' ] as const
 
 // Mock data: 100 items for simulating server-side search
 const allItems = Array.from({ length: 100 }, (_, i) => ({

@@ -3,7 +3,7 @@ import EventLog from '#storybook/EventLog.vue'
 import { useArgsModel } from '#storybook/argsModel'
 import InputOtp from './index.vue'
 
-const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+const sizes = [ 'xs', 'sm', 'md', 'default', 'lg' ] as const
 
 const meta = {
   title: 'UI/InputOtp',

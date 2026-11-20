@@ -33,8 +33,10 @@ const T = useTranslations('components.ui.Pagination')
 const totalPages = computed(() => Math.ceil(props.total / props.pageSize) || 0)
 const hasData = computed(() => props.total > 0)
 
+// shadcn pagination items use the shadcn button scale; the simple-mode Buttons use the control scale.
 const iconButtonSize = computed(() => props.size === 'sm' ? 'icon-sm' as const : 'icon' as const)
-const buttonSize = computed(() => props.size === 'sm' ? 'sm' as const : 'default' as const)
+const simpleButtonSize = computed(() => props.size === 'sm' ? 'icon-md' as const : 'icon' as const)
+const buttonSize = computed(() => props.size === 'sm' ? 'md' as const : 'default' as const)
 
 const pageReport = computed(() => {
   if (!hasData.value) return ''
@@ -77,7 +79,7 @@ const pageSizeMenuItems = computed<DropdownItem[]>(() =>
     <template v-if="simple">
       <Button
         variant="ghost"
-        :size="iconButtonSize"
+        :size="simpleButtonSize"
         :disabled="page <= 1"
         @click="emit('update:page', 1)"
       >
@@ -85,7 +87,7 @@ const pageSizeMenuItems = computed<DropdownItem[]>(() =>
       </Button>
       <Button
         variant="ghost"
-        :size="iconButtonSize"
+        :size="simpleButtonSize"
         :disabled="page <= 1"
         @click="emit('update:page', page - 1)"
       >
@@ -98,7 +100,7 @@ const pageSizeMenuItems = computed<DropdownItem[]>(() =>
       </span>
       <Button
         variant="ghost"
-        :size="iconButtonSize"
+        :size="simpleButtonSize"
         :disabled="page >= totalPages"
         @click="emit('update:page', page + 1)"
       >
@@ -106,7 +108,7 @@ const pageSizeMenuItems = computed<DropdownItem[]>(() =>
       </Button>
       <Button
         variant="ghost"
-        :size="iconButtonSize"
+        :size="simpleButtonSize"
         :disabled="page >= totalPages"
         @click="emit('update:page', totalPages)"
       >

@@ -7,7 +7,7 @@ import InputNumber from '../../components/ui/InputNumber/index.vue'
 import Select from '../../components/ui/Select/index.vue'
 import Textarea from '../../components/ui/Textarea/index.vue'
 
-const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+const sizes = [ 'xs', 'sm', 'md', 'default', 'lg' ] as const
 
 const options = [
   { label: 'Nuxt', value: 'nuxt' },
@@ -84,7 +84,7 @@ export const InheritedFromAncestor: Story = {
       source: {
         code: `
 <template>
-  <form data-control-size="xs">
+  <form data-control-size="sm">
     <Input v-model="name" />
     <InputNumber v-model="count" />
     <Select v-model="framework" :options="options" />
@@ -106,7 +106,7 @@ export const InheritedFromAncestor: Story = {
       note: ref('Every control inside follows the form tier.'),
     }),
     template: `
-      <div data-control-size="xs" class="grid max-w-sm gap-2">
+      <div data-control-size="sm" class="grid max-w-sm gap-2">
         <Input v-model="name" />
         <InputNumber v-model="count" />
         <Select v-model="framework" :options="options" />

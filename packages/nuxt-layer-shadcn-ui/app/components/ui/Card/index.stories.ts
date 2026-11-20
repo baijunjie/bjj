@@ -40,7 +40,7 @@ export const CustomHeader: Story = {
     <template #header>
       <div class="flex items-center justify-between">
         <span class="text-lg font-semibold">Custom Header</span>
-        <Button variant="ghost" size="sm">Action</Button>
+        <Button variant="ghost" size="md">Action</Button>
       </div>
     </template>
     <p>This card uses the header slot for a custom layout.</p>
@@ -57,7 +57,7 @@ export const CustomHeader: Story = {
         <template #header>
           <div class="flex items-center justify-between">
             <span class="text-lg font-semibold">Custom Header</span>
-            <Button variant="ghost" size="sm">Action</Button>
+            <Button variant="ghost" size="md">Action</Button>
           </div>
         </template>
         <p>This card uses the header slot for a custom layout.</p>

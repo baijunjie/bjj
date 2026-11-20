@@ -8,7 +8,7 @@ export type ButtonVariant = ButtonVariants['variant']
  * A control size tier for text buttons, or `icon-<tier>` for a square icon-only
  * button (`icon` is the `default` tier). Heights match the inputs of the same tier.
  */
-export type ButtonSize = ControlSize | 'icon-xs' | 'icon-sm' | 'icon' | 'icon-lg'
+export type ButtonSize = ControlSize | 'icon-xs' | 'icon-sm' | 'icon-md' | 'icon' | 'icon-lg'
 
 export interface ButtonProps {
   variant?: ButtonVariant

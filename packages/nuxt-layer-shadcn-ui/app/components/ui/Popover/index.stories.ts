@@ -95,7 +95,7 @@ export const WithForm: Story = {
     <div class="space-y-3">
       <h4 class="font-medium">Update Name</h4>
       <Input placeholder="Enter new name" />
-      <Button size="sm" class="w-full">Save</Button>
+      <Button size="md" class="w-full">Save</Button>
     </div>
   </Popover>
 </template>
@@ -113,7 +113,7 @@ export const WithForm: Story = {
         <div class="space-y-3">
           <h4 class="font-medium">Update Name</h4>
           <Input placeholder="Enter new name" />
-          <Button size="sm" class="w-full">Save</Button>
+          <Button size="md" class="w-full">Save</Button>
         </div>
       </Popover>
     `,

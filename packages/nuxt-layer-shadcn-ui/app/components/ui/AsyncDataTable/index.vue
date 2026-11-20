@@ -304,7 +304,7 @@ onMounted(() => {
         >
           <Button
             :variant="batchActionsDisabled ? 'outline' : 'default'"
-            :size="isMobile ? 'sm' : 'default'"
+            :size="isMobile ? 'md' : 'default'"
             :disabled="batchActionsDisabled"
           >
             {{ T('actions') }} ({{ selectedCount }})
@@ -372,7 +372,7 @@ onMounted(() => {
           </span>
           <Button
             variant="outline"
-            size="sm"
+            size="md"
             @click="() => fetchData(undefined, true)"
           >
             {{ t('common.actions.retry') }}
@@ -400,7 +400,7 @@ onMounted(() => {
         >
           <Button
             :variant="batchActionsDisabled ? 'outline' : 'default'"
-            :size="isMobile ? 'sm' : 'default'"
+            :size="isMobile ? 'md' : 'default'"
             :disabled="batchActionsDisabled"
           >
             {{ T('actions') }} ({{ selectedCount }})

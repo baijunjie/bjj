@@ -280,7 +280,7 @@ export const PopupSlot: Story = {
         <p class="text-sm text-muted-foreground">
           Use the <code>popup</code> slot to render arbitrary content inside the menu.
         </p>
-        <Button size="sm" @click="hide">Close</Button>
+        <Button size="md" @click="hide">Close</Button>
       </div>
     </template>
   </Dropdown>
@@ -300,7 +300,7 @@ export const PopupSlot: Story = {
             <p class="text-sm text-muted-foreground">
               Use the <code>popup</code> slot to render arbitrary content inside the menu.
             </p>
-            <Button size="sm" @click="hide">Close</Button>
+            <Button size="md" @click="hide">Close</Button>
           </div>
         </template>
       </Dropdown>

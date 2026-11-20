@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import { useArgsModel } from '#storybook/argsModel'
 import DateRangePicker from './index.vue'
 
-const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+const sizes = [ 'xs', 'sm', 'md', 'default', 'lg' ] as const
 
 const meta = {
   title: 'UI/DateRangePicker',

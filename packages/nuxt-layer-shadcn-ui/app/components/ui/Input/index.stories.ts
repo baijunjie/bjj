@@ -4,7 +4,7 @@ import { useArgsModel } from '#storybook/argsModel'
 import Icon from '../Icon/index.vue'
 import Input from './index.vue'
 
-const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+const sizes = [ 'xs', 'sm', 'md', 'default', 'lg' ] as const
 
 const meta = {
   title: 'UI/Input',

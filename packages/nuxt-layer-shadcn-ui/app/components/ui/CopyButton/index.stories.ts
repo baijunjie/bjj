@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import CopyButton from './index.vue'
 
 const variants = [ 'default', 'destructive', 'outline', 'secondary', 'ghost', 'link' ] as const
-const sizes = [ 'sm', 'default', 'lg', 'icon-sm', 'icon', 'icon-lg' ] as const
+const sizes = [ 'xs', 'sm', 'md', 'default', 'lg', 'icon-xs', 'icon-sm', 'icon-md', 'icon', 'icon-lg' ] as const
 
 const meta = {
   title: 'UI/CopyButton',

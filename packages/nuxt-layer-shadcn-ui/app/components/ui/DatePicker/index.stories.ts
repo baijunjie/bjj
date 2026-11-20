@@ -5,7 +5,7 @@ import Button from '../Button/index.vue'
 import Modal from '../Modal/index.vue'
 import DatePicker from './index.vue'
 
-const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+const sizes = [ 'xs', 'sm', 'md', 'default', 'lg' ] as const
 
 const types: DatePickerType[] = [ 'date', 'month', 'year' ]
 

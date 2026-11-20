@@ -172,7 +172,7 @@ function onSortOrderUpdate (value: number | null) {
         >
           <Button
             :variant="batchActionsDisabled ? 'outline' : 'default'"
-            :size="isMobile ? 'sm' : 'default'"
+            :size="isMobile ? 'md' : 'default'"
             :disabled="batchActionsDisabled"
           >
             {{ T('actions') }} ({{ selectedCount }})
@@ -239,7 +239,7 @@ function onSortOrderUpdate (value: number | null) {
         >
           <Button
             :variant="batchActionsDisabled ? 'outline' : 'default'"
-            :size="isMobile ? 'sm' : 'default'"
+            :size="isMobile ? 'md' : 'default'"
             :disabled="batchActionsDisabled"
           >
             {{ T('actions') }} ({{ selectedCount }})

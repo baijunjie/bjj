@@ -3,7 +3,7 @@ import EventLog from '#storybook/EventLog.vue'
 import { useArgsModel } from '#storybook/argsModel'
 import Select from './index.vue'
 
-const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+const sizes = [ 'xs', 'sm', 'md', 'default', 'lg' ] as const
 
 const frameworks = [
   { label: 'React', value: 'react' },

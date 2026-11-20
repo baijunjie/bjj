@@ -17,10 +17,12 @@ const variants = [
 const sizes = [
   'xs',
   'sm',
+  'md',
   'default',
   'lg',
   'icon-xs',
   'icon-sm',
+  'icon-md',
   'icon',
   'icon-lg',
 ] as const satisfies readonly ButtonSize[]
@@ -114,10 +116,12 @@ export const Sizes: Story = {
 <template>
   <Button size="xs">xs</Button>
   <Button size="sm">sm</Button>
+  <Button size="md">md</Button>
   <Button size="default">default</Button>
   <Button size="lg">lg</Button>
   <Button size="icon-xs" icon="plus" />
   <Button size="icon-sm" icon="plus" />
+  <Button size="icon-md" icon="plus" />
   <Button size="icon" icon="plus" />
   <Button size="icon-lg" icon="plus" />
 </template>
@@ -313,9 +317,9 @@ export const InheritedHoverColor: Story = {
           class="p-3 flex items-center gap-2"
         >
           <span class="mr-auto text-sm font-medium capitalize">{{ c }}</span>
-          <Button variant="outline" size="sm">Outline</Button>
-          <Button variant="ghost" size="sm">Ghost</Button>
-          <Button variant="link" size="sm">Link</Button>
+          <Button variant="outline" size="md">Outline</Button>
+          <Button variant="ghost" size="md">Ghost</Button>
+          <Button variant="link" size="md">Link</Button>
         </Surface>
       </div>
     `,

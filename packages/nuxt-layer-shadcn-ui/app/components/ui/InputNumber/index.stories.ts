@@ -4,7 +4,7 @@ import { useArgsModel } from '#storybook/argsModel'
 import InputNumber from './index.vue'
 
 const aligns = [ 'left', 'center', 'right' ] as const
-const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+const sizes = [ 'xs', 'sm', 'md', 'default', 'lg' ] as const
 
 const meta = {
   title: 'UI/InputNumber',

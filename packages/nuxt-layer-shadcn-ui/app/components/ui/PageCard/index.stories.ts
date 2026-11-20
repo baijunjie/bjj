@@ -124,8 +124,8 @@ export const WithActions: Story = {
 <template>
   <PageCard title="API Keys" class="max-w-2xl">
     <template #actions>
-      <Button variant="outline" size="sm">Export</Button>
-      <Button size="sm">Create</Button>
+      <Button variant="outline" size="md">Export</Button>
+      <Button size="md">Create</Button>
     </template>
     <p>Action buttons rendered on the right side of the title.</p>
   </PageCard>
@@ -139,8 +139,8 @@ export const WithActions: Story = {
     template: `
       <PageCard title="API Keys" class="max-w-2xl">
         <template #actions>
-          <Button variant="outline" size="sm">Export</Button>
-          <Button size="sm">Create</Button>
+          <Button variant="outline" size="md">Export</Button>
+          <Button size="md">Create</Button>
         </template>
         <p>Action buttons rendered on the right side of the title.</p>
       </PageCard>
