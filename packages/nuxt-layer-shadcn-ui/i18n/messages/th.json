@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "การกระทำ"
       },
+      "Tag": {
+        "remove": "ลบ"
+      },
       "Textarea": {
         "lines": "{count} บรรทัด"
       },

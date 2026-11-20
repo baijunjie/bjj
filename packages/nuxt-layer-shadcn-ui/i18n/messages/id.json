@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "Tindakan"
       },
+      "Tag": {
+        "remove": "Hapus"
+      },
       "Textarea": {
         "lines": "{count} baris"
       },

@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "İşlemler"
       },
+      "Tag": {
+        "remove": "Kaldır"
+      },
       "Textarea": {
         "lines": "{count} satır"
       },

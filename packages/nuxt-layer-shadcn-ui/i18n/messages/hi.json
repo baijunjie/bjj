@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "क्रियाएं"
       },
+      "Tag": {
+        "remove": "हटाएं"
+      },
       "Textarea": {
         "lines": "{count} पंक्तियाँ"
       },

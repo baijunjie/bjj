@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "Actions"
       },
+      "Tag": {
+        "remove": "Remove"
+      },
       "Textarea": {
         "lines": "{count} lines"
       },

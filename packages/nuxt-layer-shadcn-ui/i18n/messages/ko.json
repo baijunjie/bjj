@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "작업"
       },
+      "Tag": {
+        "remove": "제거"
+      },
       "Textarea": {
         "lines": "{count}줄"
       },

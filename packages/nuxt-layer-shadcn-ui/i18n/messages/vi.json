@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "Hành động"
       },
+      "Tag": {
+        "remove": "Xóa"
+      },
       "Textarea": {
         "lines": "{count} dòng"
       },

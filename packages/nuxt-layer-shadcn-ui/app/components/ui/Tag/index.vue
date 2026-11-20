@@ -106,16 +106,43 @@ const tagVariants = cva(
   },
 )
 
+// Remove button: sized from the tag's own size so it fits the text line
+// without touching the tag's padding. The negative end margin pulls it into
+// the padding by a fixed amount, offsetting the whitespace around the × glyph
+// so both sides look even whatever padding the tag has. Colors derive from
+// `currentColor`, so hover / focus follow every color × variant combination.
+const closeClass = `
+  -me-1 inline-flex shrink-0 cursor-pointer items-center justify-center
+  rounded-full
+  opacity-60 transition
+  hover:bg-current/15 hover:opacity-100
+  focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-current/50
+  focus-visible:outline-none
+`
+
+const closeSizes = {
+  sm: { button: 'size-3.5', icon: 'size-2.5' },
+  md: { button: 'size-4', icon: 'size-3' },
+} as const
+
 const props = withDefaults(defineProps<TagProps>(), {
   color: 'default',
   variant: 'soft',
   size: 'md',
+  closable: false,
+  closeLabel: undefined,
   class: undefined,
 })
+
+const emit = defineEmits<{
+  close: [event: MouseEvent]
+}>()
 
 defineSlots<{
   default?: () => any
 }>()
+
+const T = useTranslations('components.ui.Tag')
 
 const mergedClass = computed(() =>
   cn(tagVariants({ color: props.color, variant: props.variant, size: props.size }), props.class),
@@ -125,5 +152,18 @@ const mergedClass = computed(() =>
 <template>
   <span :class="mergedClass">
     <slot />
+    <button
+      v-if="closable"
+      type="button"
+      data-slot="tag-close"
+      :class="[ closeClass, closeSizes[size].button ]"
+      :aria-label="closeLabel || T('remove')"
+      @click="emit('close', $event)"
+    >
+      <Icon
+        name="x"
+        :class="closeSizes[size].icon"
+      />
+    </button>
   </span>
 </template>

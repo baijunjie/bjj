@@ -89,6 +89,9 @@
       "StaticDataTable": {
         "actions": "الإجراءات"
       },
+      "Tag": {
+        "remove": "إزالة"
+      },
       "Textarea": {
         "lines": "{count} أسطر"
       },
