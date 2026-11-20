@@ -1,3 +1,4 @@
+import type { ControlSize } from '../../../types/control'
 import type { DatePickerTimeConfig } from '../DatePicker/types'
 
 export interface DateRangePickerProps {
@@ -27,6 +28,8 @@ export interface DateRangePickerProps {
   startPlaceholder?: string
   /** Placeholder for end date input */
   endPlaceholder?: string
+  /** Size tier. Unset follows the nearest ancestor's `data-control-size`, else `default`. */
+  size?: ControlSize
   /** Maximum span in days between start and end date */
   maxSpanDays?: number
   /**

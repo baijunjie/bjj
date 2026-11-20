@@ -1,3 +1,5 @@
+import type { ControlSize } from '../../../types/control'
+
 export interface DatePickerTimeConfig {
   enableSeconds?: boolean
   enableMinutes?: boolean
@@ -31,6 +33,8 @@ export interface DatePickerProps {
   invalid?: boolean
   /** Placeholder text */
   placeholder?: string
+  /** Size tier. Unset follows the nearest ancestor's `data-control-size`, else `default`. */
+  size?: ControlSize
   /** Minimum selectable date */
   minDate?: Date | string
   /** Maximum selectable date */

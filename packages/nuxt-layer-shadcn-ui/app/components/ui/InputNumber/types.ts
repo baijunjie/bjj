@@ -1,3 +1,5 @@
+import type { ControlSize } from '../../../types/control'
+
 export type InputNumberAlign = 'left' | 'center' | 'right'
 
 export interface InputNumberProps {
@@ -11,6 +13,8 @@ export interface InputNumberProps {
   placeholder?: string
   /** Horizontal alignment of the value inside the input */
   align?: InputNumberAlign
+  /** Size tier. Unset follows the nearest ancestor's `data-control-size`, else `default`. */
+  size?: ControlSize
   invalid?: boolean
   class?: ClassValue
 }

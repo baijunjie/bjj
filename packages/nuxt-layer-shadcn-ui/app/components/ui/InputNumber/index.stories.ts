@@ -4,6 +4,7 @@ import { useArgsModel } from '#storybook/argsModel'
 import InputNumber from './index.vue'
 
 const aligns = [ 'left', 'center', 'right' ] as const
+const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
 
 const meta = {
   title: 'UI/InputNumber',
@@ -16,6 +17,7 @@ const meta = {
     placeholder: { control: 'text' },
     showButtons: { control: 'boolean' },
     align: { control: 'select', options: aligns },
+    size: { control: 'select', options: sizes },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -29,6 +31,7 @@ const meta = {
     placeholder: '',
     showButtons: true,
     align: 'center',
+    size: 'default',
     readonly: false,
     disabled: false,
     invalid: false,
@@ -108,6 +111,66 @@ export const Alignments: Story = {
           <span class="w-14 text-sm text-muted-foreground">{{ a }}</span>
           <InputNumber v-model="value" :align="a" class="flex-1" />
         </div>
+      </div>
+    `,
+  }),
+}
+
+export const Sizes: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <InputNumber v-model="value" size="xs" class="w-26" />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { InputNumber },
+    setup: () => ({ sizes, value: ref(10) }),
+    template: `
+      <div class="space-y-3">
+        <div v-for="s in sizes" :key="s" class="flex items-center gap-3">
+          <span class="w-14 text-sm text-muted-foreground">{{ s }}</span>
+          <InputNumber v-model="value" :size="s" class="w-48" />
+          <InputNumber v-model="value" :size="s" align="left" class="w-40">
+            <template #prefix>¥</template>
+          </InputNumber>
+        </div>
+      </div>
+    `,
+  }),
+}
+
+export const InheritedSize: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <!-- Controls without their own size follow the nearest data-control-size -->
+  <div data-control-size="sm">
+    <InputNumber v-model="width" />
+    <InputNumber v-model="height" />
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { InputNumber },
+    setup: () => ({ width: ref(1280), height: ref(720) }),
+    template: `
+      <div data-control-size="sm" class="flex max-w-sm items-center gap-2">
+        <InputNumber v-model="width" class="flex-1" />
+        <span class="text-muted-foreground">×</span>
+        <InputNumber v-model="height" class="flex-1" />
       </div>
     `,
   }),

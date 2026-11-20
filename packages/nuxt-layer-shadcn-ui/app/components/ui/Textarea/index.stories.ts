@@ -3,6 +3,8 @@ import EventLog from '#storybook/EventLog.vue'
 import { useArgsModel } from '#storybook/argsModel'
 import Textarea from './index.vue'
 
+const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+
 const meta = {
   title: 'UI/Textarea',
   component: Textarea,
@@ -13,6 +15,7 @@ const meta = {
     maxlength: { control: 'number' },
     maxLines: { control: 'number' },
     showCount: { control: 'boolean' },
+    size: { control: 'select', options: sizes },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -25,6 +28,7 @@ const meta = {
     maxlength: undefined,
     maxLines: undefined,
     showCount: false,
+    size: 'default',
     readonly: false,
     disabled: false,
     invalid: false,
@@ -89,6 +93,33 @@ export const WithMaxLines: Story = {
     maxLines: 3,
     modelValue: 'Line 1\nLine 2',
   },
+}
+
+export const Sizes: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Textarea v-model="value" size="sm" showCount />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Textarea },
+    setup: () => ({ sizes, value: ref('Compact tiers tighten padding and font size.') }),
+    template: `
+      <div class="space-y-3">
+        <div v-for="s in sizes" :key="s" class="flex items-center gap-3">
+          <span class="w-14 text-sm text-muted-foreground">{{ s }}</span>
+          <Textarea v-model="value" :size="s" showCount class="w-64" />
+        </div>
+      </div>
+    `,
+  }),
 }
 
 export const Invalid: Story = {

@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<DateRangePickerProps>(), {
   minDate: undefined,
   maxDate: undefined,
   maxSpanDays: undefined,
+  size: undefined,
   valueFormat: undefined,
   autoApply: true,
   class: undefined,
@@ -135,6 +136,7 @@ const endMaxDate = computed(() => {
     <DatePicker
       v-model="start"
       :showTime="showTime"
+      :size="size"
       :disabled="disabled"
       :readonly="readonly"
       :placeholder="startPlaceholder || T('startPlaceholder')"
@@ -150,6 +152,7 @@ const endMaxDate = computed(() => {
     <DatePicker
       v-model="end"
       :showTime="showTime"
+      :size="size"
       :disabled="disabled"
       :readonly="readonly"
       :placeholder="endPlaceholder || T('endPlaceholder')"

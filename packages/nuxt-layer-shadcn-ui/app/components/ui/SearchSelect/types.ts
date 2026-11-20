@@ -1,3 +1,4 @@
+import type { ControlSize } from '../../../types/control'
 import type { SelectOption } from '../Select/types'
 
 /** Result returned by loadMethod */
@@ -26,6 +27,8 @@ export interface SearchSelectProps<V extends string | number = string, M = unkno
   /** Items per request (default: 20) */
   loadLimit?: number
   placeholder?: string
+  /** Size tier. Unset follows the nearest ancestor's `data-control-size`, else `default`. */
+  size?: ControlSize
   /** Keep the value visible and focusable but prevent changing it */
   readonly?: boolean
   disabled?: boolean

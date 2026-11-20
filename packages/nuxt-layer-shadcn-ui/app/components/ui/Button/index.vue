@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Button as ShadcnButton } from '../../shadcn/button'
 import WebLink from '@bjj/nuxt-layer-shadcn-ui/app/components/ui/WebLink/index.vue'
+import type { ControlSize } from '../../../types/control'
 import type { ButtonProps } from './types'
 
 const props = defineProps<ButtonProps>()
@@ -23,8 +24,31 @@ const variantClasses: Partial<Record<NonNullable<ButtonVariant>, string>> = {
   link: 'text-current',
 }
 
+const isIconOnly = computed(() => props.size?.startsWith('icon') ?? false)
+
+// `icon` is the default tier; `icon-sm` → `sm` …
+const tier = computed<ControlSize | undefined>(() => {
+  if (!props.size) return undefined
+  if (props.size === 'icon') return 'default'
+  return props.size.replace('icon-', '') as ControlSize
+})
+
+// Dimensions come from the shared control scale (see `data-control-size`) so a
+// button lines up with the inputs of the same tier.
+const sizeClass = computed(() => isIconOnly.value
+  ? 'size-(--control-height) p-0 has-[>svg]:p-0'
+  : `
+    h-(--control-height) gap-(--control-gap) px-(--control-button-px)
+    has-[>svg]:px-(--control-button-icon-px)
+  `,
+)
+
 const mergedClass = computed(() => cn(
-  'cursor-pointer',
+  `
+    cursor-pointer text-(length:--control-font-size)
+    leading-(--control-line-height)
+  `,
+  sizeClass.value,
   props.variant && variantClasses[props.variant],
   props.rounded && 'rounded-full',
   props.class,
@@ -42,7 +66,7 @@ const slots = defineSlots<{
 <template>
   <ShadcnButton
     :variant="variant"
-    :size="size"
+    :data-control-size="tier"
     :class="mergedClass"
     :asChild="isLink"
     :type="isLink ? undefined : 'button'"
@@ -58,13 +82,16 @@ const slots = defineSlots<{
         <Icon
           v-if="loading"
           name="loader-circle"
-          class="animate-spin"
+          class="animate-spin size-(--control-icon)"
         />
         <slot
           v-else-if="hasIcon"
           name="icon"
         >
-          <Icon :name="icon!" />
+          <Icon
+            :name="icon!"
+            class="size-(--control-icon)"
+          />
         </slot>
       </template>
       <slot />
@@ -73,13 +100,16 @@ const slots = defineSlots<{
         <Icon
           v-if="loading"
           name="loader-circle"
-          class="animate-spin"
+          class="animate-spin size-(--control-icon)"
         />
         <slot
           v-else-if="hasIcon"
           name="icon"
         >
-          <Icon :name="icon!" />
+          <Icon
+            :name="icon!"
+            class="size-(--control-icon)"
+          />
         </slot>
       </template>
     </component>

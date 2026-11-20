@@ -1,3 +1,5 @@
+import type { ControlSize } from '../../../types/control'
+
 export interface SelectOption<V extends string | number = string, M = unknown> {
   label: string
   value: V
@@ -12,6 +14,8 @@ export type SelectFilterFunction = (items: string[], keyword: string) => string[
 export type SelectBaseProps<V extends string | number = string, M = unknown> = {
   options?: SelectOption<V, M>[]
   placeholder?: string
+  /** Size tier. Unset follows the nearest ancestor's `data-control-size`, else `default`. */
+  size?: ControlSize
   /** Keep the value visible and focusable but prevent changing it */
   readonly?: boolean
   disabled?: boolean

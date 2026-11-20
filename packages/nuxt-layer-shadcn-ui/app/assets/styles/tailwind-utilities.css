@@ -21,3 +21,84 @@
     to { height: 0; }
   }
 }
+
+/*
+ * Form control size scale, shared by every form control (inputs, selects,
+ * pickers, buttons …).
+ *
+ * A control opts in by reading these variables (`h-(--control-height)`,
+ * `px-(--control-px)` …) and sets a tier with `data-control-size`. The attribute
+ * cascades: a control without its own `size` follows the nearest ancestor that
+ * sets one, so a whole form can switch tiers at once. `default` is the
+ * pre-existing look and applies when no ancestor sets a tier.
+ *
+ *   tier     height  font  edge px  gap  icon  stepper px  addon button  button px  button+icon px
+ *   xs       28      12    8        4    14    4           20            10         8
+ *   sm       32      14    10       6    16    6           24            12         10
+ *   default  36      14    12       8    16    12          24            16         12
+ *   lg       40      14    16       8    16    14          28            24         16
+ *
+ * --control-px                  inline padding at an input's outer edges
+ * --control-gap                 tighter padding where the value meets an addon; gap between button content
+ * --control-stepper-px          inline padding of InputNumber's −/+ steppers
+ * --control-addon-button-size   square icon buttons inside an input (clear …)
+ * --control-button-px           inline padding of a text Button
+ * --control-button-icon-px      the same when an icon is the button's direct child
+ *
+ * Icon-only buttons are squares of `--control-height`.
+ *
+ * Components whose default font is `text-base md:text-sm` (Input, Select,
+ * Textarea …) keep 16px below `md` to avoid iOS focus zoom and apply
+ * `--control-font-size` from `md` up.
+ */
+@layer base {
+  :root,
+  [data-control-size='default'] {
+    --control-height: --spacing(9);
+    --control-font-size: --theme(--text-sm);
+    --control-line-height: --theme(--text-sm--line-height);
+    --control-px: --spacing(3);
+    --control-gap: --spacing(2);
+    --control-icon: --spacing(4);
+    --control-stepper-px: --spacing(3);
+    --control-addon-button-size: --spacing(6);
+    --control-button-px: --spacing(4);
+    --control-button-icon-px: --spacing(3);
+  }
+  [data-control-size='xs'] {
+    --control-height: --spacing(7);
+    --control-font-size: --theme(--text-xs);
+    --control-line-height: --theme(--text-xs--line-height);
+    --control-px: --spacing(2);
+    --control-gap: --spacing(1);
+    --control-icon: --spacing(3.5);
+    --control-stepper-px: --spacing(1);
+    --control-addon-button-size: --spacing(5);
+    --control-button-px: --spacing(2.5);
+    --control-button-icon-px: --spacing(2);
+  }
+  [data-control-size='sm'] {
+    --control-height: --spacing(8);
+    --control-font-size: --theme(--text-sm);
+    --control-line-height: --theme(--text-sm--line-height);
+    --control-px: --spacing(2.5);
+    --control-gap: --spacing(1.5);
+    --control-icon: --spacing(4);
+    --control-stepper-px: --spacing(1.5);
+    --control-addon-button-size: --spacing(6);
+    --control-button-px: --spacing(3);
+    --control-button-icon-px: --spacing(2.5);
+  }
+  [data-control-size='lg'] {
+    --control-height: --spacing(10);
+    --control-font-size: --theme(--text-sm);
+    --control-line-height: --theme(--text-sm--line-height);
+    --control-px: --spacing(4);
+    --control-gap: --spacing(2);
+    --control-icon: --spacing(4);
+    --control-stepper-px: --spacing(3.5);
+    --control-addon-button-size: --spacing(7);
+    --control-button-px: --spacing(6);
+    --control-button-icon-px: --spacing(4);
+  }
+}

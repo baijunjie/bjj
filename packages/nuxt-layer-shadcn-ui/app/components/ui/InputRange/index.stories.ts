@@ -4,6 +4,8 @@ import { useArgsModel } from '#storybook/argsModel'
 import InputCurrency from '../InputCurrency/index.vue'
 import InputRange from './index.vue'
 
+const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+
 const meta = {
   title: 'UI/InputRange',
   component: InputRange,
@@ -14,6 +16,7 @@ const meta = {
     max: { control: 'number' },
     startPlaceholder: { control: 'text' },
     endPlaceholder: { control: 'text' },
+    size: { control: 'select', options: sizes },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -26,6 +29,7 @@ const meta = {
     max: 100,
     startPlaceholder: '',
     endPlaceholder: '',
+    size: 'default',
     readonly: false,
     disabled: false,
     invalid: false,
@@ -66,6 +70,33 @@ export const CustomBounds: Story = {
     min: -100,
     max: 100,
   },
+}
+
+export const Sizes: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <InputRange v-model:start="start" v-model:end="end" size="sm" />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { InputRange },
+    setup: () => ({ sizes, start: ref(10), end: ref(90) }),
+    template: `
+      <div class="space-y-3">
+        <div v-for="s in sizes" :key="s" class="flex items-center gap-3">
+          <span class="w-14 text-sm text-muted-foreground">{{ s }}</span>
+          <InputRange v-model:start="start" v-model:end="end" :size="s" class="w-96" />
+        </div>
+      </div>
+    `,
+  }),
 }
 
 export const Disabled: Story = {

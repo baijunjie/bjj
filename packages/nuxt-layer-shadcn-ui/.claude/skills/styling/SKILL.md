@@ -200,6 +200,17 @@ background: var(--color-muted);
 
 ---
 
+## 表单控件尺寸
+
+表单控件（输入类组件与 Button）共用一套尺寸档位 `ControlSize`（`xs | sm | default | lg`，全局类型，定义在 `app/types/control.ts`），每档的高度、字号、内边距、图标与内部按钮尺寸以 CSS 变量定义在 `tailwind-utilities.css` 的 `data-control-size` 规则里（档位数值见该处注释表）。
+
+- 组件声明 `size?: ControlSize`（默认 `undefined`），把它绑到控件外框的 `data-control-size` 上；未设置时沿用最近祖先的档位，没有祖先则为 `default`
+- 尺寸相关的类一律读变量，不写死数值：`h-(--control-height)`、`px-(--control-px)`、`pl-(--control-gap)`、`text-(length:--control-font-size) leading-(--control-line-height)`、`size-(--control-icon)`、`px-(--control-stepper-px)`、`size-(--control-addon-button-size)`；Button 用 `h-(--control-height)` + `px-(--control-button-px)`，纯图标按钮用 `size-(--control-height)`
+- 原本是 `text-base md:text-sm` 的组件（Input、Select、Textarea 等）保留移动端 16px，只在 `md:` 起用 `--control-font-size`（防 iOS 聚焦缩放）
+- 包装其他输入组件的组件（DatePicker → Input、SearchSelect → Select 等）把 `size` 原样传下去
+- `default` 档必须与组件原有外观一致；调整档位数值改 CSS 变量，不在组件里覆盖
+- 参考实现：`app/components/ui/InputNumber`、`app/components/ui/Input`、`app/components/ui/Select`；总览见 Storybook `Theme/Control Size`
+
 ## 透明度
 
 ```html

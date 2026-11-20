@@ -32,6 +32,26 @@ watch(() => props.modelValue, value => {
   internalValue.value = value
 })
 
+// Size classes read the shared control scale (see `data-control-size`).
+const groupClass = computed(() => cn(
+  `
+    h-(--control-height)
+    has-[>[data-align=inline-end]]:[&>input]:pr-(--control-gap)
+    has-[>[data-align=inline-start]]:[&>input]:pl-(--control-gap)
+  `,
+  props.class,
+))
+// The inner input fills the group so a compact tier doesn't leave it overflowing.
+const inputClass = `
+  h-full px-(--control-px)
+  md:text-(length:--control-font-size) md:leading-(--control-line-height)
+`
+const addonClass = `
+  text-(length:--control-font-size) leading-(--control-line-height)
+  data-[align=inline-start]:pl-(--control-px) data-[align=inline-end]:pr-(--control-px)
+  [&>svg]:size-(--control-icon)
+`
+
 const showClearButton = computed(() => !!internalValue.value && !props.readonly && !props.disabled)
 
 const countText = computed(() => {
@@ -59,17 +79,20 @@ function clearInput () {
 
 <template>
   <InputGroup
-    :class="props.class"
+    :class="groupClass"
     :data-disabled="disabled || undefined"
+    :data-control-size="size"
   >
     <InputGroupAddon
       v-if="slots.prefix"
       align="inline-start"
+      :class="addonClass"
     >
       <slot name="prefix" />
     </InputGroupAddon>
     <InputGroupInput
       :modelValue="internalValue"
+      :class="inputClass"
       v-bind="$attrs"
       :readonly="readonly"
       :disabled="disabled"
@@ -83,24 +106,37 @@ function clearInput () {
     <InputGroupAddon
       v-if="showClearButton"
       align="inline-end"
+      :class="addonClass"
     >
       <InputGroupButton
         type="button"
         size="icon-xs"
+        class="size-(--control-addon-button-size)"
         @click="clearInput"
       >
-        <Icon name="x" />
+        <Icon
+          name="x"
+          class="size-(--control-icon)"
+        />
       </InputGroupButton>
     </InputGroupAddon>
     <InputGroupAddon
       v-if="showCount"
       align="inline-end"
+      :class="addonClass"
     >
-      <InputGroupText>{{ countText }}</InputGroupText>
+      <InputGroupText
+        class="
+          text-(length:--control-font-size) leading-(--control-line-height)
+        "
+      >
+        {{ countText }}
+      </InputGroupText>
     </InputGroupAddon>
     <InputGroupAddon
       v-if="slots.suffix"
       align="inline-end"
+      :class="addonClass"
     >
       <slot name="suffix" />
     </InputGroupAddon>

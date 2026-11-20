@@ -4,6 +4,8 @@ import { useArgsModel } from '#storybook/argsModel'
 import type { SearchSelectLoadMethodParams, SearchSelectLoadMethodResult } from './types'
 import SearchSelect from './index.vue'
 
+const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+
 // Mock data: 100 items for simulating server-side search
 const allItems = Array.from({ length: 100 }, (_, i) => ({
   label: `Item ${i + 1}`,
@@ -51,6 +53,7 @@ const meta = {
     createNewText: { control: 'text' },
     loadLimit: { control: 'number' },
     autoLoad: { control: 'boolean' },
+    size: { control: 'select', options: sizes },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -65,6 +68,7 @@ const meta = {
     createNewText: '',
     loadLimit: 20,
     autoLoad: false,
+    size: 'default',
     readonly: false,
     disabled: false,
     invalid: false,
@@ -177,6 +181,35 @@ export const WithCreateNew: Story = {
     createNewTo: '/create',
     autoLoad: true,
   },
+}
+
+export const Sizes: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <SearchSelect v-model="value" :loadMethod="loadMethod" size="sm" />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { SearchSelect },
+    setup: () => ({ sizes, mockLoadMethod, value: ref<string>() }),
+    template: `
+      <div class="space-y-3">
+        <div v-for="s in sizes" :key="s" class="flex items-center gap-3">
+          <span class="w-14 text-sm text-muted-foreground">{{ s }}</span>
+          <div class="w-64">
+            <SearchSelect v-model="value" :loadMethod="mockLoadMethod" :size="s" />
+          </div>
+        </div>
+      </div>
+    `,
+  }),
 }
 
 export const Disabled: Story = {

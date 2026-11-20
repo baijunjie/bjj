@@ -5,6 +5,8 @@ import Button from '../Button/index.vue'
 import Modal from '../Modal/index.vue'
 import DatePicker from './index.vue'
 
+const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+
 const types: DatePickerType[] = [ 'date', 'month', 'year' ]
 
 const meta = {
@@ -14,6 +16,7 @@ const meta = {
     modelValue: { control: 'date' },
     type: { control: 'select', options: types },
     showTime: { control: 'boolean' },
+    size: { control: 'select', options: sizes },
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -28,6 +31,7 @@ const meta = {
     modelValue: null,
     type: 'date',
     showTime: false,
+    size: 'default',
     disabled: false,
     readonly: false,
     invalid: false,
@@ -175,6 +179,35 @@ export const ValueFormat: Story = {
       <div class="max-w-xs">
         <DatePicker v-model="formatted" valueFormat="yyyy-MM-dd" placeholder="Pick a date" />
         <div class="mt-2 text-sm text-muted-foreground">Value: {{ formatted }}</div>
+      </div>
+    `,
+  }),
+}
+
+export const Sizes: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DatePicker v-model="value" size="sm" />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { DatePicker },
+    setup: () => ({ sizes, value: ref(new Date(2026, 10, 20)) }),
+    template: `
+      <div class="space-y-3">
+        <div v-for="s in sizes" :key="s" class="flex items-center gap-3">
+          <span class="w-14 text-sm text-muted-foreground">{{ s }}</span>
+          <div class="w-64">
+            <DatePicker v-model="value" :size="s" />
+          </div>
+        </div>
       </div>
     `,
   }),

@@ -4,6 +4,8 @@ import { useArgsModel } from '#storybook/argsModel'
 import Icon from '../Icon/index.vue'
 import Input from './index.vue'
 
+const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+
 const meta = {
   title: 'UI/Input',
   component: Input,
@@ -12,6 +14,7 @@ const meta = {
     autocomplete: { control: 'text' },
     maxlength: { control: 'number' },
     showCount: { control: 'boolean' },
+    size: { control: 'select', options: sizes },
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -22,6 +25,7 @@ const meta = {
     autocomplete: 'off',
     maxlength: undefined,
     showCount: false,
+    size: 'default',
     disabled: false,
     readonly: false,
     invalid: false,
@@ -135,6 +139,35 @@ export const Password: Story = {
       <div class="max-w-sm space-y-2">
         <Input v-model="value" type="password" placeholder="Password" />
         <div class="text-sm text-muted-foreground">Value: {{ value }}</div>
+      </div>
+    `,
+  }),
+}
+
+export const Sizes: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Input v-model="value" size="sm" placeholder="Search" />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Input, Icon },
+    setup: () => ({ sizes, value: ref('') }),
+    template: `
+      <div class="space-y-3">
+        <div v-for="s in sizes" :key="s" class="flex items-center gap-3">
+          <span class="w-14 text-sm text-muted-foreground">{{ s }}</span>
+          <Input v-model="value" :size="s" placeholder="Search" class="w-64">
+            <template #prefix><Icon name="search" /></template>
+          </Input>
+        </div>
       </div>
     `,
   }),

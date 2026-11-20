@@ -9,6 +9,7 @@ import type { InputOtpProps } from './types'
 const props = withDefaults(defineProps<InputOtpProps>(), {
   modelValue: '',
   length: 6,
+  size: undefined,
   readonly: false,
   disabled: false,
   invalid: false,
@@ -48,13 +49,17 @@ function handleUpdate (value: string[]) {
     @complete="handleComplete"
     @keydown.capture="handleKeydownCapture"
   >
-    <PinInputGroup>
+    <PinInputGroup :data-control-size="size">
       <PinInputSlot
         v-for="(_, index) in length"
         :key="index"
         :index="index"
         :readonly="readonly || undefined"
         :aria-invalid="isInvalid || undefined"
+        class="
+          size-(--control-height) text-(length:--control-font-size)
+          leading-(--control-line-height)
+        "
       />
     </PinInputGroup>
   </PinInput>

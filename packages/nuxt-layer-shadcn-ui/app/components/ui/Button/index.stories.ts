@@ -15,9 +15,11 @@ const variants = [
 ] as const satisfies readonly ButtonVariant[]
 
 const sizes = [
+  'xs',
   'sm',
   'default',
   'lg',
+  'icon-xs',
   'icon-sm',
   'icon',
   'icon-lg',
@@ -110,12 +112,14 @@ export const Sizes: Story = {
       source: {
         code: `
 <template>
+  <Button size="xs">xs</Button>
   <Button size="sm">sm</Button>
   <Button size="default">default</Button>
   <Button size="lg">lg</Button>
-  <Button size="icon-sm"><Icon name="plus" /></Button>
-  <Button size="icon"><Icon name="plus" /></Button>
-  <Button size="icon-lg"><Icon name="plus" /></Button>
+  <Button size="icon-xs" icon="plus" />
+  <Button size="icon-sm" icon="plus" />
+  <Button size="icon" icon="plus" />
+  <Button size="icon-lg" icon="plus" />
 </template>
 `.trim(),
       },
@@ -126,10 +130,10 @@ export const Sizes: Story = {
     setup: () => ({ sizes }),
     template: `
       <div class="flex flex-wrap items-center gap-3">
-        <Button v-for="s in sizes" :key="s" :size="s">
-          <Icon v-if="s.startsWith('icon')" name="plus" />
-          <template v-else>{{ s }}</template>
-        </Button>
+        <template v-for="s in sizes" :key="s">
+          <Button v-if="s.startsWith('icon')" :size="s" icon="plus" />
+          <Button v-else :size="s">{{ s }}</Button>
+        </template>
       </div>
     `,
   }),

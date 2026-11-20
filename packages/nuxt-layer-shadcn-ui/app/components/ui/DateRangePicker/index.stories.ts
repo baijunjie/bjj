@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import { useArgsModel } from '#storybook/argsModel'
 import DateRangePicker from './index.vue'
 
+const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+
 const meta = {
   title: 'UI/DateRangePicker',
   component: DateRangePicker,
@@ -11,6 +13,7 @@ const meta = {
     minDate: { control: 'date' },
     maxDate: { control: 'date' },
     showTime: { control: 'boolean' },
+    size: { control: 'select', options: sizes },
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -27,6 +30,7 @@ const meta = {
     minDate: undefined,
     maxDate: undefined,
     showTime: false,
+    size: 'default',
     disabled: false,
     readonly: false,
     invalid: false,
@@ -145,6 +149,33 @@ export const Preselected: Story = {
         <div class="mt-2 text-sm text-muted-foreground">
           <div>Start: {{ start }}</div>
           <div>End: {{ end }}</div>
+        </div>
+      </div>
+    `,
+  }),
+}
+
+export const Sizes: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DateRangePicker v-model:start="start" v-model:end="end" size="sm" />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { DateRangePicker },
+    setup: () => ({ sizes, start: ref(new Date(2026, 10, 1)), end: ref(new Date(2026, 10, 20)) }),
+    template: `
+      <div class="space-y-3">
+        <div v-for="s in sizes" :key="s" class="flex items-center gap-3">
+          <span class="w-14 text-sm text-muted-foreground">{{ s }}</span>
+          <DateRangePicker v-model:start="start" v-model:end="end" :size="s" class="w-120" />
         </div>
       </div>
     `,

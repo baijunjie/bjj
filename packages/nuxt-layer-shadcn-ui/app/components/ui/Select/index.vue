@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<SelectProps<TValue, TMeta>>(), {
   options: () => [],
   modelValue: undefined,
   placeholder: undefined,
+  size: undefined,
   readonly: false,
   disabled: false,
   invalid: false,
@@ -210,6 +211,7 @@ function handleClear (event: MouseEvent) {
         :aria-readonly="readonlyActive || undefined"
         :data-disabled="disabled || undefined"
         :data-state="open ? 'open' : 'closed'"
+        :data-control-size="size"
         :class="cn(
           `
             data-[state=open]:border-ring data-[state=open]:ring-ring/50
@@ -218,6 +220,7 @@ function handleClear (event: MouseEvent) {
             aria-invalid:data-[state=open]:border-destructive
             aria-invalid:data-[state=open]:ring-destructive/20
             dark:aria-invalid:data-[state=open]:ring-destructive/40
+            h-(--control-height)
             data-[state=open]:ring-[3px]
           `,
           readonlyActive ? 'cursor-default' : 'cursor-pointer',
@@ -226,9 +229,11 @@ function handleClear (event: MouseEvent) {
       >
         <span
           class="
-            gap-2 px-3 py-1 text-base
-            md:text-sm
-            line-clamp-1 flex flex-1 items-center whitespace-nowrap
+            gap-2 py-1 text-base
+            md:text-(length:--control-font-size)
+            md:leading-(--control-line-height)
+            line-clamp-1 flex flex-1 items-center px-(--control-px)
+            whitespace-nowrap
           "
         >
           <template v-if="multiple && selectedOptions.length > 0">
@@ -257,25 +262,33 @@ function handleClear (event: MouseEvent) {
         <InputGroupAddon
           v-if="showClearButton"
           align="inline-end"
+          class="pr-(--control-px)"
         >
           <InputGroupButton
             type="button"
             size="icon-xs"
+            class="size-(--control-addon-button-size)"
             @click="handleClear"
           >
-            <Icon name="x" />
+            <Icon
+              name="x"
+              class="size-(--control-icon)"
+            />
           </InputGroupButton>
         </InputGroupAddon>
-        <InputGroupAddon align="inline-end">
+        <InputGroupAddon
+          align="inline-end"
+          class="pr-(--control-px)"
+        >
           <Icon
             v-if="loading"
             name="loader-circle"
-            class="size-4 animate-spin opacity-50"
+            class="animate-spin size-(--control-icon) opacity-50"
           />
           <Icon
             v-else
             name="chevron-down"
-            class="size-4 opacity-50"
+            class="size-(--control-icon) opacity-50"
           />
         </InputGroupAddon>
       </InputGroup>

@@ -11,6 +11,7 @@ const props = withDefaults(defineProps<TextareaProps>(), {
   maxlength: undefined,
   maxLines: undefined,
   showCount: false,
+  size: undefined,
   readonly: false,
   disabled: false,
   invalid: false,
@@ -90,6 +91,11 @@ function handleChange (event: Event) {
 
 const mergedClass = computed(() =>
   cn(
+    `
+      md:text-(length:--control-font-size)
+      md:leading-(--control-line-height)
+      px-(--control-px)
+    `,
     props.rows ? 'field-sizing-fixed!' : '',
     props.class,
   ),
@@ -97,7 +103,7 @@ const mergedClass = computed(() =>
 </script>
 
 <template>
-  <div>
+  <div :data-control-size="size">
     <ShadcnTextarea
       :modelValue="modelValue"
       :rows="rows"
@@ -115,7 +121,10 @@ const mergedClass = computed(() =>
     />
     <div
       v-if="showCount"
-      class="mt-1 text-sm text-muted-foreground text-right"
+      class="
+        mt-1 text-muted-foreground text-right text-(length:--control-font-size)
+        leading-(--control-line-height)
+      "
     >
       {{ countText }}
     </div>

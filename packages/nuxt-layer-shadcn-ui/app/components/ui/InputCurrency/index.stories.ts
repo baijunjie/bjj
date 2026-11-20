@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import { useArgsModel } from '#storybook/argsModel'
 import InputCurrency from './index.vue'
 
+const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+
 const currencyDisplays = [ 'symbol', 'narrowSymbol', 'code', 'name' ] as const
 
 const meta = {
@@ -11,6 +13,7 @@ const meta = {
     modelValue: { control: 'number' },
     currency: { control: 'text' },
     currencyDisplay: { control: 'select', options: currencyDisplays },
+    size: { control: 'select', options: sizes },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -19,6 +22,7 @@ const meta = {
     modelValue: 1000,
     currency: 'JPY',
     currencyDisplay: 'symbol',
+    size: 'default',
     readonly: false,
     disabled: false,
     invalid: false,
@@ -83,6 +87,33 @@ export const JpyNameDisplay: Story = {
     currency: 'JPY',
     currencyDisplay: 'name',
   },
+}
+
+export const Sizes: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <InputCurrency v-model="value" currency="JPY" size="sm" />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { InputCurrency },
+    setup: () => ({ sizes, value: ref(1000) }),
+    template: `
+      <div class="space-y-3">
+        <div v-for="s in sizes" :key="s" class="flex items-center gap-3">
+          <span class="w-14 text-sm text-muted-foreground">{{ s }}</span>
+          <InputCurrency v-model="value" currency="JPY" :size="s" class="w-48" />
+        </div>
+      </div>
+    `,
+  }),
 }
 
 export const Invalid: Story = {

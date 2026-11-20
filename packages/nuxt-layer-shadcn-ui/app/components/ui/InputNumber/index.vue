@@ -18,6 +18,7 @@ const props = withDefaults(defineProps<InputNumberProps>(), {
   showButtons: true,
   placeholder: undefined,
   align: 'center',
+  size: undefined,
   invalid: false,
   class: undefined,
 })
@@ -41,9 +42,10 @@ const isInvalid = useFormItemInvalid(() => props.invalid)
 const contentClass = computed(() =>
   cn(
     `
-      h-9 rounded-md border-input shadow-xs
+      rounded-md border-input shadow-xs
       dark:bg-input/30
-      flex items-center border transition-[color,box-shadow]
+      flex h-(--control-height) items-center border
+      transition-[color,box-shadow]
     `,
     `
       has-[[data-slot=input]:focus-visible]:border-ring
@@ -60,7 +62,11 @@ const contentClass = computed(() =>
   ),
 )
 
-const buttonClass = 'static translate-y-0 shrink-0 cursor-pointer'
+// Steppers fill the control's height; their width comes from the icon plus the tier's padding.
+const buttonClass = `
+  static translate-y-0 shrink-0 cursor-pointer self-stretch py-0 px-(--control-stepper-px)
+  [&>svg]:size-(--control-icon)
+`
 
 const alignClass = {
   left: 'text-left',
@@ -71,21 +77,25 @@ const alignClass = {
 const inputClass = computed(() =>
   cn(
     `
-      min-w-0 px-3 flex-1 rounded-none border-0 shadow-none
+      min-w-0 h-full flex-1 rounded-none border-0 px-(--control-px)
+      text-(length:--control-font-size) leading-(--control-line-height)
+      shadow-none
       focus-visible:ring-0
     `,
     alignClass[props.align],
     // An addon already separates the value from that edge, so tighten the gap next to it.
-    slots.prefix && 'pl-2',
-    slots.suffix && 'pr-2',
+    slots.prefix && 'pl-(--control-gap)',
+    slots.suffix && 'pr-(--control-gap)',
   ),
 )
 
 const addonClass = computed(() =>
   cn(
     `
-      text-muted-foreground gap-1 text-sm font-medium flex shrink-0 cursor-text
-      items-center select-none
+      text-muted-foreground gap-1 font-medium flex shrink-0 cursor-text
+      items-center text-(length:--control-font-size)
+      leading-(--control-line-height) select-none
+      [&>svg]:size-(--control-icon)
     `,
     props.disabled && 'opacity-50',
   ),
@@ -93,10 +103,10 @@ const addonClass = computed(() =>
 
 // The stepper buttons pad the content edges themselves; without them the addon does it.
 const prefixClass = computed(() =>
-  cn(addonClass.value, !props.showButtons && 'pl-3'),
+  cn(addonClass.value, !props.showButtons && 'pl-(--control-px)'),
 )
 const suffixClass = computed(() =>
-  cn(addonClass.value, !props.showButtons && 'pr-3'),
+  cn(addonClass.value, !props.showButtons && 'pr-(--control-px)'),
 )
 
 // Clicking an addon should feel like clicking the field itself.
@@ -116,7 +126,10 @@ function focusInput (event: MouseEvent) {
     :readonly="readonly"
     :disabled="disabled"
   >
-    <NumberFieldContent :class="contentClass">
+    <NumberFieldContent
+      :class="contentClass"
+      :data-control-size="size"
+    >
       <NumberFieldDecrement
         v-if="showButtons"
         :class="buttonClass"

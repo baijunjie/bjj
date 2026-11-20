@@ -3,6 +3,8 @@ import EventLog from '#storybook/EventLog.vue'
 import { useArgsModel } from '#storybook/argsModel'
 import Select from './index.vue'
 
+const sizes = [ 'xs', 'sm', 'default', 'lg' ] as const
+
 const frameworks = [
   { label: 'React', value: 'react' },
   { label: 'Vue', value: 'vue' },
@@ -37,6 +39,7 @@ const meta = {
   argTypes: {
     modelValue: { control: 'text' },
     placeholder: { control: 'text' },
+    size: { control: 'select', options: sizes },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -50,6 +53,7 @@ const meta = {
   args: {
     modelValue: undefined,
     placeholder: 'Select an option',
+    size: 'default',
     readonly: false,
     disabled: false,
     invalid: false,
@@ -257,6 +261,35 @@ export const Grouped: Story = {
           placeholder="Select a framework"
         />
         <div class="mt-2 text-sm text-muted-foreground">Selected: {{ value ?? 'none' }}</div>
+      </div>
+    `,
+  }),
+}
+
+export const Sizes: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <Select v-model="value" :options="options" size="sm" />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Select },
+    setup: () => ({ sizes, frameworks, value: ref('nuxt') }),
+    template: `
+      <div class="space-y-3">
+        <div v-for="s in sizes" :key="s" class="flex items-center gap-3">
+          <span class="w-14 text-sm text-muted-foreground">{{ s }}</span>
+          <div class="w-64">
+            <Select v-model="value" :options="frameworks" :size="s" />
+          </div>
+        </div>
       </div>
     `,
   }),
