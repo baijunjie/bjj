@@ -1,4 +1,4 @@
-import type { DataTableColumn } from '../DataTable/types'
+import type { DataTableColumn, DataTableRowClickable } from '../DataTable/types'
 
 export interface InfiniteDataTableFetchParams {
   /** Opaque cursor pointing at the next page; absent on the first page */
@@ -38,6 +38,8 @@ export interface InfiniteDataTableProps<T = Record<string, any>> {
   height?: string
   /** Whether rows are clickable (shows pointer cursor and pairs with `@rowClick`) */
   clickable?: boolean
+  /** Per-row click gate: rows returning false neither emit `rowClick` nor show the pointer cursor. Selection is gated separately by `rowSelectable`. */
+  rowClickable?: DataTableRowClickable<T>
   /** Row hover highlight. Default: true. Turn it off where the cells hold form controls — a tinted row reads as "not editable" there. Selected and active rows keep their highlight either way. */
   hoverable?: boolean
 }

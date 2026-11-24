@@ -94,6 +94,7 @@ const meta = {
     rowSelectable: { control: false },
     selectOnRowClick: { control: 'boolean' },
     clickable: { control: 'boolean' },
+    rowClickable: { control: false },
     hoverable: { control: 'boolean' },
     batchActions: { control: 'object' },
     selection: { control: 'object' },
@@ -112,6 +113,7 @@ const meta = {
     rowSelectable: undefined,
     selectOnRowClick: false,
     clickable: false,
+    rowClickable: undefined,
     hoverable: true,
     batchActions: [],
     selection: [],
@@ -170,6 +172,50 @@ export const WithBatchActions: Story = {
       />
       <div class="mt-2 text-sm text-muted-foreground">
         Selected: {{ selection.length > 0 ? selection.map(r => r.name).join(', ') : 'none' }}
+      </div>
+    `,
+  }),
+}
+
+/** `rowClickable` gates `rowClick` per row: inactive rows here neither emit it nor show the pointer cursor. A click that ends a text selection (e.g. copying an email) emits nothing either. */
+export const RowClickable: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <AsyncDataTable
+    :columns="columns"
+    :fetchMethod="mockFetch"
+    clickable
+    :rowClickable="row => row.status === 'active'"
+    @rowClick="row => lastClicked = row"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { AsyncDataTable },
+    setup () {
+      const lastClicked = ref<User | null>(null)
+      const rowClickable = (row: User) => row.status === 'active'
+      return { columns, mockFetch, lastClicked, rowClickable }
+    },
+    template: `
+      <div class="w-full">
+        <AsyncDataTable
+        :columns="columns"
+        :fetchMethod="mockFetch"
+          clickable
+          :rowClickable="rowClickable"
+          @rowClick="row => lastClicked = row"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">
+          Last clicked: {{ lastClicked?.name ?? 'none' }}
+        </div>
       </div>
     `,
   }),

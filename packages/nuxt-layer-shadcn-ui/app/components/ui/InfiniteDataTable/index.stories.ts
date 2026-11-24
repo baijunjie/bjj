@@ -79,6 +79,7 @@ const meta = {
     pageSize: { control: 'number' },
     height: { control: 'text' },
     clickable: { control: 'boolean' },
+    rowClickable: { control: false },
     hoverable: { control: 'boolean' },
   },
   args: {
@@ -89,6 +90,7 @@ const meta = {
     pageSize: 30,
     height: '360px',
     clickable: false,
+    rowClickable: undefined,
     hoverable: true,
   },
   render: args => {
@@ -236,6 +238,52 @@ const filters = ref({ sortBy: null, sortOrder: null })
           height="360px"
         />
         <pre class="text-xs text-muted-foreground">{{ filters }}</pre>
+      </div>
+    `,
+  }),
+}
+
+/** `rowClickable` gates `rowClick` per row: inactive rows here neither emit it nor show the pointer cursor. A click that ends a text selection (e.g. copying an email) emits nothing either. */
+export const RowClickable: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <InfiniteDataTable
+    :columns="columns"
+    :fetchMethod="mockFetch"
+    height="360px"
+    clickable
+    :rowClickable="row => row.status === 'active'"
+    @rowClick="row => lastClicked = row"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { InfiniteDataTable: InfiniteDataTable as any },
+    setup () {
+      const lastClicked = ref<User | null>(null)
+      const rowClickable = (row: User) => row.status === 'active'
+      return { columns, mockFetch, lastClicked, rowClickable }
+    },
+    template: `
+      <div class="w-full">
+        <InfiniteDataTable
+        :columns="columns"
+        :fetchMethod="mockFetch"
+        height="360px"
+          clickable
+          :rowClickable="rowClickable"
+          @rowClick="row => lastClicked = row"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">
+          Last clicked: {{ lastClicked?.name ?? 'none' }}
+        </div>
       </div>
     `,
   }),

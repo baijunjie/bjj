@@ -82,6 +82,7 @@ const meta = {
     selectOnRowClick: { control: 'boolean' },
     loading: { control: 'boolean' },
     clickable: { control: 'boolean' },
+    rowClickable: { control: false },
     hoverable: { control: 'boolean' },
     height: { control: 'text' },
   },
@@ -91,6 +92,7 @@ const meta = {
     selectOnRowClick: false,
     loading: false,
     clickable: false,
+    rowClickable: undefined,
     hoverable: true,
     height: undefined,
   },
@@ -264,6 +266,50 @@ export const RowClick: Story = {
           :data="data"
           :columns="basicColumns"
           clickable
+          @rowClick="row => lastClicked = row"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">
+          Last clicked: {{ lastClicked?.name ?? 'none' }}
+        </div>
+      </div>
+    `,
+  }),
+}
+
+/** `rowClickable` gates `rowClick` per row: inactive rows here neither emit it nor show the pointer cursor. A click that ends a text selection (e.g. copying an email) emits nothing either. */
+export const RowClickable: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable
+    :data="data"
+    :columns="columns"
+    clickable
+    :rowClickable="row => row.status === 'active'"
+    @rowClick="row => lastClicked = row"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup () {
+      const lastClicked = ref<User | null>(null)
+      const rowClickable = (row: User) => row.status === 'active'
+      return { data: sampleData, columns: basicColumns, lastClicked, rowClickable }
+    },
+    template: `
+      <div class="w-full">
+        <DataTable
+        :data="data"
+        :columns="columns"
+          clickable
+          :rowClickable="rowClickable"
           @rowClick="row => lastClicked = row"
         />
         <div class="mt-2 text-sm text-muted-foreground">

@@ -1,4 +1,4 @@
-import type { DataTableColumn, DataTableRowSelectable } from '../DataTable/types'
+import type { DataTableColumn, DataTableRowClickable, DataTableRowSelectable } from '../DataTable/types'
 import type { DropdownActionItem, DropdownLabelItem, DropdownSeparatorItem } from '../Dropdown/types'
 
 export type StaticDataTableBatchAction<T = Record<string, any>>
@@ -34,6 +34,8 @@ export interface StaticDataTableProps<T = Record<string, any>> {
   selectOnRowClick?: boolean
   /** Whether rows are clickable (shows pointer cursor and pairs with `@rowClick`) */
   clickable?: boolean
+  /** Per-row click gate: rows returning false neither emit `rowClick` nor show the pointer cursor. Selection is gated separately by `rowSelectable`. */
+  rowClickable?: DataTableRowClickable<T>
   /** Row hover highlight. Default: true. Turn it off where the cells hold form controls — a tinted row reads as "not editable" there. Selected and active rows keep their highlight either way. */
   hoverable?: boolean
   /** Batch action definitions for selected rows */

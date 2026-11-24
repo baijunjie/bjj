@@ -28,6 +28,7 @@ const props = withDefaults(defineProps<DataTableProps<TData>>(), {
   sortOrder: undefined,
   loading: false,
   clickable: false,
+  rowClickable: undefined,
   hoverable: true,
   height: undefined,
   active: null,
@@ -104,9 +105,20 @@ function isRowSelected (row: TData): boolean {
 // Whether a click on the row body toggles the row's selection.
 const rowClickSelects = computed(() => showSelectionColumn.value && props.selectOnRowClick)
 
+function emitsRowClick (row: TData, index: number): boolean {
+  return props.rowClickable ? props.rowClickable(row, index) : true
+}
+
 // Both row-click selection and the `clickable` contract make a row respond to a click.
 function isRowClickable (row: TData, index: number): boolean {
-  return props.clickable || (rowClickSelects.value && isRowSelectable(row, index))
+  return (props.clickable && emitsRowClick(row, index))
+    || (rowClickSelects.value && isRowSelectable(row, index))
+}
+
+// With row-click selection off, the selection cell is the only toggle, so it
+// takes its own hover tint to read as a target.
+function isSelectionCellHoverable (row: TData, index: number): boolean {
+  return !props.selectOnRowClick && isRowSelectable(row, index)
 }
 
 function isRowActive (row: TData): boolean {
@@ -127,7 +139,10 @@ function toggleRow (row: TData, index: number) {
 }
 
 function onRowClick (row: TData, index: number, event: MouseEvent) {
-  emit('rowClick', row, index, event)
+  // A drag that selects text (e.g. to copy an ID) ends in a click on the row;
+  // it isn't meant as one.
+  if (window.getSelection()?.toString()) return
+  if (emitsRowClick(row, index)) emit('rowClick', row, index, event)
   if (rowClickSelects.value) toggleRow(row, index)
 }
 
@@ -456,6 +471,7 @@ defineExpose({
                 isRowSelectable(row, index) && 'cursor-pointer',
               )"
               :style="selectionColumnStyle"
+              :data-hover-target="isSelectionCellHoverable(row, index) || undefined"
               :data-shadow="selectionColumnShadowDir"
               @click.stop="onSelectionCellClick(row, index, $event)"
             >
@@ -611,6 +627,13 @@ defineExpose({
 
 :deep(tbody tr) {
   --cell-overlay: transparent;
+  --cell-hover-overlay: transparent;
+}
+
+/* Layered over the row's own state tint, so it stays visible on a hovered or
+   selected row. */
+:deep(tbody td[data-hover-target]:hover) {
+  --cell-hover-overlay: color-mix(in oklab, var(--color-foreground) 6%, transparent);
 }
 
 :deep(tbody tr:not([data-virtual-row]):hover),
@@ -634,6 +657,7 @@ defineExpose({
 :deep(tbody td) {
   border-bottom: 1px solid var(--color-border);
   background:
+    linear-gradient(var(--cell-hover-overlay), var(--cell-hover-overlay)),
     linear-gradient(var(--cell-overlay), var(--cell-overlay))
     var(--color-card);
 }

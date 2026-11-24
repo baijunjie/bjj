@@ -6,6 +6,9 @@ export type DataTableSelectionMode = 'single' | 'multiple'
 /** Per-row selection gate: return false to lock a row out of selection */
 export type DataTableRowSelectable<T = Record<string, any>> = (row: T, index: number) => boolean
 
+/** Per-row click gate: return false to keep a row from emitting `rowClick` */
+export type DataTableRowClickable<T = Record<string, any>> = (row: T, index: number) => boolean
+
 export interface DataTableColumn {
   /** Column identifier - used for field binding and slot naming */
   field: string
@@ -58,6 +61,8 @@ export interface DataTableProps<T = Record<string, any>> {
   loading?: boolean
   /** Whether rows are clickable (shows pointer cursor and pairs with `@rowClick`) */
   clickable?: boolean
+  /** Per-row click gate: rows returning false neither emit `rowClick` nor show the pointer cursor. Selection is gated separately by `rowSelectable`. */
+  rowClickable?: DataTableRowClickable<T>
   /** Whether rows take a hover highlight. Default: true — turn it off where the cells hold form controls, as a tinted row reads as "not editable" there. Selected and active rows keep their highlight either way. */
   hoverable?: boolean
   /** Fixed height for the inner scroll container (e.g. '400px'). Enables internal vertical scroll, with sticky header and footer. */
