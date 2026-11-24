@@ -78,6 +78,7 @@ const meta = {
     showPagination: { control: 'boolean' },
     selectable: { control: 'boolean' },
     rowSelectable: { control: false },
+    selectOnRowClick: { control: 'boolean' },
     clickable: { control: 'boolean' },
     hoverable: { control: 'boolean' },
     batchActions: { control: 'object' },
@@ -94,6 +95,7 @@ const meta = {
     showPagination: true,
     selectable: false,
     rowSelectable: undefined,
+    selectOnRowClick: false,
     clickable: false,
     hoverable: true,
     batchActions: [],
@@ -147,6 +149,47 @@ export const WithBatchActions: Story = {
         :batchActions="batchActions"
         v-model:selection="selection"
         showTopToolbar
+      />
+      <div class="mt-2 text-sm text-muted-foreground">
+        Selected: {{ selection.length > 0 ? selection.map(r => r.name).join(', ') : 'none' }}
+      </div>
+    `,
+  }),
+}
+
+/** `selectOnRowClick` lets a click anywhere on a row toggle its selection, not just the checkbox cell. */
+export const SelectOnRowClick: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <StaticDataTable
+    :data="users"
+    :columns="columns"
+    v-model:selection="selection"
+    selectable
+    selectOnRowClick
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { StaticDataTable },
+    setup () {
+      const selection = ref<User[]>([])
+      return { users: allUsers, columns, selection }
+    },
+    template: `
+      <StaticDataTable
+        :data="users"
+        :columns="columns"
+        v-model:selection="selection"
+        selectable
+        selectOnRowClick
       />
       <div class="mt-2 text-sm text-muted-foreground">
         Selected: {{ selection.length > 0 ? selection.map(r => r.name).join(', ') : 'none' }}

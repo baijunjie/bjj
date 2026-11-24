@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<DataTableProps<TData>>(), {
   columns: () => [],
   selectionMode: undefined,
   rowSelectable: undefined,
+  selectOnRowClick: false,
   sortBy: undefined,
   sortOrder: undefined,
   loading: false,
@@ -100,9 +101,12 @@ function isRowSelected (row: TData): boolean {
   return toRaw(selection.value) === toRaw(row)
 }
 
-// Both selection and the `clickable` contract make a row respond to a click.
+// Whether a click on the row body toggles the row's selection.
+const rowClickSelects = computed(() => showSelectionColumn.value && props.selectOnRowClick)
+
+// Both row-click selection and the `clickable` contract make a row respond to a click.
 function isRowClickable (row: TData, index: number): boolean {
-  return props.clickable || (showSelectionColumn.value && isRowSelectable(row, index))
+  return props.clickable || (rowClickSelects.value && isRowSelectable(row, index))
 }
 
 function isRowActive (row: TData): boolean {
@@ -124,7 +128,13 @@ function toggleRow (row: TData, index: number) {
 
 function onRowClick (row: TData, index: number, event: MouseEvent) {
   emit('rowClick', row, index, event)
-  if (showSelectionColumn.value) toggleRow(row, index)
+  if (rowClickSelects.value) toggleRow(row, index)
+}
+
+// The whole selection cell is the hit target, not just the 16px checkbox.
+// A click on the checkbox itself is already handled by its own update event.
+function onSelectionCellClick (row: TData, index: number, event: MouseEvent) {
+  if (event.target === event.currentTarget) toggleRow(row, index)
 }
 
 // -- Sorting --
@@ -440,10 +450,14 @@ defineExpose({
             <!-- Selection cell: stop click to prevent double toggle with row click -->
             <TableCell
               v-if="showSelectionColumn"
-              :class="cn(stickyLeftClass, selectionColumnClass)"
+              :class="cn(
+                stickyLeftClass,
+                selectionColumnClass,
+                isRowSelectable(row, index) && 'cursor-pointer',
+              )"
               :style="selectionColumnStyle"
               :data-shadow="selectionColumnShadowDir"
-              @click.stop
+              @click.stop="onSelectionCellClick(row, index, $event)"
             >
               <Checkbox
                 :modelValue="isRowSelected(row)"

@@ -30,6 +30,8 @@ export interface StaticDataTableProps<T = Record<string, any>> {
   selectable?: boolean
   /** Per-row selection gate; `index` is relative to the current page. Rows returning false get a disabled checkbox and are skipped by "select all". */
   rowSelectable?: DataTableRowSelectable<T>
+  /** Whether clicking anywhere on a row toggles its selection. Default: false — selection toggles only from the selection cell, leaving row clicks to `@rowClick`. */
+  selectOnRowClick?: boolean
   /** Whether rows are clickable (shows pointer cursor and pairs with `@rowClick`) */
   clickable?: boolean
   /** Row hover highlight. Default: true. Turn it off where the cells hold form controls — a tinted row reads as "not editable" there. Selected and active rows keep their highlight either way. */

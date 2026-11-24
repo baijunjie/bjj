@@ -46,6 +46,8 @@ export interface DataTableProps<T = Record<string, any>> {
   selectionMode?: DataTableSelectionMode
   /** Per-row selection gate. Rows returning false get a disabled checkbox and ignore row-click selection; a selection they already hold is left untouched. */
   rowSelectable?: DataTableRowSelectable<T>
+  /** Whether clicking anywhere on a row toggles its selection. Default: false — selection toggles only from the selection cell, leaving row clicks to `@rowClick`. */
+  selectOnRowClick?: boolean
   /** Row to highlight as active. Independent from selection; uses the same highlight style. */
   active?: T | null
   /** Current sort field */

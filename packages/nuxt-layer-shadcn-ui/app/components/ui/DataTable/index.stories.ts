@@ -79,6 +79,7 @@ const meta = {
   argTypes: {
     selectionMode: { control: 'select', options: [ undefined, 'single', 'multiple' ]},
     rowSelectable: { control: false },
+    selectOnRowClick: { control: 'boolean' },
     loading: { control: 'boolean' },
     clickable: { control: 'boolean' },
     hoverable: { control: 'boolean' },
@@ -87,6 +88,7 @@ const meta = {
   args: {
     selectionMode: undefined,
     rowSelectable: undefined,
+    selectOnRowClick: false,
     loading: false,
     clickable: false,
     hoverable: true,
@@ -523,6 +525,50 @@ export const DisabledRows: Story = {
         />
         <div class="mt-2 text-sm text-muted-foreground">
           Inactive rows are locked out of selection — Selected:
+          {{ selection.length > 0 ? selection.map(r => r.name).join(', ') : 'none' }}
+        </div>
+      </div>
+    `,
+  }),
+}
+
+/** `selectOnRowClick` lets a click anywhere on a row toggle its selection, not just the checkbox cell. */
+export const SelectOnRowClick: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <DataTable
+    :data="data"
+    :columns="columns"
+    selectionMode="multiple"
+    selectOnRowClick
+    v-model:selection="selection"
+  />
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { DataTable: DataTable as any },
+    setup () {
+      const selection = ref<User[]>([])
+      return { data: sampleData, basicColumns, selection }
+    },
+    template: `
+      <div class="w-full">
+        <DataTable
+          :data="data"
+          :columns="basicColumns"
+          selectionMode="multiple"
+          selectOnRowClick
+          v-model:selection="selection"
+        />
+        <div class="mt-2 text-sm text-muted-foreground">
+          Click anywhere on a row — Selected:
           {{ selection.length > 0 ? selection.map(r => r.name).join(', ') : 'none' }}
         </div>
       </div>
