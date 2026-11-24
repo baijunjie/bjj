@@ -478,7 +478,7 @@ defineExpose({
               <Checkbox
                 :modelValue="isRowSelected(row)"
                 :disabled="!isRowSelectable(row, index)"
-                class="bg-muted-foreground/15"
+                class="bg-muted-foreground/15 cursor-pointer"
                 @update:modelValue="toggleRow(row, index)"
               />
             </TableCell>
