@@ -11,6 +11,7 @@ const meta = {
   component: InputNumber,
   argTypes: {
     modelValue: { control: 'number' },
+    id: { control: 'text' },
     min: { control: 'number' },
     max: { control: 'number' },
     step: { control: 'number' },
@@ -25,6 +26,7 @@ const meta = {
   },
   args: {
     modelValue: 0,
+    id: '',
     min: undefined,
     max: undefined,
     step: 1,

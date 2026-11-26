@@ -36,6 +36,18 @@ const emit = defineEmits<{
 
 const isInvalid = useFormItemInvalid(() => props.invalid)
 
+// Also keeps the Inputs in the toolbar popovers out of an enclosing FormItem
+const formItemAttrs = useFormItemControl({ labelable: false })
+
+/** Attributes of the editable element; ProseMirror stringifies every value, so unset ones are dropped */
+const editorAttributes = computed(() => {
+  const attrs: Record<string, string> = { 'class': 'rich-text', 'aria-multiline': 'true' }
+  for (const [ key, value ] of Object.entries(formItemAttrs({}))) {
+    if (value !== undefined) attrs[key] = value
+  }
+  return attrs
+})
+
 const editable = computed(() => !props.readonly && !props.disabled)
 
 // The format is fixed for the editor's lifetime: it decides which extensions load
@@ -97,7 +109,7 @@ const editor = useEditor({
     CharacterCount.configure({ limit: props.maxlength ?? null }),
   ],
   editorProps: {
-    attributes: { class: 'rich-text' },
+    attributes: () => editorAttributes.value,
     handlePaste: (_view, event) => {
       const files = getImageFiles(event.clipboardData?.files)
       if (!props.uploadImage || !files.length) return false
@@ -124,6 +136,9 @@ const editor = useEditor({
     emit('blur', event)
   },
 })
+
+// ProseMirror only re-reads the attributes on a view update
+watch(editorAttributes, () => editor.value?.view.setProps({}))
 
 // Only push outside changes in, so the caret is not reset on every keystroke
 watch(() => props.modelValue, value => {

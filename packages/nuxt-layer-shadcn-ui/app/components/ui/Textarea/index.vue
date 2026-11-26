@@ -5,6 +5,7 @@ import type { TextareaProps } from './types'
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<TextareaProps>(), {
+  id: undefined,
   modelValue: undefined,
   autocomplete: undefined,
   rows: undefined,
@@ -26,6 +27,7 @@ const emit = defineEmits<{
 const { t } = useI18n()
 
 const isInvalid = useFormItemInvalid(() => props.invalid)
+const formItemAttrs = useFormItemControl({ labelable: true, id: () => props.id })
 
 // Internal value tracks the actual textarea content, independent of parent's modelValue
 const internalValue = ref(props.modelValue)
@@ -114,7 +116,7 @@ const mergedClass = computed(() =>
       :aria-invalid="isInvalid || undefined"
       :data-1p-ignore="autocomplete === 'off' || !autocomplete ? true : undefined"
       :autocomplete="autocomplete || 'off'"
-      v-bind="$attrs"
+      v-bind="{ ...formItemAttrs($attrs), ...$attrs }"
       @input="handleInput"
       @keydown="handleKeydown"
       @change="handleChange"

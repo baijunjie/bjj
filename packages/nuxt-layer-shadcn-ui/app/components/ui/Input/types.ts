@@ -1,6 +1,8 @@
 import type { ControlSize } from '../../../types/control'
 
 export interface InputProps {
+  /** id of the input element; the label of an enclosing FormItem points at it */
+  id?: string
   modelValue?: string
   /** Set to enable browser/password-manager autofill (e.g. 'email', 'current-password'). Defaults to 'off'. */
   autocomplete?: string

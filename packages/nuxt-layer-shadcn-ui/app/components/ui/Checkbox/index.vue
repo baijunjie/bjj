@@ -5,6 +5,7 @@ import type { CheckboxProps } from './types'
 const props = defineProps<CheckboxProps>()
 
 const isInvalid = useFormItemInvalid(() => props.invalid)
+const formItemAttrs = useFormItemControl({ labelable: true, id: () => props.id })
 
 // Reka's toggle runs on click; both keyboard and pointer activation emit a
 // click event, so a capture-phase guard blocks every toggle path when readonly
@@ -19,6 +20,7 @@ function handleClickCapture (event: Event) {
 <template>
   <ShadcnCheckbox
     v-slot="{ state }"
+    v-bind="formItemAttrs($attrs)"
     :aria-invalid="isInvalid || undefined"
     :aria-readonly="readonly || undefined"
     class="

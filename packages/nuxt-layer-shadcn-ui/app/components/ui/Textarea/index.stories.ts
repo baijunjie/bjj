@@ -10,6 +10,7 @@ const meta = {
   component: Textarea,
   argTypes: {
     modelValue: { control: 'text' },
+    id: { control: 'text' },
     autocomplete: { control: 'text' },
     rows: { control: 'number' },
     maxlength: { control: 'number' },
@@ -23,6 +24,7 @@ const meta = {
   },
   args: {
     modelValue: '',
+    id: '',
     autocomplete: '',
     rows: undefined,
     maxlength: undefined,

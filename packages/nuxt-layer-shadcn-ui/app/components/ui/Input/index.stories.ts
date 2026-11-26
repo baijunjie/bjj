@@ -11,6 +11,7 @@ const meta = {
   component: Input,
   argTypes: {
     modelValue: { control: 'text' },
+    id: { control: 'text' },
     autocomplete: { control: 'text' },
     maxlength: { control: 'number' },
     showCount: { control: 'boolean' },
@@ -22,6 +23,7 @@ const meta = {
   },
   args: {
     modelValue: '',
+    id: '',
     autocomplete: 'off',
     maxlength: undefined,
     showCount: false,

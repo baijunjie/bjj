@@ -4,6 +4,8 @@ import type { SwitchProps } from './types'
 
 const props = defineProps<SwitchProps>()
 
+const formItemAttrs = useFormItemControl({ labelable: true, id: () => props.id })
+
 // Reka toggles on click (pointer and Space) and on Enter via its own keydown
 // handler, so both events need a capture-phase guard when readonly
 function handleClickCapture (event: Event) {
@@ -23,6 +25,7 @@ function handleKeydownCapture (event: KeyboardEvent) {
 
 <template>
   <ShadcnSwitch
+    v-bind="formItemAttrs($attrs)"
     :aria-readonly="readonly || undefined"
     @click.capture="handleClickCapture"
     @keydown.capture="handleKeydownCapture"

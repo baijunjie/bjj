@@ -7,6 +7,7 @@ const meta = {
   component: Checkbox,
   argTypes: {
     modelValue: { control: 'select', options: [ true, false, 'indeterminate' ]},
+    id: { control: 'text' },
     defaultValue: { control: 'select', options: [ true, false, 'indeterminate' ]},
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
@@ -17,6 +18,7 @@ const meta = {
   },
   args: {
     modelValue: false,
+    id: '',
     defaultValue: false,
     readonly: false,
     disabled: false,

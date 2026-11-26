@@ -19,6 +19,9 @@ import {
 import { ListboxFilter } from 'reka-ui'
 import type { SelectOption, SelectProps } from './types'
 
+// The root popover renders no element of its own: attrs go to the combobox trigger
+defineOptions({ inheritAttrs: false })
+
 type Option = SelectOption<TValue, TMeta>
 
 const T = useTranslations('components.ui.Select')
@@ -40,6 +43,7 @@ const props = withDefaults(defineProps<SelectProps<TValue, TMeta>>(), {
 })
 
 const isInvalid = useFormItemInvalid(() => props.invalid)
+const formItemAttrs = useFormItemControl({ labelable: false })
 
 // Alias the readonly prop: in this generic component vue-tsc resolves a bare
 // `readonly` in the template to Vue's auto-imported readonly() instead
@@ -225,6 +229,7 @@ function handleClear (event: MouseEvent) {
           `,
           readonlyActive ? 'cursor-default' : 'cursor-pointer',
         )"
+        v-bind="{ ...formItemAttrs($attrs), ...$attrs }"
         @click.capture="handleTriggerClickCapture"
       >
         <span

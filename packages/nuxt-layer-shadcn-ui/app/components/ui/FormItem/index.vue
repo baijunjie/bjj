@@ -11,7 +11,7 @@ import type { FormItemProps } from './types'
 
 const props = defineProps<FormItemProps>()
 
-defineSlots<{
+const slots = defineSlots<{
   default?: () => any
   /** Replaces the label text; the required asterisk is still appended */
   label?: () => any
@@ -25,6 +25,12 @@ defineSlots<{
 const [ DefineLabelText, LabelText ] = createReusableTemplate()
 
 useFormItemInvalid(() => !!props.error)
+
+const { labelId, descriptionId, errorId, labelFor, groupLabelledby } = provideFormItemField({
+  hasLabel: () => !!props.label || !!slots.label,
+  hasDescription: () => !!props.description || !!slots.description,
+  hasError: () => !!props.error,
+})
 
 const errorArray = computed(() => {
   if (!props.error) return undefined
@@ -81,6 +87,7 @@ const labelExtraClass = computed(() => {
     :orientation="orientation"
     :class="fieldClass"
     :data-invalid="!!error || undefined"
+    :aria-labelledby="groupLabelledby"
   >
     <DefineLabelText>
       <div :class="$slots.labelSuffix ? 'gap-1 flex items-center' : undefined">
@@ -110,6 +117,8 @@ const labelExtraClass = computed(() => {
     >
       <FieldLabel
         v-if="label || $slots.label"
+        :id="labelId"
+        :for="labelFor"
         :class="labelBaseClass"
       >
         <LabelText />
@@ -123,18 +132,26 @@ const labelExtraClass = computed(() => {
     </div>
     <FieldLabel
       v-else-if="label || $slots.label"
+      :id="labelId"
+      :for="labelFor"
       :class="labelClass"
     >
       <LabelText />
     </FieldLabel>
     <FieldContent>
       <slot />
-      <FieldDescription v-if="description || $slots.description">
+      <FieldDescription
+        v-if="description || $slots.description"
+        :id="descriptionId"
+      >
         <slot name="description">
           {{ description }}
         </slot>
       </FieldDescription>
-      <FieldError :errors="errorArray" />
+      <FieldError
+        :id="errorId"
+        :errors="errorArray"
+      />
     </FieldContent>
   </Field>
 </template>

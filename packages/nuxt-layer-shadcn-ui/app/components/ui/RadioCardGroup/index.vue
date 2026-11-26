@@ -14,6 +14,7 @@ const props = withDefaults(defineProps<RadioCardGroupProps>(), {
 })
 
 const isInvalid = useFormItemInvalid(() => props.invalid)
+const formItemAttrs = useFormItemControl({ labelable: false })
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
@@ -66,6 +67,7 @@ const cardClass = (optionDisabled?: boolean) =>
 <template>
   <ShadcnRadioGroup
     v-model="model"
+    v-bind="formItemAttrs($attrs)"
     :disabled="disabled"
     :class="mergedClass"
     :aria-readonly="readonly || undefined"

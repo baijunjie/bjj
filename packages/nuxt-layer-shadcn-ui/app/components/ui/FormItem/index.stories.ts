@@ -330,6 +330,55 @@ export const InvalidControls: Story = {
   }),
 }
 
+export const LabelAssociation: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      description: {
+        story: 'The label, description and error are associated with the control automatically, so screen readers announce the label as the control\'s name without a separate `aria-label`. A native input, textarea or checkbox is targeted by the label\'s `for` (clicking the label focuses it); a custom widget such as `Select` or `RadioGroup` gets `aria-labelledby`. The description and error are linked via `aria-describedby`. With several controls in one `FormItem` (e.g. `InputRange`), the label names the field group instead of any single control. An `aria-label` / `aria-labelledby` passed to the control, or an explicit `id`, takes precedence.',
+      },
+      source: {
+        code: `
+<template>
+  <FormItem label="Email" description="We never share it">
+    <Input />
+  </FormItem>
+  <FormItem label="Framework" error="Required">
+    <Select :options="options" />
+  </FormItem>
+  <FormItem label="Price range">
+    <InputRange />
+  </FormItem>
+  <FormItem label="Phone">
+    <Input aria-label="Phone number without country code" />
+  </FormItem>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { FormItem, Input, Select, InputRange },
+    setup: () => ({ selectOptions }),
+    template: `
+      <div class="max-w-md space-y-4">
+        <FormItem label="Email" description="We never share it">
+          <Input />
+        </FormItem>
+        <FormItem label="Framework" error="Required">
+          <Select :options="selectOptions" />
+        </FormItem>
+        <FormItem label="Price range">
+          <InputRange />
+        </FormItem>
+        <FormItem label="Phone">
+          <Input aria-label="Phone number without country code" />
+        </FormItem>
+      </div>
+    `,
+  }),
+}
+
 export const Responsive: Story = {
   parameters: {
     ...noControls,

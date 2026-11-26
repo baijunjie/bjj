@@ -1,6 +1,8 @@
 import type { ControlSize } from '../../../types/control'
 
 export interface TextareaProps {
+  /** id of the textarea element; the label of an enclosing FormItem points at it */
+  id?: string
   modelValue?: string
   /** Set to enable browser/password-manager autofill. Defaults to 'off'. */
   autocomplete?: string

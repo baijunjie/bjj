@@ -18,6 +18,7 @@ const emit = defineEmits<{
 }>()
 
 const isInvalid = useFormItemInvalid(() => props.invalid)
+const formItemAttrs = useFormItemControl({ labelable: true, id: () => props.id })
 
 const slots = defineSlots<{
   prefix?: () => any
@@ -93,7 +94,7 @@ function clearInput () {
     <InputGroupInput
       :modelValue="internalValue"
       :class="inputClass"
-      v-bind="$attrs"
+      v-bind="{ ...formItemAttrs($attrs), ...$attrs }"
       :readonly="readonly"
       :disabled="disabled"
       :maxlength="maxlength"

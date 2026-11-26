@@ -8,7 +8,11 @@ import {
 } from '../../shadcn/number-field'
 import type { InputNumberAlign, InputNumberProps } from './types'
 
+// aria-* attrs go to the input; everything else (e.g. `formatOptions`, listeners) stays on the root
+defineOptions({ inheritAttrs: false })
+
 const props = withDefaults(defineProps<InputNumberProps>(), {
+  id: undefined,
   modelValue: undefined,
   min: undefined,
   max: undefined,
@@ -38,6 +42,15 @@ const model = computed({
 })
 
 const isInvalid = useFormItemInvalid(() => props.invalid)
+const formItemAttrs = useFormItemControl({ labelable: true, id: () => props.id })
+
+function splitAttrs (attrs: Record<string, unknown>, aria: boolean) {
+  return Object.fromEntries(Object.entries(attrs).filter(([ key ]) => key.startsWith('aria-') === aria))
+}
+
+function inputAttrs (attrs: Record<string, unknown>) {
+  return { ...formItemAttrs(attrs), ...splitAttrs(attrs, true) }
+}
 
 const contentClass = computed(() =>
   cn(
@@ -118,6 +131,7 @@ function focusInput (event: MouseEvent) {
 
 <template>
   <NumberField
+    v-bind="splitAttrs($attrs, false)"
     v-model="model"
     :class="props.class"
     :min="min"
@@ -142,6 +156,7 @@ function focusInput (event: MouseEvent) {
         <slot name="prefix" />
       </span>
       <NumberFieldInput
+        v-bind="inputAttrs($attrs)"
         :placeholder="placeholder"
         :class="inputClass"
       />

@@ -3,6 +3,8 @@ import type { ControlSize } from '../../../types/control'
 export type InputNumberAlign = 'left' | 'center' | 'right'
 
 export interface InputNumberProps {
+  /** id of the input element; the label of an enclosing FormItem points at it */
+  id?: string
   modelValue?: number
   min?: number
   max?: number

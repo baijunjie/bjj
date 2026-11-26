@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<RadioGroupProps>(), {
 })
 
 const isInvalid = useFormItemInvalid(() => props.invalid)
+const formItemAttrs = useFormItemControl({ labelable: false })
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
@@ -63,6 +64,7 @@ const mergedClass = computed(() => cn(
 <template>
   <ShadcnRadioGroup
     v-model="model"
+    v-bind="formItemAttrs($attrs)"
     :disabled="disabled"
     :orientation="orientation"
     :class="mergedClass"
