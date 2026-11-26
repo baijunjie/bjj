@@ -71,6 +71,40 @@
       "Pagination": {
         "pageReport": "{first}–{last} của {total}"
       },
+      "RichTextEditor": {
+        "align": {
+          "center": "Căn giữa",
+          "justify": "Căn đều hai bên",
+          "left": "Căn trái",
+          "right": "Căn phải"
+        },
+        "apply": "Áp dụng",
+        "blockquote": "Trích dẫn",
+        "bold": "In đậm",
+        "bulletList": "Danh sách dấu đầu dòng",
+        "code": "Mã nội dòng",
+        "codeBlock": "Khối mã",
+        "heading": "Kiểu văn bản",
+        "heading1": "Tiêu đề 1",
+        "heading2": "Tiêu đề 2",
+        "heading3": "Tiêu đề 3",
+        "horizontalRule": "Đường phân cách",
+        "image": "Hình ảnh",
+        "imagePlaceholder": "URL hình ảnh",
+        "insert": "Chèn",
+        "italic": "In nghiêng",
+        "link": "Liên kết",
+        "linkPlaceholder": "Dán hoặc nhập liên kết",
+        "orderedList": "Danh sách đánh số",
+        "paragraph": "Đoạn văn",
+        "redo": "Làm lại",
+        "removeLink": "Xóa",
+        "strike": "Gạch ngang",
+        "textAlign": "Căn chỉnh",
+        "underline": "Gạch chân",
+        "undo": "Hoàn tác",
+        "uploadImage": "Tải lên"
+      },
       "SearchSelect": {
         "createNew": "Tạo mới",
         "noItems": "Không có tùy chọn",

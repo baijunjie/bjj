@@ -71,6 +71,40 @@
       "Pagination": {
         "pageReport": "{first}–{last} von {total}"
       },
+      "RichTextEditor": {
+        "align": {
+          "center": "Zentriert",
+          "justify": "Blocksatz",
+          "left": "Linksbündig",
+          "right": "Rechtsbündig"
+        },
+        "apply": "Übernehmen",
+        "blockquote": "Zitat",
+        "bold": "Fett",
+        "bulletList": "Aufzählung",
+        "code": "Inline-Code",
+        "codeBlock": "Codeblock",
+        "heading": "Textstil",
+        "heading1": "Überschrift 1",
+        "heading2": "Überschrift 2",
+        "heading3": "Überschrift 3",
+        "horizontalRule": "Trennlinie",
+        "image": "Bild",
+        "imagePlaceholder": "Bild-URL",
+        "insert": "Einfügen",
+        "italic": "Kursiv",
+        "link": "Link",
+        "linkPlaceholder": "Link einfügen oder eingeben",
+        "orderedList": "Nummerierte Liste",
+        "paragraph": "Absatz",
+        "redo": "Wiederholen",
+        "removeLink": "Entfernen",
+        "strike": "Durchgestrichen",
+        "textAlign": "Ausrichtung",
+        "underline": "Unterstrichen",
+        "undo": "Rückgängig",
+        "uploadImage": "Hochladen"
+      },
       "SearchSelect": {
         "createNew": "Neu erstellen",
         "noItems": "Keine Optionen",

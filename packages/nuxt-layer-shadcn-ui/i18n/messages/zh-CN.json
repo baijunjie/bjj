@@ -71,6 +71,40 @@
       "Pagination": {
         "pageReport": "{first}–{last} 共 {total}"
       },
+      "RichTextEditor": {
+        "align": {
+          "center": "居中对齐",
+          "justify": "两端对齐",
+          "left": "左对齐",
+          "right": "右对齐"
+        },
+        "apply": "应用",
+        "blockquote": "引用",
+        "bold": "粗体",
+        "bulletList": "无序列表",
+        "code": "行内代码",
+        "codeBlock": "代码块",
+        "heading": "文本样式",
+        "heading1": "标题 1",
+        "heading2": "标题 2",
+        "heading3": "标题 3",
+        "horizontalRule": "分割线",
+        "image": "图片",
+        "imagePlaceholder": "图片 URL",
+        "insert": "插入",
+        "italic": "斜体",
+        "link": "链接",
+        "linkPlaceholder": "粘贴或输入链接",
+        "orderedList": "有序列表",
+        "paragraph": "正文",
+        "redo": "重做",
+        "removeLink": "移除",
+        "strike": "删除线",
+        "textAlign": "对齐方式",
+        "underline": "下划线",
+        "undo": "撤销",
+        "uploadImage": "上传"
+      },
       "SearchSelect": {
         "createNew": "新建",
         "noItems": "暂无选项",

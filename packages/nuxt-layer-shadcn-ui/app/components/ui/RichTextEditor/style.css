@@ -1,0 +1,31 @@
+/*
+ * Editor-only styles of the RichTextEditor content area. Typography comes from
+ * the shared `.rich-text` class (see RichText/style.css), which Tiptap's
+ * contenteditable root (`.ProseMirror`) carries.
+ */
+
+.rich-text-editor-content .ProseMirror {
+  flex: 1;
+  padding: 0.5rem var(--control-px);
+  font-size: 1rem;
+  outline: none;
+}
+
+@media (width >= 48rem) {
+  .rich-text-editor-content .ProseMirror {
+    font-size: var(--control-font-size);
+  }
+}
+
+.rich-text-editor-content .ProseMirror img.ProseMirror-selectednode {
+  outline: 2px solid var(--color-ring);
+}
+
+/* Placeholder: Tiptap marks the empty first paragraph and copies the text into `data-placeholder` */
+.rich-text-editor-content .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: var(--color-muted-foreground);
+  pointer-events: none;
+}

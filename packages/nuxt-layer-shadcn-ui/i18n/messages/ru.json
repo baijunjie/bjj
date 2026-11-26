@@ -71,6 +71,40 @@
       "Pagination": {
         "pageReport": "{first}–{last} из {total}"
       },
+      "RichTextEditor": {
+        "align": {
+          "center": "По центру",
+          "justify": "По ширине",
+          "left": "По левому краю",
+          "right": "По правому краю"
+        },
+        "apply": "Применить",
+        "blockquote": "Цитата",
+        "bold": "Жирный",
+        "bulletList": "Маркированный список",
+        "code": "Встроенный код",
+        "codeBlock": "Блок кода",
+        "heading": "Стиль текста",
+        "heading1": "Заголовок 1",
+        "heading2": "Заголовок 2",
+        "heading3": "Заголовок 3",
+        "horizontalRule": "Разделитель",
+        "image": "Изображение",
+        "imagePlaceholder": "URL изображения",
+        "insert": "Вставить",
+        "italic": "Курсив",
+        "link": "Ссылка",
+        "linkPlaceholder": "Вставьте или введите ссылку",
+        "orderedList": "Нумерованный список",
+        "paragraph": "Абзац",
+        "redo": "Повторить",
+        "removeLink": "Удалить",
+        "strike": "Зачёркнутый",
+        "textAlign": "Выравнивание",
+        "underline": "Подчёркнутый",
+        "undo": "Отменить",
+        "uploadImage": "Загрузить"
+      },
       "SearchSelect": {
         "createNew": "Создать новое",
         "noItems": "Нет опций",

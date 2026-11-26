@@ -71,6 +71,40 @@
       "Pagination": {
         "pageReport": "{first}–{last} / {total}"
       },
+      "RichTextEditor": {
+        "align": {
+          "center": "Ortala",
+          "justify": "İki yana yasla",
+          "left": "Sola hizala",
+          "right": "Sağa hizala"
+        },
+        "apply": "Uygula",
+        "blockquote": "Alıntı",
+        "bold": "Kalın",
+        "bulletList": "Madde işaretli liste",
+        "code": "Satır içi kod",
+        "codeBlock": "Kod bloğu",
+        "heading": "Metin stili",
+        "heading1": "Başlık 1",
+        "heading2": "Başlık 2",
+        "heading3": "Başlık 3",
+        "horizontalRule": "Ayırıcı",
+        "image": "Görsel",
+        "imagePlaceholder": "Görsel URL'si",
+        "insert": "Ekle",
+        "italic": "İtalik",
+        "link": "Bağlantı",
+        "linkPlaceholder": "Bağlantı yapıştırın veya yazın",
+        "orderedList": "Numaralı liste",
+        "paragraph": "Paragraf",
+        "redo": "Yinele",
+        "removeLink": "Kaldır",
+        "strike": "Üstü çizili",
+        "textAlign": "Hizalama",
+        "underline": "Altı çizili",
+        "undo": "Geri al",
+        "uploadImage": "Yükle"
+      },
       "SearchSelect": {
         "createNew": "Yeni oluştur",
         "noItems": "Seçenek yok",

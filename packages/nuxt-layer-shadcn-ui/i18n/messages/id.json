@@ -71,6 +71,40 @@
       "Pagination": {
         "pageReport": "{first}–{last} dari {total}"
       },
+      "RichTextEditor": {
+        "align": {
+          "center": "Rata tengah",
+          "justify": "Rata kiri-kanan",
+          "left": "Rata kiri",
+          "right": "Rata kanan"
+        },
+        "apply": "Terapkan",
+        "blockquote": "Kutipan",
+        "bold": "Tebal",
+        "bulletList": "Daftar berpoin",
+        "code": "Kode sebaris",
+        "codeBlock": "Blok kode",
+        "heading": "Gaya teks",
+        "heading1": "Judul 1",
+        "heading2": "Judul 2",
+        "heading3": "Judul 3",
+        "horizontalRule": "Pemisah",
+        "image": "Gambar",
+        "imagePlaceholder": "URL gambar",
+        "insert": "Sisipkan",
+        "italic": "Miring",
+        "link": "Tautan",
+        "linkPlaceholder": "Tempel atau ketik tautan",
+        "orderedList": "Daftar bernomor",
+        "paragraph": "Paragraf",
+        "redo": "Ulangi",
+        "removeLink": "Hapus",
+        "strike": "Coret",
+        "textAlign": "Perataan",
+        "underline": "Garis bawah",
+        "undo": "Urungkan",
+        "uploadImage": "Unggah"
+      },
       "SearchSelect": {
         "createNew": "Buat baru",
         "noItems": "Tidak ada opsi",

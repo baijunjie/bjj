@@ -71,6 +71,40 @@
       "Pagination": {
         "pageReport": "รายการที่ {first}–{last} จากทั้งหมด {total}"
       },
+      "RichTextEditor": {
+        "align": {
+          "center": "จัดกึ่งกลาง",
+          "justify": "จัดชิดขอบ",
+          "left": "จัดชิดซ้าย",
+          "right": "จัดชิดขวา"
+        },
+        "apply": "ใช้",
+        "blockquote": "คำพูดอ้างอิง",
+        "bold": "ตัวหนา",
+        "bulletList": "รายการสัญลักษณ์แสดงหัวข้อย่อย",
+        "code": "โค้ดในบรรทัด",
+        "codeBlock": "บล็อกโค้ด",
+        "heading": "สไตล์ข้อความ",
+        "heading1": "หัวเรื่อง 1",
+        "heading2": "หัวเรื่อง 2",
+        "heading3": "หัวเรื่อง 3",
+        "horizontalRule": "เส้นคั่น",
+        "image": "รูปภาพ",
+        "imagePlaceholder": "URL รูปภาพ",
+        "insert": "แทรก",
+        "italic": "ตัวเอียง",
+        "link": "ลิงก์",
+        "linkPlaceholder": "วางหรือพิมพ์ลิงก์",
+        "orderedList": "รายการลำดับเลข",
+        "paragraph": "ย่อหน้า",
+        "redo": "ทำซ้ำ",
+        "removeLink": "ลบ",
+        "strike": "ขีดฆ่า",
+        "textAlign": "การจัดแนว",
+        "underline": "ขีดเส้นใต้",
+        "undo": "เลิกทำ",
+        "uploadImage": "อัปโหลด"
+      },
       "SearchSelect": {
         "createNew": "สร้างใหม่",
         "noItems": "ไม่มีตัวเลือก",

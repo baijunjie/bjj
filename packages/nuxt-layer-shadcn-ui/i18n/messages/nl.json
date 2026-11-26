@@ -71,6 +71,40 @@
       "Pagination": {
         "pageReport": "{first}–{last} van {total}"
       },
+      "RichTextEditor": {
+        "align": {
+          "center": "Centreren",
+          "justify": "Uitvullen",
+          "left": "Links uitlijnen",
+          "right": "Rechts uitlijnen"
+        },
+        "apply": "Toepassen",
+        "blockquote": "Citaat",
+        "bold": "Vet",
+        "bulletList": "Opsommingslijst",
+        "code": "Inline code",
+        "codeBlock": "Codeblok",
+        "heading": "Tekststijl",
+        "heading1": "Kop 1",
+        "heading2": "Kop 2",
+        "heading3": "Kop 3",
+        "horizontalRule": "Scheidingslijn",
+        "image": "Afbeelding",
+        "imagePlaceholder": "Afbeeldings-URL",
+        "insert": "Invoegen",
+        "italic": "Cursief",
+        "link": "Link",
+        "linkPlaceholder": "Plak of typ een link",
+        "orderedList": "Genummerde lijst",
+        "paragraph": "Alinea",
+        "redo": "Opnieuw",
+        "removeLink": "Verwijderen",
+        "strike": "Doorhalen",
+        "textAlign": "Uitlijning",
+        "underline": "Onderstrepen",
+        "undo": "Ongedaan maken",
+        "uploadImage": "Uploaden"
+      },
       "SearchSelect": {
         "createNew": "Nieuw maken",
         "noItems": "Geen opties",

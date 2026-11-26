@@ -4,6 +4,13 @@ import Markdown from './index.vue'
 const meta = {
   title: 'UI/Markdown',
   component: Markdown,
+  parameters: {
+    docs: {
+      description: {
+        component: 'Styles trusted, already-rendered HTML from the default slot with the GitHub theme — not sanitized, renders on the server. For content users wrote in RichTextEditor, use **RichText**.',
+      },
+    },
+  },
   argTypes: {
     hideTitle: { control: 'boolean' },
   },

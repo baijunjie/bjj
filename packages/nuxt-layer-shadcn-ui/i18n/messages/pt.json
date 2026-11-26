@@ -71,6 +71,40 @@
       "Pagination": {
         "pageReport": "{first}–{last} de {total}"
       },
+      "RichTextEditor": {
+        "align": {
+          "center": "Centralizar",
+          "justify": "Justificar",
+          "left": "Alinhar à esquerda",
+          "right": "Alinhar à direita"
+        },
+        "apply": "Aplicar",
+        "blockquote": "Citação",
+        "bold": "Negrito",
+        "bulletList": "Lista com marcadores",
+        "code": "Código em linha",
+        "codeBlock": "Bloco de código",
+        "heading": "Estilo de texto",
+        "heading1": "Título 1",
+        "heading2": "Título 2",
+        "heading3": "Título 3",
+        "horizontalRule": "Divisor",
+        "image": "Imagem",
+        "imagePlaceholder": "URL da imagem",
+        "insert": "Inserir",
+        "italic": "Itálico",
+        "link": "Link",
+        "linkPlaceholder": "Cole ou digite um link",
+        "orderedList": "Lista numerada",
+        "paragraph": "Parágrafo",
+        "redo": "Refazer",
+        "removeLink": "Remover",
+        "strike": "Tachado",
+        "textAlign": "Alinhamento",
+        "underline": "Sublinhado",
+        "undo": "Desfazer",
+        "uploadImage": "Enviar"
+      },
       "SearchSelect": {
         "createNew": "Criar novo",
         "noItems": "Nenhuma opção",

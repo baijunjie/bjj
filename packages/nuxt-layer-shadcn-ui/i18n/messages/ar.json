@@ -71,6 +71,40 @@
       "Pagination": {
         "pageReport": "{first}–{last} من {total}"
       },
+      "RichTextEditor": {
+        "align": {
+          "center": "توسيط",
+          "justify": "ضبط",
+          "left": "محاذاة لليسار",
+          "right": "محاذاة لليمين"
+        },
+        "apply": "تطبيق",
+        "blockquote": "اقتباس",
+        "bold": "غامق",
+        "bulletList": "قائمة نقطية",
+        "code": "رمز مضمّن",
+        "codeBlock": "كتلة رمز",
+        "heading": "نمط النص",
+        "heading1": "عنوان 1",
+        "heading2": "عنوان 2",
+        "heading3": "عنوان 3",
+        "horizontalRule": "فاصل",
+        "image": "صورة",
+        "imagePlaceholder": "رابط الصورة",
+        "insert": "إدراج",
+        "italic": "مائل",
+        "link": "رابط",
+        "linkPlaceholder": "الصق رابطًا أو اكتبه",
+        "orderedList": "قائمة مرقمة",
+        "paragraph": "فقرة",
+        "redo": "إعادة",
+        "removeLink": "إزالة",
+        "strike": "يتوسطه خط",
+        "textAlign": "المحاذاة",
+        "underline": "تسطير",
+        "undo": "تراجع",
+        "uploadImage": "رفع"
+      },
       "SearchSelect": {
         "createNew": "إنشاء جديد",
         "noItems": "لا توجد خيارات",
