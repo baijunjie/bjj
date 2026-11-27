@@ -14,6 +14,7 @@ const meta = {
     maxDate: { control: 'date' },
     showTime: { control: 'boolean' },
     size: { control: 'select', options: sizes },
+    rounded: { control: 'boolean' },
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -31,6 +32,7 @@ const meta = {
     maxDate: undefined,
     showTime: false,
     size: 'default',
+    rounded: false,
     disabled: false,
     readonly: false,
     invalid: false,
@@ -234,5 +236,12 @@ export const Invalid: Story = {
   parameters: noControls,
   args: {
     invalid: true,
+  },
+}
+
+export const Rounded: Story = {
+  parameters: noControls,
+  args: {
+    rounded: true,
   },
 }

@@ -1,3 +1,3 @@
 import type { InputNumberProps } from '../InputNumber/types'
 
-export interface InputPercentProps extends /* @vue-ignore */ Pick<InputNumberProps, 'readonly' | 'disabled' | 'invalid' | 'align' | 'size' | 'class'> {}
+export interface InputPercentProps extends /* @vue-ignore */ Pick<InputNumberProps, 'readonly' | 'disabled' | 'invalid' | 'align' | 'size' | 'rounded' | 'class'> {}

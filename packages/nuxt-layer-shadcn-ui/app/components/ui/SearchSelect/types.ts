@@ -29,6 +29,8 @@ export interface SearchSelectProps<V extends string | number = string, M = unkno
   placeholder?: string
   /** Size tier. Unset follows the nearest ancestor's `data-control-size`, else `default`. */
   size?: ControlSize
+  /** Fully rounded (pill) corners, as on Button */
+  rounded?: boolean
   /** Keep the value visible and focusable but prevent changing it */
   readonly?: boolean
   disabled?: boolean

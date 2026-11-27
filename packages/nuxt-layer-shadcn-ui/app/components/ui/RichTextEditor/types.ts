@@ -66,6 +66,11 @@ export interface RichTextEditorProps {
   uploadImage?: RichTextEditorUploadImage
   /** Size tier. Unset follows the nearest ancestor's `data-control-size`, else `default`. */
   size?: ControlSize
+  /**
+   * Rounded corners matching a single-line input's pill ends: the radius stays
+   * half a single-line control's height however many lines the content takes.
+   */
+  rounded?: boolean
   /** Hide the toolbar and show the content without editing */
   readonly?: boolean
   disabled?: boolean

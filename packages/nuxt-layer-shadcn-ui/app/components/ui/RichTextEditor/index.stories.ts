@@ -50,6 +50,7 @@ const meta = {
     maxHeight: { control: 'text' },
     uploadImage: { control: false },
     size: { control: 'select', options: sizes },
+    rounded: { control: 'boolean' },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -66,6 +67,7 @@ const meta = {
     maxHeight: undefined,
     uploadImage: undefined,
     size: 'default',
+    rounded: false,
     readonly: false,
     disabled: false,
     invalid: false,
@@ -235,6 +237,13 @@ export const Readonly: Story = {
   args: {
     readonly: true,
     modelValue: sampleHtml,
+  },
+}
+
+export const Rounded: Story = {
+  parameters: noControls,
+  args: {
+    rounded: true,
   },
 }
 

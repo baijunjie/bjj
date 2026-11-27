@@ -10,6 +10,7 @@ const meta = {
   argTypes: {
     modelValue: { control: 'number' },
     size: { control: 'select', options: sizes },
+    rounded: { control: 'boolean' },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -17,6 +18,7 @@ const meta = {
   args: {
     modelValue: 0.5,
     size: 'default',
+    rounded: false,
     readonly: false,
     disabled: false,
     invalid: false,
@@ -74,5 +76,12 @@ export const Invalid: Story = {
   parameters: noControls,
   args: {
     invalid: true,
+  },
+}
+
+export const Rounded: Story = {
+  parameters: noControls,
+  args: {
+    rounded: true,
   },
 }

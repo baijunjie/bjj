@@ -17,6 +17,7 @@ const meta = {
     startPlaceholder: { control: 'text' },
     endPlaceholder: { control: 'text' },
     size: { control: 'select', options: sizes },
+    rounded: { control: 'boolean' },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -30,6 +31,7 @@ const meta = {
     startPlaceholder: '',
     endPlaceholder: '',
     size: 'default',
+    rounded: false,
     readonly: false,
     disabled: false,
     invalid: false,
@@ -151,6 +153,13 @@ export const CustomInput: Story = {
       </div>
     `,
   }),
+}
+
+export const Rounded: Story = {
+  parameters: noControls,
+  args: {
+    rounded: true,
+  },
 }
 
 export const EventHandling: Story = {

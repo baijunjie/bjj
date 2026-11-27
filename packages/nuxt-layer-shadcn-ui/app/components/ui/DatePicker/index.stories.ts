@@ -17,6 +17,7 @@ const meta = {
     type: { control: 'select', options: types },
     showTime: { control: 'boolean' },
     size: { control: 'select', options: sizes },
+    rounded: { control: 'boolean' },
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -32,6 +33,7 @@ const meta = {
     type: 'date',
     showTime: false,
     size: 'default',
+    rounded: false,
     disabled: false,
     readonly: false,
     invalid: false,
@@ -301,4 +303,11 @@ export const InModal: Story = {
       </div>
     `,
   }),
+}
+
+export const Rounded: Story = {
+  parameters: noControls,
+  args: {
+    rounded: true,
+  },
 }

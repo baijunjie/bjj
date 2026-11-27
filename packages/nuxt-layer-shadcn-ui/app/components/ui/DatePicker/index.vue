@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
   invalid: false,
   placeholder: undefined,
   size: undefined,
+  rounded: false,
   minDate: undefined,
   maxDate: undefined,
   valueFormat: undefined,
@@ -92,6 +93,7 @@ const timeConfig = computed(() => {
           :modelValue="value"
           :placeholder="placeholder || T('placeholder')"
           :size="size"
+          :rounded="rounded"
           :disabled="disabled"
           :readonly="readonly"
           @update:modelValue="(v: string | undefined) => onInput(v ?? '')"

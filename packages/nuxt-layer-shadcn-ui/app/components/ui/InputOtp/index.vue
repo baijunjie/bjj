@@ -10,6 +10,7 @@ const props = withDefaults(defineProps<InputOtpProps>(), {
   modelValue: '',
   length: 6,
   size: undefined,
+  rounded: false,
   readonly: false,
   disabled: false,
   invalid: false,
@@ -56,10 +57,16 @@ function handleUpdate (value: string[]) {
         :index="index"
         :readonly="readonly || undefined"
         :aria-invalid="isInvalid || undefined"
-        class="
-          size-(--control-height) text-(length:--control-font-size)
-          leading-(--control-line-height)
-        "
+        :class="[
+          `
+            size-(--control-height) text-(length:--control-font-size)
+            leading-(--control-line-height)
+          `,
+          rounded && `
+            first:rounded-l-full
+            last:rounded-r-full
+          `,
+        ]"
       />
     </PinInputGroup>
   </PinInput>

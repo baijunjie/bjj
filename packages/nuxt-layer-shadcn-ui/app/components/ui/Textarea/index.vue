@@ -9,10 +9,13 @@ const props = withDefaults(defineProps<TextareaProps>(), {
   modelValue: undefined,
   autocomplete: undefined,
   rows: undefined,
+  minRows: undefined,
+  maxRows: undefined,
   maxlength: undefined,
   maxLines: undefined,
   showCount: false,
   size: undefined,
+  rounded: false,
   readonly: false,
   disabled: false,
   invalid: false,
@@ -91,14 +94,39 @@ function handleChange (event: Event) {
   emit('change', target.value)
 }
 
+// Height of n rows: n lines plus the padding and borders, which add up to
+// the control height minus one line; where a line outgrows the control
+// height (16px text on a compact tier), the padding is gone and only the
+// borders add.
+function rowsHeight (rows: number) {
+  return `max(calc(var(--control-height) + ${rows - 1}lh), calc(${rows}lh + 2px))`
+}
+
+// Auto-sizing bounds; `rows` fixes the height instead.
+const heightStyle = computed(() => {
+  if (props.rows) return undefined
+  return {
+    minHeight: props.minRows ? rowsHeight(props.minRows) : undefined,
+    maxHeight: props.maxRows ? rowsHeight(props.maxRows) : undefined,
+  }
+})
+
 const mergedClass = computed(() =>
   cn(
     `
       md:text-(length:--control-font-size)
       md:leading-(--control-line-height)
-      px-(--control-px)
+      px-(--control-px) py-[calc((var(--control-height)-1lh)/2-1px)]
     `,
-    props.rows ? 'field-sizing-fixed!' : '',
+    // With `rows` the height follows the rows, so one row is as tall as a
+    // single-line input of the same tier, and resizing stops at one line;
+    // without it the textarea grows with its content, from the base minimum
+    // height or `minRows` up to `maxRows`.
+    props.rows
+      ? 'field-sizing-fixed! min-h-[max(var(--control-height),calc(1lh+2px))]'
+      : '',
+    // Half a single-line control's height, so more lines don't round it further.
+    props.rounded && 'rounded-[calc(var(--control-height)/2)]',
     props.class,
   ),
 )
@@ -113,6 +141,7 @@ const mergedClass = computed(() =>
       :readonly="readonly"
       :disabled="disabled"
       :class="mergedClass"
+      :style="heightStyle"
       :aria-invalid="isInvalid || undefined"
       :data-1p-ignore="autocomplete === 'off' || !autocomplete ? true : undefined"
       :autocomplete="autocomplete || 'off'"

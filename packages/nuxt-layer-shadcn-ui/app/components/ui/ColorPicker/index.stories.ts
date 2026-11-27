@@ -16,6 +16,7 @@ const meta = {
     foregroundCandidates: { control: 'object' },
     foreground: { control: 'text' },
     size: { control: 'select', options: sizes },
+    rounded: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
     class: { control: 'text' },
@@ -27,6 +28,7 @@ const meta = {
     foregroundCandidates: [ '#000000', '#ffffff' ],
     foreground: '',
     size: 'default',
+    rounded: false,
     disabled: false,
     invalid: false,
     class: '',
@@ -246,9 +248,10 @@ export const CustomSwatch: Story = {
         code: `
 <template>
   <ColorPicker v-model="color" aria-label="Text color">
-    <template #swatch="{ value, foreground }">
+    <template #swatch="{ value, foreground, radius }">
       <span
-        class="flex size-full items-center justify-center rounded-full border border-border text-xs font-semibold"
+        class="flex size-full items-center justify-center border border-border text-xs font-semibold"
+        :class="radius"
         :style="{ backgroundColor: value, color: foreground }"
       >
         Aa
@@ -265,9 +268,10 @@ export const CustomSwatch: Story = {
     setup: () => ({ color: ref('#7c3aed') }),
     template: `
       <ColorPicker v-model="color" aria-label="Text color">
-        <template #swatch="{ value, foreground }">
+        <template #swatch="{ value, foreground, radius }">
           <span
-            class="flex size-full items-center justify-center rounded-full border border-border text-xs font-semibold"
+            class="flex size-full items-center justify-center border border-border text-xs font-semibold"
+            :class="radius"
             :style="{ backgroundColor: value, color: foreground }"
           >
             Aa
@@ -276,6 +280,13 @@ export const CustomSwatch: Story = {
       </ColorPicker>
     `,
   }),
+}
+
+export const Rounded: Story = {
+  parameters: noControls,
+  args: {
+    rounded: true,
+  },
 }
 
 export const EventHandling: Story = {

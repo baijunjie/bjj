@@ -31,6 +31,7 @@ const props = withDefaults(defineProps<SelectProps<TValue, TMeta>>(), {
   modelValue: undefined,
   placeholder: undefined,
   size: undefined,
+  rounded: false,
   readonly: false,
   disabled: false,
   invalid: false,
@@ -227,6 +228,7 @@ function handleClear (event: MouseEvent) {
             h-(--control-height)
             data-[state=open]:ring-[3px]
           `,
+          rounded && 'rounded-full',
           readonlyActive ? 'cursor-default' : 'cursor-pointer',
         )"
         v-bind="{ ...formItemAttrs($attrs), ...$attrs }"

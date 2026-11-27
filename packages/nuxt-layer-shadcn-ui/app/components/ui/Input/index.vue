@@ -40,6 +40,7 @@ const groupClass = computed(() => cn(
     has-[>[data-align=inline-end]]:[&>input]:pr-(--control-gap)
     has-[>[data-align=inline-start]]:[&>input]:pl-(--control-gap)
   `,
+  props.rounded && 'rounded-full',
   props.class,
 ))
 // The inner input fills the group so a compact tier doesn't leave it overflowing.

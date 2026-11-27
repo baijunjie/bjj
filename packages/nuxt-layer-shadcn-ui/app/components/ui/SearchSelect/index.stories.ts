@@ -54,6 +54,7 @@ const meta = {
     loadLimit: { control: 'number' },
     autoLoad: { control: 'boolean' },
     size: { control: 'select', options: sizes },
+    rounded: { control: 'boolean' },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -69,6 +70,7 @@ const meta = {
     loadLimit: 20,
     autoLoad: false,
     size: 'default',
+    rounded: false,
     readonly: false,
     disabled: false,
     invalid: false,
@@ -223,6 +225,13 @@ export const Invalid: Story = {
   parameters: noControls,
   args: {
     invalid: true,
+  },
+}
+
+export const Rounded: Story = {
+  parameters: noControls,
+  args: {
+    rounded: true,
   },
 }
 

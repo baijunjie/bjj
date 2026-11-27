@@ -2,7 +2,7 @@
 import type { ColorPickerProps } from './types'
 
 /**
- * A pill holding a round swatch and the hex value. The swatch opens the
+ * A frame holding a swatch and the hex value. The swatch opens the
  * platform color picker (no picker library); the value is a text input taking
  * `#rgb` / `#rrggbb`, with or without the `#`. Values are shown in capitals.
  */
@@ -20,18 +20,23 @@ const emit = defineEmits<{
 
 defineSlots<{
   /**
-   * Replaces the round swatch; fill the slot box with `size-full`.
+   * Replaces the swatch; fill the slot box with `size-full` and use `radius`
+   * (a corner class matching the frame) for its corners.
    * `foreground` is the candidate contrasting most with the color (see
    * `foregroundCandidates`; unset when the value isn't a hex color).
    */
-  swatch?: (props: { value: string | undefined, foreground: string | undefined }) => any
+  swatch?: (props: { value: string | undefined, foreground: string | undefined, radius: string }) => any
 }>()
 
 const T = useTranslations('components.ui.ColorPicker')
 
+// The swatch's corners follow the frame's: concentric with the default
+// corners, round inside the pill.
+const swatchRadius = computed(() => props.rounded ? 'rounded-full' : 'rounded-sm')
+
 const isInvalid = useFormItemInvalid(() => props.invalid)
 // The hex text input is the labelled control: a click on the FormItem label
-// focuses it rather than opening the platform picker, and the pill's own text
+// focuses it rather than opening the platform picker, and the frame's own text
 // stays out of the name.
 const formItemAttrs = useFormItemControl({ labelable: true, id: () => props.id })
 
@@ -143,10 +148,11 @@ function handleTextBlur () {
         border-input shadow-xs pl-1
         dark:bg-input/30
         inline-flex h-(--control-height) w-fit shrink-0 items-center
-        gap-(--control-gap) rounded-full border pr-(--control-px)
+        gap-(--control-gap) border pr-(--control-px)
         transition-[color,box-shadow]
       `,
-      // The focus ring is drawn on the pill: the picker input is `sr-only`.
+      rounded ? 'rounded-full' : 'rounded-md',
+      // The focus ring is drawn on the frame: the picker input is `sr-only`.
       // `:focus` rather than `:focus-visible`: a click opening the platform
       // picker is not focus-visible in Chrome, which would leave no feedback.
       `
@@ -163,23 +169,28 @@ function handleTextBlur () {
     )"
   >
     <label
-      class="
-        size-[calc(var(--control-height)-(--spacing(2)))] relative shrink-0
-        cursor-pointer rounded-full
-        in-data-disabled:pointer-events-none
-      "
+      :class="[
+        `
+          size-[calc(var(--control-height)-(--spacing(2)))] relative shrink-0
+          cursor-pointer
+          in-data-disabled:pointer-events-none
+        `,
+        swatchRadius,
+      ]"
     >
       <slot
         name="swatch"
         :value="modelValue"
         :foreground="contrastColor"
+        :radius="swatchRadius"
       >
         <span
           class="
             border-border font-bold
             text-[calc((var(--control-height)-(--spacing(2)))/2)] flex size-full
-            items-center justify-center rounded-full border
+            items-center justify-center border
           "
+          :class="swatchRadius"
           :style="{ backgroundColor: modelValue, color: contrastColor }"
           aria-hidden="true"
         >

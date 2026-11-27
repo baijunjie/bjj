@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<InputNumberProps>(), {
   placeholder: undefined,
   align: 'center',
   size: undefined,
+  rounded: false,
   invalid: false,
   class: undefined,
 })
@@ -55,11 +56,12 @@ function inputAttrs (attrs: Record<string, unknown>) {
 const contentClass = computed(() =>
   cn(
     `
-      rounded-md border-input shadow-xs
+      border-input shadow-xs
       dark:bg-input/30
       flex h-(--control-height) items-center border
       transition-[color,box-shadow]
     `,
+    props.rounded ? 'rounded-full' : 'rounded-md',
     `
       has-[[data-slot=input]:focus-visible]:border-ring
       has-[[data-slot=input]:focus-visible]:ring-ring/50

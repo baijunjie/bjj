@@ -16,6 +16,7 @@ const meta = {
     maxlength: { control: 'number' },
     showCount: { control: 'boolean' },
     size: { control: 'select', options: sizes },
+    rounded: { control: 'boolean' },
     disabled: { control: 'boolean' },
     readonly: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -28,6 +29,7 @@ const meta = {
     maxlength: undefined,
     showCount: false,
     size: 'default',
+    rounded: false,
     disabled: false,
     readonly: false,
     invalid: false,
@@ -196,6 +198,13 @@ export const Invalid: Story = {
   args: {
     invalid: true,
     modelValue: 'Invalid value',
+  },
+}
+
+export const Rounded: Story = {
+  parameters: noControls,
+  args: {
+    rounded: true,
   },
 }
 

@@ -40,6 +40,7 @@ const meta = {
     modelValue: { control: 'text' },
     placeholder: { control: 'text' },
     size: { control: 'select', options: sizes },
+    rounded: { control: 'boolean' },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -54,6 +55,7 @@ const meta = {
     modelValue: undefined,
     placeholder: 'Select an option',
     size: 'default',
+    rounded: false,
     readonly: false,
     disabled: false,
     invalid: false,
@@ -333,6 +335,13 @@ export const Invalid: Story = {
   parameters: noControls,
   args: {
     invalid: true,
+  },
+}
+
+export const Rounded: Story = {
+  parameters: noControls,
+  args: {
+    rounded: true,
   },
 }
 

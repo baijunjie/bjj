@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<SearchSelectProps<TValue, TMeta>>(), {
   loadLimit: 20,
   placeholder: undefined,
   size: undefined,
+  rounded: false,
   readonly: false,
   disabled: false,
   invalid: false,
@@ -198,6 +199,7 @@ defineExpose({ refresh: resetAndLoad })
     :filter="filterFunction"
     :placeholder="placeholder"
     :size="size"
+    :rounded="rounded"
     :searchPlaceholder="searchPlaceholder"
     :emptyText="computedEmptyText"
     :readonly="readonly"

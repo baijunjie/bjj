@@ -13,10 +13,13 @@ const meta = {
     id: { control: 'text' },
     autocomplete: { control: 'text' },
     rows: { control: 'number' },
+    minRows: { control: 'number' },
+    maxRows: { control: 'number' },
     maxlength: { control: 'number' },
     maxLines: { control: 'number' },
     showCount: { control: 'boolean' },
     size: { control: 'select', options: sizes },
+    rounded: { control: 'boolean' },
     readonly: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -27,10 +30,13 @@ const meta = {
     id: '',
     autocomplete: '',
     rows: undefined,
+    minRows: undefined,
+    maxRows: undefined,
     maxlength: undefined,
     maxLines: undefined,
     showCount: false,
     size: 'default',
+    rounded: false,
     readonly: false,
     disabled: false,
     invalid: false,
@@ -176,6 +182,36 @@ export const Readonly: Story = {
       </div>
     `,
   }),
+}
+
+export const AutoSize: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      description: {
+        story: 'Without `rows` the textarea grows with its content between `minRows` and `maxRows`, then scrolls.',
+      },
+    },
+  },
+  args: {
+    minRows: 1,
+    maxRows: 4,
+  },
+}
+
+export const SingleRow: Story = {
+  parameters: noControls,
+  args: {
+    rows: 1,
+  },
+}
+
+export const Rounded: Story = {
+  parameters: noControls,
+  args: {
+    rounded: true,
+    modelValue: 'The corners keep a single-line input\'s radius\nhowever many lines\nthe text takes.',
+  },
 }
 
 export const EventHandling: Story = {

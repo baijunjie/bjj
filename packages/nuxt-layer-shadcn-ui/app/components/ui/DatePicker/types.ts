@@ -35,6 +35,8 @@ export interface DatePickerProps {
   placeholder?: string
   /** Size tier. Unset follows the nearest ancestor's `data-control-size`, else `default`. */
   size?: ControlSize
+  /** Fully rounded (pill) corners, as on Button */
+  rounded?: boolean
   /** Minimum selectable date */
   minDate?: Date | string
   /** Maximum selectable date */

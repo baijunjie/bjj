@@ -30,6 +30,8 @@ export interface DateRangePickerProps {
   endPlaceholder?: string
   /** Size tier. Unset follows the nearest ancestor's `data-control-size`, else `default`. */
   size?: ControlSize
+  /** Fully rounded (pill) corners, as on Button */
+  rounded?: boolean
   /** Maximum span in days between start and end date */
   maxSpanDays?: number
   /**

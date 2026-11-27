@@ -20,6 +20,7 @@ const props = withDefaults(defineProps<RichTextEditorProps>(), {
   maxHeight: undefined,
   uploadImage: undefined,
   size: undefined,
+  rounded: false,
   readonly: false,
   disabled: false,
   invalid: false,
@@ -169,7 +170,7 @@ const contentStyle = computed(() => ({
 
 const mergedClass = computed(() => cn(
   `
-    rounded-md border-input shadow-xs
+    border-input shadow-xs
     dark:bg-input/30
     has-[.ProseMirror-focused]:border-ring
     has-[.ProseMirror-focused]:ring-ring/50
@@ -179,6 +180,8 @@ const mergedClass = computed(() => cn(
     transition-[color,box-shadow]
     has-[.ProseMirror-focused]:ring-[3px]
   `,
+  // Half a single-line control's height, as on Textarea, however tall the editor is.
+  props.rounded ? 'rounded-[calc(var(--control-height)/2)]' : 'rounded-md',
   props.disabled && 'cursor-not-allowed opacity-50',
   props.class,
 ))

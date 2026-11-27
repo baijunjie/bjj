@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<DateRangePickerProps>(), {
   maxDate: undefined,
   maxSpanDays: undefined,
   size: undefined,
+  rounded: false,
   valueFormat: undefined,
   autoApply: true,
   class: undefined,
@@ -137,6 +138,7 @@ const endMaxDate = computed(() => {
       v-model="start"
       :showTime="showTime"
       :size="size"
+      :rounded="rounded"
       :disabled="disabled"
       :readonly="readonly"
       :placeholder="startPlaceholder || T('startPlaceholder')"
@@ -153,6 +155,7 @@ const endMaxDate = computed(() => {
       v-model="end"
       :showTime="showTime"
       :size="size"
+      :rounded="rounded"
       :disabled="disabled"
       :readonly="readonly"
       :placeholder="endPlaceholder || T('endPlaceholder')"

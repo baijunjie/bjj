@@ -30,6 +30,8 @@ export interface ColorPickerProps {
   foreground?: string
   /** Size tier. Unset follows the nearest ancestor's `data-control-size`, else `default`. */
   size?: ControlSize
+  /** Fully rounded (pill) corners, as on Button */
+  rounded?: boolean
   disabled?: boolean
   invalid?: boolean
   class?: ClassValue
