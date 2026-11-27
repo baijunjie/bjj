@@ -90,9 +90,10 @@ const alignClass = {
 const inputClass = computed(() =>
   cn(
     `
-      min-w-0 h-full flex-1 rounded-none border-0 px-(--control-px)
-      text-(length:--control-font-size) leading-(--control-line-height)
-      shadow-none
+      min-w-0 text-base
+      md:text-(length:--control-font-size)
+      md:leading-(--control-line-height)
+      h-full flex-1 rounded-none border-0 px-(--control-px) shadow-none
       focus-visible:ring-0
     `,
     alignClass[props.align],
