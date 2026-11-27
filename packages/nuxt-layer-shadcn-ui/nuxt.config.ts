@@ -80,12 +80,7 @@ export default defineNuxtConfig({
     // `.vue` files must not export types per project convention; exported
     // types live in a co-located `types.ts` that gets scanned here.
     'imports:extend': async (imports: unknown[]) => {
-      // `ts-ignore`, not `ts-expect-error`: both packages are untyped here but
-      // resolve fine from a consuming app, where `expect-error` would itself
-      // become the error.
-      // @ts-ignore fast-glob has no types in this project scope
       const { default: fg } = await import('fast-glob')
-      // @ts-ignore unimport has no types in this project scope
       const { scanExports } = await import('unimport')
       const files = await fg('**/types.ts', {
         cwd: join(currentDir, 'app/components'),
