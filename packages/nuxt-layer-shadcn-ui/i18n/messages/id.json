@@ -35,6 +35,9 @@
         "actions": "Tindakan",
         "loadFailed": "Gagal memuat"
       },
+      "ColorPicker": {
+        "pick": "Pilih warna"
+      },
       "CopyButton": {
         "copied": "Disalin",
         "copyToClipboard": "Salin"

@@ -35,6 +35,9 @@
         "actions": "アクション",
         "loadFailed": "読み込みに失敗しました"
       },
+      "ColorPicker": {
+        "pick": "色を選択"
+      },
       "CopyButton": {
         "copied": "コピーしました",
         "copyToClipboard": "コピー"

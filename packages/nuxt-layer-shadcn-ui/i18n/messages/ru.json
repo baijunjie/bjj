@@ -35,6 +35,9 @@
         "actions": "Действия",
         "loadFailed": "Ошибка загрузки"
       },
+      "ColorPicker": {
+        "pick": "Выбрать цвет"
+      },
       "CopyButton": {
         "copied": "Скопировано",
         "copyToClipboard": "Копировать"

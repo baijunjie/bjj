@@ -35,6 +35,9 @@
         "actions": "การกระทำ",
         "loadFailed": "ไม่สามารถโหลดได้"
       },
+      "ColorPicker": {
+        "pick": "เลือกสี"
+      },
       "CopyButton": {
         "copied": "คัดลอกแล้ว",
         "copyToClipboard": "คัดลอก"

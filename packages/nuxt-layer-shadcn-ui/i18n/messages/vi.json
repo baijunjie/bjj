@@ -35,6 +35,9 @@
         "actions": "Hành động",
         "loadFailed": "Không thể tải"
       },
+      "ColorPicker": {
+        "pick": "Chọn màu"
+      },
       "CopyButton": {
         "copied": "Đã sao chép",
         "copyToClipboard": "Sao chép"

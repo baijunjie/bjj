@@ -35,6 +35,9 @@
         "actions": "Acties",
         "loadFailed": "Laden mislukt"
       },
+      "ColorPicker": {
+        "pick": "Kies een kleur"
+      },
       "CopyButton": {
         "copied": "Gekopieerd",
         "copyToClipboard": "Kopiëren"

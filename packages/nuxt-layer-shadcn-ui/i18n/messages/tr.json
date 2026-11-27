@@ -35,6 +35,9 @@
         "actions": "İşlemler",
         "loadFailed": "Yüklenemedi"
       },
+      "ColorPicker": {
+        "pick": "Renk seçin"
+      },
       "CopyButton": {
         "copied": "Kopyalandı",
         "copyToClipboard": "Kopyala"

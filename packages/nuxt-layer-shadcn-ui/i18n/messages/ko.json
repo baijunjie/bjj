@@ -35,6 +35,9 @@
         "actions": "작업",
         "loadFailed": "로드 실패"
       },
+      "ColorPicker": {
+        "pick": "색상 선택"
+      },
       "CopyButton": {
         "copied": "복사됨",
         "copyToClipboard": "복사"

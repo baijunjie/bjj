@@ -35,6 +35,9 @@
         "actions": "الإجراءات",
         "loadFailed": "فشل التحميل"
       },
+      "ColorPicker": {
+        "pick": "اختر لونًا"
+      },
       "CopyButton": {
         "copied": "تم النسخ",
         "copyToClipboard": "نسخ"

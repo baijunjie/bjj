@@ -35,6 +35,9 @@
         "actions": "क्रियाएं",
         "loadFailed": "लोड करने में विफल"
       },
+      "ColorPicker": {
+        "pick": "रंग चुनें"
+      },
       "CopyButton": {
         "copied": "कॉपी किया गया",
         "copyToClipboard": "कॉपी करें"

@@ -35,6 +35,9 @@
         "actions": "Ações",
         "loadFailed": "Falha ao carregar"
       },
+      "ColorPicker": {
+        "pick": "Escolher uma cor"
+      },
       "CopyButton": {
         "copied": "Copiado",
         "copyToClipboard": "Copiar"

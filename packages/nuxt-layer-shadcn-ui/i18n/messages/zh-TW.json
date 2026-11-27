@@ -35,6 +35,9 @@
         "actions": "操作",
         "loadFailed": "載入失敗"
       },
+      "ColorPicker": {
+        "pick": "選擇顏色"
+      },
       "CopyButton": {
         "copied": "已複製",
         "copyToClipboard": "複製"
