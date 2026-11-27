@@ -164,8 +164,8 @@ function handleTextBlur () {
   >
     <label
       class="
-        relative size-[calc(var(--control-height)-8px)] shrink-0 cursor-pointer
-        rounded-full
+        size-[calc(var(--control-height)-(--spacing(2)))] relative shrink-0
+        cursor-pointer rounded-full
         in-data-disabled:pointer-events-none
       "
     >
@@ -176,8 +176,9 @@ function handleTextBlur () {
       >
         <span
           class="
-            border-border font-bold flex size-full items-center justify-center
-            rounded-full border text-[calc((var(--control-height)-8px)/2)]
+            border-border font-bold
+            text-[calc((var(--control-height)-(--spacing(2)))/2)] flex size-full
+            items-center justify-center rounded-full border
           "
           :style="{ backgroundColor: modelValue, color: contrastColor }"
           aria-hidden="true"

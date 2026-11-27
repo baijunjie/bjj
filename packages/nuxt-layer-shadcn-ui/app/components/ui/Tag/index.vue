@@ -6,8 +6,10 @@ const tagVariants = cva(
   'font-medium inline-flex items-center',
   {
     variants: {
+      // xs keeps sm's font and tightens only the padding.
       size: {
-        sm: 'gap-0.5 rounded-sm px-1.5 py-0.5 text-[10px]',
+        xs: 'gap-0.5 rounded-sm px-1 py-0 text-[0.625rem]',
+        sm: 'gap-0.5 rounded-sm px-1.5 py-0.5 text-[0.625rem]',
         md: 'gap-1 rounded-md px-2 py-1 text-xs',
       },
       variant: {
@@ -15,6 +17,10 @@ const tagVariants = cva(
         soft: 'border',
         bordered: 'border bg-transparent',
         flat: '',
+      },
+      rounded: {
+        true: 'rounded-full',
+        false: '',
       },
       color: {
         default: '',
@@ -102,17 +108,18 @@ const tagVariants = cva(
       variant: 'soft',
       color: 'default',
       size: 'md',
+      rounded: false,
     },
   },
 )
 
 // Remove button: sized from the tag's own size so it fits the text line
 // without touching the tag's padding. The negative end margin pulls it into
-// the padding by a fixed amount, offsetting the whitespace around the × glyph
-// so both sides look even whatever padding the tag has. Colors derive from
+// the padding, offsetting the whitespace around the × glyph so both sides look
+// even; xs pulls less, as its padding is narrower. Colors derive from
 // `currentColor`, so hover / focus follow every color × variant combination.
 const closeClass = `
-  -me-1 inline-flex shrink-0 cursor-pointer items-center justify-center
+  inline-flex shrink-0 cursor-pointer items-center justify-center
   rounded-full
   opacity-60 transition
   hover:bg-current/15 hover:opacity-100
@@ -121,14 +128,16 @@ const closeClass = `
 `
 
 const closeSizes = {
-  sm: { button: 'size-3.5', icon: 'size-2.5' },
-  md: { button: 'size-4', icon: 'size-3' },
+  xs: { button: '-me-0.5 size-3.5', icon: 'size-2.5' },
+  sm: { button: '-me-1 size-3.5', icon: 'size-2.5' },
+  md: { button: '-me-1 size-4', icon: 'size-3' },
 } as const
 
 const props = withDefaults(defineProps<TagProps>(), {
   color: 'default',
   variant: 'soft',
   size: 'md',
+  rounded: false,
   closable: false,
   closeLabel: undefined,
   class: undefined,
@@ -145,7 +154,7 @@ defineSlots<{
 const T = useTranslations('components.ui.Tag')
 
 const mergedClass = computed(() =>
-  cn(tagVariants({ color: props.color, variant: props.variant, size: props.size }), props.class),
+  cn(tagVariants({ color: props.color, variant: props.variant, size: props.size, rounded: props.rounded }), props.class),
 )
 </script>
 

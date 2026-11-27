@@ -5,7 +5,7 @@ import Tag from './index.vue'
 
 const colors: TagColor[] = [ 'default', 'primary', 'success', 'info', 'help', 'warn', 'danger' ]
 const variants: TagVariant[] = [ 'solid', 'soft', 'bordered', 'flat' ]
-const sizes: TagSize[] = [ 'sm', 'md' ]
+const sizes: TagSize[] = [ 'xs', 'sm', 'md' ]
 
 const meta = {
   title: 'UI/Tag',
@@ -14,6 +14,7 @@ const meta = {
     color: { control: 'select', options: colors },
     variant: { control: 'select', options: variants },
     size: { control: 'select', options: sizes },
+    rounded: { control: 'boolean' },
     closable: { control: 'boolean' },
     closeLabel: { control: 'text' },
   },
@@ -21,6 +22,7 @@ const meta = {
     color: 'default',
     variant: 'soft',
     size: 'md',
+    rounded: false,
     closable: false,
     closeLabel: '',
   },
@@ -111,6 +113,32 @@ export const Sizes: Story = {
     template: `
       <div class="flex flex-wrap items-center gap-3">
         <Tag v-for="s in sizes" :key="s" :size="s">{{ s }}</Tag>
+      </div>
+    `,
+  }),
+}
+
+export const Rounded: Story = {
+  parameters: {
+    ...noControls,
+    docs: {
+      source: {
+        code: `
+<template>
+  <div class="flex flex-wrap items-center gap-3">
+    <Tag v-for="s in sizes" :key="s" :size="s" rounded>{{ s }}</Tag>
+  </div>
+</template>
+`.trim(),
+      },
+    },
+  },
+  render: () => ({
+    components: { Tag },
+    setup: () => ({ sizes }),
+    template: `
+      <div class="flex flex-wrap items-center gap-3">
+        <Tag v-for="s in sizes" :key="s" :size="s" rounded>{{ s }}</Tag>
       </div>
     `,
   }),
@@ -234,7 +262,7 @@ function remove (name: string) {
       v-for="name in filters"
       :key="name"
       color="info"
-      class="rounded-full"
+      rounded
       closable
       :close-label="'Remove ' + name"
       @close="remove(name)"
@@ -267,7 +295,7 @@ function remove (name: string) {
             v-for="name in filters"
             :key="name"
             color="info"
-            class="rounded-full"
+            rounded
             closable
             :close-label="'Remove ' + name"
             @close="record('close', name); remove(name)"

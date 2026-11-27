@@ -701,7 +701,9 @@ async function onDrop (e: DragEvent) {
               :class="file.status === 'error' && 'text-danger'"
             />
             <span
-              class="px-1 leading-tight line-clamp-2 text-center text-[10px]"
+              class="
+                px-1 leading-tight line-clamp-2 text-center text-[0.625rem]
+              "
             >
               {{ file.name }}
             </span>
